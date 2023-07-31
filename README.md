@@ -1,16 +1,47 @@
-# varanasi_mobile_app
+# Project Varanasi
 
-A new Flutter project.
+## Follow this file structure thorughout the app
 
-## Getting Started
+- lib/
+  - features/
+    - home/
+      - bloc/
+        - home_bloc.dart
+        - home_event.dart
+        - home_state.dart
+      - data/
+        - home_repository.dart
+        - home_data_provider.dart
+      - ui/
+        - home_screen.dart
+        - home_widgets/
+          - home_button.dart
+          - home_card.dart
+    - profile/
+      - bloc/
+        - profile_bloc.dart
+        - profile_event.dart
+        - profile_state.dart
+      - data/
+        - profile_repository.dart
+        - profile_data_provider.dart
+      - ui/
+        - profile_screen.dart
+        - profile_widgets/
+          - profile_button.dart
+          - profile_card.dart
+  - main.dart
 
-This project is a starting point for a Flutter application.
+## Follow this commit message pattern as below
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- 🐛 Bug fix
+- ✨ New feature
+- ♻️ Refactoring
+- 💄 UI/UX changes
+- 🚨 Fixing security issues
+- 📝 Documentation changes
+- 🚧 Work in progress
+- ✅ Adding tests
+- 📦 Updating dependencies
+- 🎨 Improving code structure/formatting
+- 🎉 Initial commit
