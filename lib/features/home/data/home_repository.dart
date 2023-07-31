@@ -26,13 +26,12 @@ class HomeRepository with CacheableService {
       if (value == null) return;
       _box = value;
     });
-    final cachedData = isCached(appConfig.endpoint.modules);
-    if (cachedData != null) {
-      final parsed = HomeDataProvider.instance.parseModules(cachedData['data']);
-      return parsed;
+    final cachedData = isCached<ModulesResponse>(appConfig.endpoint.modules);
+    if (cachedData != null) return cachedData;
+    final (_, parsed) = await HomeDataProvider.instance.fetchModules();
+    if (parsed != null) {
+      cache(appConfig.endpoint.modules, parsed);
     }
-    final (response, parsed) = await HomeDataProvider.instance.fetchModules();
-    cache(appConfig.endpoint.modules, response);
     return parsed;
   }
 }
