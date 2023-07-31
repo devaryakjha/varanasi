@@ -30,6 +30,15 @@
         - profile_widgets/
           - profile_button.dart
           - profile_card.dart
+  - widgets/
+    - common_button.dart
+    - common_card.dart
+  - utils/
+    - constants.dart
+    - router.dart
+    - helpers/
+      - date_formatter.dart
+      - string_extensions.dart
   - main.dart
 
 ## Follow this commit message pattern as below
