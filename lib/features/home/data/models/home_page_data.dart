@@ -1,5 +1,5 @@
-import 'package:hive/hive.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'album.dart';
@@ -11,7 +11,7 @@ part 'home_page_data.g.dart';
 
 @JsonSerializable()
 @HiveType(typeId: 0)
-class HomePageData extends Equatable {
+class ModulesResponse extends Equatable {
   @HiveField(0)
   final List<Album>? albums;
   @HiveField(1)
@@ -21,26 +21,26 @@ class HomePageData extends Equatable {
   @HiveField(3)
   final Trending? trending;
 
-  const HomePageData({
+  const ModulesResponse({
     this.albums,
     this.playlists,
     this.charts,
     this.trending,
   });
 
-  factory HomePageData.fromJson(Map<String, dynamic> json) {
+  factory ModulesResponse.fromJson(Map<String, dynamic> json) {
     return _$HomePageDataFromJson(json);
   }
 
   Map<String, dynamic> toJson() => _$HomePageDataToJson(this);
 
-  HomePageData copyWith({
+  ModulesResponse copyWith({
     List<Album>? albums,
     List<Playlist>? playlists,
     List<Chart>? charts,
     Trending? trending,
   }) {
-    return HomePageData(
+    return ModulesResponse(
       albums: albums ?? this.albums,
       playlists: playlists ?? this.playlists,
       charts: charts ?? this.charts,

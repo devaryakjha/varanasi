@@ -21,7 +21,7 @@ class HomeRepository with CacheableService {
   @override
   Box get box => _box;
 
-  Future<HomePageData?> fetchModules() async {
+  Future<ModulesResponse?> fetchModules() async {
     await initcache().then((value) {
       if (value == null) return;
       _box = value;

@@ -3,7 +3,7 @@ part of 'home_bloc.dart';
 
 class HomeState extends Equatable {
   final bool isLoading;
-  final HomePageData? modules;
+  final ModulesResponse? modules;
 
   const HomeState({
     this.modules,
@@ -15,7 +15,7 @@ class HomeState extends Equatable {
 
   HomeState copyWith({
     bool? isLoading,
-    HomePageData? modules,
+    ModulesResponse? modules,
   }) {
     return HomeState(
       isLoading: isLoading ?? this.isLoading,

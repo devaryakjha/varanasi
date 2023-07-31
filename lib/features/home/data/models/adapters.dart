@@ -14,7 +14,7 @@ void registerHomePageTypeAdapters() {
   Hive.registerAdapter<Album>(AlbumAdapter());
   Hive.registerAdapter<Artist>(ArtistAdapter());
   Hive.registerAdapter<Chart>(ChartAdapter());
-  Hive.registerAdapter<HomePageData>(HomePageDataAdapter());
+  Hive.registerAdapter<ModulesResponse>(HomePageDataAdapter());
   Hive.registerAdapter<Image>(ImageAdapter());
   Hive.registerAdapter<Playlist>(PlaylistAdapter());
   Hive.registerAdapter<PrimaryArtist>(PrimaryArtistAdapter());
