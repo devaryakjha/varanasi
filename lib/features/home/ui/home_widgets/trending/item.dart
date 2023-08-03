@@ -1,0 +1,50 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:varanasi_mobile_app/models/playable_item.dart';
+import 'package:varanasi_mobile_app/utils/extensions/strings.dart';
+import 'package:varanasi_mobile_app/utils/extensions/theme.dart';
+
+class TrendingItem extends StatelessWidget {
+  final PlayableMedia media;
+
+  const TrendingItem(this.media, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 56,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(4),
+        onTap: () {},
+        child: Container(
+          height: 56,
+          padding: const EdgeInsets.only(right: 12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            color: Colors.grey.shade900,
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CachedNetworkImage(
+                imageUrl: media.artworkUrl ?? '',
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  media.itemTitle.sanitize,
+                  style: context.textTheme.bodySmall
+                      ?.copyWith(fontWeight: FontWeight.w600),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
