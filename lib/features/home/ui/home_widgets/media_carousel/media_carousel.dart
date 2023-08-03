@@ -46,6 +46,7 @@ class MediaCarousel extends StatelessWidget {
               itemBuilder: (context, index) {
                 final media = playlist.mediaItems![index];
                 return MediaCard(
+                  key: ValueKey(media.itemId),
                   media: media,
                   isFirst: index == 0,
                   isLast: index == totalItems - 1,
