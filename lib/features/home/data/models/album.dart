@@ -125,4 +125,7 @@ class Album extends PlayableMedia {
 
   @override
   PlayableMediaType get itemType => getPlayableMediaType(type ?? '');
+
+  @override
+  String? get artworkUrl => image?.lastOrNull?.link;
 }

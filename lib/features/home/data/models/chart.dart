@@ -93,4 +93,7 @@ class Chart extends PlayableMedia {
 
   @override
   PlayableMediaType get itemType => PlayableMediaType.playlist;
+
+  @override
+  String? get artworkUrl => image?.lastOrNull?.link;
 }

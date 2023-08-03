@@ -92,4 +92,7 @@ class Song extends PlayableMedia {
 
   @override
   PlayableMediaType get itemType => PlayableMediaType.song;
+
+  @override
+  String? get artworkUrl => image?.lastOrNull?.link;
 }

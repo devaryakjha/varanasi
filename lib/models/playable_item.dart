@@ -35,12 +35,9 @@ abstract class PlayableMedia extends Equatable {
     required this.itemUrl,
   });
 
+  String? get artworkUrl;
+
   @override
-  List<Object?> get props => [
-        itemId,
-        itemTitle,
-        itemSubtitle,
-        itemUrl,
-        itemType,
-      ];
+  List<Object?> get props =>
+      [itemId, itemTitle, itemSubtitle, itemUrl, itemType];
 }
