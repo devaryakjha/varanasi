@@ -54,6 +54,9 @@ dependencies:
   cached_network_image: ^3.2.3
   json_serializable: ^6.7.1
   build_runner: ^2.4.6
+  bloc: ^8.1.2
+  shimmer: ^3.0.0
+  google_fonts: ^5.1.0
 
 dev_dependencies:
   flutter_test:
