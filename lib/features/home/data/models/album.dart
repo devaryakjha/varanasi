@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
+import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 
 import 'artist.dart';
 import 'image.dart';
@@ -55,12 +56,7 @@ class Album extends PlayableMedia {
     this.image,
     this.songs,
     this.songCount,
-  }) : super(
-          itemId: id ?? '',
-          itemTitle: name ?? '',
-          itemSubtitle: '',
-          itemUrl: url ?? '',
-        );
+  });
 
   factory Album.fromJson(Map<String, dynamic> json) => _$AlbumFromJson(json);
 
@@ -128,4 +124,17 @@ class Album extends PlayableMedia {
 
   @override
   String? get artworkUrl => image?.lastOrNull?.link;
+
+  @override
+  String get itemId => id ?? '';
+
+  @override
+  String get itemSubtitle =>
+      '${(type ?? '').capitalize} • ${artists?.map((e) => e.name).join(', ') ?? ''}';
+
+  @override
+  String get itemTitle => name ?? '';
+
+  @override
+  String get itemUrl => url ?? '';
 }

@@ -21,23 +21,22 @@ PlayableMediaType getPlayableMediaType(String type) {
 }
 
 abstract class PlayableMedia extends Equatable {
-  final String itemId;
-  final String itemTitle;
-  final String itemSubtitle;
-  final String itemUrl;
-
+  String get itemTitle;
+  String get itemUrl;
+  String get itemId;
+  String get itemSubtitle;
   PlayableMediaType get itemType;
-
-  const PlayableMedia({
-    required this.itemId,
-    required this.itemTitle,
-    required this.itemSubtitle,
-    required this.itemUrl,
-  });
-
   String? get artworkUrl;
 
+  const PlayableMedia();
+
   @override
-  List<Object?> get props =>
-      [itemId, itemTitle, itemSubtitle, itemUrl, itemType];
+  List<Object?> get props => [
+        itemId,
+        itemTitle,
+        itemSubtitle,
+        itemUrl,
+        itemType,
+        artworkUrl,
+      ];
 }

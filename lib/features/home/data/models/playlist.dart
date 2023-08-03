@@ -47,12 +47,7 @@ class Playlist extends PlayableMedia {
     this.followerCount,
     this.lastUpdated,
     this.explicitContent,
-  }) : super(
-          itemId: id ?? '',
-          itemTitle: title ?? '',
-          itemSubtitle: subtitle ?? '',
-          itemUrl: url ?? '',
-        );
+  });
 
   factory Playlist.fromJson(Map<String, dynamic> json) {
     return _$PlaylistFromJson(json);
@@ -116,4 +111,16 @@ class Playlist extends PlayableMedia {
 
   @override
   String? get artworkUrl => image?.lastOrNull?.link;
+
+  @override
+  String get itemId => id ?? '';
+
+  @override
+  String get itemSubtitle => subtitle ?? '';
+
+  @override
+  String get itemTitle => title ?? '';
+
+  @override
+  String get itemUrl => url ?? '';
 }

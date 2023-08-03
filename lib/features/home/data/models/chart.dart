@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
+import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 
 import 'image.dart';
 
@@ -38,12 +39,7 @@ class Chart extends PlayableMedia {
     this.firstname,
     this.explicitContent,
     this.language,
-  }) : super(
-          itemId: id ?? '',
-          itemTitle: title ?? '',
-          itemSubtitle: subtitle ?? '',
-          itemUrl: url ?? '',
-        );
+  });
 
   factory Chart.fromJson(Map<String, dynamic> json) => _$ChartFromJson(json);
 
@@ -96,4 +92,17 @@ class Chart extends PlayableMedia {
 
   @override
   String? get artworkUrl => image?.lastOrNull?.link;
+
+  @override
+  String get itemId => id ?? '';
+
+  @override
+  String get itemSubtitle =>
+      '${(type ?? '').capitalize} • ${(firstname ?? '').capitalize}';
+
+  @override
+  String get itemTitle => title ?? '';
+
+  @override
+  String get itemUrl => url ?? '';
 }

@@ -58,12 +58,7 @@ class Song extends PlayableMedia {
     this.language,
     this.url,
     this.image,
-  }) : super(
-          itemId: id ?? '',
-          itemTitle: name ?? '',
-          itemSubtitle: '',
-          itemUrl: url ?? '',
-        );
+  });
 
   factory Song.fromJson(Map<String, dynamic> json) {
     return _$SongFromJson(json);
@@ -95,4 +90,16 @@ class Song extends PlayableMedia {
 
   @override
   String? get artworkUrl => image?.lastOrNull?.link;
+
+  @override
+  String get itemId => id ?? '';
+
+  @override
+  String get itemSubtitle => year ?? '';
+
+  @override
+  String get itemTitle => name ?? '';
+
+  @override
+  String get itemUrl => url ?? '';
 }
