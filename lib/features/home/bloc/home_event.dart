@@ -7,4 +7,7 @@ abstract class HomeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchModules extends HomeEvent {}
+class FetchModules extends HomeEvent {
+  final bool refetch;
+  const FetchModules({this.refetch = false});
+}

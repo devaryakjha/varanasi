@@ -42,18 +42,25 @@ class HomePage extends StatelessWidget {
         visible: !loading,
         replacement: const HomePageLoader(),
         child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                if (modules?.trending != null) ...[
-                  TrendingSongsList(trending: modules!.trending!),
+          child: RefreshIndicator(
+            onRefresh: () async {
+              return context
+                  .read<HomeBloc>()
+                  .add(const FetchModules(refetch: true));
+            },
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  if (modules?.trending != null) ...[
+                    TrendingSongsList(trending: modules!.trending!),
+                  ],
+                  ...mediaPlaylist.map(
+                    (e) {
+                      return [const HomeSpacer(), MediaCarousel(playlist: e)];
+                    },
+                  ).expand((element) => element),
                 ],
-                ...mediaPlaylist.map(
-                  (e) {
-                    return [const HomeSpacer(), MediaCarousel(playlist: e)];
-                  },
-                ).expand((element) => element),
-              ],
+              ),
             ),
           ),
         ),

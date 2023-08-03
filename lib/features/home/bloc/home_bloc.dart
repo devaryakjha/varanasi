@@ -18,7 +18,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     emit(state.copyWith(isLoading: true));
-    final modules = await HomeRepository.instance.fetchModules();
+    final modules =
+        await HomeRepository.instance.fetchModules(ignoreCache: event.refetch);
     emit(state.copyWith(modules: modules, isLoading: false));
   }
 }

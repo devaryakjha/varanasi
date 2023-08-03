@@ -28,8 +28,11 @@ class TrendingItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CachedNetworkImage(
+                width: 56,
+                height: 56,
                 imageUrl: media.artworkUrl ?? '',
                 fit: BoxFit.cover,
+                placeholder: (_, __) => const SizedBox.square(dimension: 56),
               ),
               const SizedBox(width: 12),
               Expanded(

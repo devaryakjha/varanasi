@@ -21,13 +21,15 @@ class HomeRepository with CacheableService {
   @override
   Box get box => _box;
 
-  Future<ModulesResponse?> fetchModules() async {
+  Future<ModulesResponse?> fetchModules({bool ignoreCache = false}) async {
     await initcache().then((value) {
       if (value == null) return;
       _box = value;
     });
-    final cachedData = isCached<ModulesResponse>(appConfig.endpoint.modules);
-    if (cachedData != null) return cachedData;
+    if (!ignoreCache) {
+      final cachedData = isCached<ModulesResponse>(appConfig.endpoint.modules);
+      if (cachedData != null) return cachedData;
+    }
     final (_, parsed) = await HomeDataProvider.instance.fetchModules();
     if (parsed != null) {
       cache(appConfig.endpoint.modules, parsed);
