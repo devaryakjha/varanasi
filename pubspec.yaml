@@ -57,6 +57,7 @@ dependencies:
   bloc: ^8.1.2
   shimmer: ^3.0.0
   google_fonts: ^5.1.0
+  collection: ^1.17.1
 
 dev_dependencies:
   flutter_test:

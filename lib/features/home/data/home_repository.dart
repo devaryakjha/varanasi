@@ -32,7 +32,7 @@ class HomeRepository with CacheableService {
     }
     final (_, parsed) = await HomeDataProvider.instance.fetchModules();
     if (parsed != null) {
-      cache(appConfig.endpoint.modules, parsed);
+      cache(appConfig.endpoint.modules, parsed, const Duration(hours: 4));
     }
     return parsed;
   }

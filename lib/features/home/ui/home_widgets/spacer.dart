@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class HomeSpacer extends StatelessWidget {
-  const HomeSpacer({super.key});
+  final double height;
+  const HomeSpacer({super.key, this.height = 30});
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(height: 30);
+    return SizedBox(height: height);
   }
 }

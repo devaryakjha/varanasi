@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:varanasi_mobile_app/features/home/bloc/home_bloc.dart';
@@ -13,6 +14,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final padding = MediaQuery.paddingOf(context);
     final (loading, modules, mediaPlaylist) = context.select(
       (HomeBloc value) {
         final modules = value.state.modules;
@@ -41,26 +43,28 @@ class HomePage extends StatelessWidget {
       body: Visibility(
         visible: !loading,
         replacement: const HomePageLoader(),
-        child: SafeArea(
-          child: RefreshIndicator(
-            onRefresh: () async {
-              return context
-                  .read<HomeBloc>()
-                  .add(const FetchModules(refetch: true));
-            },
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  if (modules?.trending != null) ...[
-                    TrendingSongsList(trending: modules!.trending!),
-                  ],
-                  ...mediaPlaylist.map(
-                    (e) {
-                      return [const HomeSpacer(), MediaCarousel(playlist: e)];
-                    },
-                  ).expand((element) => element),
+        child: RefreshIndicator(
+          onRefresh: () async {
+            context.read<HomeBloc>().add(const FetchModules(refetch: true));
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                if (modules?.trending != null) ...[
+                  HomeSpacer(height: padding.top),
+                  TrendingSongsList(trending: modules!.trending!),
                 ],
-              ),
+                ...mediaPlaylist.mapIndexed(
+                  (index, e) {
+                    return [
+                      const HomeSpacer(),
+                      MediaCarousel(playlist: e),
+                      if (index == mediaPlaylist.length - 1)
+                        HomeSpacer(height: padding.bottom),
+                    ];
+                  },
+                ).expand((element) => element),
+              ],
             ),
           ),
         ),
