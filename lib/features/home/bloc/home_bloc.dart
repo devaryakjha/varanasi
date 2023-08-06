@@ -9,7 +9,7 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc() : super(const HomeState()) {
+  HomeBloc() : super(const HomeInitialState()) {
     on<FetchModules>(_fetchModule);
   }
 
@@ -17,9 +17,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     FetchModules event,
     Emitter<HomeState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true));
-    final modules =
-        await HomeRepository.instance.fetchModules(ignoreCache: event.refetch);
-    emit(state.copyWith(modules: modules, isLoading: false));
+    try {
+      emit(const HomeLoadingState());
+      final modules = await HomeRepository.instance
+          .fetchModules(ignoreCache: event.refetch);
+      emit(HomeLoadedState(modules));
+    } catch (e) {
+      emit(HomeErrorState(e));
+    }
   }
 }
