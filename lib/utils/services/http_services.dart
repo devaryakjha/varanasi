@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:varanasi_mobile_app/utils/logger.dart';
 
-typedef ResponseTransformer<T> = T Function(dynamic response);
+typedef ResponseTransformer<T> = FutureOr<T> Function(dynamic response);
 
 class CommonOptions<T> {
   final ResponseTransformer<T>? transformer;
@@ -33,11 +34,12 @@ class HttpService {
         options: options?.options,
       );
       if (options?.transformer != null) {
-        return (response.data, options!.transformer!(response.data['data']));
+        final transformed = await options!.transformer!(response.data['data']);
+        return (response.data, transformed);
       }
       return (response.data, null);
-    } on Exception {
-      // Logger.e('Error while fetching data from $url', e, stackTrace);
+    } on Exception catch (e, stackTrace) {
+      Logger.instance.e('Error while fetching data from $url', e, stackTrace);
       return (null, null);
     }
   }

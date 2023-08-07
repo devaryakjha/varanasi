@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:audio_service/audio_service.dart';
 import 'package:equatable/equatable.dart';
+import 'package:varanasi_mobile_app/utils/configs.dart';
 
 enum PlayableMediaType {
   song,
@@ -31,12 +33,32 @@ abstract class PlayableMedia extends Equatable {
   const PlayableMedia();
 
   @override
-  List<Object?> get props => [
-        itemId,
-        itemTitle,
-        itemSubtitle,
-        itemUrl,
-        itemType,
-        artworkUrl,
-      ];
+  List<Object?> get props {
+    return [itemId, itemTitle, itemSubtitle, itemUrl, itemType, artworkUrl];
+  }
+
+  /// {@template toMediaItem}
+  /// Converts the [PlayableMedia] to a [MediaItem] for use with [AudioService].
+  /// {@endtemplate}
+  /// TODO: use url instead of id
+  MediaItem toMediaItem() {
+    return MediaItem(
+      id: itemId,
+      title: itemTitle,
+      album: itemSubtitle,
+      artUri: Uri.parse(artworkUrl ?? ''),
+    );
+  }
+
+  /// {@template getMoreInfoUrl}
+  /// Returns a [Uri] to the more info page at the backend for the [PlayableMedia].
+  /// {@endtemplate}
+  Uri get moreInfoUrl {
+    return switch (itemType) {
+      PlayableMediaType.song => Uri.parse(appConfig.endpoint.playlists!.id),
+      PlayableMediaType.album => Uri.parse(appConfig.endpoint.albums!.id),
+      PlayableMediaType.playlist => Uri.parse(
+          '${appConfig.endpoint.playlists!.id}?id=$itemId&language=hindi,english'),
+    };
+  }
 }

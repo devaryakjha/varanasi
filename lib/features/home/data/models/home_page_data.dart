@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:varanasi_mobile_app/models/album.dart';
+import 'package:varanasi_mobile_app/models/playlist.dart';
 
-import 'album.dart';
 import 'chart.dart';
-import 'playlist.dart';
 import 'trending.dart';
 
 part 'home_page_data.g.dart';

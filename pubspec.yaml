@@ -58,6 +58,7 @@ dependencies:
   shimmer: ^3.0.0
   google_fonts: ^5.1.0
   collection: ^1.17.1
+  palette_generator: ^0.3.3+2
 
 dev_dependencies:
   flutter_test:

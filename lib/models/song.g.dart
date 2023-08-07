@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'songs.dart';
+part of 'song.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
@@ -8,7 +8,7 @@ part of 'songs.dart';
 
 class SongAdapter extends TypeAdapter<Song> {
   @override
-  final int typeId = 8;
+  final int typeId = 12;
 
   @override
   Song read(BinaryReader reader) {
@@ -19,56 +19,71 @@ class SongAdapter extends TypeAdapter<Song> {
     return Song(
       id: fields[0] as String?,
       name: fields[1] as String?,
-      type: fields[2] as String?,
-      album: fields[3] as Album?,
-      year: fields[4] as String?,
-      releaseDate: fields[5] as String?,
-      duration: fields[6] as String?,
-      label: fields[7] as String?,
-      primaryArtists: (fields[8] as List?)?.cast<PrimaryArtist>(),
-      featuredArtists: (fields[9] as List?)?.cast<dynamic>(),
-      explicitContent: fields[10] as String?,
-      playCount: fields[11] as String?,
-      language: fields[12] as String?,
-      url: fields[13] as String?,
-      image: (fields[14] as List?)?.cast<Image>(),
+      album: fields[2] as Album?,
+      year: fields[3] as String?,
+      releaseDate: fields[4] as String?,
+      duration: fields[5] as String?,
+      label: fields[6] as String?,
+      primaryArtists: (fields[7] as List?)?.cast<Artist>(),
+      primaryArtistsId: fields[8] as String?,
+      featuredArtists: (fields[9] as List?)?.cast<Artist>(),
+      featuredArtistsId: fields[10] as String?,
+      explicitContent: fields[11] as String?,
+      playCount: fields[12] as String?,
+      language: fields[13] as String?,
+      hasLyrics: fields[14] as String?,
+      url: fields[15] as String?,
+      copyright: fields[16] as String?,
+      image: (fields[17] as List?)?.cast<Image>(),
+      downloadUrl: (fields[18] as List?)?.cast<DownloadUrl>(),
+      description: fields[19] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Song obj) {
     writer
-      ..writeByte(15)
+      ..writeByte(20)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.type)
-      ..writeByte(3)
       ..write(obj.album)
-      ..writeByte(4)
+      ..writeByte(3)
       ..write(obj.year)
-      ..writeByte(5)
+      ..writeByte(4)
       ..write(obj.releaseDate)
-      ..writeByte(6)
+      ..writeByte(5)
       ..write(obj.duration)
-      ..writeByte(7)
+      ..writeByte(6)
       ..write(obj.label)
-      ..writeByte(8)
+      ..writeByte(7)
       ..write(obj.primaryArtists)
+      ..writeByte(8)
+      ..write(obj.primaryArtistsId)
       ..writeByte(9)
       ..write(obj.featuredArtists)
       ..writeByte(10)
-      ..write(obj.explicitContent)
+      ..write(obj.featuredArtistsId)
       ..writeByte(11)
-      ..write(obj.playCount)
+      ..write(obj.explicitContent)
       ..writeByte(12)
-      ..write(obj.language)
+      ..write(obj.playCount)
       ..writeByte(13)
-      ..write(obj.url)
+      ..write(obj.language)
       ..writeByte(14)
-      ..write(obj.image);
+      ..write(obj.hasLyrics)
+      ..writeByte(15)
+      ..write(obj.url)
+      ..writeByte(16)
+      ..write(obj.copyright)
+      ..writeByte(17)
+      ..write(obj.image)
+      ..writeByte(18)
+      ..write(obj.downloadUrl)
+      ..writeByte(19)
+      ..write(obj.description);
   }
 
   @override
@@ -89,7 +104,6 @@ class SongAdapter extends TypeAdapter<Song> {
 Song _$SongFromJson(Map<String, dynamic> json) => Song(
       id: json['id'] as String?,
       name: json['name'] as String?,
-      type: json['type'] as String?,
       album: json['album'] == null
           ? null
           : Album.fromJson(json['album'] as Map<String, dynamic>),
@@ -98,32 +112,47 @@ Song _$SongFromJson(Map<String, dynamic> json) => Song(
       duration: json['duration'] as String?,
       label: json['label'] as String?,
       primaryArtists: (json['primaryArtists'] as List<dynamic>?)
-          ?.map((e) => PrimaryArtist.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => Artist.fromJson(e as Map<String, dynamic>))
           .toList(),
-      featuredArtists: json['featuredArtists'] as List<dynamic>?,
+      primaryArtistsId: json['primaryArtistsId'] as String?,
+      featuredArtists: (json['featuredArtists'] as List<dynamic>?)
+          ?.map((e) => Artist.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      featuredArtistsId: json['featuredArtistsId'] as String?,
       explicitContent: json['explicitContent'] as String?,
       playCount: json['playCount'] as String?,
       language: json['language'] as String?,
+      hasLyrics: json['hasLyrics'] as String?,
       url: json['url'] as String?,
+      copyright: json['copyright'] as String?,
       image: (json['image'] as List<dynamic>?)
           ?.map((e) => Image.fromJson(e as Map<String, dynamic>))
           .toList(),
+      downloadUrl: (json['downloadUrl'] as List<dynamic>?)
+          ?.map((e) => DownloadUrl.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      description: json['description'] as String?,
     );
 
 Map<String, dynamic> _$SongToJson(Song instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'type': instance.type,
       'album': instance.album,
       'year': instance.year,
       'releaseDate': instance.releaseDate,
       'duration': instance.duration,
       'label': instance.label,
       'primaryArtists': instance.primaryArtists,
+      'primaryArtistsId': instance.primaryArtistsId,
       'featuredArtists': instance.featuredArtists,
+      'featuredArtistsId': instance.featuredArtistsId,
       'explicitContent': instance.explicitContent,
       'playCount': instance.playCount,
       'language': instance.language,
+      'hasLyrics': instance.hasLyrics,
       'url': instance.url,
+      'copyright': instance.copyright,
       'image': instance.image,
+      'downloadUrl': instance.downloadUrl,
+      'description': instance.description,
     };

@@ -96,6 +96,7 @@ class Config extends Equatable {
 Config get appConfig {
   return const Config(
     env: 'development',
-    endpoint: Endpoint(modules: '/modules'),
+    endpoint:
+        Endpoint(modules: '/modules', playlists: Playlists(id: 'playlists')),
   );
 }
