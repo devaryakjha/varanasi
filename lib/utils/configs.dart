@@ -80,23 +80,44 @@ class Endpoint {
   });
 }
 
+class Server extends Equatable {
+  final String host;
+  final int? port;
+
+  const Server(this.host, this.port);
+
+  String get baseUrl => port == null ? host : '$host:$port';
+
+  @override
+  List<Object?> get props => [host, port];
+}
+
 class Config extends Equatable {
   final String env;
+  final Server server;
   final Endpoint endpoint;
+  final String placeholderImageLink;
 
   const Config({
+    required this.server,
     required this.env,
     required this.endpoint,
+    required this.placeholderImageLink,
   });
 
   @override
-  List<Object> get props => [env, endpoint];
+  List<Object> get props => [env, endpoint, server, placeholderImageLink];
 }
 
 Config get appConfig {
-  return const Config(
+  const server = Server('http://192.168.31.130', 3000);
+  return Config(
     env: 'development',
-    endpoint:
-        Endpoint(modules: '/modules', playlists: Playlists(id: 'playlists')),
+    endpoint: const Endpoint(
+      modules: '/modules',
+      playlists: Playlists(id: 'playlists'),
+    ),
+    server: server,
+    placeholderImageLink: '${server.baseUrl}/audio.jpg',
   );
 }

@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:audio_service/audio_service.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:varanasi_mobile_app/utils/configs.dart';
 
 enum PlayableMediaType {
@@ -61,4 +62,9 @@ abstract class PlayableMedia extends Equatable {
           '${appConfig.endpoint.playlists!.id}?id=$itemId&language=hindi,english'),
     };
   }
+
+  /// {@template getCacheKey}
+  /// Returns a unique key for the [PlayableMedia] to be used in the cache.
+  /// {@endtemplate}
+  String get cacheKey => '$itemId-${describeEnum(itemType)}';
 }

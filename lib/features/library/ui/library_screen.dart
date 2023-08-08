@@ -18,7 +18,7 @@ class LibraryPage extends StatelessWidget {
     return Visibility(
       visible: !isLoading,
       replacement: const LibraryLoader(),
-      child: const PlaylistContent(),
+      child: const LibraryContent(),
     );
   }
 }

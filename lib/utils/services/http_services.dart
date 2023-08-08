@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+import 'package:varanasi_mobile_app/utils/configs.dart';
 import 'package:varanasi_mobile_app/utils/logger.dart';
 
 typedef ResponseTransformer<T> = FutureOr<T> Function(dynamic response);
@@ -15,7 +15,7 @@ class CommonOptions<T> {
 
 class HttpService {
   final Dio dio = Dio(BaseOptions(
-    baseUrl: kDebugMode ? "http://localhost:3000" : "https://saavn.aryak.dev",
+    baseUrl: appConfig.server.baseUrl,
     headers: {
       'Content-Type': 'application/json',
       'Cookie': 'L=english; DL=english;',

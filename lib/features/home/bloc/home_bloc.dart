@@ -8,19 +8,14 @@ import 'package:varanasi_mobile_app/features/home/data/models/home_page_data.dar
 part 'home_event.dart';
 part 'home_state.dart';
 
-class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc() : super(const HomeInitialState()) {
-    on<FetchModules>(_fetchModule);
-  }
+class HomeBloc extends Cubit<HomeState> {
+  HomeBloc() : super(const HomeInitialState());
 
-  FutureOr<void> _fetchModule(
-    FetchModules event,
-    Emitter<HomeState> emit,
-  ) async {
+  FutureOr<void> fetchModule({bool refetch = true}) async {
     try {
       emit(const HomeLoadingState());
-      final modules = await HomeRepository.instance
-          .fetchModules(ignoreCache: event.refetch);
+      final modules =
+          await HomeRepository.instance.fetchModules(ignoreCache: refetch);
       emit(HomeLoadedState(modules));
     } catch (e) {
       emit(HomeErrorState(e));

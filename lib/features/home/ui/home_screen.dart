@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
         replacement: const HomePageLoader(),
         child: RefreshIndicator(
           onRefresh: () async {
-            context.read<HomeBloc>().add(const FetchModules(refetch: true));
+            context.read<HomeBloc>().fetchModule(refetch: true);
           },
           child: SingleChildScrollView(
             child: Column(

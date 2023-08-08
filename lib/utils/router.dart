@@ -26,7 +26,7 @@ final routerConfig = GoRouter(
                 return NoTransitionPage(
                   child: BlocProvider(
                     lazy: false,
-                    create: (context) => HomeBloc()..add(const FetchModules()),
+                    create: (context) => HomeBloc()..fetchModule(),
                     child: const HomePage(),
                   ),
                 );

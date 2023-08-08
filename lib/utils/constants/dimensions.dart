@@ -1,2 +1,2 @@
-const kSliverExpandedHeight = 350.0;
+const kSliverExpandedHeight = 450.0;
 const kSliverAppBarPinned = true;
