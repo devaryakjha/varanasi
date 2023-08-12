@@ -59,6 +59,7 @@ dependencies:
   google_fonts: ^5.1.0
   collection: ^1.17.1
   palette_generator: ^0.3.3+2
+  flutter_hooks: ^0.20.0
 
 dev_dependencies:
   flutter_test:
