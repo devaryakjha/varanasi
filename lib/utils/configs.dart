@@ -27,11 +27,9 @@ class Songs {
 }
 
 class Albums {
-  final String id;
   final String link;
 
   const Albums({
-    required this.id,
     required this.link,
   });
 }
@@ -116,6 +114,7 @@ Config get appConfig {
     endpoint: const Endpoint(
       modules: '/modules',
       playlists: Playlists(id: 'playlists'),
+      albums: Albums(link: 'albums'),
     ),
     server: server,
     placeholderImageLink: '${server.baseUrl}/audio.jpg',

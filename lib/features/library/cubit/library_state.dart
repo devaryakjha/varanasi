@@ -40,14 +40,14 @@ class LibraryLoaded extends LibraryState {
   /// - the last color has to be black to blend with the rest of the screen
   List<Color> get gradientColors {
     return [
-      baseColor?.color.withOpacity(0.85) ?? Colors.white,
-      Colors.black,
+      baseColor?.color ?? Colors.white,
+      Colors.black12,
     ];
   }
 
   List<BoxShadow> get boxShadow => [
         const BoxShadow(
-          color: Colors.black12,
+          color: Colors.black45,
           offset: Offset(0, 12),
           spreadRadius: 2,
           blurRadius: 36,
@@ -59,9 +59,15 @@ class LibraryLoaded extends LibraryState {
     return (playlist.title ?? '').sanitize;
   }
 
+  String get subtitle {
+    return (playlist.description ?? '').sanitize;
+  }
+
   PlayableMedia operator [](int index) {
     return playlist.mediaItems![index];
   }
+
+  int get length => playlist.mediaItems!.length;
 }
 
 class LibraryError<T> extends LibraryState {

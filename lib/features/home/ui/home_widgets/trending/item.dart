@@ -17,8 +17,9 @@ class TrendingItem extends StatelessWidget {
       height: 56,
       child: InkWell(
         borderRadius: BorderRadius.circular(4),
-        onTap: () {
-          context.push(AppRoutes.library.path, extra: media);
+        onTap: switch (media.itemType) {
+          PlayableMediaType.song => () {},
+          _ => () => context.push(AppRoutes.library.path, extra: media),
         },
         child: Container(
           height: 56,

@@ -33,7 +33,10 @@ class MediaCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.push(AppRoutes.library.path, extra: media),
+      onTap: switch (media.itemType) {
+        PlayableMediaType.song => () {},
+        _ => () => context.push(AppRoutes.library.path, extra: media),
+      },
       child: Padding(
         padding: padding,
         child: SizedBox.square(

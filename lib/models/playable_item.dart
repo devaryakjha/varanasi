@@ -57,7 +57,8 @@ abstract class PlayableMedia extends Equatable {
   Uri get moreInfoUrl {
     return switch (itemType) {
       PlayableMediaType.song => Uri.parse(appConfig.endpoint.playlists!.id),
-      PlayableMediaType.album => Uri.parse(appConfig.endpoint.albums!.id),
+      PlayableMediaType.album => Uri.parse(
+          '${appConfig.endpoint.albums!.link}?link=$itemUrl&language=hindi,english'),
       PlayableMediaType.playlist => Uri.parse(
           '${appConfig.endpoint.playlists!.id}?id=$itemId&language=hindi,english'),
     };
