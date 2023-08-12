@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/utils/constants/constants.dart';
+import 'package:varanasi_mobile_app/utils/routes.dart';
 
 import 'flexible_space.dart';
 import 'sort_by_toggle.dart';
@@ -25,17 +26,18 @@ class LibraryAppbar extends StatelessWidget {
       ),
       expandedHeight: kSliverExpandedHeight,
       pinned: kSliverAppBarPinned,
-      flexibleSpace: FlexibleSpace(
-        state: state,
-        padding: padding,
-      ),
+      flexibleSpace: FlexibleSpace(state: state, padding: padding),
       foregroundColor: Colors.white,
       actions: [
         IconButton(
           tooltip: 'Find in playlist',
           icon: const Icon(Icons.search),
           onPressed: () {
-            // TODO: implement filter by text
+            final existingPath = GoRouterState.of(context).path;
+            context.push(
+              '$existingPath/${AppRoutes.librarySearch.path}',
+              extra: state.sortedMediaItems,
+            );
           },
         ),
         SortByToggle(state: state),

@@ -60,6 +60,7 @@ dependencies:
   collection: ^1.17.1
   palette_generator: ^0.3.3+2
   flutter_hooks: ^0.20.0
+  fuzzywuzzy: ^1.1.6
 
 dev_dependencies:
   flutter_test:
