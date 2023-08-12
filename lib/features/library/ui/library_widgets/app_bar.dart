@@ -4,6 +4,7 @@ import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/utils/constants/constants.dart';
 
 import 'flexible_space.dart';
+import 'sort_by_toggle.dart';
 
 class LibraryAppbar extends StatelessWidget {
   /// {@template library_appbar}
@@ -37,11 +38,7 @@ class LibraryAppbar extends StatelessWidget {
             // TODO: implement filter by text
           },
         ),
-        IconButton(
-          tooltip: 'Sort',
-          icon: const Icon(Icons.sort),
-          onPressed: () {},
-        ),
+        SortByToggle(state: state),
       ],
     );
   }

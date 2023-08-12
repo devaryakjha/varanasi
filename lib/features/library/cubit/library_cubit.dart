@@ -6,6 +6,7 @@ import 'package:palette_generator/palette_generator.dart';
 import 'package:varanasi_mobile_app/features/library/data/library_repository.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
+import 'package:varanasi_mobile_app/models/sort_type.dart';
 import 'package:varanasi_mobile_app/utils/configs.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/generate_pallette.dart';
@@ -31,5 +32,9 @@ class LibraryCubit extends Cubit<LibraryState> {
       LibraryRepository.instance.deleteCache(media.cacheKey);
       emit(LibraryError(e, stackTrace: s));
     }
+  }
+
+  void sortBy(SortBy sortBy) {
+    emit((state as LibraryLoaded).copyWith(sortBy: sortBy));
   }
 }

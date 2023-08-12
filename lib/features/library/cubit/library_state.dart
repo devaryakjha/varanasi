@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'library_cubit.dart';
 
 abstract class LibraryState extends Equatable {
@@ -21,14 +22,21 @@ class LibraryLoading extends LibraryState {
   List<Object?> get props => [];
 }
 
-class LibraryLoaded extends LibraryState {
-  final MediaPlaylist playlist;
+class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
+  final SortBy sortBy;
+  final MediaPlaylist<T> playlist;
   final PaletteGenerator colorPalette;
   final ImageProvider image;
-  const LibraryLoaded(this.playlist, this.colorPalette, this.image);
+
+  const LibraryLoaded(
+    this.playlist,
+    this.colorPalette,
+    this.image, {
+    this.sortBy = SortBy.custom,
+  });
 
   @override
-  List<Object> get props => [playlist, colorPalette, image];
+  List<Object> get props => [playlist, colorPalette, image, sortBy];
 
   PaletteColor? get baseColor =>
       colorPalette.vibrantColor ?? colorPalette.dominantColor;
@@ -67,7 +75,32 @@ class LibraryLoaded extends LibraryState {
     return playlist.mediaItems![index];
   }
 
-  int get length => playlist.mediaItems!.length;
+  int get length => sortedMediaItems.length;
+
+  LibraryLoaded<T> copyWith({
+    SortBy? sortBy,
+    MediaPlaylist<T>? playlist,
+    PaletteGenerator? colorPalette,
+    ImageProvider? image,
+  }) {
+    return LibraryLoaded<T>(
+      playlist ?? this.playlist,
+      colorPalette ?? this.colorPalette,
+      image ?? this.image,
+      sortBy: sortBy ?? this.sortBy,
+    );
+  }
+
+  List<T> get sortedMediaItems {
+    return switch (sortBy) {
+      SortBy.title => () {
+          final items = [...playlist.mediaItems!];
+          items.sort((a, b) => a.itemTitle.compareTo(b.itemTitle));
+          return items;
+        },
+      _ => () => playlist.mediaItems!,
+    }();
+  }
 }
 
 class LibraryError<T> extends LibraryState {
