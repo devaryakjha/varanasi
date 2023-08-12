@@ -8,6 +8,7 @@ import 'package:varanasi_mobile_app/features/library/ui/library_search_page.dart
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
 import 'package:varanasi_mobile_app/widgets/page_with_navbar.dart';
+import 'package:varanasi_mobile_app/widgets/transitions/fade_transition_page.dart';
 
 import 'keys.dart';
 
@@ -49,9 +50,12 @@ final routerConfig = GoRouter(
                 GoRoute(
                   name: AppRoutes.librarySearch.name,
                   path: AppRoutes.librarySearch.path,
-                  builder: (context, state) {
+                  pageBuilder: (context, state) {
                     final media = state.extra! as List<PlayableMedia>;
-                    return LibrarySearchPage(media: media);
+                    return FadeTransitionPage(
+                      key: state.pageKey,
+                      child: LibrarySearchPage(media: media),
+                    );
                   },
                 ),
               ],
