@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/models/sort_type.dart';
@@ -17,10 +19,12 @@ class SortByToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sortBy = context.select((ConfigCubit cubit) => cubit.sortType);
     return IconButton(
       tooltip: 'Sort',
       icon: const Icon(Icons.sort),
       onPressed: () async {
+        final padding = MediaQuery.paddingOf(context);
         // show dialog
         final value = await showAppBottomSheet<SortBy>(
           context,
@@ -28,7 +32,7 @@ class SortByToggle extends StatelessWidget {
             padding: EdgeInsets.only(
               left: 8,
               right: 8,
-              bottom: MediaQuery.paddingOf(context).bottom,
+              bottom: padding.bottom,
               top: 16,
             ),
             children: [
@@ -37,26 +41,21 @@ class SortByToggle extends StatelessWidget {
                 titleTextStyle: context.textTheme.bodyLarge
                     ?.copyWith(fontWeight: FontWeight.bold),
               ),
-              RadioListTile(
-                controlAffinity: ListTileControlAffinity.trailing,
-                groupValue: state.sortBy,
-                value: SortBy.custom,
-                onChanged: (value) => context.pop(value),
-                title: const Text('Custom'),
-                selected: state.sortBy == SortBy.custom,
-              ),
-              RadioListTile(
-                controlAffinity: ListTileControlAffinity.trailing,
-                groupValue: state.sortBy,
-                value: SortBy.title,
-                onChanged: (value) => context.pop(value),
-                title: const Text('Title'),
+              ...SortBy.values.map(
+                (e) => RadioListTile(
+                  controlAffinity: ListTileControlAffinity.trailing,
+                  groupValue: sortBy,
+                  value: e,
+                  onChanged: (value) => context.pop(value),
+                  title: Text(describeEnum(e).capitalize),
+                  selected: sortBy == e,
+                ),
               ),
             ],
           ),
         );
         if (context.mounted && value != null) {
-          context.read<LibraryCubit>().sortBy(value);
+          context.read<ConfigCubit>().setSortType(value);
         }
       },
     );
