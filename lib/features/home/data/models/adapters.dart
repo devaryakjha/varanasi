@@ -6,6 +6,6 @@ import 'trending.dart';
 
 void registerHomePageTypeAdapters() {
   Hive.registerAdapter<Chart>(ChartAdapter());
-  Hive.registerAdapter<ModulesResponse>(HomePageDataAdapter());
+  Hive.registerAdapter<HomePageData>(HomePageDataAdapter());
   Hive.registerAdapter<Trending>(TrendingAdapter());
 }

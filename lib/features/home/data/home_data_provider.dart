@@ -8,7 +8,7 @@ class HomeDataProvider with DataProviderProtocol {
   HomeDataProvider._();
   static final instance = HomeDataProvider._();
 
-  Future<(dynamic, ModulesResponse?)> fetchModules() async {
+  Future<(dynamic, HomePageData?)> fetchModules() async {
     final response = await fetch(
       appConfig.endpoint.modules,
       options: CommonOptions(transformer: parseModules),
@@ -16,7 +16,7 @@ class HomeDataProvider with DataProviderProtocol {
     return response;
   }
 
-  ModulesResponse? parseModules(dynamic data) {
-    return ModulesResponse.fromJson(Map<String, dynamic>.from(data));
+  HomePageData? parseModules(dynamic data) {
+    return HomePageData.fromJson(Map<String, dynamic>.from(data));
   }
 }

@@ -19,7 +19,7 @@ class HomeLoadingState extends HomeState {
 }
 
 class HomeLoadedState extends HomeState {
-  final ModulesResponse? modules;
+  final HomePageData? modules;
 
   const HomeLoadedState(this.modules);
 

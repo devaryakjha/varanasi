@@ -2,7 +2,7 @@ import 'package:varanasi_mobile_app/features/home/bloc/home_bloc.dart';
 import 'package:varanasi_mobile_app/features/home/data/models/home_page_data.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 
-typedef HomeStateData = (bool, ModulesResponse?, List<MediaPlaylist>, bool);
+typedef HomeStateData = (bool, HomePageData?, List<MediaPlaylist>, bool);
 
 HomeStateData selectHomeStateData(HomeBloc value) {
   final state = value.state;

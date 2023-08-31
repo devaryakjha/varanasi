@@ -108,7 +108,7 @@ class Config extends Equatable {
 }
 
 Config get appConfig {
-  const server = Server('http://192.168.31.130', 3000);
+  const server = Server('http://localhost', 3000);
   return Config(
     env: 'development',
     endpoint: const Endpoint(

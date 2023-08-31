@@ -33,8 +33,4 @@ class LibraryCubit extends Cubit<LibraryState> {
       emit(LibraryError(e, stackTrace: s));
     }
   }
-
-  void sortBy(SortBy sortBy) {
-    emit((state as LibraryLoaded).copyWith(sortBy: sortBy));
-  }
 }

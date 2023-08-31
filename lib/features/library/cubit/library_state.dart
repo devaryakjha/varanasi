@@ -23,7 +23,6 @@ class LibraryLoading extends LibraryState {
 }
 
 class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
-  final SortBy sortBy;
   final MediaPlaylist<T> playlist;
   final PaletteGenerator colorPalette;
   final ImageProvider image;
@@ -31,12 +30,11 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
   const LibraryLoaded(
     this.playlist,
     this.colorPalette,
-    this.image, {
-    this.sortBy = SortBy.custom,
-  });
+    this.image,
+  );
 
   @override
-  List<Object> get props => [playlist, colorPalette, image, sortBy];
+  List<Object> get props => [playlist, colorPalette, image];
 
   PaletteColor? get baseColor =>
       colorPalette.vibrantColor ?? colorPalette.dominantColor;
@@ -75,10 +73,9 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
     return playlist.mediaItems![index];
   }
 
-  int get length => sortedMediaItems.length;
+  int get length => playlist.mediaItems!.length;
 
   LibraryLoaded<T> copyWith({
-    SortBy? sortBy,
     MediaPlaylist<T>? playlist,
     PaletteGenerator? colorPalette,
     ImageProvider? image,
@@ -87,11 +84,10 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
       playlist ?? this.playlist,
       colorPalette ?? this.colorPalette,
       image ?? this.image,
-      sortBy: sortBy ?? this.sortBy,
     );
   }
 
-  List<T> get sortedMediaItems {
+  List<T> sortedMediaItems(SortBy sortBy) {
     return switch (sortBy) {
       SortBy.title => () {
           final items = [...playlist.mediaItems!];

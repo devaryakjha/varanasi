@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/utils/constants/constants.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
@@ -36,7 +38,8 @@ class LibraryAppbar extends StatelessWidget {
             final existingPath = GoRouterState.of(context).path;
             context.push(
               '$existingPath/${AppRoutes.librarySearch.path}',
-              extra: state.sortedMediaItems,
+              extra:
+                  state.sortedMediaItems(context.read<ConfigCubit>().sortType),
             );
           },
         ),
