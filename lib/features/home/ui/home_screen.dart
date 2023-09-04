@@ -5,6 +5,7 @@ import 'package:varanasi_mobile_app/features/home/bloc/home_bloc.dart';
 import 'package:varanasi_mobile_app/features/home/data/helpers/home_state_selectors.dart';
 import 'package:varanasi_mobile_app/features/home/ui/home_widgets/media_carousel/media_carousel.dart';
 import 'package:varanasi_mobile_app/widgets/error/error_page.dart';
+import 'package:varanasi_mobile_app/widgets/tri_state_visibility.dart';
 
 import 'home_widgets/home_loader.dart';
 import 'home_widgets/spacer.dart';
@@ -16,22 +17,25 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final padding = MediaQuery.paddingOf(context);
-    final (loading, modules, mediaPlaylist, hasError, error) =
-        context.select(selectHomeStateData);
-
-    if (hasError) {
-      return ErrorPage(
-        error: error!,
-        retryCallback: () {
-          context.read<HomeBloc>().fetchModule(refetch: true);
-        },
-      );
-    }
-
+    final (modules, mediaPlaylist, state) =
+        context.select(homePageDataSelector);
     return Scaffold(
-      body: Visibility(
-        visible: !loading,
-        replacement: const HomePageLoader(),
+      body: TriStateVisibility(
+        state: switch (state.runtimeType) {
+          HomeErrorState => TriState.error,
+          HomeLoadingState => TriState.loading,
+          _ => TriState.loaded,
+        },
+        loadingChild: const HomePageLoader(),
+        errorChild: switch (state) {
+          (HomeErrorState state) => ErrorPage(
+              error: state.error,
+              retryCallback: () {
+                context.read<HomeBloc>().fetchModule(refetch: true);
+              },
+            ),
+          _ => const SizedBox.shrink(),
+        },
         child: RefreshIndicator(
           onRefresh: () async {
             context.read<HomeBloc>().fetchModule(refetch: true);

@@ -1,43 +1,30 @@
 import 'package:varanasi_mobile_app/features/home/bloc/home_bloc.dart';
 import 'package:varanasi_mobile_app/features/home/data/models/home_page_data.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
-import 'package:varanasi_mobile_app/utils/exceptions/app_exception.dart';
+import 'package:varanasi_mobile_app/models/playable_item.dart';
 
 typedef HomeStateData = (
-  bool,
   HomePageData?,
   List<MediaPlaylist>,
-  bool,
-  AppException?
+  HomeState,
 );
 
-HomeStateData selectHomeStateData(HomeBloc value) {
+HomeStateData homePageDataSelector(HomeBloc value) {
   final state = value.state;
-  final HomeStateData Function() data = switch (state.runtimeType) {
-    HomeLoadedState => () {
-        final modules = (state as HomeLoadedState).modules;
-        final mediaPlaylist = [
-          if (modules?.charts != null)
-            MediaPlaylist(
-              title: 'Popular Today',
-              mediaItems: modules!.charts!,
-            ),
-          if (modules?.albums != null)
-            MediaPlaylist(
-              title: 'Albums',
-              mediaItems: modules!.albums!,
-            ),
-          if (modules?.playlists != null)
-            MediaPlaylist(
-              title: 'Playlists',
-              mediaItems: modules!.playlists!,
-            ),
-        ];
-        return (false, modules, mediaPlaylist, false, null);
-      },
-    HomeErrorState => () =>
-        (false, null, [], true, (state as HomeErrorState).error),
-    _ => () => (false, null, [], false, null),
+  final List<MediaPlaylist> medialist = [];
+  return switch (state) {
+    (HomeLoadedState state) => (state.modules, extractMediaList(state), state),
+    (HomeErrorState state) => (null, medialist, state),
+    _ => (null, medialist, state),
   };
-  return data();
+}
+
+List<MediaPlaylist<PlayableMedia>> extractMediaList(HomeLoadedState state) {
+  final modules = state.modules;
+  if (modules == null) return [];
+  return [
+    if (modules.charts != null) MediaPlaylist.popularToday(modules.charts!),
+    if (modules.albums != null) MediaPlaylist.albums(modules.albums!),
+    if (modules.playlists != null) MediaPlaylist.playlists(modules.playlists!),
+  ];
 }

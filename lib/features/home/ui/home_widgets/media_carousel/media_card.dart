@@ -32,44 +32,47 @@ class MediaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: switch (media.itemType) {
-        PlayableMediaType.song => () {},
-        _ => () => context.push(AppRoutes.library.path, extra: media),
-      },
-      child: Padding(
-        padding: padding,
-        child: SizedBox.square(
-          dimension: dimension,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
-                  child: CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    width: dimension,
-                    height: dimension,
-                    imageUrl: media.artworkUrl ?? '',
+    return Hero(
+      tag: media.itemId,
+      child: GestureDetector(
+        onTap: switch (media.itemType) {
+          PlayableMediaType.song => () {},
+          _ => () => context.push(AppRoutes.library.path, extra: media),
+        },
+        child: Padding(
+          padding: padding,
+          child: SizedBox.square(
+            dimension: dimension,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: CachedNetworkImage(
+                      fit: BoxFit.cover,
+                      width: dimension,
+                      height: dimension,
+                      imageUrl: media.artworkUrl ?? '',
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: context.textTheme.labelLarge,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                subtitle,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: context.textTheme.labelSmall,
-              ),
-            ],
+                const SizedBox(height: 8),
+                Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.textTheme.labelLarge,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.textTheme.labelSmall,
+                ),
+              ],
+            ),
           ),
         ),
       ),

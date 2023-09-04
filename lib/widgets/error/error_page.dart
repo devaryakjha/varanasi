@@ -7,7 +7,7 @@ import 'network_error.dart';
 typedef RetryCallback = void Function();
 
 class ErrorPage<E extends AppException> extends StatelessWidget {
-  final E error;
+  final E? error;
   final RetryCallback retryCallback;
 
   const ErrorPage({
