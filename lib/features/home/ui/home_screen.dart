@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:varanasi_mobile_app/features/home/bloc/home_bloc.dart';
 import 'package:varanasi_mobile_app/features/home/data/helpers/home_state_selectors.dart';
 import 'package:varanasi_mobile_app/features/home/ui/home_widgets/media_carousel/media_carousel.dart';
+import 'package:varanasi_mobile_app/widgets/error/error_page.dart';
 
 import 'home_widgets/home_loader.dart';
 import 'home_widgets/spacer.dart';
@@ -15,8 +16,17 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final padding = MediaQuery.paddingOf(context);
-    final (loading, modules, mediaPlaylist, _) =
+    final (loading, modules, mediaPlaylist, hasError, error) =
         context.select(selectHomeStateData);
+
+    if (hasError) {
+      return ErrorPage(
+        error: error!,
+        retryCallback: () {
+          context.read<HomeBloc>().fetchModule(refetch: true);
+        },
+      );
+    }
 
     return Scaffold(
       body: Visibility(

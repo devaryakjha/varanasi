@@ -3,19 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
-import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
-import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/models/sort_type.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
-import 'package:varanasi_mobile_app/utils/helpers/shoe_bottom_sheet.dart';
+import 'package:varanasi_mobile_app/utils/helpers/show_bottom_sheet.dart';
 
 class SortByToggle extends StatelessWidget {
-  const SortByToggle({
-    super.key,
-    required this.state,
-  });
-
-  final LibraryLoaded<PlayableMedia> state;
+  const SortByToggle({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +22,7 @@ class SortByToggle extends StatelessWidget {
         final value = await showAppBottomSheet<SortBy>(
           context,
           builder: (context) => ListView(
-            padding: EdgeInsets.only(
-              left: 8,
-              right: 8,
-              bottom: padding.bottom,
-              top: 16,
-            ),
+            padding: padding.copyWith(left: 8, right: 8, top: 16),
             children: [
               ListTile(
                 title: const Text('Sort by'),

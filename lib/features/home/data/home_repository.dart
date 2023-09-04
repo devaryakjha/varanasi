@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:hive/hive.dart';
 import 'package:varanasi_mobile_app/utils/configs.dart';
 import 'package:varanasi_mobile_app/utils/constants/strings.dart';
+import 'package:varanasi_mobile_app/utils/exceptions/app_exception.dart';
 import 'package:varanasi_mobile_app/utils/mixins/cachable_mixin.dart';
 
 import 'home_data_provider.dart';
@@ -22,18 +23,22 @@ class HomeRepository with CacheableService {
   Box get box => _box;
 
   Future<HomePageData?> fetchModules({bool ignoreCache = false}) async {
-    await initcache().then((value) {
-      if (value == null) return;
-      _box = value;
-    });
-    if (!ignoreCache) {
-      final cachedData = isCached<HomePageData>(appConfig.endpoint.modules);
-      if (cachedData != null) return cachedData;
+    try {
+      await initcache().then((value) {
+        if (value == null) return;
+        _box = value;
+      });
+      if (!ignoreCache) {
+        final cachedData = isCached<HomePageData>(appConfig.endpoint.modules);
+        if (cachedData != null) return cachedData;
+      }
+      final (_, parsed) = await HomeDataProvider.instance.fetchModules();
+      if (parsed != null) {
+        cache(appConfig.endpoint.modules, parsed, const Duration(hours: 4));
+      }
+      return parsed;
+    } on AppException {
+      rethrow;
     }
-    final (_, parsed) = await HomeDataProvider.instance.fetchModules();
-    if (parsed != null) {
-      cache(appConfig.endpoint.modules, parsed, const Duration(hours: 4));
-    }
-    return parsed;
   }
 }

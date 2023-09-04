@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:varanasi_mobile_app/utils/configs.dart';
+import 'package:varanasi_mobile_app/utils/exceptions/network_exception.dart';
 import 'package:varanasi_mobile_app/utils/logger.dart';
 
 typedef ResponseTransformer<T> = FutureOr<T> Function(dynamic response);
@@ -38,6 +39,12 @@ class HttpService {
         return (response.data, transformed);
       }
       return (response.data, null);
+    } on DioException catch (e) {
+      throw NetworkException(
+        forUrl: url,
+        error: e.message ?? 'Unknown error occurred',
+        statusCode: e.response?.statusCode ?? 500,
+      );
     } on Exception catch (e, stackTrace) {
       Logger.instance.e('Error while fetching data from $url', e, stackTrace);
       return (null, null);

@@ -1,8 +1,15 @@
 import 'package:varanasi_mobile_app/features/home/bloc/home_bloc.dart';
 import 'package:varanasi_mobile_app/features/home/data/models/home_page_data.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
+import 'package:varanasi_mobile_app/utils/exceptions/app_exception.dart';
 
-typedef HomeStateData = (bool, HomePageData?, List<MediaPlaylist>, bool);
+typedef HomeStateData = (
+  bool,
+  HomePageData?,
+  List<MediaPlaylist>,
+  bool,
+  AppException?
+);
 
 HomeStateData selectHomeStateData(HomeBloc value) {
   final state = value.state;
@@ -26,10 +33,11 @@ HomeStateData selectHomeStateData(HomeBloc value) {
               mediaItems: modules!.playlists!,
             ),
         ];
-        return (false, modules, mediaPlaylist, false);
+        return (false, modules, mediaPlaylist, false, null);
       },
-    HomeErrorState => () => (false, null, [], true),
-    _ => () => (false, null, [], false),
+    HomeErrorState => () =>
+        (false, null, [], true, (state as HomeErrorState).error),
+    _ => () => (false, null, [], false, null),
   };
   return data();
 }

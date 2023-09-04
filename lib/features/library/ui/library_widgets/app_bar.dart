@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/utils/constants/constants.dart';
+import 'package:varanasi_mobile_app/utils/extensions/router.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
 
 import 'flexible_space.dart';
@@ -35,7 +36,7 @@ class LibraryAppbar extends StatelessWidget {
           tooltip: 'Find in playlist',
           icon: const Icon(Icons.search),
           onPressed: () {
-            final existingPath = GoRouterState.of(context).path;
+            final existingPath = context.routerState.path;
             context.push(
               '$existingPath/${AppRoutes.librarySearch.path}',
               extra:
@@ -43,7 +44,7 @@ class LibraryAppbar extends StatelessWidget {
             );
           },
         ),
-        SortByToggle(state: state),
+        const SortByToggle(),
       ],
     );
   }

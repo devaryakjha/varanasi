@@ -28,7 +28,7 @@ class HomeLoadedState extends HomeState {
 }
 
 class HomeErrorState extends HomeState {
-  final dynamic error;
+  final AppException error;
 
   const HomeErrorState(this.error);
 
