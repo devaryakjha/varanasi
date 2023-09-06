@@ -33,4 +33,10 @@ class LibraryCubit extends Cubit<LibraryState> {
       emit(LibraryError(e, stackTrace: s));
     }
   }
+
+  void toggleAppbarExpanded([bool? expanded]) {
+    if (state is LibraryLoaded) {
+      emit((state as LibraryLoaded).toggleAppbarExpanded(expanded));
+    }
+  }
 }

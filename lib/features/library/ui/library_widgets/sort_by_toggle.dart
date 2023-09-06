@@ -13,9 +13,22 @@ class SortByToggle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sortBy = context.select((ConfigCubit cubit) => cubit.sortType);
-    return IconButton(
-      tooltip: 'Sort',
-      icon: const Icon(Icons.sort),
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.white24,
+        elevation: 0,
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(2),
+        ),
+        textStyle: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+        ),
+        minimumSize: const Size(0, 32),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+      ),
+      child: const Text('Sort'),
       onPressed: () async {
         final padding = MediaQuery.paddingOf(context);
         // show dialog

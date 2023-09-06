@@ -17,8 +17,11 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final padding = MediaQuery.paddingOf(context);
-    final (modules, mediaPlaylist, state) =
-        context.select(homePageDataSelector);
+    final (state, mediaPlaylist) = context.select(homePageDataSelector);
+    final modules = switch (state) {
+      (HomeLoadedState state) => state.modules,
+      _ => null,
+    };
     return Scaffold(
       body: TriStateVisibility(
         state: switch (state.runtimeType) {
@@ -43,9 +46,9 @@ class HomePage extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                if (modules?.trending != null) ...[
+                if (modules != null && modules.trending != null) ...[
                   HomeSpacer(height: padding.top),
-                  TrendingSongsList(trending: modules!.trending!),
+                  TrendingSongsList(trending: modules.trending!),
                 ],
                 ...mediaPlaylist.mapIndexed(
                   (index, e) {
