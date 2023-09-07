@@ -61,6 +61,8 @@ dependencies:
   palette_generator: ^0.3.3+2
   flutter_hooks: ^0.20.0
   fuzzywuzzy: ^1.1.6
+  flutter_sticky_header: ^0.6.5
+  sliver_tools: ^0.2.12
 
 dev_dependencies:
   flutter_test:

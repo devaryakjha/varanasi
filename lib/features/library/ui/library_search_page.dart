@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
-import 'package:varanasi_mobile_app/widgets/media_tile.dart';
+import 'package:varanasi_mobile_app/widgets/media_list.dart';
 
 class LibrarySearchPage extends HookWidget {
   final List<PlayableMedia> media;
@@ -43,12 +43,7 @@ class LibrarySearchPage extends HookWidget {
           ],
         ),
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) => MediaTile(
-          media: filteredMedia.value[index],
-        ),
-        itemCount: filteredMedia.value.length,
-      ),
+      body: MediaListView(filteredMedia.value),
     );
   }
 }

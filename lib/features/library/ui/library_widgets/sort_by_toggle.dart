@@ -26,6 +26,7 @@ class SortByToggle extends StatelessWidget {
           fontWeight: FontWeight.w500,
         ),
         minimumSize: const Size(0, 32),
+        maximumSize: const Size(double.infinity, 32),
         padding: const EdgeInsets.symmetric(horizontal: 16),
       ),
       child: const Text('Sort'),

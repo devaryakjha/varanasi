@@ -9,7 +9,8 @@ class MediaTile<Media extends PlayableMedia> extends StatelessWidget {
   /// If [isThreeLine] is true, then [subtitle] must not be null.
   ///
   /// Requires one of its ancestors to be a [Material] widget.
-  const MediaTile({
+  const MediaTile(
+    this.media, {
     super.key,
     this.leading,
     this.trailing,
@@ -43,7 +44,6 @@ class MediaTile<Media extends PlayableMedia> extends StatelessWidget {
     this.minVerticalPadding,
     this.minLeadingWidth,
     this.titleAlignment,
-    required this.media,
   });
 
   //

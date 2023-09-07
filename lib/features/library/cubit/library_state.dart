@@ -39,7 +39,7 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
   List<Object> get props => [playlist, colorPalette, image, isAppbarExpanded];
 
   PaletteColor? get baseColor =>
-      colorPalette.vibrantColor ?? colorPalette.dominantColor;
+      colorPalette.dominantColor ?? colorPalette.vibrantColor;
 
   /// - create a list of color which will be used as gradient color
   /// - for the background of the playlist card's thumbnail
