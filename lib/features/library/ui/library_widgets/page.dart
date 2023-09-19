@@ -24,6 +24,8 @@ class _LibraryContentState extends State<LibraryContent> {
   double top = 0.0;
   double right = 16.0;
 
+  late final double minimumValueForFab;
+
   void updateFABPosition() {
     /// calculate the position of the floating action button
     /// based on titleKey position
@@ -34,19 +36,24 @@ class _LibraryContentState extends State<LibraryContent> {
       setState(() {
         final size = renderBox.size;
         final kTop = offset.dy + ((size.height - 56) / 2);
-        top = kTop.clamp(context.topPadding + kToolbarHeight - 36, 10000);
+        top = kTop.clamp(minimumValueForFab, 10000);
       });
+      LibraryCubit.of(context)
+          .toggleAppbarTitle(top <= minimumValueForFab + 16);
     }
   }
 
   @override
   void initState() {
+    super.initState();
+
     _scrollController = ScrollController()
       ..addListener(() {
         updateFABPosition();
       });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      minimumValueForFab = context.topPadding + kToolbarHeight - 36;
       _scrollController.animateTo(
         context.topPadding,
         duration: const Duration(milliseconds: 100),
@@ -54,7 +61,6 @@ class _LibraryContentState extends State<LibraryContent> {
       );
       updateFABPosition();
     });
-    super.initState();
   }
 
   @override

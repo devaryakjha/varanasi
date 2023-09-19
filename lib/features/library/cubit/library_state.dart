@@ -27,16 +27,19 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
   final PaletteGenerator colorPalette;
   final ImageProvider image;
   final bool isAppbarExpanded;
+  final bool showTitleInAppBar;
 
   const LibraryLoaded(
     this.playlist,
     this.colorPalette,
     this.image, {
     this.isAppbarExpanded = false,
+    this.showTitleInAppBar = false,
   });
 
   @override
-  List<Object> get props => [playlist, colorPalette, image, isAppbarExpanded];
+  List<Object> get props =>
+      [playlist, colorPalette, image, isAppbarExpanded, showTitleInAppBar];
 
   PaletteColor? get baseColor =>
       colorPalette.dominantColor ?? colorPalette.vibrantColor;
@@ -83,12 +86,14 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
     PaletteGenerator? colorPalette,
     ImageProvider? image,
     bool? isAppbarExpanded,
+    bool? showTitleInAppBar,
   }) {
     return LibraryLoaded<T>(
       playlist ?? this.playlist,
       colorPalette ?? this.colorPalette,
       image ?? this.image,
       isAppbarExpanded: isAppbarExpanded ?? this.isAppbarExpanded,
+      showTitleInAppBar: showTitleInAppBar ?? this.showTitleInAppBar,
     );
   }
 
@@ -105,6 +110,10 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
 
   LibraryLoaded<T> toggleAppbarExpanded([bool? expanded]) {
     return copyWith(isAppbarExpanded: expanded ?? !isAppbarExpanded);
+  }
+
+  LibraryLoaded<T> toggleAppbarTitle([bool? expanded]) {
+    return copyWith(showTitleInAppBar: expanded ?? !showTitleInAppBar);
   }
 }
 
