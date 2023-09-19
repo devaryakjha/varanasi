@@ -1,9 +1,8 @@
-import 'package:hive/hive.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
-
-import 'album.dart';
-import 'songs.dart';
+import 'package:varanasi_mobile_app/models/album.dart';
+import 'package:varanasi_mobile_app/models/song.dart';
 
 part 'trending.g.dart';
 

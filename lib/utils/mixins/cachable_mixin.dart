@@ -21,12 +21,27 @@ mixin CacheableService {
   }
 
   @mustCallSuper
-  Future<void>? cache<E>(String key, E value) {
-    return box.put(key, value);
+  Future<void>? cache<E>(
+    String key,
+    E value, [
+    Duration expiry = const Duration(days: 1),
+  ]) {
+    final data = <String, dynamic>{
+      'value': value,
+      'expiry': DateTime.now().add(expiry).millisecondsSinceEpoch,
+    };
+    return box.put(key, data);
   }
 
   E? isCached<E>(String key, [E? defaultValue]) {
-    return box.get(key, defaultValue: defaultValue);
+    final data = box.get(key);
+    if (data == null) return defaultValue;
+    final expiry = data['expiry'] as int? ?? 0;
+    if (DateTime.now().millisecondsSinceEpoch > expiry) {
+      deleteCache(key);
+      return defaultValue;
+    }
+    return data['value'] as E?;
   }
 
   @mustCallSuper

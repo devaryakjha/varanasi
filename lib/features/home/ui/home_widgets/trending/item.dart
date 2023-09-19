@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/extensions/strings.dart';
 import 'package:varanasi_mobile_app/utils/extensions/theme.dart';
+import 'package:varanasi_mobile_app/utils/routes.dart';
 
 class TrendingItem extends StatelessWidget {
   final PlayableMedia media;
@@ -15,7 +17,10 @@ class TrendingItem extends StatelessWidget {
       height: 56,
       child: InkWell(
         borderRadius: BorderRadius.circular(4),
-        onTap: () {},
+        onTap: switch (media.itemType) {
+          PlayableMediaType.song => () {},
+          _ => () => context.push(AppRoutes.library.path, extra: media),
+        },
         child: Container(
           height: 56,
           padding: const EdgeInsets.only(right: 12),

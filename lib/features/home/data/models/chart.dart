@@ -1,9 +1,8 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:varanasi_mobile_app/models/image.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
-
-import 'image.dart';
 
 part 'chart.g.dart';
 

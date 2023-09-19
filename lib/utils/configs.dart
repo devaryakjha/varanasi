@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 
 class Search {
   final String all;
@@ -27,11 +28,9 @@ class Songs {
 }
 
 class Albums {
-  final String id;
   final String link;
 
   const Albums({
-    required this.id,
     required this.link,
   });
 }
@@ -80,22 +79,47 @@ class Endpoint {
   });
 }
 
+class Server extends Equatable {
+  final String host;
+  final int? port;
+
+  const Server(this.host, [this.port]);
+
+  String get baseUrl => port == null ? host : '$host:$port';
+
+  @override
+  List<Object?> get props => [host, port];
+}
+
 class Config extends Equatable {
   final String env;
+  final Server server;
   final Endpoint endpoint;
+  final String placeholderImageLink;
 
   const Config({
+    required this.server,
     required this.env,
     required this.endpoint,
+    required this.placeholderImageLink,
   });
 
   @override
-  List<Object> get props => [env, endpoint];
+  List<Object> get props => [env, endpoint, server, placeholderImageLink];
 }
 
 Config get appConfig {
-  return const Config(
-    env: 'development',
-    endpoint: Endpoint(modules: '/modules'),
+  const server = kReleaseMode
+      ? Server('https://saavn.aryak.dev/')
+      : Server('https://saavn.aryak.dev/');
+  return Config(
+    env: kReleaseMode ? 'production' : 'development',
+    endpoint: const Endpoint(
+      modules: '/modules',
+      playlists: Playlists(id: 'playlists'),
+      albums: Albums(link: 'albums'),
+    ),
+    server: server,
+    placeholderImageLink: '${server.baseUrl}/audio.jpg',
   );
 }

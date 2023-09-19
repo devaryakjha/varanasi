@@ -1,17 +1,17 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:varanasi_mobile_app/models/album.dart';
+import 'package:varanasi_mobile_app/models/playlist.dart';
 
-import 'album.dart';
 import 'chart.dart';
-import 'playlist.dart';
 import 'trending.dart';
 
 part 'home_page_data.g.dart';
 
 @JsonSerializable()
 @HiveType(typeId: 0)
-class ModulesResponse extends Equatable {
+class HomePageData extends Equatable {
   @HiveField(0)
   final List<Album>? albums;
   @HiveField(1)
@@ -21,26 +21,26 @@ class ModulesResponse extends Equatable {
   @HiveField(3)
   final Trending? trending;
 
-  const ModulesResponse({
+  const HomePageData({
     this.albums,
     this.playlists,
     this.charts,
     this.trending,
   });
 
-  factory ModulesResponse.fromJson(Map<String, dynamic> json) {
+  factory HomePageData.fromJson(Map<String, dynamic> json) {
     return _$HomePageDataFromJson(json);
   }
 
   Map<String, dynamic> toJson() => _$HomePageDataToJson(this);
 
-  ModulesResponse copyWith({
+  HomePageData copyWith({
     List<Album>? albums,
     List<Playlist>? playlists,
     List<Chart>? charts,
     Trending? trending,
   }) {
-    return ModulesResponse(
+    return HomePageData(
       albums: albums ?? this.albums,
       playlists: playlists ?? this.playlists,
       charts: charts ?? this.charts,

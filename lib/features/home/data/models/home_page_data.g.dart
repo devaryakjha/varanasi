@@ -6,17 +6,17 @@ part of 'home_page_data.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class HomePageDataAdapter extends TypeAdapter<ModulesResponse> {
+class HomePageDataAdapter extends TypeAdapter<HomePageData> {
   @override
   final int typeId = 0;
 
   @override
-  ModulesResponse read(BinaryReader reader) {
+  HomePageData read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return ModulesResponse(
+    return HomePageData(
       albums: (fields[0] as List?)?.cast<Album>(),
       playlists: (fields[1] as List?)?.cast<Playlist>(),
       charts: (fields[2] as List?)?.cast<Chart>(),
@@ -25,7 +25,7 @@ class HomePageDataAdapter extends TypeAdapter<ModulesResponse> {
   }
 
   @override
-  void write(BinaryWriter writer, ModulesResponse obj) {
+  void write(BinaryWriter writer, HomePageData obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
@@ -53,8 +53,7 @@ class HomePageDataAdapter extends TypeAdapter<ModulesResponse> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-ModulesResponse _$HomePageDataFromJson(Map<String, dynamic> json) =>
-    ModulesResponse(
+HomePageData _$HomePageDataFromJson(Map<String, dynamic> json) => HomePageData(
       albums: (json['albums'] as List<dynamic>?)
           ?.map((e) => Album.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -69,7 +68,7 @@ ModulesResponse _$HomePageDataFromJson(Map<String, dynamic> json) =>
           : Trending.fromJson(json['trending'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$HomePageDataToJson(ModulesResponse instance) =>
+Map<String, dynamic> _$HomePageDataToJson(HomePageData instance) =>
     <String, dynamic>{
       'albums': instance.albums,
       'playlists': instance.playlists,

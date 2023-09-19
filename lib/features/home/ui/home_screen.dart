@@ -1,8 +1,11 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:varanasi_mobile_app/features/home/bloc/home_bloc.dart';
+import 'package:varanasi_mobile_app/features/home/data/helpers/home_state_selectors.dart';
 import 'package:varanasi_mobile_app/features/home/ui/home_widgets/media_carousel/media_carousel.dart';
-import 'package:varanasi_mobile_app/models/media_playlist.dart';
+import 'package:varanasi_mobile_app/widgets/error/error_page.dart';
+import 'package:varanasi_mobile_app/widgets/tri_state_visibility.dart';
 
 import 'home_widgets/home_loader.dart';
 import 'home_widgets/spacer.dart';
@@ -13,54 +16,51 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (loading, modules, mediaPlaylist) = context.select(
-      (HomeBloc value) {
-        final modules = value.state.modules;
-        final mediaPlaylist = [
-          if (modules?.charts != null)
-            MediaPlaylist(
-              title: 'Popular Today',
-              mediaItems: modules!.charts!,
-            ),
-          if (modules?.albums != null)
-            MediaPlaylist(
-              title: 'Albums',
-              mediaItems: modules!.albums!,
-            ),
-          if (modules?.playlists != null)
-            MediaPlaylist(
-              title: 'Playlists',
-              mediaItems: modules!.playlists!,
-            ),
-        ];
-        return (value.state.isLoading, modules, mediaPlaylist);
-      },
-    );
-
+    final padding = MediaQuery.paddingOf(context);
+    final (state, mediaPlaylist) = context.select(homePageDataSelector);
+    final modules = switch (state) {
+      (HomeLoadedState state) => state.modules,
+      _ => null,
+    };
     return Scaffold(
-      body: Visibility(
-        visible: !loading,
-        replacement: const HomePageLoader(),
-        child: SafeArea(
-          child: RefreshIndicator(
-            onRefresh: () async {
-              return context
-                  .read<HomeBloc>()
-                  .add(const FetchModules(refetch: true));
-            },
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  if (modules?.trending != null) ...[
-                    TrendingSongsList(trending: modules!.trending!),
-                  ],
-                  ...mediaPlaylist.map(
-                    (e) {
-                      return [const HomeSpacer(), MediaCarousel(playlist: e)];
-                    },
-                  ).expand((element) => element),
+      body: TriStateVisibility(
+        state: switch (state.runtimeType) {
+          HomeErrorState => TriState.error,
+          HomeLoadingState => TriState.loading,
+          _ => TriState.loaded,
+        },
+        loadingChild: const HomePageLoader(),
+        errorChild: switch (state) {
+          (HomeErrorState state) => ErrorPage(
+              error: state.error,
+              retryCallback: () {
+                context.read<HomeBloc>().fetchModule(refetch: true);
+              },
+            ),
+          _ => const SizedBox.shrink(),
+        },
+        child: RefreshIndicator(
+          onRefresh: () async {
+            context.read<HomeBloc>().fetchModule(refetch: true);
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                if (modules != null && modules.trending != null) ...[
+                  HomeSpacer(height: padding.top),
+                  TrendingSongsList(trending: modules.trending!),
                 ],
-              ),
+                ...mediaPlaylist.mapIndexed(
+                  (index, e) {
+                    return [
+                      const HomeSpacer(),
+                      MediaCarousel(playlist: e),
+                      if (index == mediaPlaylist.length - 1)
+                        HomeSpacer(height: padding.bottom),
+                    ];
+                  },
+                ).expand((element) => element),
+              ],
             ),
           ),
         ),
