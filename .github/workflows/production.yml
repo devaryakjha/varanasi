@@ -1,8 +1,8 @@
 name: Varnasi Mobile App Build
-run-name: ${{ github.actor }} pushed to "${{ github.ref_name }}" triggering dev build 🚀
+run-name: ${{ github.actor }} pushed to "${{ github.ref_name }}" triggering production build 🚀
 on:
   push:
-    branches-ignore:
+    branches:
       - main
 
 env:
@@ -10,7 +10,7 @@ env:
 
 jobs:
   Androi-App-Build:
-    name: Android App Dev Build
+    name: Android App Prod Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -28,11 +28,10 @@ jobs:
           echo storeFile=\${{ secrets.STORE_FILE }} >> ${{env.PROPERTIES_PATH}}
       - run: echo "${{ secrets.KEYSTORE }}" | base64 --decode > android/app/key.jks
       - run: flutter pub get
-      - name: Flutter Dev Build
-        run: flutter build apk --flavor dev
-      # Make appbundle downloadable
-      - name: Upload Dev artifacts
+      - name: Flutter Prod Build
+        run: flutter build apk --flavor prod
+      - name: Upload Prod artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: apk-dev-release.apk
-          path: build/app/outputs/flutter-apk/app-dev-release.apk
+          name: apk-prod-release.apk
+          path: build/app/outputs/flutter-apk/app-prod-release.apk

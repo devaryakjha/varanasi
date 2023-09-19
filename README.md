@@ -54,3 +54,4 @@
 - 📦 Updating dependencies
 - 🎨 Improving code structure/formatting
 - 🎉 Initial commit
+- 👷 Build changes
