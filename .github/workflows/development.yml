@@ -41,10 +41,10 @@ jobs:
         if: github.ref_name != 'main'
         with:
           name: apk-dev-release.apk
-          path: build/app/outputs/apk/dev/release/apk-dev-release.apk
+          path: build/app/outputs/flutter-apk/app-dev-release.apk
       - name: Upload Prod artifacts
         uses: actions/upload-artifact@v3
         if: github.ref_name == 'main'
         with:
           name: apk-prod-release.apk
-          path: build/app/outputs/apk/prod/release/apk-prod-release.apk
+          path: build/app/outputs/flutter-apk/app-prod-release.apk
