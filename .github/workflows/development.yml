@@ -34,5 +34,5 @@ jobs:
       - name: Upload Dev artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: apk-dev-release.apk
+          name: dev-release
           path: build/app/outputs/flutter-apk/app-dev-release.apk
