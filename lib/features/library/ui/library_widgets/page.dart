@@ -96,6 +96,9 @@ class _LibraryContentState extends State<LibraryContent> {
                 top: top,
                 right: right,
                 child: FloatingActionButton(
+                  backgroundColor: state.colorPalette.mutedColor?.color,
+                  foregroundColor: state.colorPalette.mutedColor?.bodyTextColor
+                      .withOpacity(1),
                   shape: const CircleBorder(),
                   onPressed: () {
                     // TODO: implement
