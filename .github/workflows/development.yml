@@ -1,5 +1,5 @@
 name: Varnasi Mobile App Build
-run-name: ${{ github.actor }} started mobile app build by pushing to ${{ github.ref }} 🚀
+run-name: ${{ github.actor }} pushed to ${{ github.ref_name }} triggering mobile app build 🚀
 on:
   push:
     branches:
@@ -28,4 +28,4 @@ jobs:
           echo storeFile=\${{ secrets.STORE_FILE }} >> ${{env.PROPERTIES_PATH}}
       - run: echo "${{ secrets.KEYSTORE }}" | base64 --decode > android/app/key.jks
       - run: flutter pub get
-      - run: flutter build apk
+      - run: flutter build apk --flavor prod
