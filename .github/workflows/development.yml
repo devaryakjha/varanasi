@@ -1,16 +1,17 @@
 name: Varnasi Mobile App Build
-run-name: ${{ github.actor }} pushed to ${{ github.ref_name }} triggering mobile app build 🚀
+run-name: ${{ github.actor }} pushed to "${{ github.ref_name }}" triggering mobile app build 🚀
 on:
   push:
     branches:
       - main
       - develop
-      - 11-chore-cicd-pipeline
 
 env:
   PROPERTIES_PATH: "./android/key.properties"
+
 jobs:
   Androi-App-Build:
+    name: Android App Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -28,10 +29,22 @@ jobs:
           echo storeFile=\${{ secrets.STORE_FILE }} >> ${{env.PROPERTIES_PATH}}
       - run: echo "${{ secrets.KEYSTORE }}" | base64 --decode > android/app/key.jks
       - run: flutter pub get
-      - run: flutter build apk --flavor dev
+      - name: Flutter Prod Build
+        if: github.ref_name == 'main'
+        run: flutter build apk --flavor prod
+      - name: Flutter Dev Build
+        if: github.ref_name != 'main'
+        run: flutter build apk --flavor dev
       # Make appbundle downloadable
-      - name: Upload artifacts
+      - name: Upload Dev artifacts
         uses: actions/upload-artifact@v3
+        if: github.ref_name != 'main'
         with:
-          name: dev-release
-          path: build/app/outputs/apk/dev/release
+          name: apk-dev-release.apk
+          path: build/app/outputs/apk/dev/release/apk-dev-release.apk
+      - name: Upload Prod artifacts
+        uses: actions/upload-artifact@v3
+        if: github.ref_name == 'main'
+        with:
+          name: apk-prod-release.apk
+          path: build/app/outputs/apk/prod/release/apk-prod-release.apk
