@@ -26,7 +26,7 @@ class FindInPlaylist extends StatelessWidget {
       child: Container(
         height: 32,
         decoration: BoxDecoration(
-          color: Colors.white24,
+          color: Colors.white38,
           borderRadius: BorderRadius.circular(2),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 8),

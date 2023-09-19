@@ -56,9 +56,8 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
   List<BoxShadow> get boxShadow => [
         const BoxShadow(
           color: Colors.black45,
-          offset: Offset(0, 12),
-          spreadRadius: 2,
-          blurRadius: 36,
+          spreadRadius: 8,
+          blurRadius: 48,
         ),
       ];
 
@@ -76,6 +75,8 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
   }
 
   int get length => playlist.mediaItems!.length;
+
+  bool get needSearchBar => length > 10;
 
   LibraryLoaded<T> copyWith({
     MediaPlaylist<T>? playlist,

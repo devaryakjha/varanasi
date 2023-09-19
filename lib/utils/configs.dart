@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 
 class Search {
   final String all;
@@ -82,7 +83,7 @@ class Server extends Equatable {
   final String host;
   final int? port;
 
-  const Server(this.host, this.port);
+  const Server(this.host, [this.port]);
 
   String get baseUrl => port == null ? host : '$host:$port';
 
@@ -108,9 +109,11 @@ class Config extends Equatable {
 }
 
 Config get appConfig {
-  const server = Server('http://192.168.31.130', 3000);
+  const server = kReleaseMode
+      ? Server('https://saavn.aryak.dev/')
+      : Server('https://saavn.aryak.dev/');
   return Config(
-    env: 'development',
+    env: kReleaseMode ? 'production' : 'development',
     endpoint: const Endpoint(
       modules: '/modules',
       playlists: Playlists(id: 'playlists'),

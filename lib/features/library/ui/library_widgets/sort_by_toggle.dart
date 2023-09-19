@@ -15,7 +15,7 @@ class SortByToggle extends StatelessWidget {
     final sortBy = context.select((ConfigCubit cubit) => cubit.sortType);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white24,
+        backgroundColor: Colors.white38,
         elevation: 0,
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
