@@ -28,4 +28,10 @@ jobs:
           echo storeFile=\${{ secrets.STORE_FILE }} >> ${{env.PROPERTIES_PATH}}
       - run: echo "${{ secrets.KEYSTORE }}" | base64 --decode > android/app/key.jks
       - run: flutter pub get
-      - run: flutter build apk --flavor prod
+      - run: flutter build apk --flavor dev
+      # Make appbundle downloadable
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dev-release
+          path: build/app/outputs/apk/dev/release
