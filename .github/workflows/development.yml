@@ -1,6 +1,14 @@
 name: Varnasi Mobile App Build
 run-name: ${{ github.actor }} started mobile app build by pushing to ${{ github.ref }} 🚀
-on: [push]
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 11-chore-cicd-pipeline
+
+env:
+  PROPERTIES_PATH: "./android/key.properties"
 jobs:
   Androi-App-Build:
     runs-on: ubuntu-latest
@@ -14,11 +22,10 @@ jobs:
         with:
           channel: "stable"
       - run: |
-          echo CACHE-PATH=${{ steps.flutter-action.outputs.CACHE-PATH }}
-          echo CACHE-KEY=${{ steps.flutter-action.outputs.CACHE-KEY }}
-          echo CHANNEL=${{ steps.flutter-action.outputs.CHANNEL }}
-          echo VERSION=${{ steps.flutter-action.outputs.VERSION }}
-          echo ARCHITECTURE=${{ steps.flutter-action.outputs.ARCHITECTURE }}
-        shell: bash
+          echo keyPassword=\${{ secrets.KEY_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
+          echo storePassword=\${{ secrets.STORE_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
+          echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
+          echo storeFile=\${{ secrets.STORE_FILE }} >> ${{env.PROPERTIES_PATH}}
+      - run: echo "${{ secrets.KEYSTORE }}" | base64 --decode > android/app/key.jks
       - run: flutter pub get
       - run: flutter build apk
