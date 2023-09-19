@@ -84,7 +84,7 @@ class _LibraryContentState extends State<LibraryContent> {
                         vertical: 16,
                       ).copyWith(right: 84),
                       child: Typography(
-                        state.title + state.title + state.title,
+                        state.title,
                         secondary: state.subtitle,
                       ),
                     ),
