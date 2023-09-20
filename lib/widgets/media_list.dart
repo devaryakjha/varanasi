@@ -9,18 +9,24 @@ enum _MediaListType {
 }
 
 typedef MediaListViewBuilder<Media extends PlayableMedia> = Widget Function(
-    BuildContext context, Media mediaItems);
+    BuildContext context, Media mediaItem, int index);
+
+typedef MediaListOnTap = void Function(int index);
 
 class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
   /// The list of media items to display.
   final List<Media> mediaItems;
   final _MediaListType _type;
   final MediaListViewBuilder<Media>? itemBuilder;
+  final bool isPlaying;
+  final MediaListOnTap? onItemTap;
 
   /// Creates a [MediaListView] widget with a [ListView].
   const MediaListView(
     this.mediaItems, {
     super.key,
+    required this.isPlaying,
+    this.onItemTap,
     bool needSliver = false,
   })  : _type = _MediaListType.list,
         itemBuilder = null;
@@ -29,6 +35,8 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
   const MediaListView.sliver(
     this.mediaItems, {
     super.key,
+    required this.isPlaying,
+    this.onItemTap,
   })  : _type = _MediaListType.sliver,
         itemBuilder = null;
 
@@ -36,12 +44,22 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
   const MediaListView.builder({
     required this.mediaItems,
     required this.itemBuilder,
+    required this.isPlaying,
     super.key,
+    this.onItemTap,
     bool needSliver = false,
   }) : _type = needSliver ? _MediaListType.sliver : _MediaListType.list;
 
   MediaListViewBuilder<Media> get _itemBuilder =>
-      itemBuilder ?? (context, media) => MediaTile<Media>(media);
+      itemBuilder ??
+      (context, media, index) => MediaTile<Media>(
+            media,
+            isPlaying: isPlaying,
+            index: index,
+            onTap: () {
+              onItemTap?.call(index);
+            },
+          );
 
   @override
   Widget build(BuildContext context) {
@@ -49,13 +67,23 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
       _MediaListType.sliver => _MediaSliverListView.new,
       _MediaListType.list => _MediaListView.new,
     };
-    return view<Media>(mediaItems, key: key);
+    return view<Media>(
+      mediaItems,
+      key: key,
+      isPlaying: isPlaying,
+      onItemTap: onItemTap,
+    );
   }
 }
 
 class _MediaSliverListView<Media extends PlayableMedia>
     extends MediaListView<Media> {
-  const _MediaSliverListView(super.mediaItems, {super.key});
+  const _MediaSliverListView(
+    super.mediaItems, {
+    super.key,
+    required super.isPlaying,
+    super.onItemTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -63,14 +91,19 @@ class _MediaSliverListView<Media extends PlayableMedia>
       itemCount: mediaItems.length,
       itemBuilder: (context, index) {
         final media = mediaItems[index];
-        return _itemBuilder(context, media);
+        return _itemBuilder(context, media, index);
       },
     );
   }
 }
 
 class _MediaListView<Media extends PlayableMedia> extends MediaListView<Media> {
-  const _MediaListView(super.mediaItems, {super.key});
+  const _MediaListView(
+    super.mediaItems, {
+    super.key,
+    required super.isPlaying,
+    super.onItemTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +111,7 @@ class _MediaListView<Media extends PlayableMedia> extends MediaListView<Media> {
       itemCount: mediaItems.length,
       itemBuilder: (context, index) {
         final media = mediaItems[index];
-        return _itemBuilder(context, media);
+        return _itemBuilder(context, media, index);
       },
     );
   }

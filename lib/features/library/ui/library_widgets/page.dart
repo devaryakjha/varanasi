@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
+import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_widgets/library_app_bar.dart';
 import 'package:varanasi_mobile_app/utils/extensions/media_query.dart';
@@ -71,6 +72,13 @@ class _LibraryContentState extends State<LibraryContent> {
     final state =
         context.select((LibraryCubit cubit) => cubit.state as LibraryLoaded);
     final sortedMediaItems = state.sortedMediaItems(sortBy);
+    final mediaPlayerCubit = context.selectMediaPlayerCubit;
+    final isThisPlaylistPlaying = context.select(
+      (MediaPlayerCubit cubit) {
+        return cubit.state.currentPlaylist == state.playlist.id &&
+            cubit.state.isPlaying;
+      },
+    );
 
     return Scaffold(
       body: CustomScrollView(
@@ -95,7 +103,18 @@ class _LibraryContentState extends State<LibraryContent> {
                       ),
                     ),
                   ),
-                  MediaListView.sliver(sortedMediaItems),
+                  MediaListView.sliver(
+                    sortedMediaItems,
+                    isPlaying: isThisPlaylistPlaying,
+                    onItemTap: (index) {
+                      if (isThisPlaylistPlaying) {
+                        mediaPlayerCubit.skipToIndex(index);
+                      } else {
+                        context.readMediaPlayerCubit
+                            .playFromMediaPlaylist(state.playlist, index);
+                      }
+                    },
+                  ),
                 ],
               ),
               SliverPositioned(
@@ -107,9 +126,15 @@ class _LibraryContentState extends State<LibraryContent> {
                       .withOpacity(1),
                   shape: const CircleBorder(),
                   onPressed: () {
-                    // TODO: implement
+                    if (isThisPlaylistPlaying) {
+                      mediaPlayerCubit.pause();
+                      return;
+                    }
+                    mediaPlayerCubit.playFromMediaPlaylist(state.playlist);
                   },
-                  child: const Icon(Icons.play_arrow),
+                  child: isThisPlaylistPlaying
+                      ? const Icon(Icons.pause)
+                      : const Icon(Icons.play_arrow),
                 ),
               )
             ],

@@ -44,10 +44,16 @@ class MediaTile<Media extends PlayableMedia> extends StatelessWidget {
     this.minVerticalPadding,
     this.minLeadingWidth,
     this.titleAlignment,
+    this.isPlaying = false,
+    required this.index,
   });
 
   //
   final Media media;
+
+  final bool isPlaying;
+
+  final int index;
 
   /// A widget to display before the title.
   ///

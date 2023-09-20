@@ -171,5 +171,5 @@ class Song extends PlayableMedia {
   String get itemTitle => name ?? '';
 
   @override
-  String get itemUrl => url ?? '';
+  String get itemUrl => downloadUrl?.lastOrNull?.link ?? '';
 }

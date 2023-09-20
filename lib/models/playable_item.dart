@@ -2,6 +2,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/configs.dart';
 
 enum PlayableMediaType {
@@ -41,13 +42,20 @@ abstract class PlayableMedia extends Equatable {
   /// {@template toMediaItem}
   /// Converts the [PlayableMedia] to a [MediaItem] for use with [AudioService].
   /// {@endtemplate}
-  /// TODO: use url instead of id
   MediaItem toMediaItem() {
+    var duration = Duration.zero;
+    if (this is Song) {
+      duration = Duration(seconds: int.parse(((this as Song).duration ?? '0')));
+    }
     return MediaItem(
-      id: itemId,
+      id: itemUrl,
       title: itemTitle,
+      displayTitle: itemTitle,
+      displaySubtitle: itemSubtitle,
+      displayDescription: itemSubtitle,
       album: itemSubtitle,
       artUri: Uri.parse(artworkUrl ?? ''),
+      duration: duration,
     );
   }
 
