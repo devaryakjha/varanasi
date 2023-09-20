@@ -8,6 +8,7 @@ import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_widgets/library_app_bar.dart';
 import 'package:varanasi_mobile_app/utils/extensions/media_query.dart';
 import 'package:varanasi_mobile_app/widgets/media_list.dart';
+import 'package:varanasi_mobile_app/widgets/play_pause_button.dart';
 import 'package:varanasi_mobile_app/widgets/typography.dart';
 
 class LibraryContent extends StatefulHookWidget {
@@ -130,11 +131,10 @@ class _LibraryContentState extends State<LibraryContent> {
               SliverPositioned(
                 top: top,
                 right: right,
-                child: FloatingActionButton(
+                child: PlayPauseMediaButton(
                   backgroundColor: state.colorPalette.mutedColor?.color,
                   foregroundColor: state.colorPalette.mutedColor?.bodyTextColor
                       .withOpacity(1),
-                  shape: const CircleBorder(),
                   onPressed: () {
                     if (isThisPlaylistPlaying) {
                       mediaPlayerCubit.pause();
@@ -142,9 +142,7 @@ class _LibraryContentState extends State<LibraryContent> {
                     }
                     mediaPlayerCubit.playFromMediaPlaylist(state.playlist);
                   },
-                  child: isThisPlaylistPlaying
-                      ? const Icon(Icons.pause)
-                      : const Icon(Icons.play_arrow),
+                  isPlaying: isThisPlaylistPlaying,
                 ),
               )
             ],
