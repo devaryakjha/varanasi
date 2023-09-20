@@ -4,6 +4,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/app_cubit.dart';
@@ -25,7 +26,11 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState> {
       MediaPlaylist<T> playlist,
       [int? startIndex]) async {
     if (playlist.id == state.currentPlaylist && !audioHandler.player.playing) {
-      await play();
+      if (startIndex != null) {
+        await skipToIndex(startIndex);
+      } else {
+        await play();
+      }
       return;
     }
     emit(state.copyWith(currentPlaylist: playlist.id));
@@ -61,8 +66,15 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState> {
         androidStopForegroundOnPause: true,
       ),
     );
-    audioHandler.player.playingStream.distinct().listen((isPlaying) {
-      emit(state.copyWith(isPlaying: isPlaying));
+    Rx.combineLatest2(
+      audioHandler.player.playingStream,
+      audioHandler.mediaItem.stream,
+      (playing, mediaItem) => (playing, mediaItem),
+    ).distinct().listen((value) {
+      emit(state.copyWith(
+        isPlaying: value.$1,
+        currentMediaItem: value.$2,
+      ));
     });
   }
 }

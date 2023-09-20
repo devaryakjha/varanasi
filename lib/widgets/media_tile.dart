@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
+import 'package:varanasi_mobile_app/widgets/music_visualizer.dart';
 
 class MediaTile<Media extends PlayableMedia> extends StatelessWidget {
   /// Creates a list tile.
@@ -354,11 +355,27 @@ class MediaTile<Media extends PlayableMedia> extends StatelessWidget {
   }
 
   Widget _buildTitle() {
-    return Text(
-      media.itemTitle.sanitize,
-      style: titleTextStyle,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
+    return Row(
+      children: [
+        if (selected) ...[
+          MiniMusicVisualizer(
+            key: ValueKey(index + isPlaying.hashCode),
+            color: selectedColor,
+            animating: isPlaying,
+            width: 2,
+            height: 12,
+          ),
+          const SizedBox(width: 8),
+        ],
+        Expanded(
+          child: Text(
+            media.itemTitle.sanitize,
+            style: titleTextStyle,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
     );
   }
 

@@ -19,7 +19,9 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
   final _MediaListType _type;
   final MediaListViewBuilder<Media>? itemBuilder;
   final bool isPlaying;
+  final bool Function(int) isItemPlaying;
   final MediaListOnTap? onItemTap;
+  final Color? itemSelectedColor;
 
   /// Creates a [MediaListView] widget with a [ListView].
   const MediaListView(
@@ -28,6 +30,8 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
     required this.isPlaying,
     this.onItemTap,
     bool needSliver = false,
+    required this.isItemPlaying,
+    this.itemSelectedColor,
   })  : _type = _MediaListType.list,
         itemBuilder = null;
 
@@ -37,6 +41,8 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
     super.key,
     required this.isPlaying,
     this.onItemTap,
+    required this.isItemPlaying,
+    this.itemSelectedColor,
   })  : _type = _MediaListType.sliver,
         itemBuilder = null;
 
@@ -45,6 +51,8 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
     required this.mediaItems,
     required this.itemBuilder,
     required this.isPlaying,
+    required this.isItemPlaying,
+    this.itemSelectedColor,
     super.key,
     this.onItemTap,
     bool needSliver = false,
@@ -59,6 +67,8 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
             onTap: () {
               onItemTap?.call(index);
             },
+            selected: isItemPlaying(index),
+            selectedColor: itemSelectedColor,
           );
 
   @override
@@ -72,6 +82,8 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
       key: key,
       isPlaying: isPlaying,
       onItemTap: onItemTap,
+      isItemPlaying: isItemPlaying,
+      itemSelectedColor: itemSelectedColor,
     );
   }
 }
@@ -83,6 +95,8 @@ class _MediaSliverListView<Media extends PlayableMedia>
     super.key,
     required super.isPlaying,
     super.onItemTap,
+    required super.isItemPlaying,
+    super.itemSelectedColor,
   });
 
   @override
@@ -103,6 +117,8 @@ class _MediaListView<Media extends PlayableMedia> extends MediaListView<Media> {
     super.key,
     required super.isPlaying,
     super.onItemTap,
+    required super.isItemPlaying,
+    super.itemSelectedColor,
   });
 
   @override

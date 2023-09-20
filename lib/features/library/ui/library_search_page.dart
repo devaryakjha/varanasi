@@ -43,7 +43,11 @@ class LibrarySearchPage extends HookWidget {
           ],
         ),
       ),
-      body: MediaListView(filteredMedia.value, isPlaying: false),
+      body: MediaListView(
+        filteredMedia.value,
+        isPlaying: false,
+        isItemPlaying: (p0) => false,
+      ),
     );
   }
 }

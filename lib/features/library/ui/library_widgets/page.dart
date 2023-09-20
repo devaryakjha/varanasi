@@ -80,6 +80,10 @@ class _LibraryContentState extends State<LibraryContent> {
       },
     );
 
+    final currentMediaItem = context.select(
+      (MediaPlayerCubit cubit) => cubit.state.currentMediaItem,
+    );
+
     return Scaffold(
       body: CustomScrollView(
         controller: _scrollController,
@@ -106,6 +110,10 @@ class _LibraryContentState extends State<LibraryContent> {
                   MediaListView.sliver(
                     sortedMediaItems,
                     isPlaying: isThisPlaylistPlaying,
+                    isItemPlaying: (p0) {
+                      final media = (state.playlist.mediaItems ?? [])[p0];
+                      return media.toMediaItem() == currentMediaItem;
+                    },
                     onItemTap: (index) {
                       if (isThisPlaylistPlaying) {
                         mediaPlayerCubit.skipToIndex(index);
@@ -114,6 +122,8 @@ class _LibraryContentState extends State<LibraryContent> {
                             .playFromMediaPlaylist(state.playlist, index);
                       }
                     },
+                    itemSelectedColor:
+                        state.colorPalette.dominantColor?.color.withOpacity(1),
                   ),
                 ],
               ),
