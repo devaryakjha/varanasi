@@ -28,7 +28,7 @@ class LibraryRepository with CacheableService {
       if (value == null) return;
       _box = value;
     });
-    final cached = isCached(media.cacheKey);
+    final cached = maybeGetCached(media.cacheKey);
     if (cached != null) {
       try {
         final cachemap = convertNestedMap(cached['data']);

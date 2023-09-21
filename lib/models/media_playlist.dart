@@ -1,3 +1,4 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:varanasi_mobile_app/models/image.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
@@ -17,6 +18,13 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
     this.mediaItems,
     this.images = const [],
   });
+
+  const MediaPlaylist.empty()
+      : id = null,
+        title = null,
+        description = null,
+        mediaItems = null,
+        images = const [];
 
   /// Returns a new [MediaPlaylist] with prefilled values for [title] as `Popular Today`.
   factory MediaPlaylist.popularToday(
@@ -62,6 +70,9 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
         id: id,
         images: images ?? const [],
       );
+
+  List<MediaItem> get mediaItemsAsMediaItems =>
+      (mediaItems ?? []).map((e) => e.toMediaItem()).toList();
 
   @override
   List<Object?> get props => [id, title, description, mediaItems, images];

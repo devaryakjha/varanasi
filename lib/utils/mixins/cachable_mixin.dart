@@ -33,7 +33,7 @@ mixin CacheableService {
     return box.put(key, data);
   }
 
-  E? isCached<E>(String key, [E? defaultValue]) {
+  E? maybeGetCached<E>(String key, [E? defaultValue]) {
     final data = box.get(key);
     if (data == null) return defaultValue;
     final expiry = data['expiry'] as int? ?? 0;

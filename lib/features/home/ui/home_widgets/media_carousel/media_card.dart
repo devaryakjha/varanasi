@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
+import 'package:varanasi_mobile_app/widgets/music_visualizer.dart';
 
 class MediaCard extends StatelessWidget {
   final PlayableMedia media;
@@ -32,11 +35,19 @@ class MediaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isPlaylistSelected = context.select((MediaPlayerCubit value) {
+      return value.state.currentPlaylist == media.itemId;
+    });
+    final isPlaying = context.select((MediaPlayerCubit value) {
+      return value.state.isPlaying;
+    });
     return Hero(
       tag: media.itemId,
       child: GestureDetector(
         onTap: switch (media.itemType) {
-          PlayableMediaType.song => () {},
+          PlayableMediaType.song => () {
+              context.readMediaPlayerCubit.playFromSong(media);
+            },
           _ => () => context.push(AppRoutes.library.path, extra: media),
         },
         child: Padding(
@@ -58,11 +69,26 @@ class MediaCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: context.textTheme.labelLarge,
+                Row(
+                  children: [
+                    if (isPlaylistSelected) ...[
+                      MiniMusicVisualizer(
+                        key: ValueKey(media.itemId),
+                        width: 2,
+                        height: 12,
+                        animating: isPlaying,
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                    Expanded(
+                      child: Text(
+                        title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.textTheme.labelLarge,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 4),
                 Text(

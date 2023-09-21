@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "612068989749",
+    "project_id": "devaryak-project-varanasi",
+    "storage_bucket": "devaryak-project-varanasi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612068989749:android:9695ce0d7183ab301c4a7c",
+        "android_client_info": {
+          "package_name": "dev.aryak.varanasi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4cSRGBN2YQgdyejkoavd61QXLMddL_JM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

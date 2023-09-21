@@ -29,7 +29,8 @@ class HomeRepository with CacheableService {
         _box = value;
       });
       if (!ignoreCache) {
-        final cachedData = isCached<HomePageData>(appConfig.endpoint.modules);
+        final cachedData =
+            maybeGetCached<HomePageData>(appConfig.endpoint.modules);
         if (cachedData != null) return cachedData;
       }
       final (_, parsed) = await HomeDataProvider.instance.fetchModules();

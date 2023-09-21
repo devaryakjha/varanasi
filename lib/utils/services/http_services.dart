@@ -27,13 +27,23 @@ class HttpService {
     String url, [
     CommonOptions<T>? options,
     Map<String, dynamic>? queryParameters,
+    Uri? uri,
   ]) async {
+    assert(
+      !(queryParameters != null && uri != null),
+      'Cannot provide both queryParameters and uri',
+    );
     try {
-      final response = await dio.get(
-        url,
-        queryParameters: queryParameters,
-        options: options?.options,
-      );
+      Response response;
+      if (uri != null) {
+        response = await dio.getUri(uri);
+      } else {
+        response = await dio.get(
+          url,
+          queryParameters: queryParameters,
+          options: options?.options,
+        );
+      }
       if (options?.transformer != null) {
         final transformed = await options!.transformer!(response.data['data']);
         return (response.data, transformed);
@@ -41,7 +51,7 @@ class HttpService {
       return (response.data, null);
     } on DioException catch (e) {
       throw NetworkException(
-        forUrl: url,
+        forUrl: uri?.toString() ?? url,
         error: e.message ?? 'Unknown error occurred',
         statusCode: e.response?.statusCode ?? 500,
       );

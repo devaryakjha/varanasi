@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
+import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_widgets/library_app_bar.dart';
 import 'package:varanasi_mobile_app/utils/extensions/media_query.dart';
 import 'package:varanasi_mobile_app/widgets/media_list.dart';
+import 'package:varanasi_mobile_app/widgets/play_pause_button.dart';
 import 'package:varanasi_mobile_app/widgets/typography.dart';
 
 class LibraryContent extends StatefulHookWidget {
@@ -71,6 +73,17 @@ class _LibraryContentState extends State<LibraryContent> {
     final state =
         context.select((LibraryCubit cubit) => cubit.state as LibraryLoaded);
     final sortedMediaItems = state.sortedMediaItems(sortBy);
+    final mediaPlayerCubit = context.selectMediaPlayerCubit;
+    final isThisPlaylistPlaying = context.select(
+      (MediaPlayerCubit cubit) {
+        return cubit.state.currentPlaylist == state.playlist.id &&
+            cubit.state.isPlaying;
+      },
+    );
+
+    final currentMediaItem = context.select(
+      (MediaPlayerCubit cubit) => cubit.state.currentMediaItem,
+    );
 
     return Scaffold(
       body: CustomScrollView(
@@ -95,21 +108,42 @@ class _LibraryContentState extends State<LibraryContent> {
                       ),
                     ),
                   ),
-                  MediaListView.sliver(sortedMediaItems),
+                  MediaListView.sliver(
+                    sortedMediaItems,
+                    isPlaying: isThisPlaylistPlaying,
+                    isItemPlaying: (p0) {
+                      final media = (state.playlist.mediaItems ?? [])[p0];
+                      return media.toMediaItem() == currentMediaItem;
+                    },
+                    onItemTap: (index) {
+                      if (isThisPlaylistPlaying) {
+                        mediaPlayerCubit.skipToIndex(index);
+                      } else {
+                        context.readMediaPlayerCubit
+                            .playFromMediaPlaylist(state.playlist, index);
+                      }
+                    },
+                    itemSelectedColor: state
+                        .colorPalette.lightVibrantColor?.color
+                        .withOpacity(1),
+                  ),
                 ],
               ),
               SliverPositioned(
                 top: top,
                 right: right,
-                child: FloatingActionButton(
+                child: PlayPauseMediaButton(
                   backgroundColor: state.colorPalette.mutedColor?.color,
                   foregroundColor: state.colorPalette.mutedColor?.bodyTextColor
                       .withOpacity(1),
-                  shape: const CircleBorder(),
                   onPressed: () {
-                    // TODO: implement
+                    if (isThisPlaylistPlaying) {
+                      mediaPlayerCubit.pause();
+                      return;
+                    }
+                    mediaPlayerCubit.playFromMediaPlaylist(state.playlist);
                   },
-                  child: const Icon(Icons.play_arrow),
+                  isPlaying: isThisPlaylistPlaying,
                 ),
               )
             ],
