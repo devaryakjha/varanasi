@@ -123,8 +123,9 @@ class _LibraryContentState extends State<LibraryContent> {
                             .playFromMediaPlaylist(state.playlist, index);
                       }
                     },
-                    itemSelectedColor:
-                        state.colorPalette.dominantColor?.color.withOpacity(1),
+                    itemSelectedColor: state
+                        .colorPalette.lightVibrantColor?.color
+                        .withOpacity(1),
                   ),
                 ],
               ),

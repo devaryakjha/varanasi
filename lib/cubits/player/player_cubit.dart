@@ -54,6 +54,8 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
   Future<void> playFromSong(PlayableMedia media) async {
     assert(media.itemType == PlayableMediaType.song, 'Media must be a song');
 
+    emit(state.copyWith(currentPlaylist: media.itemId));
+
     final cached = maybeGetCached<Song>(media.cacheKey);
 
     if (cached != null) {
