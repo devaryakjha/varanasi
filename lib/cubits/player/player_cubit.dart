@@ -14,6 +14,7 @@ import 'package:varanasi_mobile_app/utils/constants/strings.dart';
 import 'package:varanasi_mobile_app/utils/mixins/cachable_mixin.dart';
 import 'package:varanasi_mobile_app/utils/mixins/repository_protocol.dart';
 import 'package:varanasi_mobile_app/utils/player/audio_handler_impl.dart';
+import 'package:varanasi_mobile_app/utils/player/typings.dart';
 import 'package:varanasi_mobile_app/utils/services/http_services.dart';
 
 part 'player_state.dart';
@@ -92,6 +93,10 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
     await audioHandler.pause();
   }
 
+  Future<void> skipToPrevious() => audioHandler.skipToPrevious();
+
+  Future<void> skipToNext() => audioHandler.skipToNext();
+
   Future<void> skipToIndex(int index) async {
     await audioHandler.skipToQueueItem(index);
     if (!audioHandler.player.playing) {
@@ -112,14 +117,16 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
         androidStopForegroundOnPause: true,
       ),
     );
-    Rx.combineLatest2(
+    Rx.combineLatest3(
       audioHandler.player.playingStream,
       audioHandler.mediaItem.stream,
-      (playing, mediaItem) => (playing, mediaItem),
+      audioHandler.queueState,
+      (playing, mediaItem, queueState) => (playing, mediaItem, queueState),
     ).distinct().listen((value) {
       emit(state.copyWith(
         isPlaying: value.$1,
         currentMediaItem: value.$2,
+        queueState: value.$3,
       ));
     });
   }
