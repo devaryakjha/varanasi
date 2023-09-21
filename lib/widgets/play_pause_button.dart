@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+enum ButtonVariant { iconbutton, floatingactionbutton }
+
 class PlayPauseMediaButton extends StatefulHookWidget {
   const PlayPauseMediaButton({
     super.key,
@@ -8,7 +10,9 @@ class PlayPauseMediaButton extends StatefulHookWidget {
     this.isPlaying = false,
     this.backgroundColor,
     this.foregroundColor,
+    this.variant = ButtonVariant.floatingactionbutton,
   });
+  final ButtonVariant variant;
   final VoidCallback onPressed;
   final bool isPlaying;
   final Color? backgroundColor, foregroundColor;
@@ -43,8 +47,7 @@ class _PlayPauseMediaButtonState extends State<PlayPauseMediaButton>
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       backgroundColor: widget.backgroundColor,
       foregroundColor: widget.foregroundColor,
@@ -55,5 +58,23 @@ class _PlayPauseMediaButtonState extends State<PlayPauseMediaButton>
         progress: _controller,
       ),
     );
+  }
+
+  Widget _buildIconButton() {
+    return IconButton(
+      onPressed: widget.onPressed,
+      icon: AnimatedIcon(
+        icon: AnimatedIcons.play_pause,
+        progress: _controller,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return switch (widget.variant) {
+      ButtonVariant.iconbutton => _buildIconButton(),
+      ButtonVariant.floatingactionbutton => _buildFloatingActionButton(),
+    };
   }
 }

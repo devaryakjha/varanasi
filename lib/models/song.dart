@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
+import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 
 import 'album.dart';
 import 'artist.dart';
@@ -165,10 +166,10 @@ class Song extends PlayableMedia {
   String get itemId => id ?? '';
 
   @override
-  String get itemSubtitle => year ?? '';
+  String get itemSubtitle => (year ?? '').sanitize;
 
   @override
-  String get itemTitle => name ?? '';
+  String get itemTitle => (name ?? '').sanitize;
 
   @override
   String get itemUrl => downloadUrl?.lastOrNull?.link ?? '';
