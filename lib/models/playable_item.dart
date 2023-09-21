@@ -2,6 +2,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/configs.dart';
 
@@ -64,7 +65,8 @@ abstract class PlayableMedia extends Equatable {
   /// {@endtemplate}
   Uri get moreInfoUrl {
     return switch (itemType) {
-      PlayableMediaType.song => Uri.parse(appConfig.endpoint.playlists!.id),
+      PlayableMediaType.song =>
+        Uri.parse('${appConfig.endpoint.songs!.id}?id=$itemId'),
       PlayableMediaType.album => Uri.parse(
           '${appConfig.endpoint.albums!.link}?link=$itemUrl&language=hindi,english'),
       PlayableMediaType.playlist => Uri.parse(
@@ -76,4 +78,13 @@ abstract class PlayableMedia extends Equatable {
   /// Returns a unique key for the [PlayableMedia] to be used in the cache.
   /// {@endtemplate}
   String get cacheKey => '$itemId-${describeEnum(itemType)}';
+
+  MediaPlaylist<T> toMediaPlaylist<T extends PlayableMedia>() {
+    return MediaPlaylist<T>(
+      title: itemTitle,
+      description: itemSubtitle,
+      id: itemId,
+      mediaItems: [this as T],
+    );
+  }
 }

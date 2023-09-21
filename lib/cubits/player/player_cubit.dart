@@ -4,11 +4,17 @@ import 'package:audio_service/audio_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
+import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/app_cubit.dart';
+import 'package:varanasi_mobile_app/utils/constants/strings.dart';
+import 'package:varanasi_mobile_app/utils/mixins/cachable_mixin.dart';
+import 'package:varanasi_mobile_app/utils/mixins/repository_protocol.dart';
 import 'package:varanasi_mobile_app/utils/player/audio_handler_impl.dart';
+import 'package:varanasi_mobile_app/utils/services/http_services.dart';
 
 part 'player_state.dart';
 
@@ -17,14 +23,17 @@ extension MediaPlayerCubitExtension on BuildContext {
   MediaPlayerCubit get selectMediaPlayerCubit => watch<MediaPlayerCubit>();
 }
 
-class MediaPlayerCubit extends AppCubit<MediaPlayerState> {
+class MediaPlayerCubit extends AppCubit<MediaPlayerState>
+    with DataProviderProtocol, CacheableService {
   late final AudioHandlerImpl audioHandler;
+  late final Box _box;
 
   MediaPlayerCubit() : super(const MediaPlayerState());
 
   Future<void> playFromMediaPlaylist<T extends PlayableMedia>(
-      MediaPlaylist<T> playlist,
-      [int? startIndex]) async {
+    MediaPlaylist<T> playlist, [
+    int? startIndex,
+  ]) async {
     if (playlist.id == state.currentPlaylist && !audioHandler.player.playing) {
       if (startIndex != null) {
         await skipToIndex(startIndex);
@@ -40,6 +49,37 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState> {
     } else {
       await play();
     }
+  }
+
+  Future<void> playFromSong(PlayableMedia media) async {
+    assert(media.itemType == PlayableMediaType.song, 'Media must be a song');
+
+    final cached = maybeGetCached<Song>(media.cacheKey);
+
+    if (cached != null) {
+      await playFromMediaPlaylist(cached.toMediaPlaylist<Song>());
+      return;
+    }
+
+    final response = await fetchUri(
+      media.moreInfoUrl,
+      options: CommonOptions(
+        transformer: (response) {
+          final data = response as List<dynamic>;
+          if (data.isEmpty) {
+            throw Exception('No data found');
+          }
+          final song = Song.fromJson(data.first as Map<String, dynamic>);
+          if (song.downloadUrl == null) {
+            throw Exception('No download url found');
+          }
+          return song;
+        },
+      ),
+    );
+    final song = response.$2!;
+    cache(media.cacheKey, song);
+    await playFromMediaPlaylist(song.toMediaPlaylist<Song>());
   }
 
   Future<void> play() async {
@@ -59,6 +99,10 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState> {
 
   @override
   FutureOr<void> init() async {
+    initcache().then((value) {
+      if (value == null) return;
+      _box = value;
+    });
     audioHandler = await AudioService.init(
       builder: () => AudioHandlerImpl(),
       config: const AudioServiceConfig(
@@ -77,4 +121,10 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState> {
       ));
     });
   }
+
+  @override
+  Box get box => _box;
+
+  @override
+  String get cacheBoxName => AppStrings.commonCacheBoxName;
 }

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
@@ -36,7 +37,9 @@ class MediaCard extends StatelessWidget {
       tag: media.itemId,
       child: GestureDetector(
         onTap: switch (media.itemType) {
-          PlayableMediaType.song => () {},
+          PlayableMediaType.song => () {
+              context.readMediaPlayerCubit.playFromSong(media);
+            },
           _ => () => context.push(AppRoutes.library.path, extra: media),
         },
         child: Padding(

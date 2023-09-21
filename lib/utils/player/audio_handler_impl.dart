@@ -135,6 +135,13 @@ final class AudioHandlerImpl extends BaseAudioHandler
     _player.playbackEventStream.listen(_broadcastState);
     _player.shuffleModeEnabledStream
         .listen((enabled) => _broadcastState(_player.playbackEvent));
+    // In this example, the service stops when reaching the end.
+    _player.processingStateStream.listen((state) {
+      if (state == ProcessingState.completed) {
+        stop();
+        _player.seek(Duration.zero, index: 0);
+      }
+    });
     // Broadcast the current queue.
     _effectiveSequence.map((sequence) {
       return sequence.map((source) => _mediaItemExpando[source]!).toList();

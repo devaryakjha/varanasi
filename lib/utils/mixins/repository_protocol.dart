@@ -15,4 +15,11 @@ mixin DataProviderProtocol {
     Map<String, dynamic>? queryParameters,
   }) =>
       httpService.get<T>(url, options, queryParameters);
+
+  @mustCallSuper
+  FutureOr<(dynamic, T?)> fetchUri<T>(
+    Uri uri, {
+    CommonOptions<T>? options,
+  }) =>
+      httpService.get<T>('', options, null, uri);
 }

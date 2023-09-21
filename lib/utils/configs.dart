@@ -118,6 +118,7 @@ Config get appConfig {
       modules: '/modules',
       playlists: Playlists(id: 'playlists'),
       albums: Albums(link: 'albums'),
+      songs: Songs(id: 'songs', link: 'songs'),
     ),
     server: server,
     placeholderImageLink: '${server.baseUrl}/audio.jpg',
