@@ -1,15 +1,15 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/data/library_repository.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/models/sort_type.dart';
 import 'package:varanasi_mobile_app/utils/configs.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
-import 'package:varanasi_mobile_app/utils/generate_pallette.dart';
+import 'package:varanasi_mobile_app/utils/helpers/get_app_context.dart';
 import 'package:varanasi_mobile_app/utils/logger.dart';
 
 part 'library_state.dart';
@@ -27,8 +27,10 @@ class LibraryCubit extends Cubit<LibraryState> {
       if (link == appConfig.placeholderImageLink) {
         link = media.artworkUrl!;
       }
-      final image = CachedNetworkImageProvider(link);
-      final colorPalette = await generateColorPalette(imageProvider: image);
+      if (!appContext.mounted) return;
+      final configCubit = appContext.read<ConfigCubit>();
+      final colorPalette = await configCubit.generatePalleteGenerator(link);
+      final image = configCubit.getProvider(link);
       emit(LibraryLoaded(
         playlist,
         colorPalette!,

@@ -11,11 +11,13 @@ class PlayPauseMediaButton extends StatefulHookWidget {
     this.backgroundColor,
     this.foregroundColor,
     this.variant = ButtonVariant.floatingactionbutton,
+    this.size,
   });
   final ButtonVariant variant;
   final VoidCallback onPressed;
   final bool isPlaying;
   final Color? backgroundColor, foregroundColor;
+  final double? size;
 
   @override
   State<PlayPauseMediaButton> createState() => _PlayPauseMediaButtonState();
@@ -54,6 +56,7 @@ class _PlayPauseMediaButtonState extends State<PlayPauseMediaButton>
       onPressed: widget.onPressed,
       shape: const CircleBorder(),
       child: AnimatedIcon(
+        size: widget.size,
         icon: AnimatedIcons.play_pause,
         progress: _controller,
       ),
@@ -63,6 +66,8 @@ class _PlayPauseMediaButtonState extends State<PlayPauseMediaButton>
   Widget _buildIconButton() {
     return IconButton(
       onPressed: widget.onPressed,
+      color: widget.foregroundColor,
+      iconSize: widget.size,
       icon: AnimatedIcon(
         icon: AnimatedIcons.play_pause,
         progress: _controller,

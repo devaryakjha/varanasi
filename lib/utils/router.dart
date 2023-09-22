@@ -1,7 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
-import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
 import 'package:varanasi_mobile_app/features/home/bloc/home_bloc.dart';
 import 'package:varanasi_mobile_app/features/home/ui/home_screen.dart';
 import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
@@ -67,19 +65,7 @@ final routerConfig = GoRouter(
         ),
       ],
       builder: (context, state, navigationShell) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              lazy: false,
-              create: (context) => ConfigCubit()..initialise(),
-            ),
-            BlocProvider(
-              lazy: false,
-              create: (context) => MediaPlayerCubit()..init(),
-            ),
-          ],
-          child: PageWithNavbar(child: navigationShell),
-        );
+        return PageWithNavbar(child: navigationShell);
       },
     ),
   ],

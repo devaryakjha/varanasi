@@ -1,6 +1,9 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:palette_generator/palette_generator.dart';
+import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
 import 'package:varanasi_mobile_app/utils/extensions/theme.dart';
 import 'package:varanasi_mobile_app/widgets/animated_overflow_text.dart';
@@ -15,9 +18,29 @@ class MiniPlayer extends StatefulWidget {
 
 class _MiniPlayerState extends State<MiniPlayer> {
   late final PageController _pageController;
+  PaletteGenerator? _paletteGenerator;
+  void _generatePallete(MediaItem mediaItem) {
+    context
+        .read<ConfigCubit>()
+        .generatePalleteGenerator(mediaItem.artUri.toString())
+        .then(
+      (value) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          setState(() {
+            _paletteGenerator = value;
+          });
+        });
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
+    final state = context.readMediaPlayerCubit.state;
+    if (state.currentMediaItem != null) {
+      _generatePallete(state.currentMediaItem!);
+    }
     _pageController = PageController(
       initialPage:
           context.readMediaPlayerCubit.state.queueState.queueIndex ?? 0,
@@ -26,6 +49,11 @@ class _MiniPlayerState extends State<MiniPlayer> {
 
   @override
   Widget build(BuildContext context) {
+    final PaletteColor? selectedColor = _paletteGenerator?.darkVibrantColor ??
+        _paletteGenerator?.darkMutedColor ??
+        _paletteGenerator?.dominantColor;
+    final Color? backgroundColor = selectedColor?.color.withOpacity(1);
+    final Color? foregroundColor = selectedColor?.bodyTextColor.withOpacity(1);
     final (media, isPlaying, queueState) = context.select(
       (MediaPlayerCubit cubit) {
         final queueState = cubit.state.queueState;
@@ -41,19 +69,30 @@ class _MiniPlayerState extends State<MiniPlayer> {
     }
 
     Widget buildLeading() {
-      return CachedNetworkImage(
-        imageUrl: media.artUri.toString(),
-        height: 56,
-        width: 56,
+      return Card(
+        elevation: 24,
+        borderOnForeground: false,
+        margin: EdgeInsets.zero,
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: CachedNetworkImage(
+          imageUrl: media.artUri.toString(),
+          fit: BoxFit.cover,
+        ),
       );
     }
 
     Widget buildSubtitle() {
-      return Text(
+      return AnimatedText(
         media.displayDescription ?? '',
+        minFontSize: 12,
+        maxFontSize: 12,
         maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: context.textTheme.labelMedium,
+        style: context.textTheme.labelMedium?.copyWith(
+          color: foregroundColor,
+        ),
       );
     }
 
@@ -66,16 +105,16 @@ class _MiniPlayerState extends State<MiniPlayer> {
               _pageController.page!.round() != queueIndex) {
             _pageController.jumpToPage(queueIndex);
           }
+          _generatePallete(state.currentMediaItem!);
         },
-        listenWhen: (previous, current) =>
-            previous.queueState.queueIndex != current.queueState.queueIndex,
         buildWhen: (previous, current) {
           return previous.queueState.queueIndex !=
-              current.queueState.queueIndex;
+                  current.queueState.queueIndex ||
+              previous.currentMediaItem != current.currentMediaItem;
         },
         builder: (context, state) {
           return SizedBox(
-            height: 56,
+            height: 40,
             child: NotificationListener<ScrollNotification>(
               onNotification: (ScrollNotification notification) {
                 if (notification.depth == 0 &&
@@ -101,17 +140,21 @@ class _MiniPlayerState extends State<MiniPlayer> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        height: 24,
+                        height: 20,
                         child: AnimatedText(
                           title,
                           key: ValueKey(media.id),
-                          minFontSize: 16,
-                          maxFontSize: 16,
+                          minFontSize: 12,
+                          maxFontSize: 12,
                           maxLines: 1,
-                          style: context.textTheme.headlineSmall,
+                          style: context.textTheme.bodyLarge?.copyWith(
+                            color: foregroundColor,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.24,
+                          ),
                         ),
                       ),
-                      buildSubtitle(),
+                      Expanded(child: buildSubtitle()),
                     ],
                   );
                 },
@@ -123,53 +166,63 @@ class _MiniPlayerState extends State<MiniPlayer> {
     }
 
     Widget buildTrailing() {
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.skip_previous),
-            onPressed: !queueState.hasPrevious
-                ? null
-                : () {
-                    _pageController.previousPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                    context.read<MediaPlayerCubit>().skipToPrevious();
-                  },
-          ),
-          PlayPauseMediaButton(
-            variant: ButtonVariant.iconbutton,
-            onPressed: () {
-              if (isPlaying) {
-                context.read<MediaPlayerCubit>().pause();
-                return;
-              }
-              context.read<MediaPlayerCubit>().play();
-            },
-            isPlaying: isPlaying,
-          ),
-          IconButton(
-            icon: const Icon(Icons.skip_next),
-            onPressed: !queueState.hasNext
-                ? null
-                : () {
-                    _pageController.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                    context.read<MediaPlayerCubit>().skipToNext();
-                  },
-          ),
-        ],
+      return PlayPauseMediaButton(
+        foregroundColor: foregroundColor,
+        variant: ButtonVariant.iconbutton,
+        onPressed: () {
+          if (isPlaying) {
+            context.read<MediaPlayerCubit>().pause();
+            return;
+          }
+          context.read<MediaPlayerCubit>().play();
+        },
+        isPlaying: isPlaying,
       );
     }
 
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 4),
-      leading: buildLeading(),
-      title: buildTitle(),
-      trailing: buildTrailing(),
+    return AnimatedContainer(
+      key: ValueKey('${media.id}miniplayer'),
+      duration: const Duration(milliseconds: 300),
+      decoration: BoxDecoration(
+        color: backgroundColor ?? context.theme.primaryColor,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8).copyWith(left: 8),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                buildLeading(),
+                const SizedBox(width: 8),
+                Expanded(child: buildTitle()),
+                buildTrailing(),
+              ],
+            ),
+          ),
+          Positioned(
+            left: 8,
+            right: 8,
+            bottom: 0.5,
+            child: StreamBuilder(
+              stream: AudioService.position,
+              builder: (context, snapshot) {
+                return LinearProgressIndicator(
+                  value: snapshot.hasData
+                      ? snapshot.data!.inMilliseconds /
+                          media.duration!.inMilliseconds
+                      : 0,
+                  minHeight: 1.5,
+                  color: foregroundColor,
+                  backgroundColor: foregroundColor?.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(8),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 

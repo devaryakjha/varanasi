@@ -73,7 +73,6 @@ class LibrarySearchPage extends HookWidget {
           } else {
             context.readMediaPlayerCubit.playFromMediaPlaylist(playlist);
           }
-          // context.go('/player');
         },
       ),
     );
