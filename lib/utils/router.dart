@@ -7,6 +7,7 @@ import 'package:varanasi_mobile_app/features/home/ui/home_screen.dart';
 import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_screen.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_search_page.dart';
+import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
 import 'package:varanasi_mobile_app/widgets/page_with_navbar.dart';
@@ -53,10 +54,10 @@ final routerConfig = GoRouter(
                   name: AppRoutes.librarySearch.name,
                   path: AppRoutes.librarySearch.path,
                   pageBuilder: (context, state) {
-                    final media = state.extra! as List<PlayableMedia>;
+                    final media = state.extra! as MediaPlaylist;
                     return FadeTransitionPage(
                       key: state.pageKey,
-                      child: LibrarySearchPage(media: media),
+                      child: LibrarySearchPage(playlist: media),
                     );
                   },
                 ),

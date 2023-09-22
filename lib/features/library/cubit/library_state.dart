@@ -103,6 +103,10 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
     }();
   }
 
+  MediaPlaylist<T> sortedMediaPlaylist(SortBy sortBy) {
+    return playlist.copyWith(mediaItems: sortedMediaItems(sortBy));
+  }
+
   LibraryLoaded<T> toggleAppbarTitle([bool? expanded]) {
     return copyWith(showTitleInAppBar: expanded ?? !showTitleInAppBar);
   }

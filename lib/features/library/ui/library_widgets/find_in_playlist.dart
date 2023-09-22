@@ -18,9 +18,8 @@ class FindInPlaylist extends StatelessWidget {
         final existingPath = context.routerState.path;
         context.push(
           '$existingPath/${AppRoutes.librarySearch.path}',
-          extra: state.sortedMediaItems(
-            context.read<ConfigCubit>().sortType,
-          ),
+          extra:
+              state.sortedMediaPlaylist(context.read<ConfigCubit>().sortType),
         );
       },
       child: Container(
