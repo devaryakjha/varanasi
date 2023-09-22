@@ -33,17 +33,10 @@ class LibraryCubit extends Cubit<LibraryState> {
         playlist,
         colorPalette!,
         image,
-        isAppbarExpanded: false,
       ));
     } on Exception catch (e, s) {
       LibraryRepository.instance.deleteCache(media.cacheKey);
       emit(LibraryError(e, stackTrace: s));
-    }
-  }
-
-  void toggleAppbarExpanded([bool? expanded]) {
-    if (state is LibraryLoaded) {
-      emit((state as LibraryLoaded).toggleAppbarExpanded(expanded));
     }
   }
 

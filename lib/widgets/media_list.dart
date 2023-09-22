@@ -11,7 +11,7 @@ enum _MediaListType {
 typedef MediaListViewBuilder<Media extends PlayableMedia> = Widget Function(
     BuildContext context, Media mediaItem, int index);
 
-typedef MediaListOnTap = void Function(int index);
+typedef MediaListOnTap<Media> = void Function(int index, Media media);
 
 class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
   /// The list of media items to display.
@@ -19,8 +19,8 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
   final _MediaListType _type;
   final MediaListViewBuilder<Media>? itemBuilder;
   final bool isPlaying;
-  final bool Function(int) isItemPlaying;
-  final MediaListOnTap? onItemTap;
+  final bool Function(Media) isItemPlaying;
+  final MediaListOnTap<Media>? onItemTap;
   final Color? itemSelectedColor;
 
   /// Creates a [MediaListView] widget with a [ListView].
@@ -65,9 +65,9 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
             isPlaying: isPlaying,
             index: index,
             onTap: () {
-              onItemTap?.call(index);
+              onItemTap?.call(index, media);
             },
-            selected: isItemPlaying(index),
+            selected: isItemPlaying(media),
             selectedColor: itemSelectedColor,
           );
 

@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:audio_service/audio_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:varanasi_mobile_app/models/image.dart';
@@ -76,4 +77,20 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
 
   @override
   List<Object?> get props => [id, title, description, mediaItems, images];
+
+  MediaPlaylist<T> copyWith({
+    String? id,
+    String? title,
+    String? description,
+    List<T>? mediaItems,
+    List<Image>? images,
+  }) {
+    return MediaPlaylist<T>(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      mediaItems: mediaItems ?? this.mediaItems,
+      images: images ?? this.images,
+    );
+  }
 }

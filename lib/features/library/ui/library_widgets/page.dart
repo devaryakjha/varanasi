@@ -56,11 +56,6 @@ class _LibraryContentState extends State<LibraryContent> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       minimumValueForFab = context.topPadding + kToolbarHeight - 36;
-      _scrollController.animateTo(
-        context.topPadding,
-        duration: const Duration(milliseconds: 100),
-        curve: Curves.easeOut,
-      );
       updateFABPosition();
     });
   }
@@ -73,20 +68,24 @@ class _LibraryContentState extends State<LibraryContent> {
     final state =
         context.select((LibraryCubit cubit) => cubit.state as LibraryLoaded);
     final sortedMediaItems = state.sortedMediaItems(sortBy);
-    final mediaPlayerCubit = context.selectMediaPlayerCubit;
-    final isThisPlaylistPlaying = context.select(
-      (MediaPlayerCubit cubit) {
-        return cubit.state.currentPlaylist == state.playlist.id &&
-            cubit.state.isPlaying;
-      },
-    );
 
-    final currentMediaItem = context.select(
-      (MediaPlayerCubit cubit) => cubit.state.currentMediaItem,
-    );
+    final (currentPlaylist, currentMediaItem, isPlaying) =
+        context.select((MediaPlayerCubit cubit) {
+      return (
+        cubit.state.currentPlaylist,
+        cubit.state.currentMediaItem,
+        cubit.state.isPlaying,
+      );
+    });
+
+    final isPlaylistSelected = currentPlaylist == state.playlist.id;
+
+    final isThisPlaylistPlaying =
+        currentPlaylist == state.playlist.id && isPlaying;
 
     return Scaffold(
       body: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
         controller: _scrollController,
         slivers: [
           SliverStack(
@@ -111,16 +110,17 @@ class _LibraryContentState extends State<LibraryContent> {
                   MediaListView.sliver(
                     sortedMediaItems,
                     isPlaying: isThisPlaylistPlaying,
-                    isItemPlaying: (p0) {
-                      final media = (state.playlist.mediaItems ?? [])[p0];
+                    isItemPlaying: (media) {
                       return media.toMediaItem() == currentMediaItem;
                     },
-                    onItemTap: (index) {
-                      if (isThisPlaylistPlaying) {
-                        mediaPlayerCubit.skipToIndex(index);
+                    onItemTap: (index, mediaItem) {
+                      if (isPlaylistSelected) {
+                        context.readMediaPlayerCubit.skipToMediaItem(mediaItem);
                       } else {
-                        context.readMediaPlayerCubit
-                            .playFromMediaPlaylist(state.playlist, index);
+                        context.readMediaPlayerCubit.playFromMediaPlaylist(
+                          state.playlist.copyWith(mediaItems: sortedMediaItems),
+                          index,
+                        );
                       }
                     },
                     itemSelectedColor: state
@@ -133,15 +133,18 @@ class _LibraryContentState extends State<LibraryContent> {
                 top: top,
                 right: right,
                 child: PlayPauseMediaButton(
-                  backgroundColor: state.colorPalette.mutedColor?.color,
-                  foregroundColor: state.colorPalette.mutedColor?.bodyTextColor
+                  backgroundColor: state.colorPalette.vibrantColor?.color,
+                  foregroundColor: state
+                      .colorPalette.vibrantColor?.bodyTextColor
                       .withOpacity(1),
                   onPressed: () {
                     if (isThisPlaylistPlaying) {
-                      mediaPlayerCubit.pause();
+                      context.readMediaPlayerCubit.pause();
                       return;
                     }
-                    mediaPlayerCubit.playFromMediaPlaylist(state.playlist);
+                    context.readMediaPlayerCubit.playFromMediaPlaylist(
+                      state.playlist.copyWith(mediaItems: sortedMediaItems),
+                    );
                   },
                   isPlaying: isThisPlaylistPlaying,
                 ),

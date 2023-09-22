@@ -55,8 +55,6 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
   Future<void> playFromSong(PlayableMedia media) async {
     assert(media.itemType == PlayableMediaType.song, 'Media must be a song');
 
-    emit(state.copyWith(currentPlaylist: media.itemId));
-
     final cached = maybeGetCached<Song>(media.cacheKey);
 
     if (cached != null) {
@@ -102,6 +100,12 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
     if (!audioHandler.player.playing) {
       await play();
     }
+  }
+
+  Future<void> skipToMediaItem(PlayableMedia mediaItem) async {
+    final index = state.queueState.queue.indexOf(mediaItem.toMediaItem());
+    if (index == -1) return;
+    return skipToIndex(index);
   }
 
   @override

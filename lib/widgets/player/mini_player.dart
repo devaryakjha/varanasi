@@ -1,9 +1,9 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:marquee/marquee.dart';
 import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
+import 'package:varanasi_mobile_app/utils/extensions/theme.dart';
+import 'package:varanasi_mobile_app/widgets/animated_overflow_text.dart';
 import 'package:varanasi_mobile_app/widgets/play_pause_button.dart';
 
 class MiniPlayer extends StatefulWidget {
@@ -18,7 +18,10 @@ class _MiniPlayerState extends State<MiniPlayer> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController();
+    _pageController = PageController(
+      initialPage:
+          context.readMediaPlayerCubit.state.queueState.queueIndex ?? 0,
+    );
   }
 
   @override
@@ -45,45 +48,77 @@ class _MiniPlayerState extends State<MiniPlayer> {
       );
     }
 
-    Widget buildTitle() {
-      return SizedBox(
-        height: 24,
-        child: PageView.builder(
-          controller: _pageController,
-          itemCount: queueState.queue.length,
-          itemBuilder: (context, index) {
-            final media = queueState.queue[index];
-            final title = media.displayTitle ?? '';
-            return AutoSizeText(
-              title,
-              key: ValueKey(media.id),
-              minFontSize: 16,
-              maxFontSize: 16,
-              maxLines: 1,
-              overflowReplacement: Marquee(
-                text: title,
-                startAfter: const Duration(seconds: 1),
-                pauseAfterRound: const Duration(seconds: 2),
-                blankSpace: 8,
-                accelerationDuration: const Duration(seconds: 2),
-                showFadingOnlyWhenScrolling: true,
-                fadingEdgeStartFraction: 0.1,
-                fadingEdgeEndFraction: 0.1,
-              ),
-            );
-          },
-          onPageChanged: (value) {
-            context.read<MediaPlayerCubit>().skipToIndex(value);
-          },
-        ),
-      );
-    }
-
     Widget buildSubtitle() {
       return Text(
         media.displayDescription ?? '',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
+        style: context.textTheme.labelMedium,
+      );
+    }
+
+    Widget buildTitle() {
+      return BlocConsumer<MediaPlayerCubit, MediaPlayerState>(
+        listener: (context, state) {
+          final queueIndex = state.queueState.queueIndex;
+          if (queueIndex != null &&
+              _pageController.hasClients &&
+              _pageController.page!.round() != queueIndex) {
+            _pageController.jumpToPage(queueIndex);
+          }
+        },
+        listenWhen: (previous, current) =>
+            previous.queueState.queueIndex != current.queueState.queueIndex,
+        buildWhen: (previous, current) {
+          return previous.queueState.queueIndex !=
+              current.queueState.queueIndex;
+        },
+        builder: (context, state) {
+          return SizedBox(
+            height: 56,
+            child: NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification notification) {
+                if (notification.depth == 0 &&
+                    notification is ScrollUpdateNotification) {
+                  final PageMetrics metrics =
+                      notification.metrics as PageMetrics;
+                  final int currentPage = metrics.page!.round();
+                  if (currentPage != state.queueState.queueIndex) {
+                    context.readMediaPlayerCubit.skipToIndex(currentPage);
+                  }
+                }
+                return false;
+              },
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: queueState.queue.length,
+                itemBuilder: (context, index) {
+                  final media = queueState.queue[index];
+                  final title = media.displayTitle ?? '';
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 24,
+                        child: AnimatedText(
+                          title,
+                          key: ValueKey(media.id),
+                          minFontSize: 16,
+                          maxFontSize: 16,
+                          maxLines: 1,
+                          style: context.textTheme.headlineSmall,
+                        ),
+                      ),
+                      buildSubtitle(),
+                    ],
+                  );
+                },
+              ),
+            ),
+          );
+        },
       );
     }
 
@@ -134,8 +169,13 @@ class _MiniPlayerState extends State<MiniPlayer> {
       contentPadding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 4),
       leading: buildLeading(),
       title: buildTitle(),
-      subtitle: buildSubtitle(),
       trailing: buildTrailing(),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
   }
 }

@@ -20,6 +20,7 @@ class LibraryAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
+      centerTitle: true,
       elevation: 0,
       scrolledUnderElevation: 10,
       stretch: true,
@@ -28,22 +29,6 @@ class LibraryAppBar extends StatelessWidget {
       collapsedHeight: kToolbarHeight,
       flexibleSpace: LayoutBuilder(builder: (context, constraints) {
         final imageHeight = constraints.maxHeight * 0.5;
-
-        final containerHeight =
-            ((constraints.maxHeight - kToolbarHeight - kSliverExpandedHeight) +
-                    kFindInPlaylistHeight)
-                .clamp(0, kFindInPlaylistHeight)
-                .toDouble();
-        if (state.needSearchBar) {
-          if (containerHeight == 0 ||
-              constraints.maxHeight == kSliverExpandedHeight) {
-            LibraryCubit.of(context).toggleAppbarExpanded(false);
-          }
-
-          if (constraints.maxHeight > 440) {
-            LibraryCubit.of(context).toggleAppbarExpanded(true);
-          }
-        }
 
         return AnimatedContainer(
           duration: kThemeAnimationDuration,
@@ -56,38 +41,30 @@ class LibraryAppBar extends StatelessWidget {
             ),
           ),
           child: FlexibleSpaceBar(
+            centerTitle: true,
             title: state.showTitleInAppBar
                 ? Text(state.title, style: context.textTheme.headlineSmall)
                 : null,
-            collapseMode: CollapseMode.none,
+            collapseMode: CollapseMode.pin,
             background: AnimatedContainer(
               duration: kThemeAnimationDuration,
-              padding: EdgeInsets.only(
-                top: kToolbarHeight +
-                    (state.isAppbarExpanded ? padding.top : 24),
-              ),
+              padding: EdgeInsets.only(top: kToolbarHeight + padding.top),
               child: Column(
                 children: [
-                  AnimatedOpacity(
-                    duration: kThemeAnimationDuration,
-                    opacity: state.isAppbarExpanded
-                        ? containerHeight / kFindInPlaylistHeight
-                        : 0,
-                    child: Container(
-                      height: containerHeight,
-                      width: context.width * 0.85,
-                      alignment: Alignment.topCenter,
-                      child: SizedBox(
-                        height: 32,
-                        child: Row(
-                          verticalDirection: VerticalDirection.down,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(child: FindInPlaylist(state: state)),
-                            const SizedBox(width: 8),
-                            const SortByToggle(),
-                          ],
-                        ),
+                  Container(
+                    height: 64,
+                    width: context.width * 0.85,
+                    alignment: Alignment.topCenter,
+                    child: SizedBox(
+                      height: 32,
+                      child: Row(
+                        verticalDirection: VerticalDirection.down,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(child: FindInPlaylist(state: state)),
+                          const SizedBox(width: 8),
+                          const SortByToggle(),
+                        ],
                       ),
                     ),
                   ),
