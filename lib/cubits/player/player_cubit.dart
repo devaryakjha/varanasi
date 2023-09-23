@@ -121,7 +121,6 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
   Future<void> skipToNext() => audioHandler.skipToNext();
 
   Future<void> skipToIndex(int index) async {
-    if (index == state.queueState.queueIndex) return;
     await audioHandler.skipToQueueItem(index);
     if (!audioHandler.player.playing) {
       await play();
@@ -131,10 +130,11 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
   Future<void> skipToMediaItem(PlayableMedia mediaItem) async {
     final index = state.queueState.queue.indexOf(mediaItem.toMediaItem());
     if (index == -1) return;
-    final configCubit = configCubitGetter();
-    final controller = configCubit.miniPlayerPageController;
     await skipToIndex(index);
-    controller?.animateToPage(index);
+  }
+
+  Future<void> seek(Duration position) {
+    return audioHandler.seek(position);
   }
 
   @override
@@ -160,6 +160,12 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
       if (value.$2 != null) {
         palette = await configCubitGetter()
             .generatePalleteGenerator(value.$2?.artUri.toString() ?? '');
+        final configCubit = configCubitGetter();
+        final controller = configCubit.miniPlayerPageController;
+        final carouselController = configCubit.playerPageController;
+        final index = value.$3.queueIndex ?? 0;
+        controller?.animateToPage(index);
+        carouselController?.animateToPage(index);
       } else {
         palette = null;
       }
@@ -181,10 +187,5 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
   MediaColorPalette? get mediaColorPalette {
     if (state.paletteGenerator == null) return null;
     return MediaColorPalette.fromPaletteGenerator(state.paletteGenerator!);
-  }
-
-  void recreateMiniPlayerController() {
-    final currentIndex = state.queueState.queueIndex;
-    configCubitGetter().recreateMiniPlayerController(currentIndex);
   }
 }

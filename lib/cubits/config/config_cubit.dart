@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_controller.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:varanasi_mobile_app/models/app_config.dart';
 import 'package:varanasi_mobile_app/models/sort_type.dart';
 import 'package:varanasi_mobile_app/utils/logger.dart';
@@ -27,8 +28,12 @@ class ConfigCubit extends Cubit<ConfigState> {
     } else {
       logger.i('Config box is not empty');
     }
-    emit(ConfigLoaded(config: _configBox.values.first));
-    recreateMiniPlayerController();
+    emit(ConfigLoaded(
+      config: _configBox.values.first,
+      panelController: PanelController(),
+      playerPageController: CarouselController(),
+      miniPlayerPageController: CarouselController(),
+    ));
   }
 
   Stream<SortBy> get sortTypeStream => stream.map(
@@ -42,7 +47,7 @@ class ConfigCubit extends Cubit<ConfigState> {
     if (state is ConfigLoaded) {
       final config = (state as ConfigLoaded).config.copyWith(sortBy: sortBy);
       _configBox.putAt(0, config);
-      emit(ConfigLoaded(config: config));
+      emit(ConfigLoaded(config: config, panelController: PanelController()));
     }
   }
 
@@ -75,15 +80,7 @@ class ConfigCubit extends Cubit<ConfigState> {
       ? (state as ConfigLoaded).miniPlayerPageController
       : null;
 
-  void recreateMiniPlayerController(
-      [int? initialPage, double? viewportFraction]) {
-    if (state is ConfigLoaded) {
-      final config = (state as ConfigLoaded);
-      final controller = CarouselController();
-      final newConfig = config.copyWith(
-        miniPlayerPageController: controller,
-      );
-      emit(newConfig);
-    }
-  }
+  CarouselController? get playerPageController => (state is ConfigLoaded)
+      ? (state as ConfigLoaded).playerPageController
+      : null;
 }

@@ -12,22 +12,34 @@ final class ConfigInitial extends ConfigState {}
 
 final class ConfigLoaded extends ConfigState {
   final AppConfig config;
-  final CarouselController? miniPlayerPageController;
+  final CarouselController? miniPlayerPageController, playerPageController;
+  final PanelController panelController;
 
   const ConfigLoaded({
     required this.config,
     this.miniPlayerPageController,
+    this.playerPageController,
+    required this.panelController,
   });
 
   @override
-  List<Object?> get props => [config, miniPlayerPageController];
+  List<Object?> get props => [
+        config,
+        miniPlayerPageController,
+        panelController,
+        playerPageController,
+      ];
 
   ConfigLoaded copyWith({
     AppConfig? config,
     CarouselController? miniPlayerPageController,
+    CarouselController? playerPageController,
+    PanelController? panelController,
   }) {
     return ConfigLoaded(
       config: config ?? this.config,
+      playerPageController: playerPageController ?? this.playerPageController,
+      panelController: panelController ?? this.panelController,
       miniPlayerPageController:
           miniPlayerPageController ?? this.miniPlayerPageController,
     );

@@ -19,10 +19,13 @@ class Title extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.select((ConfigCubit cubit) =>
-        cubit.state is ConfigLoaded
-            ? (cubit.state as ConfigLoaded).miniPlayerPageController
-            : null);
+    final (controller, playerController) = context.select((ConfigCubit cubit) {
+      if (cubit.state is! ConfigLoaded) return (null, null);
+      return (
+        (cubit.state as ConfigLoaded).miniPlayerPageController,
+        (cubit.state as ConfigLoaded).playerPageController
+      );
+    });
     return SizedBox(
       height: 40,
       child: CarouselSlider.builder(
@@ -70,9 +73,14 @@ class Title extends StatelessWidget {
           initialPage: queueState.queueIndex ?? 0,
           height: 40,
           viewportFraction: 1.0,
+          enableInfiniteScroll: false,
           onPageChanged: (index, reason) {
             if (reason == CarouselPageChangedReason.manual) {
               context.read<MediaPlayerCubit>().skipToIndex(index);
+              playerController?.jumpToPage(index);
+            }
+            if (reason == CarouselPageChangedReason.controller) {
+              playerController?.jumpToPage(index);
             }
           },
         ),

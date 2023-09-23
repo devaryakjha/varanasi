@@ -40,4 +40,23 @@ class MediaPlayerState extends Equatable {
         queueState,
         paletteGenerator
       ];
+
+  Gradient? get gradient {
+    if (paletteGenerator == null) return null;
+    final palette = paletteGenerator!;
+    final PaletteColor? selectedColor = palette.darkVibrantColor ??
+        palette.darkMutedColor ??
+        palette.dominantColor;
+    final Color? color1 = selectedColor?.color.withOpacity(1);
+    const Color color2 = Colors.black;
+    return LinearGradient(
+      colors: [
+        color1 ?? color2,
+        color2,
+      ],
+      begin: Alignment.topCenter,
+      end: FractionalOffset.bottomCenter,
+      stops: const [0, 0.8],
+    );
+  }
 }
