@@ -2,12 +2,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
 import 'package:varanasi_mobile_app/utils/extensions/media_query.dart';
-import 'package:varanasi_mobile_app/widgets/seek_bar.dart';
+import 'package:varanasi_mobile_app/widgets/play_pause_button.dart';
+
+import 'audio_seekbar.dart';
+import 'media_info.dart';
+import 'repeat_toggle.dart';
+import 'shuffle_mode_toggle.dart';
+import 'skip_to_next.dart';
+import 'skip_to_previous.dart';
 
 class Player extends StatefulWidget {
   const Player({super.key, required this.panelController});
@@ -28,6 +34,7 @@ class _PlayerState extends State<Player> {
         .select((MediaPlayerCubit cubit) => (cubit.state, cubit.audioHandler));
     final queueState = state.queueState;
     final queue = queueState.queue;
+    final mediaItem = queue[queueState.queueIndex ?? 0];
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -76,26 +83,30 @@ class _PlayerState extends State<Player> {
                 ),
               ),
             ),
-            StreamBuilder(
-              stream: Rx.combineLatest2(
-                audioHandler.player.positionStream,
-                audioHandler.mediaItem,
-                (a, b) => (a, b),
-              ),
-              builder: (context, snapshot) {
-                final position = snapshot.data?.$1 ?? Duration.zero;
-                final media = snapshot.data?.$2;
-                return SeekBar(
-                  key: ValueKey('${media?.id}seekbar'),
-                  color: Colors.white,
-                  duration: media?.duration ?? Duration.zero,
-                  position: position,
-                  onChangeEnd: (value) {
-                    context.read<MediaPlayerCubit>().seek(value);
+            MediaInfo(mediaItem: mediaItem),
+            AudioSeekbar(audioHandler: audioHandler),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ShuffleModeToggle(audioHandler: audioHandler),
+                SkipToPrevious(queueState: queueState),
+                PlayPauseMediaButton(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                  onPressed: () {
+                    if (state.isPlaying) {
+                      context.read<MediaPlayerCubit>().pause();
+                    } else {
+                      context.read<MediaPlayerCubit>().play();
+                    }
                   },
-                );
-              },
-            ),
+                  isPlaying: state.isPlaying,
+                ),
+                SkipToNext(queueState: queueState),
+                RepeatToggle(audioHandler: audioHandler),
+              ],
+            )
           ],
         ),
       ),
