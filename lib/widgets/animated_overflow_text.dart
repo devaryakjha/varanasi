@@ -223,6 +223,7 @@ class AnimatedText extends StatelessWidget {
       showFadingOnlyWhenScrolling: true,
       fadingEdgeStartFraction: 0.1,
       fadingEdgeEndFraction: 0.1,
+      style: style?.copyWith(fontSize: maxFontSize),
     );
   }
 

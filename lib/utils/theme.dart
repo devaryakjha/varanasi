@@ -12,6 +12,7 @@ final lightTheme = FlexThemeData.light(
   useMaterial3: true,
   textTheme: GoogleFonts.openSansTextTheme(),
   surfaceTint: Colors.transparent,
+  platform: TargetPlatform.iOS,
 );
 
 final darkTheme = FlexThemeData.dark(
@@ -23,4 +24,5 @@ final darkTheme = FlexThemeData.dark(
   useMaterial3: true,
   textTheme: GoogleFonts.openSansTextTheme(),
   surfaceTint: Colors.transparent,
+  platform: TargetPlatform.iOS,
 );

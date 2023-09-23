@@ -5,7 +5,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
@@ -15,6 +17,7 @@ import 'package:varanasi_mobile_app/utils/mixins/cachable_mixin.dart';
 import 'package:varanasi_mobile_app/utils/mixins/repository_protocol.dart';
 import 'package:varanasi_mobile_app/utils/player/audio_handler_impl.dart';
 import 'package:varanasi_mobile_app/utils/player/typings.dart';
+import 'package:varanasi_mobile_app/utils/safe_animate_to_pageview.dart';
 import 'package:varanasi_mobile_app/utils/services/http_services.dart';
 
 part 'player_state.dart';
@@ -24,12 +27,35 @@ extension MediaPlayerCubitExtension on BuildContext {
   MediaPlayerCubit get selectMediaPlayerCubit => watch<MediaPlayerCubit>();
 }
 
+class MediaColorPalette {
+  final Color? backgroundColor;
+  final Color? foregroundColor;
+
+  const MediaColorPalette({
+    this.backgroundColor,
+    this.foregroundColor,
+  });
+
+  factory MediaColorPalette.fromPaletteGenerator(PaletteGenerator palette) {
+    final PaletteColor? selectedColor = palette.darkVibrantColor ??
+        palette.darkMutedColor ??
+        palette.dominantColor;
+    final Color? backgroundColor = selectedColor?.color.withOpacity(1);
+    final Color? foregroundColor = selectedColor?.bodyTextColor.withOpacity(1);
+    return MediaColorPalette(
+      backgroundColor: backgroundColor,
+      foregroundColor: foregroundColor,
+    );
+  }
+}
+
 class MediaPlayerCubit extends AppCubit<MediaPlayerState>
     with DataProviderProtocol, CacheableService {
+  final ConfigCubit Function() configCubitGetter;
   late final AudioHandlerImpl audioHandler;
   late final Box _box;
 
-  MediaPlayerCubit() : super(const MediaPlayerState());
+  MediaPlayerCubit(this.configCubitGetter) : super(const MediaPlayerState());
 
   Future<void> playFromMediaPlaylist<T extends PlayableMedia>(
     MediaPlaylist<T> playlist, [
@@ -105,7 +131,11 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
   Future<void> skipToMediaItem(PlayableMedia mediaItem) async {
     final index = state.queueState.queue.indexOf(mediaItem.toMediaItem());
     if (index == -1) return;
-    return skipToIndex(index);
+    await skipToIndex(index);
+  }
+
+  Future<void> seek(Duration position) {
+    return audioHandler.seek(position);
   }
 
   @override
@@ -126,11 +156,25 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
       audioHandler.mediaItem.stream,
       audioHandler.queueState,
       (playing, mediaItem, queueState) => (playing, mediaItem, queueState),
-    ).distinct().listen((value) {
+    ).distinct().listen((value) async {
+      PaletteGenerator? palette;
+      if (value.$2 != null) {
+        palette = await configCubitGetter()
+            .generatePalleteGenerator(value.$2?.artUri.toString() ?? '');
+        final configCubit = configCubitGetter();
+        final controller = configCubit.miniPlayerPageController;
+        final carouselController = configCubit.playerPageController;
+        final index = value.$3.queueIndex ?? 0;
+        animateToPage(index, controller);
+        animateToPage(index, carouselController);
+      } else {
+        palette = null;
+      }
       emit(state.copyWith(
         isPlaying: value.$1,
         currentMediaItem: value.$2,
         queueState: value.$3,
+        paletteGenerator: palette,
       ));
     });
   }
@@ -140,4 +184,9 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
 
   @override
   String get cacheBoxName => AppStrings.commonCacheBoxName;
+
+  MediaColorPalette? get mediaColorPalette {
+    if (state.paletteGenerator == null) return null;
+    return MediaColorPalette.fromPaletteGenerator(state.paletteGenerator!);
+  }
 }
