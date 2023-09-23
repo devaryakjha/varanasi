@@ -43,7 +43,9 @@ class PageWithNavbar extends HookWidget {
               collapsed: MiniPlayer(panelController: controller),
               minHeight: 56,
               maxHeight: context.height,
-              panel: Player(panelController: controller),
+              panel: position > 0
+                  ? Player(panelController: controller)
+                  : const SizedBox.shrink(),
               onPanelSlide: (pos) => positionState.value = pos,
             ),
         ],
