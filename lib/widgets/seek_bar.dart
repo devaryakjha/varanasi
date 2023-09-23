@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:varanasi_mobile_app/utils/extensions/theme.dart';
 
@@ -22,18 +24,18 @@ class SeekBar extends StatefulWidget {
 }
 
 class SeekBarState extends State<SeekBar> {
-  late double _dragValue;
-
-  @override
-  void initState() {
-    super.initState();
-    _dragValue = widget.position.inMilliseconds.toDouble();
-  }
+  double? _dragValue;
+  bool _dragging = false;
 
   @override
   Widget build(BuildContext context) {
-    final value = _dragValue;
-    final position = Duration(milliseconds: value.round());
+    final value = min(
+      _dragValue ?? widget.position.inMilliseconds.toDouble(),
+      widget.duration.inMilliseconds.toDouble(),
+    );
+    if (_dragValue != null && !_dragging) {
+      _dragValue = null;
+    }
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -43,14 +45,16 @@ class SeekBarState extends State<SeekBar> {
               context.colorScheme.primary.withOpacity(0.25),
           max: widget.duration.inMilliseconds.toDouble(),
           value: value,
+          onChangeStart: (value) {
+            _dragging = true;
+          },
           onChanged: (value) {
-            setState(() {
-              _dragValue = value;
-            });
+            setState(() => _dragValue = value);
             widget.onChanged?.call(Duration(milliseconds: value.round()));
           },
           onChangeEnd: (value) {
             widget.onChangeEnd?.call(Duration(milliseconds: value.round()));
+            _dragging = false;
           },
         ),
         Positioned(
@@ -62,7 +66,7 @@ class SeekBarState extends State<SeekBar> {
             children: [
               Text(
                 RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
-                        .firstMatch("$position")
+                        .firstMatch("${widget.position}")
                         ?.group(1) ??
                     '$_remaining',
                 style: Theme.of(context)
@@ -84,6 +88,5 @@ class SeekBarState extends State<SeekBar> {
     );
   }
 
-  Duration get _remaining =>
-      widget.duration - Duration(milliseconds: _dragValue.round());
+  Duration get _remaining => widget.duration - widget.position;
 }

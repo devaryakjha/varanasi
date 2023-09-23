@@ -90,7 +90,7 @@ class _PlayerState extends State<Player> {
                   color: Colors.white,
                   duration: media?.duration ?? Duration.zero,
                   position: position,
-                  onChanged: (value) {
+                  onChangeEnd: (value) {
                     context.read<MediaPlayerCubit>().seek(value);
                   },
                 );
