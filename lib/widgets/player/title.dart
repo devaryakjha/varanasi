@@ -5,6 +5,7 @@ import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
 import 'package:varanasi_mobile_app/utils/extensions/theme.dart';
 import 'package:varanasi_mobile_app/utils/player/typings.dart';
+import 'package:varanasi_mobile_app/utils/safe_animate_to_pageview.dart';
 import 'package:varanasi_mobile_app/widgets/animated_overflow_text.dart';
 
 class Title extends StatelessWidget {
@@ -78,9 +79,10 @@ class Title extends StatelessWidget {
             if (reason == CarouselPageChangedReason.manual) {
               context.read<MediaPlayerCubit>().skipToIndex(index);
               playerController?.jumpToPage(index);
+              animateToPage(index, playerController);
             }
             if (reason == CarouselPageChangedReason.controller) {
-              playerController?.jumpToPage(index);
+              animateToPage(index, playerController);
             }
           },
         ),

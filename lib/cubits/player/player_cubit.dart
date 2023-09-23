@@ -17,6 +17,7 @@ import 'package:varanasi_mobile_app/utils/mixins/cachable_mixin.dart';
 import 'package:varanasi_mobile_app/utils/mixins/repository_protocol.dart';
 import 'package:varanasi_mobile_app/utils/player/audio_handler_impl.dart';
 import 'package:varanasi_mobile_app/utils/player/typings.dart';
+import 'package:varanasi_mobile_app/utils/safe_animate_to_pageview.dart';
 import 'package:varanasi_mobile_app/utils/services/http_services.dart';
 
 part 'player_state.dart';
@@ -164,8 +165,8 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
         final controller = configCubit.miniPlayerPageController;
         final carouselController = configCubit.playerPageController;
         final index = value.$3.queueIndex ?? 0;
-        controller?.animateToPage(index);
-        carouselController?.animateToPage(index);
+        animateToPage(index, controller);
+        animateToPage(index, carouselController);
       } else {
         palette = null;
       }
