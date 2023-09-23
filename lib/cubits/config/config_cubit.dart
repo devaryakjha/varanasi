@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_controller.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:palette_generator/palette_generator.dart';
@@ -27,6 +28,7 @@ class ConfigCubit extends Cubit<ConfigState> {
       logger.i('Config box is not empty');
     }
     emit(ConfigLoaded(config: _configBox.values.first));
+    recreateMiniPlayerController();
   }
 
   Stream<SortBy> get sortTypeStream => stream.map(
@@ -66,6 +68,22 @@ class ConfigCubit extends Cubit<ConfigState> {
       return paletteGenerator;
     } catch (e) {
       return null;
+    }
+  }
+
+  CarouselController? get miniPlayerPageController => (state is ConfigLoaded)
+      ? (state as ConfigLoaded).miniPlayerPageController
+      : null;
+
+  void recreateMiniPlayerController(
+      [int? initialPage, double? viewportFraction]) {
+    if (state is ConfigLoaded) {
+      final config = (state as ConfigLoaded);
+      final controller = CarouselController();
+      final newConfig = config.copyWith(
+        miniPlayerPageController: controller,
+      );
+      emit(newConfig);
     }
   }
 }

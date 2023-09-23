@@ -23,7 +23,8 @@ class Varanasi extends StatelessWidget {
             ),
             BlocProvider(
               lazy: false,
-              create: (context) => MediaPlayerCubit()..init(),
+              create: (context) =>
+                  MediaPlayerCubit(() => context.read<ConfigCubit>())..init(),
             ),
           ],
           child: MaterialApp.router(

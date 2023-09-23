@@ -66,6 +66,7 @@ dependencies:
   auto_size_text: ^3.0.0
   audio_session: ^0.1.16
   marquee: ^2.2.3
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:
