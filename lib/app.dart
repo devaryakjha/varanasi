@@ -19,7 +19,7 @@ class Varanasi extends StatelessWidget {
           providers: [
             BlocProvider(
               lazy: false,
-              create: (context) => ConfigCubit()..initialise(),
+              create: (context) => ConfigCubit()..init(),
             ),
             BlocProvider(
               lazy: false,

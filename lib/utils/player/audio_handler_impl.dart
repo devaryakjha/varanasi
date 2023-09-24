@@ -2,6 +2,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 
 import 'typings.dart';
 
@@ -103,12 +104,12 @@ final class AudioHandlerImpl extends BaseAudioHandler
     await _player.setVolume(volume);
   }
 
-  AudioHandlerImpl([AudioPlayer? player]) {
+  AudioHandlerImpl(ConfigCubit configCubit, [AudioPlayer? player]) {
     _player = player ?? AudioPlayer();
-    _init();
+    _init(configCubit);
   }
 
-  void _init() async {
+  void _init(ConfigCubit configCubit) async {
     /// setup audio session
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.music());
@@ -117,6 +118,13 @@ final class AudioHandlerImpl extends BaseAudioHandler
     speed.debounceTime(const Duration(milliseconds: 250)).listen((speed) {
       playbackState.add(playbackState.value.copyWith(speed: speed));
     });
+    // Load and broadcast the initial queue
+    final savedPlaylist = configCubit.savedPlaylist;
+    final initialIndex = configCubit.savedPlaylistIndex ?? 0;
+    final initialPosition = configCubit.savedPosition ?? Duration.zero;
+    if (savedPlaylist != null) {
+      await updateQueue(savedPlaylist.mediaItemsAsMediaItems);
+    }
     // Broadcast media item changes.
     Rx.combineLatest4(
       _player.currentIndexStream,
@@ -148,7 +156,8 @@ final class AudioHandlerImpl extends BaseAudioHandler
     }).pipe(queue);
     // Load the playlist.
     _playlist.addAll(queue.value.map(_itemToSource).toList());
-    await _player.setAudioSource(_playlist);
+    await _player.setAudioSource(_playlist,
+        initialIndex: initialIndex, initialPosition: initialPosition);
   }
 
   AudioSource _itemToSource(MediaItem mediaItem) {
