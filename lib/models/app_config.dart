@@ -10,17 +10,24 @@ part 'app_config.g.dart';
 class AppConfig extends HiveObject with EquatableMixin {
   @HiveField(0)
   final SortBy sortBy;
+  @HiveField(1)
+  final int repeatMode;
 
-  AppConfig({this.sortBy = SortBy.custom});
+  AppConfig({
+    this.sortBy = SortBy.custom,
+    this.repeatMode = 0,
+  });
 
   @override
-  List<Object?> get props => [sortBy];
+  List<Object?> get props => [sortBy, repeatMode];
 
   AppConfig copyWith({
     SortBy? sortBy,
+    int? repeatMode,
   }) {
     return AppConfig(
       sortBy: sortBy ?? this.sortBy,
+      repeatMode: repeatMode ?? this.repeatMode,
     );
   }
 }

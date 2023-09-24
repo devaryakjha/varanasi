@@ -6,6 +6,7 @@ import 'app_config.dart';
 import 'artist.dart';
 import 'download_url.dart';
 import 'image.dart';
+import 'media_playlist.dart';
 import 'playlist.dart';
 import 'primary_artist.dart';
 import 'song.dart';
@@ -20,4 +21,5 @@ void registerCommonTypeAdapters() {
   Hive.registerAdapter<PrimaryArtist>(PrimaryArtistAdapter());
   Hive.registerAdapter<Song>(SongAdapter());
   Hive.registerAdapter<DownloadUrl>(DownloadUrlAdapter());
+  Hive.registerAdapter<MediaPlaylist>(MediaPlaylistAdapter());
 }

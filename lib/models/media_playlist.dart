@@ -1,14 +1,23 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:audio_service/audio_service.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:varanasi_mobile_app/models/image.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 
+part 'media_playlist.g.dart';
+
+@HiveType(typeId: 15)
 class MediaPlaylist<T extends PlayableMedia> extends Equatable {
+  @HiveField(0)
   final String? id;
+  @HiveField(1)
   final String? title;
+  @HiveField(2)
   final String? description;
+  @HiveField(3)
   final List<T>? mediaItems;
+  @HiveField(4)
   final List<Image> images;
 
   /// Default constructor for [MediaPlaylist].
@@ -35,7 +44,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
     String? id,
   }) =>
       MediaPlaylist(
-        title: 'Popular Today',
+        title: "Today's biggest hits",
         mediaItems: mediaItems,
         description: description,
         id: id,
@@ -50,7 +59,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
     String? id,
   }) =>
       MediaPlaylist(
-        title: 'Albums',
+        title: 'Top Albums',
         mediaItems: mediaItems,
         description: description,
         id: id,
@@ -65,7 +74,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
     String? id,
   }) =>
       MediaPlaylist(
-        title: 'Playlists',
+        title: 'Recommended for today',
         mediaItems: mediaItems,
         description: description,
         id: id,

@@ -1,13 +1,21 @@
+import 'dart:async';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
+import 'package:varanasi_mobile_app/models/app_config.dart';
+import 'package:varanasi_mobile_app/utils/constants/strings.dart';
 
 import 'typings.dart';
 
 final class AudioHandlerImpl extends BaseAudioHandler
     implements AudioPlayerHandler {
   late final AudioPlayer _player;
+
+  final ConfigCubit configCubit;
 
   final _playlist = ConcatenatingAudioSource(children: []);
 
@@ -103,7 +111,7 @@ final class AudioHandlerImpl extends BaseAudioHandler
     await _player.setVolume(volume);
   }
 
-  AudioHandlerImpl([AudioPlayer? player]) {
+  AudioHandlerImpl(this.configCubit, [AudioPlayer? player]) {
     _player = player ?? AudioPlayer();
     _init();
   }
@@ -117,6 +125,18 @@ final class AudioHandlerImpl extends BaseAudioHandler
     speed.debounceTime(const Duration(milliseconds: 250)).listen((speed) {
       playbackState.add(playbackState.value.copyWith(speed: speed));
     });
+    // Load config from shared preferences.
+    final box = Hive.box<AppConfig>(AppStrings.configBoxName);
+    final value = box.values.first;
+    final repeatMode = value.repeatMode;
+    await setRepeatMode(AudioServiceRepeatMode.values[repeatMode]);
+    // Load and broadcast the initial queue
+    final savedPlaylist = configCubit.savedPlaylist;
+    final initialIndex = configCubit.savedPlaylistIndex ?? 0;
+    final initialPosition = configCubit.savedPosition ?? Duration.zero;
+    if (savedPlaylist != null) {
+      await updateQueue(savedPlaylist.mediaItemsAsMediaItems);
+    }
     // Broadcast media item changes.
     Rx.combineLatest4(
       _player.currentIndexStream,
@@ -148,7 +168,8 @@ final class AudioHandlerImpl extends BaseAudioHandler
     }).pipe(queue);
     // Load the playlist.
     _playlist.addAll(queue.value.map(_itemToSource).toList());
-    await _player.setAudioSource(_playlist);
+    await _player.setAudioSource(_playlist,
+        initialIndex: initialIndex, initialPosition: initialPosition);
   }
 
   AudioSource _itemToSource(MediaItem mediaItem) {
@@ -228,6 +249,9 @@ final class AudioHandlerImpl extends BaseAudioHandler
     await _player.stop();
     await playbackState.firstWhere(
         (state) => state.processingState == AudioProcessingState.idle);
+    configCubit.clearCurrentPlaylist();
+    configCubit.clearCurrentPlaylistIndex();
+    configCubit.clearCurrentPosition();
   }
 
   /// Broadcasts the current state to all clients.

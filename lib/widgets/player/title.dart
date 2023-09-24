@@ -78,7 +78,6 @@ class Title extends StatelessWidget {
           onPageChanged: (index, reason) {
             if (reason == CarouselPageChangedReason.manual) {
               context.read<MediaPlayerCubit>().skipToIndex(index);
-              playerController?.jumpToPage(index);
               animateToPage(index, playerController);
             }
             if (reason == CarouselPageChangedReason.controller) {

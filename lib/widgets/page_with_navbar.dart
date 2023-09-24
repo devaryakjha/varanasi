@@ -29,11 +29,15 @@ class PageWithNavbar extends HookWidget {
             : null);
     final queue = context
         .select((MediaPlayerCubit cubit) => cubit.state.queueState.queue);
+    final showPlayer = controller != null && queue.isNotEmpty;
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(child: child),
-          if (controller != null && queue.isNotEmpty)
+          Positioned.fill(
+            bottom: showPlayer ? 56 : 0,
+            child: child,
+          ),
+          if (showPlayer)
             SlidingUpPanel(
               controller: controller,
               renderPanelSheet: false,
