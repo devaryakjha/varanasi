@@ -32,22 +32,22 @@ class ConfigCubit extends AppCubit<ConfigState> {
       _configBox.add(AppConfig());
     } else {
       logger.i('Config box is not empty');
-      _configBox.watch().listen((event) {
-        final config = event.value;
-        if (config is! AppConfig) return;
-        logger.i('Config box is changed with $config');
-        if (state is ConfigLoaded) {
-          emit((state as ConfigLoaded).copyWith(config: config));
-        } else {
-          emit(ConfigLoaded(
-            config: config,
-            panelController: PanelController(),
-            playerPageController: CarouselController(),
-            miniPlayerPageController: CarouselController(),
-          ));
-        }
-      });
     }
+    _configBox.watch().listen((event) {
+      final config = event.value;
+      if (config is! AppConfig) return;
+      logger.i('Config box is changed with $config');
+      if (state is ConfigLoaded) {
+        emit((state as ConfigLoaded).copyWith(config: config));
+      } else {
+        emit(ConfigLoaded(
+          config: config,
+          panelController: PanelController(),
+          playerPageController: CarouselController(),
+          miniPlayerPageController: CarouselController(),
+        ));
+      }
+    });
     emit(ConfigLoaded(
       config: _configBox.values.single,
       panelController: PanelController(),
@@ -151,20 +151,8 @@ class ConfigCubit extends AppCubit<ConfigState> {
     await _configBox.putAt(0, config);
   }
 
-  Future<void> saveShuffleMode(int mode) async {
-    if (this.state is! ConfigLoaded) return;
-    final state = this.state as ConfigLoaded;
-    final config = state.config.copyWith(shuffleMode: mode);
-    await _configBox.putAt(0, config);
-  }
-
   AudioServiceRepeatMode get repeatMode {
     if (_configBox.isEmpty) return AudioServiceRepeatMode.none;
     return AudioServiceRepeatMode.values[_configBox.values.first.repeatMode];
-  }
-
-  AudioServiceShuffleMode get shuffleMode {
-    if (_configBox.isEmpty) return AudioServiceShuffleMode.none;
-    return AudioServiceShuffleMode.values[_configBox.values.single.shuffleMode];
   }
 }

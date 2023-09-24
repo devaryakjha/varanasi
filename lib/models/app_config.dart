@@ -12,27 +12,22 @@ class AppConfig extends HiveObject with EquatableMixin {
   final SortBy sortBy;
   @HiveField(1)
   final int repeatMode;
-  @HiveField(2)
-  final int shuffleMode;
 
   AppConfig({
     this.sortBy = SortBy.custom,
     this.repeatMode = 0,
-    this.shuffleMode = 0,
   });
 
   @override
-  List<Object?> get props => [sortBy, repeatMode, shuffleMode];
+  List<Object?> get props => [sortBy, repeatMode];
 
   AppConfig copyWith({
     SortBy? sortBy,
     int? repeatMode,
-    int? shuffleMode,
   }) {
     return AppConfig(
       sortBy: sortBy ?? this.sortBy,
       repeatMode: repeatMode ?? this.repeatMode,
-      shuffleMode: shuffleMode ?? this.shuffleMode,
     );
   }
 }

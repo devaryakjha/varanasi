@@ -19,20 +19,17 @@ class AppConfigAdapter extends TypeAdapter<AppConfig> {
     return AppConfig(
       sortBy: fields[0] as SortBy,
       repeatMode: fields[1] as int,
-      shuffleMode: fields[2] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, AppConfig obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(2)
       ..writeByte(0)
       ..write(obj.sortBy)
       ..writeByte(1)
-      ..write(obj.repeatMode)
-      ..writeByte(2)
-      ..write(obj.shuffleMode);
+      ..write(obj.repeatMode);
   }
 
   @override
