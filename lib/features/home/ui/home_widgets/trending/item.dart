@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/extensions/strings.dart';
 import 'package:varanasi_mobile_app/utils/extensions/theme.dart';
@@ -18,7 +19,9 @@ class TrendingItem extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(4),
         onTap: switch (media.itemType) {
-          PlayableMediaType.song => () {},
+          PlayableMediaType.song => () {
+              context.readMediaPlayerCubit.playFromSong(media);
+            },
           _ => () => context.push(AppRoutes.library.path, extra: media),
         },
         child: Container(
