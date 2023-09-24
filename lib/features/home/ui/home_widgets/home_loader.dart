@@ -6,22 +6,20 @@ class HomePageLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
-      child: SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              DataList(),
-              SizedBox(height: 48),
-              LibraryLoader(),
-              SizedBox(height: 48),
-              LibraryLoader(),
-              SizedBox(height: 48),
-              LibraryLoader(),
-            ],
-          ),
+    return const SingleChildScrollView(
+      physics: NeverScrollableScrollPhysics(),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          children: [
+            DataList(),
+            SizedBox(height: 48),
+            LibraryLoader(),
+            SizedBox(height: 48),
+            LibraryLoader(),
+            SizedBox(height: 48),
+            LibraryLoader(),
+          ],
         ),
       ),
     );
