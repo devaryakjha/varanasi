@@ -1,7 +1,8 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:equatable/equatable.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:varanasi_mobile_app/models/app_config.dart';
@@ -14,7 +15,8 @@ import 'package:varanasi_mobile_app/utils/logger.dart';
 part 'config_state.dart';
 
 class ConfigCubit extends AppCubit<ConfigState> {
-  late final Box<AppConfig> _configBox;
+  final Box<AppConfig> _configBox =
+      Hive.box<AppConfig>(AppStrings.configBoxName);
   final Box _cacheBox = Hive.box(AppStrings.commonCacheBoxName);
   final Map<String, CachedNetworkImageProvider> _imageProviderCache = {};
   late final Expando<PaletteGenerator> _paletteGeneratorExpando;
@@ -25,15 +27,29 @@ class ConfigCubit extends AppCubit<ConfigState> {
   @override
   void init() async {
     _paletteGeneratorExpando = Expando<PaletteGenerator>();
-    _configBox = await Hive.openBox<AppConfig>('config');
     if (_configBox.isEmpty) {
       logger.i('Config box is empty');
       _configBox.add(AppConfig());
     } else {
       logger.i('Config box is not empty');
+      _configBox.watch().listen((event) {
+        final config = event.value;
+        if (config is! AppConfig) return;
+        logger.i('Config box is changed with $config');
+        if (state is ConfigLoaded) {
+          emit((state as ConfigLoaded).copyWith(config: config));
+        } else {
+          emit(ConfigLoaded(
+            config: config,
+            panelController: PanelController(),
+            playerPageController: CarouselController(),
+            miniPlayerPageController: CarouselController(),
+          ));
+        }
+      });
     }
     emit(ConfigLoaded(
-      config: _configBox.values.first,
+      config: _configBox.values.single,
       panelController: PanelController(),
       playerPageController: CarouselController(),
       miniPlayerPageController: CarouselController(),
@@ -51,7 +67,6 @@ class ConfigCubit extends AppCubit<ConfigState> {
     if (state is ConfigLoaded) {
       final config = (state as ConfigLoaded).config.copyWith(sortBy: sortBy);
       _configBox.putAt(0, config);
-      emit(ConfigLoaded(config: config, panelController: PanelController()));
     }
   }
 
@@ -127,5 +142,29 @@ class ConfigCubit extends AppCubit<ConfigState> {
     final milliseconds = _cacheBox.get(AppStrings.currentPlaylistPositionKey);
     if (milliseconds == null) return null;
     return Duration(milliseconds: milliseconds);
+  }
+
+  Future<void> saveRepeatMode(int mode) async {
+    if (this.state is! ConfigLoaded) return;
+    final state = this.state as ConfigLoaded;
+    final config = state.config.copyWith(repeatMode: mode);
+    await _configBox.putAt(0, config);
+  }
+
+  Future<void> saveShuffleMode(int mode) async {
+    if (this.state is! ConfigLoaded) return;
+    final state = this.state as ConfigLoaded;
+    final config = state.config.copyWith(shuffleMode: mode);
+    await _configBox.putAt(0, config);
+  }
+
+  AudioServiceRepeatMode get repeatMode {
+    if (_configBox.isEmpty) return AudioServiceRepeatMode.none;
+    return AudioServiceRepeatMode.values[_configBox.values.first.repeatMode];
+  }
+
+  AudioServiceShuffleMode get shuffleMode {
+    if (_configBox.isEmpty) return AudioServiceShuffleMode.none;
+    return AudioServiceShuffleMode.values[_configBox.values.single.shuffleMode];
   }
 }

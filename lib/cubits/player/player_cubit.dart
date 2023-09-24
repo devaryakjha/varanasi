@@ -154,13 +154,6 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
       ),
     );
     audioHandler.playbackState.distinct().listen((state) {
-      if (state.processingState == AudioProcessingState.idle) {
-        final cubit = configCubitGetter();
-        cubit.clearCurrentPlaylist();
-        cubit.clearCurrentPlaylist();
-        cubit.clearCurrentPlaylistIndex();
-        return;
-      }
       final playing = state.playing;
       if (!playing) return;
       final position = state.position;
