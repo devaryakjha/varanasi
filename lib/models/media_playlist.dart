@@ -35,7 +35,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
     String? id,
   }) =>
       MediaPlaylist(
-        title: 'Popular Today',
+        title: "Today's biggest hits",
         mediaItems: mediaItems,
         description: description,
         id: id,
@@ -50,7 +50,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
     String? id,
   }) =>
       MediaPlaylist(
-        title: 'Albums',
+        title: 'Top Albums',
         mediaItems: mediaItems,
         description: description,
         id: id,
@@ -65,7 +65,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
     String? id,
   }) =>
       MediaPlaylist(
-        title: 'Playlists',
+        title: 'Recommended for today',
         mediaItems: mediaItems,
         description: description,
         id: id,
