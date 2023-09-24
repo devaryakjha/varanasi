@@ -130,8 +130,6 @@ final class AudioHandlerImpl extends BaseAudioHandler
     final value = box.values.first;
     final repeatMode = value.repeatMode;
     await setRepeatMode(AudioServiceRepeatMode.values[repeatMode]);
-    final shuffleMode = value.shuffleMode;
-    await setShuffleMode(AudioServiceShuffleMode.values[shuffleMode]);
     // Load and broadcast the initial queue
     final savedPlaylist = configCubit.savedPlaylist;
     final initialIndex = configCubit.savedPlaylistIndex ?? 0;
