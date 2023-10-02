@@ -1,45 +1,8 @@
 # Project Varanasi
 
-## Follow this file structure thorughout the app
+## Screenshots
 
-- lib/
-  - features/
-    - home/
-      - bloc/
-        - home_bloc.dart
-        - home_event.dart
-        - home_state.dart
-      - data/
-        - home_repository.dart
-        - home_data_provider.dart
-      - ui/
-        - home_screen.dart
-        - home_widgets/
-          - home_button.dart
-          - home_card.dart
-    - profile/
-      - bloc/
-        - profile_bloc.dart
-        - profile_event.dart
-        - profile_state.dart
-      - data/
-        - profile_repository.dart
-        - profile_data_provider.dart
-      - ui/
-        - profile_screen.dart
-        - profile_widgets/
-          - profile_button.dart
-          - profile_card.dart
-  - widgets/
-    - common_button.dart
-    - common_card.dart
-  - utils/
-    - constants.dart
-    - router.dart
-    - helpers/
-      - date_formatter.dart
-      - string_extensions.dart
-  - main.dart
+![App Screenshot](https://github.com/devaryakjha/varanasi_mobile_app/assets/99560530/fe3b7066-1b7b-4f27-98e0-a136a8d0c84b)
 
 ## Follow this commit message pattern as below
 
