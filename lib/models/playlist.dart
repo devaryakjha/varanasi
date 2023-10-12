@@ -107,7 +107,7 @@ class Playlist extends PlayableMedia {
   }
 
   @override
-  PlayableMediaType get itemType => getPlayableMediaType(type ?? '');
+  PlayableMediaType get itemType => PlayableMediaType.fromString(type ?? '');
 
   @override
   String? get artworkUrl => image?.lastOrNull?.link;

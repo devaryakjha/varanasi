@@ -17,8 +17,8 @@ class AppConfigAdapter extends TypeAdapter<AppConfig> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return AppConfig(
-      sortBy: fields[0] as SortBy,
-      repeatMode: fields[1] as int,
+      sortBy: fields[0] == null ? SortBy.custom : fields[0] as SortBy,
+      repeatMode: fields[1] == null ? 0 : fields[1] as int,
     );
   }
 

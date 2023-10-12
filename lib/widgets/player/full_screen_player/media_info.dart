@@ -25,9 +25,8 @@ class MediaInfo extends StatelessWidget {
       ),
       subtitle: Text(
         mediaItem.displaySubtitle ?? '',
-        style: context.textTheme.titleSmall?.copyWith(
-          fontWeight: FontWeight.bold,
-        ),
+        style:
+            context.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w500),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),

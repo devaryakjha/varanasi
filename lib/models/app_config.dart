@@ -8,9 +8,9 @@ part 'app_config.g.dart';
 
 @HiveType(typeId: 13)
 class AppConfig extends HiveObject with EquatableMixin {
-  @HiveField(0)
+  @HiveField(0, defaultValue: SortBy.custom)
   final SortBy sortBy;
-  @HiveField(1)
+  @HiveField(1, defaultValue: 0)
   final int repeatMode;
 
   AppConfig({

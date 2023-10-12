@@ -47,14 +47,17 @@ class MediaTile<Media extends PlayableMedia> extends StatelessWidget {
     this.titleAlignment,
     this.isPlaying = false,
     required this.index,
+    this.parentMediaType = PlayableMediaType.song,
   });
 
-  //
+  ///
   final Media media;
 
   final bool isPlaying;
 
   final int index;
+
+  final PlayableMediaType parentMediaType;
 
   /// A widget to display before the title.
   ///
@@ -341,12 +344,16 @@ class MediaTile<Media extends PlayableMedia> extends StatelessWidget {
   ///   [ListTileThemeData].
   final ListTileTitleAlignment? titleAlignment;
 
+  //
+  bool get hideLeading => parentMediaType.isAlbum;
+
   void _handleTap() {
     onTap?.call();
   }
 
   Widget _buildLeading() {
     if (leading != null) return leading!;
+    if (hideLeading) return const SizedBox.shrink();
     return CachedNetworkImage(
       imageUrl: media.artworkUrl!,
       height: 56,
@@ -388,6 +395,18 @@ class MediaTile<Media extends PlayableMedia> extends StatelessWidget {
     );
   }
 
+  EdgeInsetsGeometry? getContentPadding() {
+    if (contentPadding != null) return contentPadding;
+    if (hideLeading) return const EdgeInsets.all(0);
+    return const EdgeInsets.symmetric(horizontal: 16.0);
+  }
+
+  VisualDensity? get _visualDensity {
+    if (visualDensity != null) return visualDensity;
+    if (hideLeading) return VisualDensity.compact;
+    return VisualDensity.standard;
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -397,7 +416,7 @@ class MediaTile<Media extends PlayableMedia> extends StatelessWidget {
       trailing: trailing,
       isThreeLine: isThreeLine,
       dense: dense,
-      visualDensity: visualDensity,
+      visualDensity: _visualDensity,
       shape: shape,
       style: style,
       selectedColor: selectedColor,
@@ -406,7 +425,7 @@ class MediaTile<Media extends PlayableMedia> extends StatelessWidget {
       titleTextStyle: titleTextStyle,
       subtitleTextStyle: subtitleTextStyle,
       leadingAndTrailingTextStyle: leadingAndTrailingTextStyle,
-      contentPadding: contentPadding,
+      contentPadding: getContentPadding(),
       enabled: enabled,
       onTap: _handleTap,
       onLongPress: onLongPress,

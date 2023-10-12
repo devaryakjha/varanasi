@@ -3,12 +3,10 @@ import 'package:varanasi_mobile_app/models/image.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
-import 'package:varanasi_mobile_app/utils/logger.dart';
 import 'package:varanasi_mobile_app/utils/mixins/repository_protocol.dart';
 import 'package:varanasi_mobile_app/utils/services/http_services.dart';
 
 class LibraryDataProvider with DataProviderProtocol {
-  Logger get _logger => Logger.instance;
   LibraryDataProvider._();
   static final instance = LibraryDataProvider._();
 
