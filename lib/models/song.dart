@@ -166,7 +166,7 @@ class Song extends PlayableMedia {
   String get itemId => id ?? '';
 
   @override
-  String get itemSubtitle => (year ?? '').sanitize;
+  String get itemSubtitle => (description ?? '').sanitize;
 
   @override
   String get itemTitle => (name ?? '').sanitize;

@@ -7,22 +7,23 @@ import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/configs.dart';
 
 enum PlayableMediaType {
-  song,
-  album,
-  playlist,
-}
+  song(1),
+  album(2),
+  playlist(3);
 
-PlayableMediaType getPlayableMediaType(String type) {
-  switch (type) {
-    case 'song':
-      return PlayableMediaType.song;
-    case 'album':
-      return PlayableMediaType.album;
-    case 'playlist':
-      return PlayableMediaType.playlist;
-    default:
-      return PlayableMediaType.song;
-  }
+  const PlayableMediaType(this.value);
+
+  factory PlayableMediaType.fromString(String type) => switch (type) {
+        'album' => PlayableMediaType.album,
+        'playlist' => PlayableMediaType.playlist,
+        _ => PlayableMediaType.song
+      };
+
+  final int value;
+
+  bool get isSong => this == PlayableMediaType.song;
+  bool get isAlbum => this == PlayableMediaType.album;
+  bool get isPlaylist => this == PlayableMediaType.playlist;
 }
 
 abstract class PlayableMedia extends Equatable {
@@ -45,16 +46,25 @@ abstract class PlayableMedia extends Equatable {
   /// {@endtemplate}
   MediaItem toMediaItem() {
     var duration = Duration.zero;
+    var album = '';
+    var artist = '';
+
     if (this is Song) {
-      duration = Duration(seconds: int.parse(((this as Song).duration ?? '0')));
+      final song = (this as Song);
+      duration = Duration(seconds: int.parse((song.duration ?? '0')));
+      album = song.album?.name ?? '';
+      final artists = song.featuredArtists ?? song.primaryArtists ?? [];
+      artist = artists.map((e) => e.name ?? '').join(', ');
     }
+
     return MediaItem(
       id: itemUrl,
       title: itemTitle,
+      artist: artist,
       displayTitle: itemTitle,
       displaySubtitle: itemSubtitle,
       displayDescription: itemSubtitle,
-      album: itemSubtitle,
+      album: album,
       artUri: Uri.parse(artworkUrl ?? ''),
       duration: duration,
     );

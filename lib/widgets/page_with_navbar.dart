@@ -7,7 +7,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
 import 'package:varanasi_mobile_app/utils/extensions/media_query.dart';
-import 'package:varanasi_mobile_app/widgets/player/full_screen_player/flutter_screen_player.dart';
+import 'package:varanasi_mobile_app/widgets/player/full_screen_player/full_screen_player.dart';
 
 import 'player/mini_player.dart';
 

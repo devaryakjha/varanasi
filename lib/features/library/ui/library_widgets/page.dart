@@ -6,13 +6,20 @@ import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_widgets/library_app_bar.dart';
+import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/extensions/media_query.dart';
 import 'package:varanasi_mobile_app/widgets/media_list.dart';
 import 'package:varanasi_mobile_app/widgets/play_pause_button.dart';
 import 'package:varanasi_mobile_app/widgets/typography.dart';
 
 class LibraryContent extends StatefulHookWidget {
-  const LibraryContent({super.key});
+  /// The source of the library content
+  final PlayableMedia source;
+
+  const LibraryContent({
+    super.key,
+    required this.source,
+  });
 
   @override
   State<LibraryContent> createState() => _LibraryContentState();
@@ -109,6 +116,7 @@ class _LibraryContentState extends State<LibraryContent> {
                   ),
                   MediaListView.sliver(
                     sortedMediaItems,
+                    mediaType: widget.source.itemType,
                     isPlaying: isThisPlaylistPlaying,
                     isItemPlaying: (media) {
                       return media.toMediaItem() == currentMediaItem;

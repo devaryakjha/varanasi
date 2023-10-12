@@ -27,16 +27,6 @@ extension DeviceExt on num {
   /// The respective value in pixels (default)
   double get px => toDouble();
 
-  //  *****************  Relative length units *****************************************
-  // https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units
-
-  // TODO Recursive units need to be implemented
-  /*double get em => ;
-  double get ex => ;
-  double get ch => ;
-  double get rem => ;
-  double get lh => ;*/
-
   /// Respective percentage of the viewport's smaller dimension.
   double get vmin => this * min(Device.height, Device.width) / 100;
 

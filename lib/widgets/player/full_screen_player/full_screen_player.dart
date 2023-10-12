@@ -42,9 +42,8 @@ class _PlayerState extends State<Player> {
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () => widget.panelController?.close(),
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-          ),
+          icon: const Icon(Icons.keyboard_arrow_down_rounded),
+          iconSize: 32,
         ),
       ),
       body: AnimatedContainer(

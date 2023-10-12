@@ -22,6 +22,7 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
   final bool Function(Media) isItemPlaying;
   final MediaListOnTap<Media>? onItemTap;
   final Color? itemSelectedColor;
+  final PlayableMediaType? mediaType;
 
   /// Creates a [MediaListView] widget with a [ListView].
   const MediaListView(
@@ -32,6 +33,7 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
     bool needSliver = false,
     required this.isItemPlaying,
     this.itemSelectedColor,
+    this.mediaType,
   })  : _type = _MediaListType.list,
         itemBuilder = null;
 
@@ -43,6 +45,7 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
     this.onItemTap,
     required this.isItemPlaying,
     this.itemSelectedColor,
+    this.mediaType,
   })  : _type = _MediaListType.sliver,
         itemBuilder = null;
 
@@ -56,6 +59,7 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
     super.key,
     this.onItemTap,
     bool needSliver = false,
+    this.mediaType,
   }) : _type = needSliver ? _MediaListType.sliver : _MediaListType.list;
 
   MediaListViewBuilder<Media> get _itemBuilder =>
@@ -69,6 +73,7 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
             },
             selected: isItemPlaying(media),
             selectedColor: itemSelectedColor,
+            parentMediaType: mediaType ?? PlayableMediaType.song,
           );
 
   @override
@@ -84,6 +89,7 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
       onItemTap: onItemTap,
       isItemPlaying: isItemPlaying,
       itemSelectedColor: itemSelectedColor,
+      mediaType: mediaType,
     );
   }
 }
@@ -97,6 +103,7 @@ class _MediaSliverListView<Media extends PlayableMedia>
     super.onItemTap,
     required super.isItemPlaying,
     super.itemSelectedColor,
+    required super.mediaType,
   });
 
   @override
@@ -119,6 +126,7 @@ class _MediaListView<Media extends PlayableMedia> extends MediaListView<Media> {
     super.onItemTap,
     required super.isItemPlaying,
     super.itemSelectedColor,
+    required super.mediaType,
   });
 
   @override
