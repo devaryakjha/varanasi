@@ -5,12 +5,15 @@ import 'package:go_router/go_router.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
+import 'package:varanasi_mobile_app/gen/assets.gen.dart';
 import 'package:varanasi_mobile_app/utils/extensions/media_query.dart';
 import 'package:varanasi_mobile_app/widgets/player/full_screen_player/full_screen_player.dart';
 
 import 'player/mini_player.dart';
 
 const bottomNavHeight = 114.0;
+
+const iconSize = 24.0;
 
 class PageWithNavbar extends HookWidget {
   final StatefulNavigationShell child;
@@ -60,23 +63,50 @@ class PageWithNavbar extends HookWidget {
             child: OverflowBox(
               maxHeight: bottomNavHeight,
               child: NavigationBar(
-                surfaceTintColor: Colors.transparent,
+                indicatorColor: Colors.transparent,
                 selectedIndex: child.currentIndex,
                 onDestinationSelected: (value) {
-                  child.goBranch(value,
-                      initialLocation: child.currentIndex == value);
+                  child.goBranch(
+                    value,
+                    initialLocation: child.currentIndex == value,
+                  );
                 },
-                destinations: const [
+                destinations: [
                   NavigationDestination(
-                    icon: Icon(Icons.home_filled),
+                    icon: Assets.icon.nav.home.svg(
+                      height: iconSize,
+                      width: iconSize,
+                    ),
+                    selectedIcon: Assets.icon.nav.homeSelected.svg(
+                      height: iconSize,
+                      width: iconSize,
+                    ),
                     label: 'Home',
                   ),
                   NavigationDestination(
-                    icon: Icon(Icons.search_rounded),
+                    icon: Assets.icon.nav.search.svg(
+                      height: iconSize,
+                      width: iconSize,
+                      color: Colors.white,
+                    ),
+                    selectedIcon: Assets.icon.nav.searchSelected.svg(
+                      height: iconSize,
+                      width: iconSize,
+                      color: Colors.white,
+                    ),
                     label: 'Search',
                   ),
                   NavigationDestination(
-                    icon: Icon(Icons.library_music_outlined),
+                    icon: Assets.icon.nav.library.svg(
+                      height: iconSize,
+                      width: iconSize,
+                      color: Colors.white,
+                    ),
+                    selectedIcon: Assets.icon.nav.librarySelected.svg(
+                      height: iconSize,
+                      width: iconSize,
+                      color: Colors.white,
+                    ),
                     label: 'Library',
                   ),
                 ],

@@ -40,7 +40,7 @@ class SettingsPage extends StatelessWidget {
                         ).show(context),
                       }
                     : clearCache().then((value) {
-                        FlushbarHelper.createInformation(
+                        FlushbarHelper.createSuccess(
                           message: "Cache cleared 👍🏻",
                         ).show(context);
                       }),
@@ -122,6 +122,11 @@ void _handleOnPressed(
     },
   );
   if (value != null) {
-    AppConfig.getBox.put(0, appConfig.copyWith(colorScheme: value));
+    await AppConfig.getBox.put(0, appConfig.copyWith(colorScheme: value));
+    if (context.mounted) {
+      FlushbarHelper.createSuccess(
+        message: "Theme changed 👍🏻",
+      ).show(context);
+    }
   }
 }

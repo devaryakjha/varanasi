@@ -79,8 +79,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
   flutter_launcher_icons: ^0.13.1
-  flutter_gen: ^5.3.1
-  flutter_gen_runner: ^5.3.1
+  flutter_gen: ^5.3.2
+  flutter_gen_runner: ^5.3.2
 
 flutter_launcher_icons:
   android: "ic_launcher"
@@ -103,6 +103,7 @@ flutter:
     - assets/images/
     - assets/images/error/
     - assets/icon/app_icon.jpg
+    - assets/icon/nav/
     - shorebird.yaml
 
   # An image asset can refer to one or more resolution-specific "variants", see
