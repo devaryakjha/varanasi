@@ -70,7 +70,7 @@ class TopSearch extends PlayableMedia with EquatableMixin {
   String? get artworkUrl => image?.lastOrNull?.link;
 
   @override
-  String get itemId => id ?? '';
+  String get itemId => itemUrl.split('/').lastOrNull ?? id ?? '';
 
   @override
   String get itemSubtitle => "Top Search • $description";
@@ -83,4 +83,7 @@ class TopSearch extends PlayableMedia with EquatableMixin {
 
   @override
   String get itemUrl => url ?? '';
+
+  @override
+  bool get preferLinkOverId => true;
 }

@@ -87,7 +87,7 @@ class Server extends Equatable {
 
   const Server(this.host, [this.port]);
 
-  String get baseUrl => port == null ? host : '$host:$port';
+  String get baseUrl => "${port == null ? host : '$host:$port'}/";
 
   @override
   List<Object?> get props => [host, port];
@@ -112,7 +112,7 @@ class Config extends Equatable {
 
 Config get appConfig {
   const server = kReleaseMode
-      ? Server('https://saavn.aryak.dev/')
+      ? Server('https://saavn.aryak.dev')
       : Server('http://localhost', 3000);
   return Config(
     env: kReleaseMode ? 'production' : 'development',

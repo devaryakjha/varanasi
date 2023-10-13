@@ -9,13 +9,15 @@ import 'package:varanasi_mobile_app/utils/configs.dart';
 enum PlayableMediaType {
   song(1),
   album(2),
-  playlist(3);
+  playlist(3),
+  artist(4);
 
   const PlayableMediaType(this.value);
 
   factory PlayableMediaType.fromString(String type) => switch (type) {
         'album' => PlayableMediaType.album,
         'playlist' => PlayableMediaType.playlist,
+        'artist' => PlayableMediaType.artist,
         _ => PlayableMediaType.song
       };
 
@@ -24,6 +26,7 @@ enum PlayableMediaType {
   bool get isSong => this == PlayableMediaType.song;
   bool get isAlbum => this == PlayableMediaType.album;
   bool get isPlaylist => this == PlayableMediaType.playlist;
+  bool get isArtist => this == PlayableMediaType.artist;
 }
 
 abstract class PlayableMedia extends Equatable {
@@ -31,15 +34,23 @@ abstract class PlayableMedia extends Equatable {
   String get itemUrl;
   String get itemId;
   String get itemSubtitle;
+
+  bool get preferLinkOverId => false;
+
   PlayableMediaType get itemType;
   String? get artworkUrl;
 
   const PlayableMedia();
 
   @override
-  List<Object?> get props {
-    return [itemId, itemTitle, itemSubtitle, itemUrl, itemType, artworkUrl];
-  }
+  List<Object?> get props => [
+        itemId,
+        itemTitle,
+        itemSubtitle,
+        itemUrl,
+        itemType,
+        artworkUrl,
+      ];
 
   /// {@template toMediaItem}
   /// Converts the [PlayableMedia] to a [MediaItem] for use with [AudioService].
@@ -75,12 +86,21 @@ abstract class PlayableMedia extends Equatable {
   /// {@endtemplate}
   Uri get moreInfoUrl {
     return switch (itemType) {
-      PlayableMediaType.song =>
-        Uri.parse('${appConfig.endpoint.songs!.id}?id=$itemId'),
+      PlayableMediaType.song when !preferLinkOverId => Uri.parse(
+          '${appConfig.endpoint.songs!.id}?id=$itemId&language=hindi,english',
+        ),
+      PlayableMediaType.song => Uri.parse(
+          '${appConfig.endpoint.songs!.link}?link=${Uri.encodeComponent(itemUrl)}&language=hindi,english',
+        ),
       PlayableMediaType.album => Uri.parse(
-          '${appConfig.endpoint.albums!.link}?link=$itemUrl&language=hindi,english'),
+          '${appConfig.endpoint.albums!.link}?link=$itemUrl&language=hindi,english',
+        ),
       PlayableMediaType.playlist => Uri.parse(
-          '${appConfig.endpoint.playlists!.id}?id=$itemId&language=hindi,english'),
+          '${appConfig.endpoint.playlists!.id}?id=$itemId&language=hindi,english',
+        ),
+      PlayableMediaType.artist => Uri.parse(
+          '${appConfig.endpoint.artists?.id}?id=$itemId&language=hindi,english',
+        ),
     };
   }
 
