@@ -5,9 +5,9 @@ import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 
 class CustomHeaderDelegate extends SliverPersistentHeaderDelegate {
   final EdgeInsets padding;
-  CustomHeaderDelegate({
-    required this.padding,
-  });
+  final ValueChanged<String> onSearch;
+
+  CustomHeaderDelegate({required this.padding, required this.onSearch});
 
   @override
   Widget build(context, shrinkOffset, overlapsContent) {
@@ -40,15 +40,17 @@ class CustomHeaderDelegate extends SliverPersistentHeaderDelegate {
           ),
           SizedBox(
             height: searchFieldHeight,
-            child: const CupertinoSearchTextField(
+            child: CupertinoSearchTextField(
               backgroundColor: Colors.white,
               placeholder: "What do you want to listen to?",
               itemColor: Colors.black87,
-              placeholderStyle: TextStyle(color: Colors.black87),
-              prefixInsets: EdgeInsets.symmetric(horizontal: 12),
+              placeholderStyle: const TextStyle(color: Colors.black87),
+              prefixInsets: const EdgeInsets.symmetric(horizontal: 12),
               itemSize: 24,
-              padding: EdgeInsetsDirectional.fromSTEB(0, 8, 5.5, 8),
-              borderRadius: BorderRadius.all(Radius.circular(6)),
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 5.5, 8),
+              borderRadius: const BorderRadius.all(Radius.circular(6)),
+              onSubmitted: onSearch,
+              autocorrect: false,
             ),
           ),
           SizedBox(height: bottomPadding),

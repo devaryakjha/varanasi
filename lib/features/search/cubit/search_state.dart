@@ -10,24 +10,37 @@ sealed class _SearchState extends Equatable {
 
 final class SearchState extends _SearchState {
   final bool isFetchingTopSearchResults;
+  final bool isSearching;
   final TopSearchResult? topSearchResult;
+  final SearchResult? searchResults;
 
   const SearchState({
     this.topSearchResult,
     this.isFetchingTopSearchResults = false,
+    this.searchResults,
+    this.isSearching = false,
   });
 
   @override
-  List<Object?> get props => [topSearchResult, isFetchingTopSearchResults];
+  List<Object?> get props => [
+        topSearchResult,
+        isFetchingTopSearchResults,
+        searchResults,
+        isSearching,
+      ];
 
   SearchState copyWith({
-    TopSearchResult? topSearchResult,
     bool? isFetchingTopSearchResults,
+    bool? isSearching,
+    TopSearchResult? topSearchResult,
+    SearchResult? searchResults,
   }) {
     return SearchState(
-      topSearchResult: topSearchResult ?? this.topSearchResult,
       isFetchingTopSearchResults:
           isFetchingTopSearchResults ?? this.isFetchingTopSearchResults,
+      isSearching: isSearching ?? this.isSearching,
+      topSearchResult: topSearchResult ?? this.topSearchResult,
+      searchResults: searchResults ?? this.searchResults,
     );
   }
 }

@@ -1,11 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:varanasi_mobile_app/models/image.dart';
+import 'package:varanasi_mobile_app/models/playable_item.dart';
+import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 
 part 'result.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class Result extends Equatable {
+class Result extends PlayableMedia with EquatableMixin {
   final String? id;
   final String? title;
   final List<Image>? image;
@@ -85,4 +87,27 @@ class Result extends Equatable {
       singers,
     ];
   }
+
+  @override
+  String? get artworkUrl => image?.lastOrNull?.link ?? '';
+
+  @override
+  String get itemId => itemType.isSong
+      ? (itemUrl.split('/').lastOrNull ?? id ?? '')
+      : (id ?? '');
+
+  @override
+  String get itemSubtitle => (description ?? '').sanitize;
+
+  @override
+  String get itemTitle => (title ?? '').sanitize;
+
+  @override
+  PlayableMediaType get itemType => PlayableMediaType.fromString(type ?? '');
+
+  @override
+  String get itemUrl => url ?? '';
+
+  @override
+  bool get preferLinkOverId => true;
 }

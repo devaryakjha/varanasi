@@ -11,13 +11,15 @@ import 'package:varanasi_mobile_app/widgets/music_visualizer.dart';
 class MediaCard extends StatelessWidget {
   final PlayableMedia media;
   final bool isFirst, isLast;
+  final String heroTagPrefix;
 
   const MediaCard({
     super.key,
     required this.media,
     this.isFirst = false,
     this.isLast = false,
-  });
+    String? heroTagPrefix,
+  }) : heroTagPrefix = heroTagPrefix ?? '';
 
   double get dimension => 120;
   String get title => media.itemTitle;
@@ -42,7 +44,7 @@ class MediaCard extends StatelessWidget {
       return value.state.isPlaying;
     });
     return Hero(
-      tag: media.itemId,
+      tag: heroTagPrefix + media.heroTag,
       child: GestureDetector(
         onTap: switch (media.itemType) {
           PlayableMediaType.song => () {

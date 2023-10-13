@@ -33,6 +33,7 @@ abstract class PlayableMedia extends Equatable {
   String get itemTitle;
   String get itemUrl;
   String get itemId;
+  String get heroTag => itemId;
   String get itemSubtitle;
 
   bool get preferLinkOverId => false;

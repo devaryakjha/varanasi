@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:varanasi_mobile_app/features/search/data/search_repository.dart';
+import 'package:varanasi_mobile_app/features/search/data/search_result/data.dart';
 import 'package:varanasi_mobile_app/features/search/data/top_search_result/top_search_result.dart';
 import 'package:varanasi_mobile_app/utils/app_cubit.dart';
 
@@ -26,5 +27,14 @@ class SearchCubit extends AppCubit<SearchState> {
         isFetchingTopSearchResults: false,
       ));
     }
+  }
+
+  Future<void> triggerSearch(String query) async {
+    emit(state.copyWith(isSearching: true));
+    final results = await repository.triggerSearch(query);
+    if (results != null) {
+      emit(state.copyWith(searchResults: results));
+    }
+    emit(state.copyWith(isSearching: false));
   }
 }

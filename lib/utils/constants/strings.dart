@@ -7,4 +7,7 @@ class AppStrings {
   static const String currentPlaylistPositionKey = 'current_playlist_position';
 
   static const String topSearchesCacheKey = 'top_searches';
+
+  static String searchResultsCacheKey(String query) =>
+      'search_results_${Uri.encodeQueryComponent(query)}';
 }

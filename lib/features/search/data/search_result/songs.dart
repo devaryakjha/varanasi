@@ -1,16 +1,17 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'item_with_position.dart';
 import 'result.dart';
 
 part 'songs.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class Songs extends Equatable {
+class Songs extends ItemWithPosition with EquatableMixin {
   final List<Result>? results;
-  final int? position;
+  final int _position;
 
-  const Songs({this.results, this.position});
+  Songs({this.results, int? position}) : _position = position ?? 0;
 
   factory Songs.fromJson(Map<String, dynamic> json) => _$SongsFromJson(json);
 
@@ -31,4 +32,7 @@ class Songs extends Equatable {
 
   @override
   List<Object?> get props => [results, position];
+
+  @override
+  int get position => _position;
 }

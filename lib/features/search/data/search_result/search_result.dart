@@ -7,7 +7,7 @@ part 'search_result.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class SearchResults extends Equatable {
-  final Data? data;
+  final SearchResult? data;
   final String? status;
   final dynamic error;
 
@@ -20,7 +20,7 @@ class SearchResults extends Equatable {
   Map<String, dynamic> toJson() => _$SearchResultsToJson(this);
 
   SearchResults copyWith({
-    Data? data,
+    SearchResult? data,
     String? status,
     dynamic error,
   }) {

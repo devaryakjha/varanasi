@@ -1,16 +1,17 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'item_with_position.dart';
 import 'result.dart';
 
 part 'top_query.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class TopQuery extends Equatable {
+class TopQuery extends ItemWithPosition with EquatableMixin {
   final List<Result>? results;
-  final int? position;
+  final int _position;
 
-  const TopQuery({this.results, this.position});
+  TopQuery({this.results, int? position}) : _position = position ?? 0;
 
   factory TopQuery.fromJson(Map<String, dynamic> json) {
     return _$TopQueryFromJson(json);
@@ -33,4 +34,7 @@ class TopQuery extends Equatable {
 
   @override
   List<Object?> get props => [results, position];
+
+  @override
+  int get position => _position;
 }

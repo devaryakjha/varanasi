@@ -10,7 +10,7 @@ SearchResults _$SearchResultsFromJson(Map<String, dynamic> json) =>
     SearchResults(
       data: json['data'] == null
           ? null
-          : Data.fromJson(json['data'] as Map<String, dynamic>),
+          : SearchResult.fromJson(json['data'] as Map<String, dynamic>),
       status: json['status'] as String?,
       error: json['error'],
     );
