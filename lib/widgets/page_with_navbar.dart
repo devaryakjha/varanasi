@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -33,10 +32,7 @@ class PageWithNavbar extends HookWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(
-            bottom: showPlayer ? 56 : 0,
-            child: child,
-          ),
+          Positioned.fill(bottom: showPlayer ? 56 : 0, child: child),
           if (showPlayer)
             SlidingUpPanel(
               controller: controller,
@@ -67,10 +63,8 @@ class PageWithNavbar extends HookWidget {
                 surfaceTintColor: Colors.transparent,
                 selectedIndex: child.currentIndex,
                 onDestinationSelected: (value) {
-                  FlushbarHelper.createError(
-                    message: 'Coming soon!',
-                    duration: const Duration(seconds: 1),
-                  ).show(context);
+                  child.goBranch(value,
+                      initialLocation: child.currentIndex == value);
                 },
                 destinations: const [
                   NavigationDestination(

@@ -1,7 +1,19 @@
 typedef Route = ({String name, String path});
 
 class AppRoutes {
+  /// Application wide routes
+  static const Route library = (name: 'media-library', path: '/media-library');
+  static const Route librarySearch = (name: 'library-search', path: 'search');
+
+  // home specific routes
   static const Route home = (name: 'home', path: '/home');
-  static const Route library = (name: 'library', path: '/library');
-  static const Route librarySearch = (name: 'search', path: 'search');
+
+  // search specific routes
+  static const Route search = (name: 'search', path: '/search');
+
+  // user specific routes
+  static const Route userlibrary = (name: 'library', path: '/library');
+
+  // settings specific routes
+  static const Route settings = (name: 'settings', path: '/settings');
 }

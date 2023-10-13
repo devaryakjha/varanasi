@@ -2,12 +2,10 @@ import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/models/app_config.dart';
-import 'package:varanasi_mobile_app/utils/constants/strings.dart';
 
 import 'typings.dart';
 
@@ -126,7 +124,7 @@ final class AudioHandlerImpl extends BaseAudioHandler
       playbackState.add(playbackState.value.copyWith(speed: speed));
     });
     // Load config from shared preferences.
-    final box = Hive.box<AppConfig>(AppStrings.configBoxName);
+    final box = AppConfig.getBox;
     final value = box.values.first;
     final repeatMode = value.repeatMode;
     await setRepeatMode(AudioServiceRepeatMode.values[repeatMode]);
