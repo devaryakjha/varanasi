@@ -46,8 +46,14 @@ class SettingsPage extends StatelessWidget {
                 title: const Text("Advanced Settings"),
                 leading: const Icon(Icons.settings_outlined),
                 onToggle: (value) {
-                  AppConfig.getBox
-                      .put(0, appConfig.copyWith(isAdvancedModeEnabled: value));
+                  AppConfig.getBox.put(
+                    0,
+                    appConfig.copyWith(
+                      isAdvancedModeEnabled: value,
+                      downloadQuality: !value ? DownloadQuality.extreme : null,
+                      colorScheme: !value ? 41 : null,
+                    ),
+                  );
                 },
               ),
             ],
