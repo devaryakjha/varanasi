@@ -1,11 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:varanasi_mobile_app/models/image.dart';
+import 'package:varanasi_mobile_app/models/playable_item.dart';
 
 part 'top_search.g.dart';
 
 @JsonSerializable()
-class TopSearch extends Equatable {
+class TopSearch extends PlayableMedia with EquatableMixin {
   final String? id;
   final String? title;
   final String? description;
@@ -64,4 +65,22 @@ class TopSearch extends Equatable {
       album,
     ];
   }
+
+  @override
+  String? get artworkUrl => image?.lastOrNull?.link;
+
+  @override
+  String get itemId => id ?? '';
+
+  @override
+  String get itemSubtitle => "Top Search • $description";
+
+  @override
+  String get itemTitle => title ?? '';
+
+  @override
+  PlayableMediaType get itemType => PlayableMediaType.fromString(type ?? '');
+
+  @override
+  String get itemUrl => url ?? '';
 }

@@ -46,7 +46,7 @@ class SearchRepository with CacheableService {
     if (searchResults != null) {
       cache(AppStrings.topSearchesCacheKey, response, const Duration(hours: 1));
     } else {
-      throw Exception('Failed to fetch library');
+      throw Exception('Failed to fetch top searches');
     }
     return searchResults;
   }

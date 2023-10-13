@@ -74,7 +74,11 @@ final routerConfig = GoRouter(
             GoRoute(
               name: AppRoutes.search.name,
               path: AppRoutes.search.path,
-              builder: (context, state) => SearchPage(key: state.pageKey),
+              builder: (context, state) => BlocProvider(
+                lazy: true,
+                create: (context) => SearchCubit()..init(),
+                child: SearchPage(key: state.pageKey),
+              ),
             ),
           ],
         ),
@@ -97,11 +101,7 @@ final routerConfig = GoRouter(
       parentNavigatorKey: rootNavigatorKey,
       name: AppRoutes.settings.name,
       path: AppRoutes.settings.path,
-      builder: (context, state) => BlocProvider(
-        lazy: false,
-        create: (context) => SearchCubit()..init(),
-        child: SettingsPage(key: state.pageKey),
-      ),
+      builder: (context, state) => SettingsPage(key: state.pageKey),
     ),
   ],
 );

@@ -11,12 +11,11 @@ class SearchDataProvider with DataProviderProtocol {
 
   Future<(dynamic, TopSearchResult?)> fetchTopSearchResults() async {
     try {
-      return await fetch(
+      return await fetch<TopSearchResult?>(
         appConfig.endpoint.search.topSearches,
         options: CommonOptions(
           transformer: (response) async {
-            final response1 = await compute(
-                parseTopSearchResult, response as Map<String, dynamic>);
+            final response1 = await compute(parseTopSearchResult, response);
             return response1;
           },
         ),
@@ -26,6 +25,9 @@ class SearchDataProvider with DataProviderProtocol {
     }
   }
 
-  TopSearchResult parseTopSearchResult(Map<String, dynamic> json) =>
-      TopSearchResult.fromJson(json);
+  TopSearchResult parseTopSearchResult(dynamic json) {
+    return json is List
+        ? TopSearchResult.fromJson({"data": json})
+        : TopSearchResult.fromJson(json);
+  }
 }
