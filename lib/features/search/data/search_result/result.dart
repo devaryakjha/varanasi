@@ -109,5 +109,5 @@ class Result extends PlayableMedia with EquatableMixin {
   String get itemUrl => url ?? '';
 
   @override
-  bool get preferLinkOverId => true;
+  bool get preferLinkOverId => itemType.isSong || itemType.isAlbum;
 }
