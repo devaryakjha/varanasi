@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/features/home/bloc/home_bloc.dart';
 import 'package:varanasi_mobile_app/features/home/data/helpers/home_state_selectors.dart';
 import 'package:varanasi_mobile_app/features/home/ui/home_widgets/spacer.dart';
 import 'package:varanasi_mobile_app/features/home/ui/home_widgets/trending/trending.dart';
 import 'package:varanasi_mobile_app/utils/generate_greeting.dart';
+import 'package:varanasi_mobile_app/utils/routes.dart';
 import 'package:varanasi_mobile_app/widgets/animated_overflow_text.dart';
 import 'package:varanasi_mobile_app/widgets/error/error_page.dart';
 import 'package:varanasi_mobile_app/widgets/tri_state_visibility.dart';
@@ -32,7 +34,7 @@ class HomePage extends StatelessWidget {
           IconButton(
             iconSize: 30,
             icon: const Icon(Icons.settings_outlined),
-            onPressed: () {},
+            onPressed: () => context.push(AppRoutes.settings.path),
           ),
         ],
       ),
