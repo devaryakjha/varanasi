@@ -37,8 +37,14 @@ class SettingsPage extends StatelessWidget {
                 title: const Text("Data saver"),
                 leading: const Icon(Icons.data_saver_on_outlined),
                 onToggle: (value) {
-                  AppConfig.getBox
-                      .put(0, appConfig.copyWith(isDataSaverEnabled: value));
+                  AppConfig.getBox.put(
+                    0,
+                    appConfig.copyWith(
+                      isDataSaverEnabled: value,
+                      downloadQuality:
+                          value ? DownloadQuality.low : DownloadQuality.extreme,
+                    ),
+                  );
                 },
               ),
               SettingsTile.switchTile(
@@ -62,24 +68,26 @@ class SettingsPage extends StatelessWidget {
             SettingsSection(
               title: const Text("Advanced"),
               tiles: [
-                SettingsTile.navigation(
-                  title: const Text('Streaming quality'),
-                  leading: const Icon(Icons.music_note_outlined),
-                  value: Text(appConfig.downloadQuality?.describeQuality ?? ""),
-                  onPressed: (ctx) {
-                    _showOptionsPicker(
-                      ctx,
-                      appConfig.downloadQuality,
-                      DownloadQuality.values,
-                      (e) => e?.describeQuality ?? "",
-                    ).then((value) {
-                      if (value != null) {
-                        AppConfig.getBox
-                            .put(0, appConfig.copyWith(downloadQuality: value));
-                      }
-                    });
-                  },
-                ),
+                if (!appConfig.isDataSaverEnabled)
+                  SettingsTile.navigation(
+                    title: const Text('Streaming quality'),
+                    leading: const Icon(Icons.music_note_outlined),
+                    value:
+                        Text(appConfig.downloadQuality?.describeQuality ?? ""),
+                    onPressed: (ctx) {
+                      _showOptionsPicker(
+                        ctx,
+                        appConfig.downloadQuality,
+                        DownloadQuality.values,
+                        (e) => e?.describeQuality ?? "",
+                      ).then((value) {
+                        if (value != null) {
+                          AppConfig.getBox.put(
+                              0, appConfig.copyWith(downloadQuality: value));
+                        }
+                      });
+                    },
+                  ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.format_paint_outlined),
                   title: const Text('Theme'),
