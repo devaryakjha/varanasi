@@ -14,10 +14,10 @@ class SearchResults extends Equatable {
   const SearchResults({this.data, this.status, this.error});
 
   factory SearchResults.fromJson(Map<String, dynamic> json) {
-    return _$SearchResultFromJson(json);
+    return _$SearchResultsFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$SearchResultToJson(this);
+  Map<String, dynamic> toJson() => _$SearchResultsToJson(this);
 
   SearchResults copyWith({
     Data? data,

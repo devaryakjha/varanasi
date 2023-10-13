@@ -5,6 +5,7 @@ import 'package:varanasi_mobile_app/features/home/ui/home_screen.dart';
 import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_screen.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_search_page.dart';
+import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
 import 'package:varanasi_mobile_app/features/search/ui/search_page.dart';
 import 'package:varanasi_mobile_app/features/settings/ui/settings_page.dart';
 import 'package:varanasi_mobile_app/features/user-library/ui/user_library_page.dart';
@@ -96,7 +97,11 @@ final routerConfig = GoRouter(
       parentNavigatorKey: rootNavigatorKey,
       name: AppRoutes.settings.name,
       path: AppRoutes.settings.path,
-      builder: (context, state) => SettingsPage(key: state.pageKey),
+      builder: (context, state) => BlocProvider(
+        lazy: false,
+        create: (context) => SearchCubit()..init(),
+        child: SettingsPage(key: state.pageKey),
+      ),
     ),
   ],
 );

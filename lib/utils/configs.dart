@@ -7,6 +7,7 @@ class Search {
   final String albums;
   final String playlists;
   final String artists;
+  final String topSearches;
 
   const Search({
     required this.all,
@@ -14,6 +15,7 @@ class Search {
     required this.albums,
     required this.playlists,
     required this.artists,
+    required this.topSearches,
   });
 }
 
@@ -61,7 +63,7 @@ class Artists {
 
 class Endpoint {
   final String modules;
-  final Search? search;
+  final Search search;
   final Songs? songs;
   final Albums? albums;
   final Playlists? playlists;
@@ -70,7 +72,7 @@ class Endpoint {
 
   const Endpoint({
     required this.modules,
-    this.search,
+    required this.search,
     this.songs,
     this.albums,
     this.playlists,
@@ -111,7 +113,7 @@ class Config extends Equatable {
 Config get appConfig {
   const server = kReleaseMode
       ? Server('https://saavn.aryak.dev/')
-      : Server('https://saavn.aryak.dev/');
+      : Server('http://localhost', 3000);
   return Config(
     env: kReleaseMode ? 'production' : 'development',
     endpoint: const Endpoint(
@@ -119,6 +121,14 @@ Config get appConfig {
       playlists: Playlists(id: 'playlists'),
       albums: Albums(link: 'albums'),
       songs: Songs(id: 'songs', link: 'songs'),
+      search: Search(
+        all: "search/all",
+        songs: 'search/songs',
+        albums: 'search/albums',
+        playlists: 'search/playlists',
+        artists: 'search/artists',
+        topSearches: 'search/top-searches',
+      ),
     ),
     server: server,
     placeholderImageLink: '${server.baseUrl}/audio.jpg',

@@ -5,4 +5,6 @@ class AppStrings {
   static const String currentPlaylistCacheKey = 'current_playlist';
   static const String currentPlaylistIndexCacheKey = 'current_playlist_index';
   static const String currentPlaylistPositionKey = 'current_playlist_position';
+
+  static const String topSearchesCacheKey = 'top_searches';
 }

@@ -1,23 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'search_result.dart';
+part of 'top_search_result.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-SearchResults _$SearchResultsFromJson(Map<String, dynamic> json) =>
-    SearchResults(
-      data: json['data'] == null
-          ? null
-          : Data.fromJson(json['data'] as Map<String, dynamic>),
+TopSearchResult _$TopSearcheResultFromJson(Map<String, dynamic> json) =>
+    TopSearchResult(
       status: json['status'] as String?,
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => TopSearch.fromJson(e as Map<String, dynamic>))
+          .toList(),
       error: json['error'],
     );
 
-Map<String, dynamic> _$SearchResultsToJson(SearchResults instance) =>
+Map<String, dynamic> _$TopSearcheResultToJson(TopSearchResult instance) =>
     <String, dynamic>{
-      'data': instance.data?.toJson(),
       'status': instance.status,
+      'data': instance.data,
       'error': instance.error,
     };
