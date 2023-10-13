@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
-import 'package:varanasi_mobile_app/gen/assets.gen.dart';
+import 'package:varanasi_mobile_app/utils/constants/nav_items.dart';
 import 'package:varanasi_mobile_app/utils/extensions/media_query.dart';
 import 'package:varanasi_mobile_app/widgets/player/full_screen_player/full_screen_player.dart';
 
@@ -71,50 +71,28 @@ class PageWithNavbar extends HookWidget {
                     initialLocation: child.currentIndex == value,
                   );
                 },
-                destinations: [
-                  NavigationDestination(
-                    icon: Assets.icon.nav.home.svg(
-                      height: iconSize,
-                      width: iconSize,
-                    ),
-                    selectedIcon: Assets.icon.nav.homeSelected.svg(
-                      height: iconSize,
-                      width: iconSize,
-                    ),
-                    label: 'Home',
-                  ),
-                  NavigationDestination(
-                    icon: Assets.icon.nav.search.svg(
-                      height: iconSize,
-                      width: iconSize,
-                      color: Colors.white,
-                    ),
-                    selectedIcon: Assets.icon.nav.searchSelected.svg(
-                      height: iconSize,
-                      width: iconSize,
-                      color: Colors.white,
-                    ),
-                    label: 'Search',
-                  ),
-                  NavigationDestination(
-                    icon: Assets.icon.nav.library.svg(
-                      height: iconSize,
-                      width: iconSize,
-                      color: Colors.white,
-                    ),
-                    selectedIcon: Assets.icon.nav.librarySelected.svg(
-                      height: iconSize,
-                      width: iconSize,
-                      color: Colors.white,
-                    ),
-                    label: 'Library',
-                  ),
-                ],
+                destinations: navItems.map(_createDestination).toList(),
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  NavigationDestination _createDestination(NavItem e) {
+    return NavigationDestination(
+      icon: e.icon.svg(
+        height: iconSize,
+        width: iconSize,
+        color: Colors.white,
+      ),
+      selectedIcon: e.activeIcon.svg(
+        height: iconSize,
+        width: iconSize,
+        color: Colors.white,
+      ),
+      label: e.label,
     );
   }
 }
