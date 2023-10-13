@@ -21,13 +21,15 @@ class AppConfigAdapter extends TypeAdapter<AppConfig> {
       repeatMode: fields[1] == null ? 0 : fields[1] as int,
       colorScheme: fields[2] == null ? 41 : fields[2] as int,
       isDataSaverEnabled: fields[3] == null ? false : fields[3] as bool,
+      downloadQuality: fields[4] as DownloadQuality?,
+      isAdvancedModeEnabled: fields[5] == null ? false : fields[5] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, AppConfig obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.sortBy)
       ..writeByte(1)
@@ -35,7 +37,11 @@ class AppConfigAdapter extends TypeAdapter<AppConfig> {
       ..writeByte(2)
       ..write(obj.colorScheme)
       ..writeByte(3)
-      ..write(obj.isDataSaverEnabled);
+      ..write(obj.isDataSaverEnabled)
+      ..writeByte(4)
+      ..write(obj.downloadQuality)
+      ..writeByte(5)
+      ..write(obj.isAdvancedModeEnabled);
   }
 
   @override

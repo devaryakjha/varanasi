@@ -1,14 +1,22 @@
 import 'package:equatable/equatable.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'download_url.g.dart';
 
+@HiveType(typeId: 16)
 enum DownloadQuality {
+  @HiveField(0)
   low("12kbps"),
+  @HiveField(1)
   medium("48kbps"),
+  @HiveField(2)
   high("96kbps"),
+  @HiveField(3)
   veryHigh("160kbps"),
+  @HiveField(4)
   extreme("320kbps");
 
   final String quality;
@@ -23,6 +31,8 @@ enum DownloadQuality {
         '320kbps' => DownloadQuality.extreme,
         _ => DownloadQuality.low,
       };
+
+  String get describeQuality => describeEnum(this).capitalize;
 }
 
 @JsonSerializable()

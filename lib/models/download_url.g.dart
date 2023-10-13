@@ -45,6 +45,60 @@ class DownloadUrlAdapter extends TypeAdapter<DownloadUrl> {
           typeId == other.typeId;
 }
 
+class DownloadQualityAdapter extends TypeAdapter<DownloadQuality> {
+  @override
+  final int typeId = 16;
+
+  @override
+  DownloadQuality read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return DownloadQuality.low;
+      case 1:
+        return DownloadQuality.medium;
+      case 2:
+        return DownloadQuality.high;
+      case 3:
+        return DownloadQuality.veryHigh;
+      case 4:
+        return DownloadQuality.extreme;
+      default:
+        return DownloadQuality.low;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, DownloadQuality obj) {
+    switch (obj) {
+      case DownloadQuality.low:
+        writer.writeByte(0);
+        break;
+      case DownloadQuality.medium:
+        writer.writeByte(1);
+        break;
+      case DownloadQuality.high:
+        writer.writeByte(2);
+        break;
+      case DownloadQuality.veryHigh:
+        writer.writeByte(3);
+        break;
+      case DownloadQuality.extreme:
+        writer.writeByte(4);
+        break;
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DownloadQualityAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************

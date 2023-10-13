@@ -73,17 +73,13 @@ abstract class PlayableMedia extends Equatable {
       artist = artists.map((e) => e.name ?? '').join(', ');
       final isDataSaverEnabled =
           AppConfig.getBox.get(0)?.isDataSaverEnabled ?? false;
-      if (isDataSaverEnabled) {
-        id = song.downloadUrl
-                ?.firstWhereOrNull((e) => e.quality == DownloadQuality.medium)
-                ?.link ??
-            '';
-      } else {
-        id = song.downloadUrl
-                ?.firstWhereOrNull((e) => e.quality == DownloadQuality.extreme)
-                ?.link ??
-            '';
-      }
+      final effectiveQuality = AppConfig.getBox.get(0)?.downloadQuality ??
+          (isDataSaverEnabled ? DownloadQuality.low : DownloadQuality.extreme);
+
+      id = song.downloadUrl
+              ?.firstWhereOrNull((e) => e.quality == effectiveQuality)
+              ?.link ??
+          '';
     }
 
     return MediaItem(
