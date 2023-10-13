@@ -6,7 +6,8 @@ part of 'search_result.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SearchResult _$SearchResultFromJson(Map<String, dynamic> json) => SearchResult(
+SearchResults _$SearchResultFromJson(Map<String, dynamic> json) =>
+    SearchResults(
       data: json['data'] == null
           ? null
           : Data.fromJson(json['data'] as Map<String, dynamic>),
@@ -14,7 +15,7 @@ SearchResult _$SearchResultFromJson(Map<String, dynamic> json) => SearchResult(
       error: json['error'],
     );
 
-Map<String, dynamic> _$SearchResultToJson(SearchResult instance) =>
+Map<String, dynamic> _$SearchResultToJson(SearchResults instance) =>
     <String, dynamic>{
       'data': instance.data?.toJson(),
       'status': instance.status,

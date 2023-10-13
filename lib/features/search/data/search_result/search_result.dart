@@ -6,25 +6,25 @@ import 'data.dart';
 part 'search_result.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class SearchResult extends Equatable {
+class SearchResults extends Equatable {
   final Data? data;
   final String? status;
   final dynamic error;
 
-  const SearchResult({this.data, this.status, this.error});
+  const SearchResults({this.data, this.status, this.error});
 
-  factory SearchResult.fromJson(Map<String, dynamic> json) {
+  factory SearchResults.fromJson(Map<String, dynamic> json) {
     return _$SearchResultFromJson(json);
   }
 
   Map<String, dynamic> toJson() => _$SearchResultToJson(this);
 
-  SearchResult copyWith({
+  SearchResults copyWith({
     Data? data,
     String? status,
     dynamic error,
   }) {
-    return SearchResult(
+    return SearchResults(
       data: data ?? this.data,
       status: status ?? this.status,
       error: error ?? this.error,
