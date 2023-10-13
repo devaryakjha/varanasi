@@ -6,7 +6,7 @@ part of 'top_search_result.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-TopSearchResult _$TopSearcheResultFromJson(Map<String, dynamic> json) =>
+TopSearchResult _$TopSearchResultFromJson(Map<String, dynamic> json) =>
     TopSearchResult(
       status: json['status'] as String?,
       data: (json['data'] as List<dynamic>?)
@@ -15,7 +15,7 @@ TopSearchResult _$TopSearcheResultFromJson(Map<String, dynamic> json) =>
       error: json['error'],
     );
 
-Map<String, dynamic> _$TopSearcheResultToJson(TopSearchResult instance) =>
+Map<String, dynamic> _$TopSearchResultToJson(TopSearchResult instance) =>
     <String, dynamic>{
       'status': instance.status,
       'data': instance.data,

@@ -16,27 +16,33 @@ class AppConfig extends HiveObject with EquatableMixin {
   final int repeatMode;
   @HiveField(2, defaultValue: 41)
   final int colorScheme;
+  @HiveField(3, defaultValue: false)
+  final bool isDataSaverEnabled;
 
   AppConfig({
     this.sortBy = SortBy.custom,
     this.repeatMode = 0,
     this.colorScheme = 41,
+    this.isDataSaverEnabled = false,
   });
 
   AppConfig copyWith({
     SortBy? sortBy,
     int? repeatMode,
     int? colorScheme,
+    bool? isDataSaverEnabled,
   }) {
     return AppConfig(
       sortBy: sortBy ?? this.sortBy,
       repeatMode: repeatMode ?? this.repeatMode,
       colorScheme: colorScheme ?? this.colorScheme,
+      isDataSaverEnabled: isDataSaverEnabled ?? this.isDataSaverEnabled,
     );
   }
 
   @override
-  List<Object?> get props => [sortBy, repeatMode, colorScheme];
+  List<Object?> get props =>
+      [sortBy, repeatMode, colorScheme, isDataSaverEnabled];
 
   @override
   bool get stringify => true;

@@ -28,6 +28,20 @@ class SettingsPage extends StatelessWidget {
       child: SettingsList(
         sections: [
           SettingsSection(
+            title: const Text("General"),
+            tiles: [
+              SettingsTile.switchTile(
+                initialValue: appConfig.isDataSaverEnabled,
+                title: const Text("Data saver"),
+                leading: const Icon(Icons.data_saver_on_outlined),
+                onToggle: (value) {
+                  AppConfig.getBox
+                      .put(0, appConfig.copyWith(isDataSaverEnabled: value));
+                },
+              ),
+            ],
+          ),
+          SettingsSection(
             title: const Text("Advanced"),
             tiles: [
               SettingsTile(
@@ -44,12 +58,10 @@ class SettingsPage extends StatelessWidget {
                           message: "Cache cleared 👍🏻",
                         ).show(context);
                       }),
-                description: const Text("Clears the app's cache"),
               ),
               SettingsTile.navigation(
                 leading: const Icon(Icons.format_paint_outlined),
                 title: const Text('Theme'),
-                description: const Text("Change the app's theme"),
                 value: Text(appConfig.scheme.describeScheme),
                 onPressed: (ctx) => _handleOnPressed(ctx, appConfig),
               ),

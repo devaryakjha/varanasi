@@ -26,9 +26,9 @@ class TopSearch extends PlayableMedia with EquatableMixin {
   });
 
   factory TopSearch.fromJson(Map<String, dynamic> json) =>
-      _$DatumFromJson(json);
+      _$TopSearchFromJson(json);
 
-  Map<String, dynamic> toJson() => _$DatumToJson(this);
+  Map<String, dynamic> toJson() => _$TopSearchToJson(this);
 
   TopSearch copyWith({
     String? id,

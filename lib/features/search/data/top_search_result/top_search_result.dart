@@ -14,10 +14,10 @@ class TopSearchResult extends Equatable {
   const TopSearchResult({this.status, this.data, this.error});
 
   factory TopSearchResult.fromJson(Map<String, dynamic> json) {
-    return _$TopSearcheResultFromJson(json);
+    return _$TopSearchResultFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$TopSearcheResultToJson(this);
+  Map<String, dynamic> toJson() => _$TopSearchResultToJson(this);
 
   TopSearchResult copyWith({
     String? status,

@@ -6,7 +6,7 @@ part of 'top_search.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-TopSearch _$DatumFromJson(Map<String, dynamic> json) => TopSearch(
+TopSearch _$TopSearchFromJson(Map<String, dynamic> json) => TopSearch(
       id: json['id'] as String?,
       title: json['title'] as String?,
       description: json['description'] as String?,
@@ -18,7 +18,7 @@ TopSearch _$DatumFromJson(Map<String, dynamic> json) => TopSearch(
       album: json['album'] as String?,
     );
 
-Map<String, dynamic> _$DatumToJson(TopSearch instance) => <String, dynamic>{
+Map<String, dynamic> _$TopSearchToJson(TopSearch instance) => <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
       'description': instance.description,

@@ -1,7 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:audio_service/audio_service.dart';
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:varanasi_mobile_app/models/app_config.dart';
+import 'package:varanasi_mobile_app/models/download_url.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/configs.dart';
@@ -60,6 +63,7 @@ abstract class PlayableMedia extends Equatable {
     var duration = Duration.zero;
     var album = '';
     var artist = '';
+    var id = itemUrl;
 
     if (this is Song) {
       final song = (this as Song);
@@ -67,10 +71,23 @@ abstract class PlayableMedia extends Equatable {
       album = song.album?.name ?? '';
       final artists = song.featuredArtists ?? song.primaryArtists ?? [];
       artist = artists.map((e) => e.name ?? '').join(', ');
+      final isDataSaverEnabled =
+          AppConfig.getBox.get(0)?.isDataSaverEnabled ?? false;
+      if (isDataSaverEnabled) {
+        id = song.downloadUrl
+                ?.firstWhereOrNull((e) => e.quality == DownloadQuality.medium)
+                ?.link ??
+            '';
+      } else {
+        id = song.downloadUrl
+                ?.firstWhereOrNull((e) => e.quality == DownloadQuality.extreme)
+                ?.link ??
+            '';
+      }
     }
 
     return MediaItem(
-      id: itemUrl,
+      id: id,
       title: itemTitle,
       artist: artist,
       displayTitle: itemTitle,
