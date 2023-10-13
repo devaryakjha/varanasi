@@ -15,9 +15,8 @@ import 'package:varanasi_mobile_app/utils/logger.dart';
 part 'config_state.dart';
 
 class ConfigCubit extends AppCubit<ConfigState> {
-  final Box<AppConfig> _configBox =
-      Hive.box<AppConfig>(AppStrings.configBoxName);
-  final Box _cacheBox = Hive.box(AppStrings.commonCacheBoxName);
+  final _configBox = AppConfig.getBox;
+  final _cacheBox = Hive.box(AppStrings.commonCacheBoxName);
   final Map<String, CachedNetworkImageProvider> _imageProviderCache = {};
   late final Expando<PaletteGenerator> _paletteGeneratorExpando;
   Logger logger = Logger.instance;
@@ -155,4 +154,8 @@ class ConfigCubit extends AppCubit<ConfigState> {
     if (_configBox.isEmpty) return AudioServiceRepeatMode.none;
     return AudioServiceRepeatMode.values[_configBox.values.first.repeatMode];
   }
+
+  ConfigLoaded get configLoadedState => state is ConfigLoaded
+      ? state as ConfigLoaded
+      : throw Exception('Config is not loaded');
 }

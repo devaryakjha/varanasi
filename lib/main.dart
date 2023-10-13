@@ -14,7 +14,7 @@ Future<void> main() async {
   await Hive.initFlutter();
   registerCommonTypeAdapters();
   registerHomePageTypeAdapters();
-  await Hive.openBox<AppConfig>(AppStrings.configBoxName);
+  await AppConfig.openBox();
   await Hive.openBox(AppStrings.commonCacheBoxName);
   runApp(const Varanasi());
 }

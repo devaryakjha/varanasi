@@ -27,14 +27,18 @@ class Varanasi extends StatelessWidget {
                   MediaPlayerCubit(() => context.read<ConfigCubit>())..init(),
             ),
           ],
-          child: MaterialApp.router(
-            title: AppStrings.appName,
-            theme: lightTheme,
-            darkTheme: darkTheme,
-            themeMode: ThemeMode.dark,
-            routerConfig: routerConfig,
-            debugShowCheckedModeBanner: false,
-          ),
+          child: Builder(builder: (context) {
+            final scheme = context.select(
+              (ConfigCubit cubit) => cubit.configLoadedState.config.scheme,
+            );
+            return MaterialApp.router(
+              title: AppStrings.appName,
+              darkTheme: darkTheme(scheme),
+              themeMode: ThemeMode.dark,
+              routerConfig: routerConfig,
+              debugShowCheckedModeBanner: false,
+            );
+          }),
         );
       },
     );
