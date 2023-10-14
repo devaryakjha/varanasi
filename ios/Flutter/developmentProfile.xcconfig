@@ -1,0 +1,7 @@
+#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.profile-development.xcconfig"
+#include "Generated.xcconfig"
+
+FLUTTER_TARGET=lib/main_development.dart
+ASSET_PREFIX=development
+BUNDLE_NAME=Varanasi Dev
+BUNDLE_DISPLAY_NAME=Varanasi Dev

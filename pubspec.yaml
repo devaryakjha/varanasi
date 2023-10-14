@@ -67,6 +67,7 @@ dependencies:
   audio_session: ^0.1.16
   marquee: ^2.2.3
   carousel_slider: ^4.2.1
+  package_info_plus: ^4.1.0
 
 dev_dependencies:
   flutter_test:
@@ -81,12 +82,34 @@ dev_dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_gen: ^5.3.2
   flutter_gen_runner: ^5.3.2
+  flutter_flavorizr: ^2.2.1
 
 flutter_launcher_icons:
   android: "ic_launcher"
   ios: true
   image_path: "assets/icon/app_icon.jpg"
   min_sdk_android: 16
+
+flavorizr:
+  flavors:
+    development:
+      app:
+        name: "Project Varanasi Dev"
+      android:
+        applicationId: "dev.aryak.varanasi.dev"
+        customConfig:
+          versionNameSuffix: '"-dev"'
+      ios:
+        bundleId: "dev.aryak.varanasi.dev"
+    production:
+      app:
+        name: "Project Varanasi"
+      android:
+        applicationId: "dev.aryak.varanasi"
+        customConfig:
+          versionNameSuffix: '"-prod"'
+      ios:
+        bundleId: "dev.aryak.varanasi"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

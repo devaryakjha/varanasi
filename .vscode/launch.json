@@ -8,9 +8,10 @@
             "name": "varanasi_mobile_app",
             "request": "launch",
             "type": "dart",
+            "program": "lib/main_development.dart",
             "args": [
                 "--flavor",
-                "dev",
+                "development",
             ]
         },
         {
@@ -18,9 +19,10 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
+            "program": "lib/main_development.dart",
             "args": [
                 "--flavor",
-                "dev"
+                "development"
             ]
         },
         {
@@ -28,9 +30,10 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",
+            "program": "lib/main_production.dart",
             "args": [
                 "--flavor",
-                "prod"
+                "production"
             ]
         }
     ]
