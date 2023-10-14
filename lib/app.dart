@@ -29,7 +29,7 @@ class Varanasi extends StatelessWidget {
           ],
           child: Builder(builder: (context) {
             final scheme = context.select(
-              (ConfigCubit cubit) => cubit.configLoadedState.config.scheme,
+              (ConfigCubit cubit) => cubit.configOrNull?.config.scheme,
             );
             return MaterialApp.router(
               title: AppStrings.appName,

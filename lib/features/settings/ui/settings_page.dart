@@ -10,7 +10,6 @@ import 'package:varanasi_mobile_app/models/app_config.dart';
 import 'package:varanasi_mobile_app/models/download_url.dart';
 import 'package:varanasi_mobile_app/utils/clear_cache.dart';
 import 'package:varanasi_mobile_app/utils/dialogs/alert_dialog.dart';
-import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/extensions/flex_scheme.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -18,16 +17,15 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appConfig =
-        context.select((ConfigCubit cubit) => cubit.configLoadedState.config);
-    return CupertinoPageScaffold(
-      backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
-      navigationBar: CupertinoNavigationBar(
-        backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
-        middle: Text("Settings", style: context.textTheme.titleLarge),
-        previousPageTitle: "Home",
-      ),
-      child: SettingsList(
+    final appConfig = context.select(
+      (ConfigCubit cubit) => cubit.configLoadedState.config,
+    );
+    final packageInfo = context.select(
+      (ConfigCubit cubit) => cubit.configLoadedState.packageInfo,
+    );
+    return Scaffold(
+      appBar: AppBar(title: const Text("Settings"), centerTitle: true),
+      body: SettingsList(
         sections: [
           SettingsSection(
             title: const Text("General"),
@@ -64,71 +62,95 @@ class SettingsPage extends StatelessWidget {
               ),
             ],
           ),
-          if (appConfig.isAdvancedModeEnabled) ...[
-            SettingsSection(
-              title: const Text("Advanced"),
-              tiles: [
-                if (!appConfig.isDataSaverEnabled)
-                  SettingsTile.navigation(
-                    title: const Text('Streaming quality'),
-                    leading: const Icon(Icons.music_note_outlined),
-                    value:
-                        Text(appConfig.downloadQuality?.describeQuality ?? ""),
-                    onPressed: (ctx) {
-                      _showOptionsPicker(
-                        ctx,
-                        appConfig.downloadQuality,
-                        DownloadQuality.values,
-                        (e) => e?.describeQuality ?? "",
-                      ).then((value) {
-                        if (value != null) {
-                          AppConfig.getBox.put(
-                              0, appConfig.copyWith(downloadQuality: value));
-                        }
-                      });
-                    },
-                  ),
+          _VisibileWhenSection(
+            visible: appConfig.isAdvancedModeEnabled,
+            title: const Text("Advanced"),
+            tiles: [
+              if (!appConfig.isDataSaverEnabled)
                 SettingsTile.navigation(
-                  leading: const Icon(Icons.format_paint_outlined),
-                  title: const Text('Theme'),
-                  value: Text(appConfig.scheme.describeScheme),
+                  title: const Text('Streaming quality'),
+                  leading: const Icon(Icons.music_note_outlined),
+                  value: Text(appConfig.downloadQuality?.describeQuality ?? ""),
                   onPressed: (ctx) {
-                    _showOptionsPicker(ctx, appConfig.scheme, FlexScheme.values,
-                        (e) => e.describeScheme).then((value) {
+                    _showOptionsPicker(
+                      ctx,
+                      appConfig.downloadQuality,
+                      DownloadQuality.values,
+                      (e) => e?.describeQuality ?? "",
+                    ).then((value) {
                       if (value != null) {
-                        AppConfig.getBox.put(
-                            0, appConfig.copyWith(colorScheme: value.index));
+                        AppConfig.getBox
+                            .put(0, appConfig.copyWith(downloadQuality: value));
                       }
                     });
                   },
                 ),
-                SettingsTile(
-                  leading: const Icon(Icons.delete_forever_outlined),
-                  title: const Text("Clear cache"),
-                  onPressed: (ctx) {
-                    if (isCacheEmpty()) {
-                      FlushbarHelper.createInformation(
-                        message: "Cache is already empty 👍🏻",
-                      ).show(context);
-                    } else {
-                      showAlertDialog(
-                        context,
-                        "Clear cache",
-                        "Are you sure you want to clear the cache?",
-                        onConfirm: () {
-                          clearCache().then((value) {
-                            FlushbarHelper.createSuccess(
-                              message: "Cache cleared 👍🏻",
-                            ).show(context);
-                          });
-                        },
-                      );
+              SettingsTile.navigation(
+                leading: const Icon(Icons.format_paint_outlined),
+                title: const Text('Theme'),
+                value: Text(appConfig.scheme.describeScheme),
+                onPressed: (ctx) {
+                  _showOptionsPicker(ctx, appConfig.scheme, FlexScheme.values,
+                      (e) => e.describeScheme).then((value) {
+                    if (value != null) {
+                      AppConfig.getBox
+                          .put(0, appConfig.copyWith(colorScheme: value.index));
                     }
-                  },
-                ),
-              ],
-            ),
-          ],
+                  });
+                },
+              ),
+              SettingsTile(
+                leading: const Icon(Icons.delete_forever_outlined),
+                title: const Text("Clear cache"),
+                onPressed: (ctx) {
+                  if (isCacheEmpty()) {
+                    FlushbarHelper.createInformation(
+                      message: "Cache is already empty 👍🏻",
+                    ).show(context);
+                  } else {
+                    showAlertDialog(
+                      context,
+                      "Clear cache",
+                      "Are you sure you want to clear the cache?",
+                      onConfirm: () {
+                        clearCache().then((value) {
+                          FlushbarHelper.createSuccess(
+                            message: "Cache cleared 👍🏻",
+                          ).show(context);
+                        });
+                      },
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+          // show package info
+          SettingsSection(
+            title: const Text("About"),
+            tiles: [
+              SettingsTile(
+                title: const Text("Version"),
+                value: Text(packageInfo.version),
+                leading: const Icon(Icons.info_outline),
+              ),
+              SettingsTile(
+                title: const Text("Build number"),
+                value: Text(packageInfo.buildNumber),
+                leading: const Icon(Icons.info_outline),
+              ),
+              SettingsTile(
+                title: const Text("App name"),
+                value: Text(packageInfo.appName),
+                leading: const Icon(Icons.info_outline),
+              ),
+              SettingsTile(
+                title: const Text("App ID"),
+                value: Text(packageInfo.packageName),
+                leading: const Icon(Icons.info_outline),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -200,4 +222,23 @@ Future<T?> _showOptionsPicker<T>(
   //     ).show(context);
   //   }
   // }
+}
+
+class _VisibileWhenSection extends SettingsSection {
+  const _VisibileWhenSection({
+    required super.tiles,
+    super.title,
+    this.visible = true,
+  });
+
+  final bool visible;
+
+  @override
+  Widget build(BuildContext context) {
+    final child = visible ? super.build(context) : const SizedBox.shrink();
+    return AnimatedSize(
+      duration: kThemeAnimationDuration,
+      child: child,
+    );
+  }
 }

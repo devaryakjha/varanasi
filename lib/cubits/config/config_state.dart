@@ -14,12 +14,14 @@ final class ConfigLoaded extends ConfigState {
   final AppConfig config;
   final CarouselController? miniPlayerPageController, playerPageController;
   final PanelController panelController;
+  final PackageInfo packageInfo;
 
   const ConfigLoaded({
     required this.config,
     this.miniPlayerPageController,
     this.playerPageController,
     required this.panelController,
+    required this.packageInfo,
   });
 
   @override
@@ -28,6 +30,7 @@ final class ConfigLoaded extends ConfigState {
         miniPlayerPageController,
         panelController,
         playerPageController,
+        packageInfo,
       ];
 
   ConfigLoaded copyWith({
@@ -35,8 +38,10 @@ final class ConfigLoaded extends ConfigState {
     CarouselController? miniPlayerPageController,
     CarouselController? playerPageController,
     PanelController? panelController,
+    PackageInfo? packageInfo,
   }) {
     return ConfigLoaded(
+      packageInfo: packageInfo ?? this.packageInfo,
       config: config ?? this.config,
       playerPageController: playerPageController ?? this.playerPageController,
       panelController: panelController ?? this.panelController,

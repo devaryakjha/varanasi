@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:varanasi_mobile_app/models/app_config.dart';
@@ -25,6 +26,7 @@ class ConfigCubit extends AppCubit<ConfigState> {
 
   @override
   void init() async {
+    final packageInfo = await PackageInfo.fromPlatform();
     _paletteGeneratorExpando = Expando<PaletteGenerator>();
     if (_configBox.isEmpty) {
       logger.i('Config box is empty');
@@ -44,6 +46,7 @@ class ConfigCubit extends AppCubit<ConfigState> {
           panelController: PanelController(),
           playerPageController: CarouselController(),
           miniPlayerPageController: CarouselController(),
+          packageInfo: packageInfo,
         ));
       }
     });
@@ -52,6 +55,7 @@ class ConfigCubit extends AppCubit<ConfigState> {
       panelController: PanelController(),
       playerPageController: CarouselController(),
       miniPlayerPageController: CarouselController(),
+      packageInfo: packageInfo,
     ));
   }
 
@@ -158,4 +162,7 @@ class ConfigCubit extends AppCubit<ConfigState> {
   ConfigLoaded get configLoadedState => state is ConfigLoaded
       ? state as ConfigLoaded
       : throw Exception('Config is not loaded');
+
+  ConfigLoaded? get configOrNull =>
+      state is ConfigLoaded ? state as ConfigLoaded : null;
 }
