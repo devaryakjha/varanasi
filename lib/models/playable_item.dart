@@ -77,7 +77,7 @@ abstract class PlayableMedia extends Equatable {
           (isDataSaverEnabled ? DownloadQuality.low : DownloadQuality.extreme);
 
       id = song.downloadUrl
-              ?.firstWhereOrNull((e) => e.quality == effectiveQuality)
+              ?.firstWhereOrNull((e) => e.dQuality == effectiveQuality)
               ?.link ??
           '';
     }

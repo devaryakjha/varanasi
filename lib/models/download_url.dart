@@ -39,11 +39,11 @@ enum DownloadQuality {
 @HiveType(typeId: 10)
 class DownloadUrl extends Equatable {
   @HiveField(0)
-  final String? _quality;
+  final String? quality;
   @HiveField(1)
   final String? link;
 
-  const DownloadUrl({String? quality, this.link}) : _quality = quality;
+  const DownloadUrl({this.quality, this.link});
 
   factory DownloadUrl.fromJson(Map<String, dynamic> json) =>
       _$DownloadUrlFromJson(json);
@@ -51,8 +51,7 @@ class DownloadUrl extends Equatable {
   Map<String, dynamic> toJson() => _$DownloadUrlToJson(this);
 
   @override
-  List<Object?> get props => [_quality, link];
+  List<Object?> get props => [quality, link];
 
-  @HiveField(2)
-  DownloadQuality get quality => DownloadQuality.fromString(_quality);
+  DownloadQuality get dQuality => DownloadQuality.fromString(quality);
 }

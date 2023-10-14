@@ -17,7 +17,7 @@ class DownloadUrlAdapter extends TypeAdapter<DownloadUrl> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return DownloadUrl(
-      quality: fields[2] as String?,
+      quality: fields[0] as String?,
       link: fields[1] as String?,
     );
   }
@@ -25,13 +25,11 @@ class DownloadUrlAdapter extends TypeAdapter<DownloadUrl> {
   @override
   void write(BinaryWriter writer, DownloadUrl obj) {
     writer
-      ..writeByte(3)
-      ..writeByte(0)
-      ..write(obj._quality)
-      ..writeByte(1)
-      ..write(obj.link)
       ..writeByte(2)
-      ..write(obj.quality);
+      ..writeByte(0)
+      ..write(obj.quality)
+      ..writeByte(1)
+      ..write(obj.link);
   }
 
   @override
@@ -110,14 +108,6 @@ DownloadUrl _$DownloadUrlFromJson(Map<String, dynamic> json) => DownloadUrl(
 
 Map<String, dynamic> _$DownloadUrlToJson(DownloadUrl instance) =>
     <String, dynamic>{
+      'quality': instance.quality,
       'link': instance.link,
-      'quality': _$DownloadQualityEnumMap[instance.quality]!,
     };
-
-const _$DownloadQualityEnumMap = {
-  DownloadQuality.low: 'low',
-  DownloadQuality.medium: 'medium',
-  DownloadQuality.high: 'high',
-  DownloadQuality.veryHigh: 'veryHigh',
-  DownloadQuality.extreme: 'extreme',
-};
