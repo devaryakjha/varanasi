@@ -2,6 +2,7 @@ import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -146,8 +147,17 @@ class SettingsPage extends StatelessWidget {
               ),
               SettingsTile(
                 title: const Text("App ID"),
-                value: Text(packageInfo.packageName),
+                value: SelectableText(packageInfo.packageName),
                 leading: const Icon(Icons.info_outline),
+                onPressed: (context) {
+                  Clipboard.setData(
+                          ClipboardData(text: packageInfo.packageName))
+                      .then((value) {
+                    FlushbarHelper.createSuccess(
+                      message: "App ID copied 👍🏻",
+                    ).show(context);
+                  });
+                },
               ),
             ],
           ),

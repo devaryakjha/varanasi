@@ -13,34 +13,37 @@ class Varanasi extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveSizer(
-      builder: (context, orientation, screenType) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              lazy: false,
-              create: (context) => ConfigCubit()..init(),
-            ),
-            BlocProvider(
-              lazy: false,
-              create: (context) =>
-                  MediaPlayerCubit(() => context.read<ConfigCubit>())..init(),
-            ),
-          ],
-          child: Builder(builder: (context) {
-            final scheme = context.select(
-              (ConfigCubit cubit) => cubit.configOrNull?.config.scheme,
-            );
-            return MaterialApp.router(
-              title: AppStrings.appName,
-              darkTheme: darkTheme(scheme),
-              themeMode: ThemeMode.dark,
-              routerConfig: routerConfig,
-              debugShowCheckedModeBanner: false,
-            );
-          }),
-        );
-      },
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: ResponsiveSizer(
+        builder: (context, orientation, screenType) {
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                lazy: false,
+                create: (context) => ConfigCubit()..init(),
+              ),
+              BlocProvider(
+                lazy: false,
+                create: (context) =>
+                    MediaPlayerCubit(() => context.read<ConfigCubit>())..init(),
+              ),
+            ],
+            child: Builder(builder: (context) {
+              final scheme = context.select(
+                (ConfigCubit cubit) => cubit.configOrNull?.config.scheme,
+              );
+              return MaterialApp.router(
+                title: AppStrings.appName,
+                darkTheme: darkTheme(scheme),
+                themeMode: ThemeMode.dark,
+                routerConfig: routerConfig,
+                debugShowCheckedModeBanner: false,
+              );
+            }),
+          );
+        },
+      ),
     );
   }
 }
