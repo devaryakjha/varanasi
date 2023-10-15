@@ -4,6 +4,7 @@ class AppRoutes {
   /// Application wide routes
   static const Route library = (name: 'media-library', path: '/media-library');
   static const Route librarySearch = (name: 'library-search', path: 'search');
+  static const Route authentication = (name: 'auth', path: '/auth');
 
   // home specific routes
   static const Route home = (name: 'home', path: '/home');

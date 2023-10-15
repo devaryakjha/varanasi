@@ -9,7 +9,6 @@ import 'models/app_config.dart';
 import 'utils/constants/strings.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Hive.initFlutter();
   registerCommonTypeAdapters();

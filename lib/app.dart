@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:varanasi_mobile_app/features/session/cubit/session_cubit.dart';
 import 'package:varanasi_mobile_app/utils/constants/constants.dart';
 import 'package:varanasi_mobile_app/utils/router.dart';
 import 'package:varanasi_mobile_app/widgets/responsive_sizer.dart';
@@ -19,6 +20,10 @@ class Varanasi extends StatelessWidget {
         builder: (context, orientation, screenType) {
           return MultiBlocProvider(
             providers: [
+              BlocProvider(
+                lazy: false,
+                create: (context) => SessionCubit()..init(),
+              ),
               BlocProvider(
                 lazy: false,
                 create: (context) => ConfigCubit()..init(),
