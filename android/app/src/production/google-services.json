@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "719956441125",
-    "project_id": "project-varanasi-735a5",
-    "storage_bucket": "project-varanasi-735a5.appspot.com"
+    "project_number": "371448231205",
+    "project_id": "project-varanasi-prod",
+    "storage_bucket": "project-varanasi-prod.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:719956441125:android:db16ee422dc4417b0127cc",
+        "mobilesdk_app_id": "1:371448231205:android:87d03fd793f854d3ae16cc",
         "android_client_info": {
-          "package_name": "dev.aryak.varanasi.dev"
+          "package_name": "dev.aryak.varanasi"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCAufc36o6REqKhj1Rr5AzD71fHwx1W75c"
+          "current_key": "AIzaSyBkKLoyHz6dI1rJmf-e1ee3MH2pR4XwNjs"
         }
       ],
       "services": {

@@ -7,7 +7,6 @@ import 'package:varanasi_mobile_app/features/library/ui/library_screen.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_search_page.dart';
 import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
 import 'package:varanasi_mobile_app/features/search/ui/search_page.dart';
-import 'package:varanasi_mobile_app/features/session/cubit/session_cubit.dart';
 import 'package:varanasi_mobile_app/features/session/ui/auth_page.dart';
 import 'package:varanasi_mobile_app/features/settings/ui/settings_page.dart';
 import 'package:varanasi_mobile_app/features/user-library/ui/user_library_page.dart';
@@ -22,13 +21,13 @@ import 'keys.dart';
 final routerConfig = GoRouter(
   initialLocation: AppRoutes.home.path,
   navigatorKey: rootNavigatorKey,
-  redirect: (context, state) {
-    final sessionState = context.read<SessionCubit>().state;
-    if (sessionState is! Authenticated) {
-      return AppRoutes.authentication.path;
-    }
-    return null;
-  },
+  // redirect: (context, state) {
+  //   final sessionState = context.read<SessionCubit>().state;
+  //   if (sessionState is! Authenticated) {
+  //     return AppRoutes.authentication.path;
+  //   }
+  //   return null;
+  // },
   routes: [
     StatefulShellRoute.indexedStack(
       parentNavigatorKey: rootNavigatorKey,

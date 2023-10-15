@@ -8,7 +8,7 @@ import 'package:flutter/foundation.dart'
 ///
 /// Example:
 /// ```dart
-/// import 'firebase_options_dev.dart';
+/// import 'firebase_options_prod.dart';
 /// // ...
 /// await Firebase.initializeApp(
 ///   options: DefaultFirebaseOptions.currentPlatform,
@@ -50,21 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCAufc36o6REqKhj1Rr5AzD71fHwx1W75c',
-    appId: '1:719956441125:android:db16ee422dc4417b0127cc',
-    messagingSenderId: '719956441125',
-    projectId: 'project-varanasi-735a5',
-    storageBucket: 'project-varanasi-735a5.appspot.com',
+    apiKey: 'AIzaSyBkKLoyHz6dI1rJmf-e1ee3MH2pR4XwNjs',
+    appId: '1:371448231205:android:87d03fd793f854d3ae16cc',
+    messagingSenderId: '371448231205',
+    projectId: 'project-varanasi-prod',
+    storageBucket: 'project-varanasi-prod.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB6i9_aMq6cI2_P5_2PQVknXVIETtyRke8',
-    appId: '1:719956441125:ios:b2cdb71972d825970127cc',
-    messagingSenderId: '719956441125',
-    projectId: 'project-varanasi-735a5',
-    storageBucket: 'project-varanasi-735a5.appspot.com',
-    androidClientId: '719956441125-78c3emlv74pshl6btc31t4u294d8bejp.apps.googleusercontent.com',
-    iosClientId: '719956441125-5l1gkghocnakpc462opncdmk8suhf7qm.apps.googleusercontent.com',
-    iosBundleId: 'dev.aryak.varanasi.dev',
+    apiKey: 'AIzaSyAuqfYLhMmeW11OTSLLlHR84WHLPNMBuyI',
+    appId: '1:371448231205:ios:e5d4d305c3fdb7fdae16cc',
+    messagingSenderId: '371448231205',
+    projectId: 'project-varanasi-prod',
+    storageBucket: 'project-varanasi-prod.appspot.com',
+    iosBundleId: 'dev.aryak.varanasi',
   );
 }

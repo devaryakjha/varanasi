@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyB6i9_aMq6cI2_P5_2PQVknXVIETtyRke8</string>
+	<string>AIzaSyAuqfYLhMmeW11OTSLLlHR84WHLPNMBuyI</string>
 	<key>GCM_SENDER_ID</key>
-	<string>719956441125</string>
+	<string>371448231205</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>dev.aryak.varanasi.dev</string>
+	<string>dev.aryak.varanasi</string>
 	<key>PROJECT_ID</key>
-	<string>project-varanasi-735a5</string>
+	<string>project-varanasi-prod</string>
 	<key>STORAGE_BUCKET</key>
-	<string>project-varanasi-735a5.appspot.com</string>
+	<string>project-varanasi-prod.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:719956441125:ios:b2cdb71972d825970127cc</string>
+	<string>1:371448231205:ios:e5d4d305c3fdb7fdae16cc</string>
 </dict>
 </plist>

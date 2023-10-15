@@ -35,7 +35,10 @@ class PageWithNavbar extends HookWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(bottom: showPlayer ? 56 : 0, child: child),
+          Positioned.fill(
+            bottom: showPlayer ? 56 : 0,
+            child: child,
+          ),
           if (showPlayer)
             SlidingUpPanel(
               controller: controller,
