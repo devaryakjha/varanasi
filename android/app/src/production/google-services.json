@@ -12,7 +12,20 @@
           "package_name": "dev.aryak.varanasi"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "371448231205-nfvi3hie1ic2kt8ht5t1gefpjk4iq9hs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.aryak.varanasi",
+            "certificate_hash": "07f887ef78e807fde3fd21a557159812899a1b0b"
+          }
+        },
+        {
+          "client_id": "371448231205-bsertaufbap8r42kjv8h275grm4j68o3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBkKLoyHz6dI1rJmf-e1ee3MH2pR4XwNjs"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "371448231205-bsertaufbap8r42kjv8h275grm4j68o3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "371448231205-7inrtv982orcdou42vs3sa6gjt89bkbt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dev.aryak.varanasi"
+              }
+            }
+          ]
         }
       }
     }
