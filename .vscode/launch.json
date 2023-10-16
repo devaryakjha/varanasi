@@ -5,33 +5,68 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "varanasi_mobile_app",
+            "name": "Development",
             "request": "launch",
             "type": "dart",
+            "program": "lib/main_development.dart",
             "args": [
                 "--flavor",
-                "dev",
+                "development",
             ]
         },
         {
-            "name": "varanasi_mobile_app (profile mode)",
+            "name": "Production",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_production.dart",
+            "args": [
+                "--flavor",
+                "production",
+            ]
+        },
+        {
+            "name": "Development (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
+            "program": "lib/main_development.dart",
             "args": [
                 "--flavor",
-                "dev"
+                "development"
             ]
         },
         {
-            "name": "varanasi_mobile_app (release mode)",
+            "name": "Production (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "program": "lib/main_production.dart",
+            "args": [
+                "--flavor",
+                "production"
+            ]
+        },
+        {
+            "name": "Development (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",
+            "program": "lib/main_development.dart",
             "args": [
                 "--flavor",
-                "prod"
+                "development"
             ]
-        }
+        },
+        {
+            "name": "Production (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "program": "lib/main_production.dart",
+            "args": [
+                "--flavor",
+                "production"
+            ]
+        },
     ]
 }

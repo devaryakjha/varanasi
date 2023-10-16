@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>719956441125-5l1gkghocnakpc462opncdmk8suhf7qm.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.719956441125-5l1gkghocnakpc462opncdmk8suhf7qm</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>719956441125-78c3emlv74pshl6btc31t4u294d8bejp.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB6i9_aMq6cI2_P5_2PQVknXVIETtyRke8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>719956441125</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>dev.aryak.varanasi.dev</string>
+	<key>PROJECT_ID</key>
+	<string>project-varanasi-735a5</string>
+	<key>STORAGE_BUCKET</key>
+	<string>project-varanasi-735a5.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:719956441125:ios:b2cdb71972d825970127cc</string>
+</dict>
+</plist>

@@ -21,13 +21,15 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
   final List<Image> images;
 
   /// Default constructor for [MediaPlaylist].
-  const MediaPlaylist({
+  MediaPlaylist({
     this.id,
     this.title,
     this.description,
-    this.mediaItems,
+    List<T>? mediaItems,
     this.images = const [],
-  });
+  }) : mediaItems =
+            // TODO: Remove this when the API is fixed
+            mediaItems?.where((element) => !element.itemType.isArtist).toList();
 
   const MediaPlaylist.empty()
       : id = null,

@@ -48,7 +48,7 @@ class MediaPlayerState extends Equatable {
         palette.darkMutedColor ??
         palette.dominantColor;
     final Color? color1 = selectedColor?.color.withOpacity(1);
-    const Color color2 = Colors.black;
+    final Color color2 = appContext.theme.scaffoldBackgroundColor;
     return LinearGradient(
       colors: [
         color1 ?? color2,

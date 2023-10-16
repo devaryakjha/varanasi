@@ -5,6 +5,11 @@ import 'package:varanasi_mobile_app/features/home/ui/home_screen.dart';
 import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_screen.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_search_page.dart';
+import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
+import 'package:varanasi_mobile_app/features/search/ui/search_page.dart';
+import 'package:varanasi_mobile_app/features/session/ui/auth_page.dart';
+import 'package:varanasi_mobile_app/features/settings/ui/settings_page.dart';
+import 'package:varanasi_mobile_app/features/user-library/ui/user_library_page.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
@@ -18,6 +23,7 @@ final routerConfig = GoRouter(
   navigatorKey: rootNavigatorKey,
   routes: [
     StatefulShellRoute.indexedStack(
+      parentNavigatorKey: rootNavigatorKey,
       branches: [
         StatefulShellBranch(
           navigatorKey: homeShellNavigatorKey,
@@ -63,10 +69,46 @@ final routerConfig = GoRouter(
             ),
           ],
         ),
+        StatefulShellBranch(
+          navigatorKey: searchNavigatorKey,
+          routes: [
+            GoRoute(
+              name: AppRoutes.search.name,
+              path: AppRoutes.search.path,
+              builder: (context, state) => BlocProvider(
+                lazy: true,
+                create: (context) => SearchCubit()..init(),
+                child: SearchPage(key: state.pageKey),
+              ),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          navigatorKey: userLibraryNavigatorKey,
+          routes: [
+            GoRoute(
+              name: AppRoutes.userlibrary.name,
+              path: AppRoutes.userlibrary.path,
+              builder: (context, state) => UserLibraryPage(key: state.pageKey),
+            ),
+          ],
+        ),
       ],
       builder: (context, state, navigationShell) {
         return PageWithNavbar(child: navigationShell);
       },
+    ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
+      name: AppRoutes.settings.name,
+      path: AppRoutes.settings.path,
+      builder: (context, state) => SettingsPage(key: state.pageKey),
+    ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
+      name: AppRoutes.authentication.name,
+      path: AppRoutes.authentication.path,
+      builder: (context, state) => AuthPage(key: state.pageKey),
     ),
   ],
 );

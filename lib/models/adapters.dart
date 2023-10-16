@@ -12,6 +12,7 @@ import 'primary_artist.dart';
 import 'song.dart';
 
 void registerCommonTypeAdapters() {
+  Hive.registerAdapter<DownloadQuality>(DownloadQualityAdapter());
   Hive.registerAdapter<SortBy>(SortByAdapter());
   Hive.registerAdapter<AppConfig>(AppConfigAdapter());
   Hive.registerAdapter<Album>(AlbumAdapter());

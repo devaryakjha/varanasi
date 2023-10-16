@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -6,12 +5,15 @@ import 'package:go_router/go_router.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
+import 'package:varanasi_mobile_app/utils/constants/nav_items.dart';
 import 'package:varanasi_mobile_app/utils/extensions/media_query.dart';
 import 'package:varanasi_mobile_app/widgets/player/full_screen_player/full_screen_player.dart';
 
 import 'player/mini_player.dart';
 
 const bottomNavHeight = 114.0;
+
+const iconSize = 24.0;
 
 class PageWithNavbar extends HookWidget {
   final StatefulNavigationShell child;
@@ -64,33 +66,36 @@ class PageWithNavbar extends HookWidget {
             child: OverflowBox(
               maxHeight: bottomNavHeight,
               child: NavigationBar(
-                surfaceTintColor: Colors.transparent,
+                indicatorColor: Colors.transparent,
                 selectedIndex: child.currentIndex,
                 onDestinationSelected: (value) {
-                  FlushbarHelper.createError(
-                    message: 'Coming soon!',
-                    duration: const Duration(seconds: 1),
-                  ).show(context);
+                  child.goBranch(
+                    value,
+                    initialLocation: child.currentIndex == value,
+                  );
                 },
-                destinations: const [
-                  NavigationDestination(
-                    icon: Icon(Icons.home_filled),
-                    label: 'Home',
-                  ),
-                  NavigationDestination(
-                    icon: Icon(Icons.search_rounded),
-                    label: 'Search',
-                  ),
-                  NavigationDestination(
-                    icon: Icon(Icons.library_music_outlined),
-                    label: 'Library',
-                  ),
-                ],
+                destinations: navItems.map(_createDestination).toList(),
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  NavigationDestination _createDestination(NavItem e) {
+    return NavigationDestination(
+      icon: e.icon.svg(
+        height: iconSize,
+        width: iconSize,
+        color: Colors.white,
+      ),
+      selectedIcon: e.activeIcon.svg(
+        height: iconSize,
+        width: iconSize,
+        color: Colors.white,
+      ),
+      label: e.label,
     );
   }
 }

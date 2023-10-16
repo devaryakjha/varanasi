@@ -29,7 +29,7 @@ jobs:
       - run: echo "${{ secrets.KEYSTORE }}" | base64 --decode > android/app/key.jks
       - run: flutter pub get
       - name: Flutter Dev Build
-        run: flutter build apk --flavor dev
+        run: flutter build apk --flavor development -t lib/main_development.dart
       # Make appbundle downloadable
       - name: Upload Dev artifacts
         uses: actions/upload-artifact@v3

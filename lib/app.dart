@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:varanasi_mobile_app/features/session/cubit/session_cubit.dart';
 import 'package:varanasi_mobile_app/utils/constants/constants.dart';
 import 'package:varanasi_mobile_app/utils/router.dart';
 import 'package:varanasi_mobile_app/widgets/responsive_sizer.dart';
@@ -13,30 +14,41 @@ class Varanasi extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveSizer(
-      builder: (context, orientation, screenType) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              lazy: false,
-              create: (context) => ConfigCubit()..init(),
-            ),
-            BlocProvider(
-              lazy: false,
-              create: (context) =>
-                  MediaPlayerCubit(() => context.read<ConfigCubit>())..init(),
-            ),
-          ],
-          child: MaterialApp.router(
-            title: AppStrings.appName,
-            theme: lightTheme,
-            darkTheme: darkTheme,
-            themeMode: ThemeMode.dark,
-            routerConfig: routerConfig,
-            debugShowCheckedModeBanner: false,
-          ),
-        );
-      },
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: ResponsiveSizer(
+        builder: (context, orientation, screenType) {
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                lazy: false,
+                create: (context) => SessionCubit()..init(),
+              ),
+              BlocProvider(
+                lazy: false,
+                create: (context) => ConfigCubit()..init(),
+              ),
+              BlocProvider(
+                lazy: false,
+                create: (context) =>
+                    MediaPlayerCubit(() => context.read<ConfigCubit>())..init(),
+              ),
+            ],
+            child: Builder(builder: (context) {
+              final scheme = context.select(
+                (ConfigCubit cubit) => cubit.configOrNull?.config.scheme,
+              );
+              return MaterialApp.router(
+                title: AppStrings.appName,
+                darkTheme: appTheme(scheme),
+                themeMode: ThemeMode.dark,
+                routerConfig: routerConfig,
+                debugShowCheckedModeBanner: false,
+              );
+            }),
+          );
+        },
+      ),
     );
   }
 }

@@ -49,22 +49,14 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
   List<Color> get gradientColors {
     return [
       baseColor?.color ?? Colors.white,
-      Colors.black12,
+      appContext.theme.scaffoldBackgroundColor,
     ];
   }
 
-  List<BoxShadow> get boxShadow => [
-        const BoxShadow(
-          color: Colors.black45,
-          spreadRadius: 8,
-          blurRadius: 48,
-        ),
-      ];
+  List<BoxShadow>? get boxShadow => kElevationToShadow[12];
 
   /// Title of the playlist
-  String get title {
-    return (playlist.title ?? '').sanitize;
-  }
+  String get title => (playlist.title ?? '').sanitize;
 
   String get subtitle {
     return (playlist.description ?? '').sanitize;
