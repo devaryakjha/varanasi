@@ -21,13 +21,6 @@ import 'keys.dart';
 final routerConfig = GoRouter(
   initialLocation: AppRoutes.home.path,
   navigatorKey: rootNavigatorKey,
-  // redirect: (context, state) {
-  //   final sessionState = context.read<SessionCubit>().state;
-  //   if (sessionState is! Authenticated) {
-  //     return AppRoutes.authentication.path;
-  //   }
-  //   return null;
-  // },
   routes: [
     StatefulShellRoute.indexedStack(
       parentNavigatorKey: rootNavigatorKey,

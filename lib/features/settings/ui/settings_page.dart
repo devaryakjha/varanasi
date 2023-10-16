@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
+import 'package:varanasi_mobile_app/flavors.dart';
 import 'package:varanasi_mobile_app/models/app_config.dart';
 import 'package:varanasi_mobile_app/models/download_url.dart';
 import 'package:varanasi_mobile_app/utils/clear_cache.dart';
@@ -127,8 +128,9 @@ class SettingsPage extends StatelessWidget {
             ],
           ),
           // show package info
-          SettingsSection(
-            title: const Text("About"),
+          _VisibileWhenSection(
+            visible: F.appFlavor.isDev,
+            title: const Text("About (Dev Only)"),
             tiles: [
               SettingsTile(
                 title: const Text("Version"),

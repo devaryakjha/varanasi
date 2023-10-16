@@ -40,7 +40,7 @@ class Varanasi extends StatelessWidget {
               );
               return MaterialApp.router(
                 title: AppStrings.appName,
-                darkTheme: darkTheme(scheme),
+                darkTheme: appTheme(scheme),
                 themeMode: ThemeMode.dark,
                 routerConfig: routerConfig,
                 debugShowCheckedModeBanner: false,

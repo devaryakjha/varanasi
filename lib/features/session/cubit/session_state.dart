@@ -9,6 +9,8 @@ sealed class SessionState extends Equatable {
 
 final class UnAuthenticated extends SessionState {}
 
+final class Authenticating extends SessionState {}
+
 final class Authenticated extends SessionState {
   final User user;
 

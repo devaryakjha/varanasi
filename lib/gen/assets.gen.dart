@@ -17,10 +17,14 @@ class $AssetsIconGen {
   /// File path: assets/icon/app_icon.jpg
   AssetGenImage get appIcon => const AssetGenImage('assets/icon/app_icon.jpg');
 
+  /// File path: assets/icon/app_icon_monotone.svg
+  SvgGenImage get appIconMonotone =>
+      const SvgGenImage('assets/icon/app_icon_monotone.svg');
+
   $AssetsIconNavGen get nav => const $AssetsIconNavGen();
 
   /// List of all assets
-  List<AssetGenImage> get values => [appIcon];
+  List<dynamic> get values => [appIcon, appIconMonotone];
 }
 
 class $AssetsImagesGen {
