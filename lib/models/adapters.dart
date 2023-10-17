@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:varanasi_mobile_app/models/download.dart';
 import 'package:varanasi_mobile_app/models/sort_type.dart';
 
 import 'album.dart';
@@ -21,6 +22,7 @@ void registerCommonTypeAdapters() {
   Hive.registerAdapter<Playlist>(PlaylistAdapter());
   Hive.registerAdapter<PrimaryArtist>(PrimaryArtistAdapter());
   Hive.registerAdapter<Song>(SongAdapter());
+  Hive.registerAdapter<DownloadedMedia>(DownloadedMediaAdapter());
   Hive.registerAdapter<DownloadUrl>(DownloadUrlAdapter());
   Hive.registerAdapter<MediaPlaylist>(MediaPlaylistAdapter());
 }

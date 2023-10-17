@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
+import 'package:varanasi_mobile_app/widgets/download_button.dart';
 import 'package:varanasi_mobile_app/widgets/music_visualizer.dart';
 
 class MediaTile<Media extends PlayableMedia> extends StatelessWidget {
@@ -407,13 +408,26 @@ class MediaTile<Media extends PlayableMedia> extends StatelessWidget {
     return VisualDensity.standard;
   }
 
+  Widget _buildTrailing() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        DownloadButton(media),
+        // IconButton(
+        //   onPressed: () {},
+        //   icon: const Icon(Icons.more_horiz),
+        // ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: _buildLeading(),
       title: _buildTitle(),
       subtitle: _buildSubtitle(),
-      trailing: trailing,
+      trailing: _buildTrailing(),
       isThreeLine: isThreeLine,
       dense: dense,
       visualDensity: _visualDensity,
