@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:varanasi_mobile_app/gen/assets.gen.dart';
 
 typedef NavItem = ({SvgGenImage icon, SvgGenImage activeIcon, String label});
@@ -15,9 +16,10 @@ NavItems navItems = [
     activeIcon: Assets.icon.nav.searchSelected,
     label: 'Search'
   ),
-  (
-    icon: Assets.icon.nav.library,
-    activeIcon: Assets.icon.nav.librarySelected,
-    label: 'Library'
-  ),
+  if (kDebugMode)
+    (
+      icon: Assets.icon.nav.library,
+      activeIcon: Assets.icon.nav.librarySelected,
+      label: 'Library'
+    ),
 ];

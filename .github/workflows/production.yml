@@ -34,4 +34,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: prod-release
-          path: build/app/outputs/flutter-apk/app-prod-release.apk
+          path: build/app/outputs/flutter-apk/app-production-release.apk
