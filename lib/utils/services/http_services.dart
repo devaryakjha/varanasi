@@ -56,7 +56,11 @@ class HttpService {
         statusCode: e.response?.statusCode ?? 500,
       );
     } on Exception catch (e, stackTrace) {
-      Logger.instance.e('Error while fetching data from $url', e, stackTrace);
+      Logger.instance.e(
+        'Error while fetching data from $url',
+        error: e,
+        stackTrace: stackTrace,
+      );
       return (null, null);
     }
   }

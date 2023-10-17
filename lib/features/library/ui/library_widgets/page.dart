@@ -8,6 +8,7 @@ import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_widgets/library_app_bar.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/extensions/media_query.dart';
+import 'package:varanasi_mobile_app/widgets/download_button.dart';
 import 'package:varanasi_mobile_app/widgets/media_list.dart';
 import 'package:varanasi_mobile_app/widgets/play_pause_button.dart';
 import 'package:varanasi_mobile_app/widgets/typography.dart';
@@ -44,7 +45,7 @@ class _LibraryContentState extends State<LibraryContent> {
       final offset = renderBox.localToGlobal(Offset.zero);
       setState(() {
         final size = renderBox.size;
-        final kTop = offset.dy + ((size.height - 56) / 2);
+        final kTop = offset.dy + ((size.height - 60) / 2);
         top = kTop.clamp(minimumValueForFab, 10000);
       });
       LibraryCubit.of(context)
@@ -56,15 +57,18 @@ class _LibraryContentState extends State<LibraryContent> {
   void initState() {
     super.initState();
 
-    _scrollController = ScrollController()
-      ..addListener(() {
-        updateFABPosition();
-      });
+    _scrollController = ScrollController()..addListener(updateFABPosition);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       minimumValueForFab = context.topPadding + kToolbarHeight - 36;
       updateFABPosition();
     });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(updateFABPosition);
+    super.dispose();
   }
 
   @override
@@ -108,9 +112,16 @@ class _LibraryContentState extends State<LibraryContent> {
                         horizontal: 16,
                         vertical: 16,
                       ).copyWith(right: 84),
-                      child: Typography(
-                        state.title,
-                        secondary: state.subtitle,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Typography(
+                              state.title,
+                              secondary: state.subtitle,
+                            ),
+                          ),
+                          DownloadPlaylist(playlist: state.playlist),
+                        ],
                       ),
                     ),
                   ),

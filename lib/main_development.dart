@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:varanasi_mobile_app/firebase_options_dev.dart';
 
 import 'flavors.dart';
 import 'main.dart' as runner;
+import 'utils/bloc_observer.dart';
 
 Future<void> main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -13,5 +15,6 @@ Future<void> main() async {
   F.appFlavor = Flavor.development;
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseAuth.instance.useAuthEmulator('localhost', 9000);
+  Bloc.observer = AppBlocObserver();
   await runner.main();
 }

@@ -3,6 +3,7 @@ import 'package:varanasi_mobile_app/models/image.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
+import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/mixins/repository_protocol.dart';
 import 'package:varanasi_mobile_app/utils/services/http_services.dart';
 
@@ -38,9 +39,14 @@ class LibraryDataProvider with DataProviderProtocol {
       final List<Image> images = json['image'] != null
           ? List<Image>.from(json['image'].map((x) => Image.fromJson(x)))
           : [];
+      final description = keepIteratingTillNotNull<String>(
+        ['description', 'subtitle', 'firstname', 'type'],
+        json,
+        () => '',
+      ).capitalize;
       return MediaPlaylist(
         id: json['id'],
-        description: json['description'],
+        description: description,
         title: json['name'],
         mediaItems: songs,
         images: images,
@@ -52,4 +58,24 @@ class LibraryDataProvider with DataProviderProtocol {
       );
     }
   }
+}
+
+T keepIteratingTillNotNull<T>(
+  List<String> keys,
+  Map<String, dynamic> json,
+  T Function()? orElse,
+) {
+  for (final key in keys) {
+    final value = json[key];
+    if (value != null) {
+      if (value is String && value.isEmpty) {
+        continue;
+      }
+      return json[key] as T;
+    }
+  }
+  if (orElse != null) {
+    return orElse();
+  }
+  throw Exception('No valid key found');
 }

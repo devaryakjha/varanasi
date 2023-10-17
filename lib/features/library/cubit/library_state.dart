@@ -112,7 +112,7 @@ class LibraryError<T> extends LibraryState {
     this.error, {
     this.stackTrace,
   }) {
-    Logger.instance.e(error.toString(), error, stackTrace);
+    Logger.instance.e(error.toString(), error: error, stackTrace: stackTrace);
   }
 
   @override

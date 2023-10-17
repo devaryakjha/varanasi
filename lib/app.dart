@@ -5,6 +5,7 @@ import 'package:varanasi_mobile_app/utils/router.dart';
 import 'package:varanasi_mobile_app/widgets/responsive_sizer.dart';
 
 import 'cubits/config/config_cubit.dart';
+import 'cubits/download/download_cubit.dart';
 import 'cubits/player/player_cubit.dart';
 import 'utils/theme.dart';
 
@@ -19,14 +20,15 @@ class Varanasi extends StatelessWidget {
         builder: (context, orientation, screenType) {
           return MultiBlocProvider(
             providers: [
+              BlocProvider(lazy: false, create: (_) => DownloadCubit()..init()),
               BlocProvider(
                 lazy: false,
                 create: (context) => ConfigCubit()..init(),
               ),
               BlocProvider(
                 lazy: false,
-                create: (context) =>
-                    MediaPlayerCubit(() => context.read<ConfigCubit>())..init(),
+                create: (ctx) =>
+                    MediaPlayerCubit(() => ctx.read<ConfigCubit>())..init(),
               ),
             ],
             child: Builder(builder: (context) {

@@ -12,7 +12,7 @@ part 'home_state.dart';
 class HomeBloc extends Cubit<HomeState> {
   HomeBloc() : super(const HomeInitialState());
 
-  FutureOr<void> fetchModule({bool refetch = true}) async {
+  FutureOr<void> fetchModule({bool refetch = false}) async {
     try {
       emit(const HomeLoadingState());
       final modules =

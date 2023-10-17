@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
+import 'package:hive/hive.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/models/app_config.dart';
+import 'package:varanasi_mobile_app/models/download.dart';
+import 'package:varanasi_mobile_app/utils/constants/strings.dart';
 
 import 'typings.dart';
 
@@ -26,6 +29,11 @@ final class AudioHandlerImpl extends BaseAudioHandler
   BehaviorSubject<double> get volume => BehaviorSubject.seeded(1.0);
 
   AudioPlayer get player => _player;
+
+  bool _isSongDownloaded(String itemId) {
+    final box = Hive.box<DownloadedMedia>(AppStrings.downloadBoxName);
+    return box.containsKey(itemId);
+  }
 
   /// A stream of the current effective sequence from just_audio.
   Stream<List<IndexedAudioSource>> get _effectiveSequence {
@@ -171,7 +179,17 @@ final class AudioHandlerImpl extends BaseAudioHandler
   }
 
   AudioSource _itemToSource(MediaItem mediaItem) {
-    final audioSource = AudioSource.uri(Uri.parse(mediaItem.id));
+    final itemId = mediaItem.extras?['itemId'] as String? ?? mediaItem.id;
+    final downloaded = _isSongDownloaded(itemId);
+    if (!downloaded) {
+      final uri = Uri.parse(mediaItem.id);
+      final audioSource = LockCachingAudioSource(uri);
+      _mediaItemExpando[audioSource] = mediaItem;
+      return audioSource;
+    }
+    final box = Hive.box<DownloadedMedia>(AppStrings.downloadBoxName);
+    final downloadedMedia = box.get(itemId);
+    final audioSource = AudioSource.file(downloadedMedia!.path);
     _mediaItemExpando[audioSource] = mediaItem;
     return audioSource;
   }
