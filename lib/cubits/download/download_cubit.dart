@@ -27,8 +27,7 @@ class DownloadCubit extends AppCubit<DownloadState> {
   @override
   FutureOr<void> init() async {
     _songMap = {};
-    _downloadBox =
-        await Hive.openBox<DownloadedMedia>(AppStrings.downloadBoxName);
+    _downloadBox = Hive.box<DownloadedMedia>(AppStrings.downloadBoxName);
     _downloader = FileDownloader();
     _downloader.updates.listen((update) {
       if (update is TaskStatusUpdate) {
