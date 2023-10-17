@@ -20,13 +20,13 @@ class DownloadCubit extends AppCubit<DownloadState> {
   late final Box<DownloadedMedia> _downloadBox;
   late final FileDownloader _downloader;
 
-  late final Map<String, Song> _expando;
+  late final Map<String, Song> _songMap;
 
   Logger get _logger => Logger.instance;
 
   @override
   FutureOr<void> init() async {
-    _expando = {};
+    _songMap = {};
     _downloadBox =
         await Hive.openBox<DownloadedMedia>(AppStrings.downloadBoxName);
     _downloader = FileDownloader();
@@ -59,7 +59,7 @@ class DownloadCubit extends AppCubit<DownloadState> {
           id: update.task.taskId,
           progress: 0,
           downloadComplete: false,
-          media: _expando[update.task.taskId]!,
+          media: _songMap[update.task.taskId]!,
           path: '',
         ),
       );
@@ -114,7 +114,7 @@ class DownloadCubit extends AppCubit<DownloadState> {
   Future<void> downloadSong(PlayableMedia song) async {
     assert(song is Song, 'Only songs can be downloaded');
     if (song is! Song) return;
-    _expando[song.itemId] = song;
+    _songMap[song.itemId] = song;
     final queued = await _downloader.enqueue(_songToTask(song));
     _logger.i('Queued ${song.itemId} status: $queued');
   }
@@ -124,10 +124,16 @@ class DownloadCubit extends AppCubit<DownloadState> {
     final filteredsong = songs.whereType<Song>();
     final tasks = filteredsong.map(_songToTask).toList();
     for (final song in filteredsong) {
-      _expando[song.itemId] = song;
+      _songMap[song.itemId] = song;
     }
+    emit(state.updateProgress(MapEntry(playlist.id!, 0)));
     await _downloader.downloadBatch(
       tasks,
+      batchProgressCallback: (succeeded, failed) {
+        final percentComplete = (succeeded + failed) / tasks.length;
+        emit(state.updateProgress(MapEntry(playlist.id!, percentComplete)));
+        _logger.i('Batch progress: $succeeded, $failed');
+      },
       taskStatusCallback: _handleTaskStatusUpdate,
       taskProgressCallback: _handleTaskProgressUpdate,
     );
@@ -147,6 +153,19 @@ class DownloadCubit extends AppCubit<DownloadState> {
       if (curr != null) Stream.value(curr),
       _downloadBox.watch(key: song.itemId).map((e) => e.value)
     ]);
+  }
+
+  Stream<({bool downloading, bool downloaded})> listenToPlaylist(
+    MediaPlaylist playlist,
+  ) {
+    final items = playlist.mediaItems ?? [];
+    return Rx.combineLatestList(items.map(listen)).map(
+      (items) {
+        final downloading = items.any((e) => e?.downloading ?? false);
+        final downloaded = items.every((e) => e?.downloadComplete ?? false);
+        return (downloaded: downloaded, downloading: downloading);
+      },
+    );
   }
 
   DownloadedMedia? getDownloadedMedia(PlayableMedia song) =>
