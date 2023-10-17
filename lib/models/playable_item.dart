@@ -92,6 +92,14 @@ abstract class PlayableMedia extends Equatable {
       album: album,
       artUri: Uri.parse(artworkUrl ?? ''),
       duration: duration,
+      extras: {
+        'itemType': itemType.name,
+        'itemId': itemId,
+        'itemUrl': itemUrl,
+        'itemTitle': itemTitle,
+        'itemSubtitle': itemSubtitle,
+        'artworkUrl': artworkUrl,
+      },
     );
   }
 
