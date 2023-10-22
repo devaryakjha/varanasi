@@ -73,6 +73,7 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
       }
       return;
     }
+    unawaited(_configCubit.saveCurrentPlaylist(playlist));
     emit(state.copyWith(currentPlaylist: playlist.id));
     await audioHandler.updateQueue(playlist.mediaItemsAsMediaItems);
     if (startIndex != null) {
@@ -80,7 +81,6 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
     } else if (autoPlay) {
       await play();
     }
-    await _configCubit.saveCurrentPlaylist(playlist);
   }
 
   Future<void> playFromSong(PlayableMedia media) async {

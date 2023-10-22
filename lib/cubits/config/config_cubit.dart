@@ -42,16 +42,6 @@ class ConfigCubit extends AppCubit<ConfigState> {
     } else {
       logger.i('Config box is not empty');
     }
-    _cacheBox.watch(key: AppStrings.currentPlaylistCacheKey).listen((event) {
-      logger.i('Current playlist is changed to ${event.value}');
-      emit(configLoadedState.copyWith(currentPlaylist: event.value));
-    });
-    _cacheBox
-        .watch(key: AppStrings.currentPlaylistIndexCacheKey)
-        .listen((event) {
-      logger.i('Current playlist index is changed to ${event.value}');
-      emit(configLoadedState.copyWith(currentQueueIndex: event.value));
-    });
     _configBox.watch().listen((event) {
       final config = event.value;
       if (config is! AppConfig) return;
@@ -127,10 +117,12 @@ class ConfigCubit extends AppCubit<ConfigState> {
       : null;
 
   Future<void> saveCurrentPlaylist(MediaPlaylist playlist) {
+    emit(configLoadedState.copyWith(currentPlaylist: playlist));
     return _cacheBox.put(AppStrings.currentPlaylistCacheKey, playlist);
   }
 
   Future<void> clearCurrentPlaylist() {
+    emit(configLoadedState.copyWith(currentPlaylist: null));
     return _cacheBox.delete(AppStrings.currentPlaylistCacheKey);
   }
 
@@ -139,10 +131,12 @@ class ConfigCubit extends AppCubit<ConfigState> {
   }
 
   Future<void> saveCurrentPlaylistIndex(int index) {
+    emit(configLoadedState.copyWith(currentQueueIndex: index));
     return _cacheBox.put(AppStrings.currentPlaylistIndexCacheKey, index);
   }
 
   Future<void> clearCurrentPlaylistIndex() {
+    emit(configLoadedState.copyWith(currentQueueIndex: null));
     return _cacheBox.delete(AppStrings.currentPlaylistIndexCacheKey);
   }
 
