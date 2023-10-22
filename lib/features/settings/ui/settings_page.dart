@@ -1,10 +1,8 @@
 import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/flavors.dart';
@@ -41,10 +39,49 @@ class SettingsPage extends StatelessWidget {
                     0,
                     appConfig.copyWith(
                       isDataSaverEnabled: value,
-                      downloadQuality:
+                      streamingQuality:
                           value ? DownloadQuality.low : DownloadQuality.extreme,
                     ),
                   );
+                },
+              ),
+              SettingsTile.navigation(
+                title: const Text('Download quality'),
+                leading: const Icon(Icons.download_outlined),
+                value: Text(
+                  appConfig.downloadingQuality?.describeQuality ?? "",
+                ),
+                onPressed: (ctx) {
+                  AppDialog.showOptionsPicker(
+                    ctx,
+                    appConfig.downloadingQuality,
+                    DownloadQuality.values,
+                    (e) => e?.describeQuality ?? "",
+                    title: "Select Download Quality",
+                  ).then((value) {
+                    if (value != null) {
+                      AppConfig.effectiveDlQuality = value;
+                    }
+                  });
+                },
+              ),
+              SettingsTile.navigation(
+                title: const Text('Streaming quality'),
+                leading: const Icon(Icons.music_note_outlined),
+                value: Text(appConfig.streamingQuality?.describeQuality ?? ""),
+                onPressed: (ctx) {
+                  AppDialog.showOptionsPicker(
+                    ctx,
+                    appConfig.streamingQuality,
+                    DownloadQuality.values,
+                    (e) => e?.describeQuality ?? "",
+                    title: "Select Streaming Quality",
+                  ).then((value) {
+                    if (value != null) {
+                      AppConfig.getBox
+                          .put(0, appConfig.copyWith(streamingQuality: value));
+                    }
+                  });
                 },
               ),
               SettingsTile.switchTile(
@@ -56,7 +93,7 @@ class SettingsPage extends StatelessWidget {
                     0,
                     appConfig.copyWith(
                       isAdvancedModeEnabled: value,
-                      downloadQuality: !value ? DownloadQuality.extreme : null,
+                      streamingQuality: !value ? DownloadQuality.extreme : null,
                       colorScheme: !value ? 41 : null,
                     ),
                   );
@@ -70,37 +107,26 @@ class SettingsPage extends StatelessWidget {
             tiles: [
               if (!appConfig.isDataSaverEnabled)
                 SettingsTile.navigation(
-                  title: const Text('Streaming quality'),
-                  leading: const Icon(Icons.music_note_outlined),
-                  value: Text(appConfig.downloadQuality?.describeQuality ?? ""),
+                  leading: const Icon(Icons.format_paint_outlined),
+                  title: const Text('Theme'),
+                  value: Text(appConfig.scheme.describeScheme),
                   onPressed: (ctx) {
-                    _showOptionsPicker(
+                    AppDialog.showOptionsPicker(
                       ctx,
-                      appConfig.downloadQuality,
-                      DownloadQuality.values,
-                      (e) => e?.describeQuality ?? "",
+                      appConfig.scheme,
+                      FlexScheme.values,
+                      (e) => e.describeScheme,
+                      title: "Select Theme",
                     ).then((value) {
                       if (value != null) {
-                        AppConfig.getBox
-                            .put(0, appConfig.copyWith(downloadQuality: value));
+                        AppConfig.getBox.put(
+                          0,
+                          appConfig.copyWith(colorScheme: value.index),
+                        );
                       }
                     });
                   },
                 ),
-              SettingsTile.navigation(
-                leading: const Icon(Icons.format_paint_outlined),
-                title: const Text('Theme'),
-                value: Text(appConfig.scheme.describeScheme),
-                onPressed: (ctx) {
-                  _showOptionsPicker(ctx, appConfig.scheme, FlexScheme.values,
-                      (e) => e.describeScheme).then((value) {
-                    if (value != null) {
-                      AppConfig.getBox
-                          .put(0, appConfig.copyWith(colorScheme: value.index));
-                    }
-                  });
-                },
-              ),
               SettingsTile(
                 leading: const Icon(Icons.delete_forever_outlined),
                 title: const Text("Clear cache"),
@@ -167,73 +193,6 @@ class SettingsPage extends StatelessWidget {
       ),
     );
   }
-}
-
-Future<T?> _showOptionsPicker<T>(
-  BuildContext context,
-  T initialValue,
-  List<T> options,
-  String Function(T) labelMapper,
-) async {
-  return await showCupertinoModalPopup<T>(
-    context: context,
-    builder: (context) {
-      var selectedScheme = initialValue;
-      final viewInsets = MediaQuery.viewInsetsOf(context);
-      return StatefulBuilder(builder: (context, setState) {
-        return Container(
-          height: 300,
-          margin: EdgeInsets.only(bottom: viewInsets.bottom),
-          color: CupertinoColors.systemBackground.resolveFrom(context),
-          child: SafeArea(
-            top: false,
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CupertinoButton(
-                      child: const Text("Close"),
-                      onPressed: () => context.pop(),
-                    ),
-                    CupertinoButton(
-                      child: const Text("Save"),
-                      onPressed: () => context.pop(selectedScheme),
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: CupertinoPicker(
-                    magnification: 1.2,
-                    useMagnifier: true,
-                    itemExtent: 36,
-                    onSelectedItemChanged: (int value) {
-                      setState(() => selectedScheme = options[value]);
-                    },
-                    squeeze: 1.2,
-                    scrollController: FixedExtentScrollController(
-                      initialItem: options.indexOf(initialValue),
-                    ),
-                    children: options
-                        .map((s) => Center(child: Text(labelMapper(s))))
-                        .toList(),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      });
-    },
-  );
-  // if (value != null) {
-  //   await AppConfig.getBox.put(0, appConfig.copyWith(colorScheme: value));
-  //   if (context.mounted) {
-  //     FlushbarHelper.createSuccess(
-  //       message: "Theme changed 👍🏻",
-  //     ).show(context);
-  //   }
-  // }
 }
 
 class _VisibileWhenSection extends SettingsSection {

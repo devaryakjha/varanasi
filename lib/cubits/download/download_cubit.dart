@@ -5,7 +5,9 @@ import 'package:background_downloader/background_downloader.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:varanasi_mobile_app/models/app_config.dart';
 import 'package:varanasi_mobile_app/models/download.dart';
+import 'package:varanasi_mobile_app/models/download_url.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
@@ -120,6 +122,8 @@ class DownloadCubit extends AppCubit<DownloadState> {
   Future<void> downloadSong(PlayableMedia song) async {
     assert(song is Song, 'Only songs can be downloaded');
     if (song is! Song) return;
+    final quality = await getDownloadQuality();
+    if (quality == null) return;
     _songMap[song.itemId] = song;
     final queued = await _downloader.enqueue(_songToTask(song));
     _logger.i('Queued ${song.itemId} status: $queued');
@@ -256,4 +260,17 @@ class DownloadCubit extends AppCubit<DownloadState> {
       _downloadBox.containsKey(song.itemId);
 
   bool _isNotDownloaded(PlayableMedia song) => !_isDownloaded(song);
+
+  Future<DownloadQuality?> getDownloadQuality() async {
+    final savedQuality = AppConfig.effectiveDlQuality;
+    if (savedQuality != null) return savedQuality;
+    AppConfig.effectiveDlQuality = await AppDialog.showOptionsPicker(
+      null,
+      savedQuality ?? DownloadQuality.high,
+      DownloadQuality.values,
+      (q) => q.describeQuality,
+      title: "Select Download Quality",
+    );
+    return AppConfig.effectiveDlQuality;
+  }
 }

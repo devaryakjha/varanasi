@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/helpers/get_app_context.dart';
 
 enum AppDialogAction {
@@ -95,5 +96,104 @@ class AppDialog {
         ],
       ),
     );
+  }
+
+  static Future<T?> showOptionsPicker<T>(
+    BuildContext? context,
+    T initialValue,
+    List<T> options,
+    String Function(T) labelMapper, {
+    String? title,
+    String closeLabel = 'Close',
+    String selectLabel = 'Save',
+  }) async {
+    context ??= appContext;
+    Widget builder(context) {
+      final viewInsets = MediaQuery.viewInsetsOf(context);
+      return StatefulBuilder(builder: (context, setState) {
+        var selectedValue = initialValue;
+        return SizedBox(
+          height: 300,
+          child: Card(
+            color: context.colorScheme.surface,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: viewInsets.bottom),
+              child: SafeArea(
+                top: false,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const Expanded(
+                          flex: 4,
+                          child: SizedBox.shrink(),
+                        ),
+                        if (title != null)
+                          Expanded(
+                            flex: 12,
+                            child: Text(
+                              title,
+                              maxLines: 1,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        Expanded(
+                          flex: 4,
+                          child: CupertinoButton(
+                            child: Text(selectLabel),
+                            onPressed: () => context.pop(selectedValue),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: CupertinoPicker.builder(
+                        childCount: options.length,
+                        itemBuilder: (_, i) {
+                          return Center(child: Text(labelMapper(options[i])));
+                        },
+                        magnification: 1.2,
+                        useMagnifier: true,
+                        itemExtent: 36,
+                        onSelectedItemChanged: (int value) {
+                          setState(() => selectedValue = options[value]);
+                        },
+                        squeeze: 1.2,
+                        scrollController: FixedExtentScrollController(
+                          initialItem: options.indexOf(initialValue),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      });
+    }
+
+    switch (context.theme.platform) {
+      case TargetPlatform.android:
+      case TargetPlatform.fuchsia:
+      case TargetPlatform.linux:
+      case TargetPlatform.windows:
+        return await showModalBottomSheet(
+          context: context,
+          builder: builder,
+        );
+      case TargetPlatform.iOS:
+      case TargetPlatform.macOS:
+        return await showCupertinoModalPopup<T>(
+          context: context,
+          builder: builder,
+        );
+    }
   }
 }
