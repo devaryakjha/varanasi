@@ -111,9 +111,13 @@ class DownloadCubit extends AppCubit<DownloadState> {
 
   DownloadTask _songToTask(Song song) {
     final fileName = _fileNameFromSong(song);
+    final dquality = AppConfig.effectiveDlQuality!;
+    final dlink = song.downloadUrl?.firstWhere(
+      (e) => e.quality == dquality.quality,
+    );
     return DownloadTask(
       taskId: song.itemId,
-      url: song.itemUrl,
+      url: dlink?.link ?? song.itemUrl,
       filename: fileName,
       updates: Updates.statusAndProgress,
     );

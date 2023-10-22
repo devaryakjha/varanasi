@@ -51,37 +51,30 @@ class SettingsPage extends StatelessWidget {
                 value: Text(
                   appConfig.downloadingQuality?.describeQuality ?? "",
                 ),
-                onPressed: (ctx) {
-                  AppDialog.showOptionsPicker(
+                onPressed: (ctx) async {
+                  AppConfig.effectiveDlQuality =
+                      await AppDialog.showOptionsPicker(
                     ctx,
-                    appConfig.downloadingQuality,
+                    appConfig.downloadingQuality ?? DownloadQuality.high,
                     DownloadQuality.values,
-                    (e) => e?.describeQuality ?? "",
+                    (e) => e.describeQuality,
                     title: "Select Download Quality",
-                  ).then((value) {
-                    if (value != null) {
-                      AppConfig.effectiveDlQuality = value;
-                    }
-                  });
+                  );
                 },
               ),
               SettingsTile.navigation(
                 title: const Text('Streaming quality'),
                 leading: const Icon(Icons.music_note_outlined),
                 value: Text(appConfig.streamingQuality?.describeQuality ?? ""),
-                onPressed: (ctx) {
-                  AppDialog.showOptionsPicker(
+                onPressed: (ctx) async {
+                  AppConfig.effectivestreaQuality =
+                      await AppDialog.showOptionsPicker(
                     ctx,
-                    appConfig.streamingQuality,
+                    appConfig.streamingQuality ?? DownloadQuality.high,
                     DownloadQuality.values,
-                    (e) => e?.describeQuality ?? "",
+                    (e) => e.describeQuality,
                     title: "Select Streaming Quality",
-                  ).then((value) {
-                    if (value != null) {
-                      AppConfig.getBox
-                          .put(0, appConfig.copyWith(streamingQuality: value));
-                    }
-                  });
+                  );
                 },
               ),
               SettingsTile.switchTile(

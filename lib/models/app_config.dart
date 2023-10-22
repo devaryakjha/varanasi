@@ -87,4 +87,10 @@ class AppConfig extends HiveObject with EquatableMixin {
         getBox.get(0)?.copyWith(downloadingQuality: quality) ??
             AppConfig(downloadingQuality: quality),
       );
+
+  static set effectivestreaQuality(DownloadQuality? quality) => getBox.put(
+        0,
+        getBox.get(0)?.copyWith(streamingQuality: quality) ??
+            AppConfig(streamingQuality: quality),
+      );
 }

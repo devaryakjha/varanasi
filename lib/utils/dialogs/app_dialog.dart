@@ -110,8 +110,8 @@ class AppDialog {
     context ??= appContext;
     Widget builder(context) {
       final viewInsets = MediaQuery.viewInsetsOf(context);
+      var selectedValue = initialValue;
       return StatefulBuilder(builder: (context, setState) {
-        var selectedValue = initialValue;
         return SizedBox(
           height: 300,
           child: Card(
