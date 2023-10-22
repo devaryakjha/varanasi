@@ -20,6 +20,8 @@ class UserLibraryRepository {
 
   List<UserLibrary> getLibraries() => _box.values.toList();
 
+  bool libraryExists(String id) => _box.containsKey(id);
+
   Future<void> addLibrary<E extends UserLibrary>(E library) =>
       _box.put(library.id, library);
 

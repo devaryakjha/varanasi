@@ -37,9 +37,14 @@ class UserLibraryCubit extends AppCubit<UserLibraryState> {
   }
 
   Future<void> addToLibrary(MediaPlaylist playlist) async {
-    _repository.addLibrary(playlist.toUserLibrary());
+    final alreadyExists = _repository.libraryExists(playlist.id!);
+    if (alreadyExists) {
+      _repository.updateLibrary(playlist.toUserLibrary());
+    } else {
+      _repository.addLibrary(playlist.toUserLibrary());
+      AppSnackbar.show("Added to library");
+    }
     final library = _repository.getLibraries();
     emit(UserLibraryLoaded(library: library));
-    AppSnackbar.show("Added to library");
   }
 }
