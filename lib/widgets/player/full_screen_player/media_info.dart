@@ -1,15 +1,20 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
+import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/extensions/media_query.dart';
 import 'package:varanasi_mobile_app/utils/extensions/theme.dart';
+import 'package:varanasi_mobile_app/widgets/download_button.dart';
+import 'package:varanasi_mobile_app/widgets/favorite_button.dart';
 
 class MediaInfo extends StatelessWidget {
   const MediaInfo({
     super.key,
     required this.mediaItem,
+    required this.currentMedia,
   });
 
   final MediaItem mediaItem;
+  final PlayableMedia? currentMedia;
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +35,12 @@ class MediaInfo extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
-      trailing: IconButton(
-        onPressed: () {},
-        icon: const Icon(Icons.add_circle_outline_rounded),
-        iconSize: 32,
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (currentMedia != null) DownloadButton(currentMedia!),
+          FavoriteButton(media: currentMedia),
+        ],
       ),
     );
   }

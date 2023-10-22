@@ -26,10 +26,16 @@ class Player extends StatefulWidget {
 class _PlayerState extends State<Player> {
   @override
   Widget build(BuildContext context) {
-    final controller = context.select((ConfigCubit cubit) =>
-        cubit.state is ConfigLoaded
-            ? (cubit.state as ConfigLoaded).playerPageController
-            : null);
+    final controller = context.select(
+      (ConfigCubit cubit) => cubit.state is ConfigLoaded
+          ? cubit.configLoadedState.playerPageController
+          : null,
+    );
+    final currentMedia = context.select(
+      (ConfigCubit cubit) => cubit.state is ConfigLoaded
+          ? cubit.configLoadedState.currentMedia
+          : null,
+    );
     final (state, audioHandler) = context
         .select((MediaPlayerCubit cubit) => (cubit.state, cubit.audioHandler));
     final queueState = state.queueState;
@@ -82,7 +88,7 @@ class _PlayerState extends State<Player> {
                 ),
               ),
             ),
-            MediaInfo(mediaItem: mediaItem),
+            MediaInfo(mediaItem: mediaItem, currentMedia: currentMedia),
             AudioSeekbar(audioHandler: audioHandler),
             const SizedBox(height: 16),
             Row(

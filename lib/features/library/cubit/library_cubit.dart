@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/data/library_repository.dart';
+import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/models/sort_type.dart';
@@ -19,6 +20,20 @@ class LibraryCubit extends Cubit<LibraryState> {
 
   static LibraryCubit of(BuildContext context) => context.read<LibraryCubit>();
 
+  Future<void> loadUserLibrary(UserLibrary playlist) async {
+    try {
+      emit(const LibraryLoading());
+      String link = playlist.images.last.link!;
+      if (!appContext.mounted) return;
+      final configCubit = appContext.read<ConfigCubit>();
+      final colorPalette = await configCubit.generatePalleteGenerator(link);
+      final image = configCubit.getProvider(link);
+      emit(LibraryLoaded(playlist.toMediaPlaylist(), colorPalette!, image));
+    } catch (e, s) {
+      emit(LibraryError(e, stackTrace: s));
+    }
+  }
+
   Future<void> fetchLibrary(PlayableMedia media) async {
     try {
       emit(const LibraryLoading());
@@ -31,11 +46,7 @@ class LibraryCubit extends Cubit<LibraryState> {
       final configCubit = appContext.read<ConfigCubit>();
       final colorPalette = await configCubit.generatePalleteGenerator(link);
       final image = configCubit.getProvider(link);
-      emit(LibraryLoaded(
-        playlist,
-        colorPalette!,
-        image,
-      ));
+      emit(LibraryLoaded(playlist, colorPalette!, image));
     } on Exception catch (e, s) {
       LibraryRepository.instance.deleteCache(media.cacheKey);
       emit(LibraryError(e, stackTrace: s));

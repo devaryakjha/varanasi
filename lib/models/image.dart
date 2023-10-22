@@ -1,5 +1,5 @@
-import 'package:hive/hive.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'image.g.dart';
@@ -33,4 +33,10 @@ class Image extends Equatable {
 
   @override
   List<Object?> get props => [quality, link];
+
+  static const Image likedSongs = Image(
+    quality: '500x500',
+    link:
+        'https://community.spotify.com/t5/image/serverpage/image-id/104727iC92B541DB372FBC7/image-dimensions/2500?v=v2&px=-1',
+  );
 }

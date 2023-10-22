@@ -1,4 +1,5 @@
 # Project Varanasi
+
 🛠️ Currently in development, music streaming application built with Flutter for iOS and Android. The app is designed to have all the basic functionalities of a music app, with a UI heavily inspired by the Spotify mobile app.
 
 ### Key Features:

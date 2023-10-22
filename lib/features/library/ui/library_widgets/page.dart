@@ -15,7 +15,7 @@ import 'package:varanasi_mobile_app/widgets/typography.dart';
 
 class LibraryContent extends StatefulHookWidget {
   /// The source of the library content
-  final PlayableMedia source;
+  final PlayableMedia? source;
 
   const LibraryContent({
     super.key,
@@ -127,7 +127,7 @@ class _LibraryContentState extends State<LibraryContent> {
                   ),
                   MediaListView.sliver(
                     sortedMediaItems,
-                    mediaType: widget.source.itemType,
+                    mediaType: widget.source?.itemType,
                     isPlaying: isThisPlaylistPlaying,
                     isItemPlaying: (media) {
                       return media.toMediaItem() == currentMediaItem;

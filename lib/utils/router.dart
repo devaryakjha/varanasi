@@ -9,6 +9,7 @@ import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
 import 'package:varanasi_mobile_app/features/search/ui/search_page.dart';
 import 'package:varanasi_mobile_app/features/session/ui/auth_page.dart';
 import 'package:varanasi_mobile_app/features/settings/ui/settings_page.dart';
+import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
 import 'package:varanasi_mobile_app/features/user-library/ui/user_library_page.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
@@ -45,13 +46,22 @@ final routerConfig = GoRouter(
               name: AppRoutes.library.name,
               path: AppRoutes.library.path,
               builder: (context, state) {
-                final PlayableMedia media = state.extra! as PlayableMedia;
-                return BlocProvider(
-                  key: state.pageKey,
-                  lazy: false,
-                  create: (context) => LibraryCubit()..fetchLibrary(media),
-                  child: LibraryPage(source: media),
-                );
+                final extra = state.extra!;
+                return switch (extra) {
+                  _ when extra is PlayableMedia => BlocProvider(
+                      key: state.pageKey,
+                      lazy: false,
+                      create: (context) => LibraryCubit()..fetchLibrary(extra),
+                      child: LibraryPage(source: extra),
+                    ),
+                  _ => BlocProvider(
+                      key: state.pageKey,
+                      lazy: false,
+                      create: (context) =>
+                          LibraryCubit()..loadUserLibrary(extra as UserLibrary),
+                      child: const LibraryPage(),
+                    ),
+                };
               },
               routes: [
                 GoRoute(

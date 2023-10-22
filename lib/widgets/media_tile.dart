@@ -411,13 +411,7 @@ class MediaTile<Media extends PlayableMedia> extends StatelessWidget {
   Widget _buildTrailing() {
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: [
-        DownloadButton(media),
-        // IconButton(
-        //   onPressed: () {},
-        //   icon: const Icon(Icons.more_horiz),
-        // ),
-      ],
+      children: [DownloadButton(media)],
     );
   }
 

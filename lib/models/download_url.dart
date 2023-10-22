@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -32,7 +31,11 @@ enum DownloadQuality {
         _ => DownloadQuality.low,
       };
 
-  String get describeQuality => describeEnum(this).capitalize;
+  String get describeQuality => switch (this) {
+        DownloadQuality.high => 'Normal',
+        DownloadQuality.veryHigh => 'Very High',
+        _ => name.capitalize,
+      };
 }
 
 @JsonSerializable()

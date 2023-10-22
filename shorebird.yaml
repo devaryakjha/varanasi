@@ -7,9 +7,8 @@
 # when requesting patches from Shorebird's servers.
 app_id: 71fad6a9-60fa-4490-adfd-04a719aefed1
 flavors:
-  dev: 71fad6a9-60fa-4490-adfd-04a719aefed1
-  prod: 35783a4a-e8be-4ddb-aef3-b4eb4807d4a8
-
+  development: 71fad6a9-60fa-4490-adfd-04a719aefed1
+  production: 35783a4a-e8be-4ddb-aef3-b4eb4807d4a8
 # auto_update controls if Shorebird should automatically update in the background on launch.
 # If auto_update: false, you will need to use package:shorebird_code_push to trigger updates.
 # https://pub.dev/packages/shorebird_code_push

@@ -20,17 +20,20 @@ class AppConfig extends HiveObject with EquatableMixin {
   @HiveField(3, defaultValue: false)
   final bool isDataSaverEnabled;
   @HiveField(4)
-  final DownloadQuality? downloadQuality;
+  final DownloadQuality? streamingQuality;
   @HiveField(5, defaultValue: false)
   final bool isAdvancedModeEnabled;
+  @HiveField(6)
+  final DownloadQuality? downloadingQuality;
 
   AppConfig({
     this.sortBy = SortBy.custom,
     this.repeatMode = 0,
     this.colorScheme = 41,
     this.isDataSaverEnabled = false,
-    this.downloadQuality,
+    this.streamingQuality,
     this.isAdvancedModeEnabled = false,
+    this.downloadingQuality,
   });
 
   AppConfig copyWith({
@@ -38,17 +41,19 @@ class AppConfig extends HiveObject with EquatableMixin {
     int? repeatMode,
     int? colorScheme,
     bool? isDataSaverEnabled,
-    DownloadQuality? downloadQuality,
+    DownloadQuality? streamingQuality,
     bool? isAdvancedModeEnabled,
+    DownloadQuality? downloadingQuality,
   }) {
     return AppConfig(
       sortBy: sortBy ?? this.sortBy,
       repeatMode: repeatMode ?? this.repeatMode,
       colorScheme: colorScheme ?? this.colorScheme,
       isDataSaverEnabled: isDataSaverEnabled ?? this.isDataSaverEnabled,
-      downloadQuality: downloadQuality ?? this.downloadQuality,
+      streamingQuality: streamingQuality ?? this.streamingQuality,
       isAdvancedModeEnabled:
           isAdvancedModeEnabled ?? this.isAdvancedModeEnabled,
+      downloadingQuality: downloadingQuality ?? this.downloadingQuality,
     );
   }
 
@@ -58,8 +63,9 @@ class AppConfig extends HiveObject with EquatableMixin {
         repeatMode,
         colorScheme,
         isDataSaverEnabled,
-        downloadQuality,
+        streamingQuality,
         isAdvancedModeEnabled,
+        downloadingQuality,
       ];
 
   @override
@@ -72,4 +78,19 @@ class AppConfig extends HiveObject with EquatableMixin {
 
   static Future<Box<AppConfig>> openBox() =>
       Hive.openBox<AppConfig>(AppStrings.configBoxName);
+
+  static DownloadQuality? get effectiveDlQuality =>
+      getBox.get(0)?.downloadingQuality;
+
+  static set effectiveDlQuality(DownloadQuality? quality) => getBox.put(
+        0,
+        getBox.get(0)?.copyWith(downloadingQuality: quality) ??
+            AppConfig(downloadingQuality: quality),
+      );
+
+  static set effectivestreaQuality(DownloadQuality? quality) => getBox.put(
+        0,
+        getBox.get(0)?.copyWith(streamingQuality: quality) ??
+            AppConfig(streamingQuality: quality),
+      );
 }

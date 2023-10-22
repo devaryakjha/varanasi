@@ -7,9 +7,9 @@ import 'library_widgets/library_loader.dart';
 import 'library_widgets/page.dart';
 
 class LibraryPage extends StatelessWidget {
-  final PlayableMedia source;
+  final PlayableMedia? source;
 
-  const LibraryPage({super.key, required this.source});
+  const LibraryPage({super.key, this.source});
 
   @override
   Widget build(BuildContext context) {

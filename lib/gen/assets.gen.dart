@@ -10,6 +10,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart';
+import 'package:lottie/lottie.dart';
 
 class $AssetsIconGen {
   const $AssetsIconGen();
@@ -21,10 +22,32 @@ class $AssetsIconGen {
   SvgGenImage get appIconMonotone =>
       const SvgGenImage('assets/icon/app_icon_monotone.svg');
 
+  /// File path: assets/icon/circular_loader.json
+  LottieGenImage get circularLoader =>
+      const LottieGenImage('assets/icon/circular_loader.json');
+
+  /// File path: assets/icon/download.svg
+  SvgGenImage get download => const SvgGenImage('assets/icon/download.svg');
+
+  /// File path: assets/icon/download_filled.svg
+  SvgGenImage get downloadFilled =>
+      const SvgGenImage('assets/icon/download_filled.svg');
+
+  /// File path: assets/icon/downloading.svg
+  SvgGenImage get downloading =>
+      const SvgGenImage('assets/icon/downloading.svg');
+
   $AssetsIconNavGen get nav => const $AssetsIconNavGen();
 
   /// List of all assets
-  List<dynamic> get values => [appIcon, appIconMonotone];
+  List<dynamic> get values => [
+        appIcon,
+        appIconMonotone,
+        circularLoader,
+        download,
+        downloadFilled,
+        downloading
+      ];
 }
 
 class $AssetsImagesGen {
@@ -199,6 +222,65 @@ class SvgGenImage {
       colorBlendMode: colorBlendMode,
       clipBehavior: clipBehavior,
       cacheColorFilter: cacheColorFilter,
+    );
+  }
+
+  String get path => _assetName;
+
+  String get keyName => _assetName;
+}
+
+class LottieGenImage {
+  const LottieGenImage(this._assetName);
+
+  final String _assetName;
+
+  LottieBuilder lottie({
+    Animation<double>? controller,
+    bool? animate,
+    FrameRate? frameRate,
+    bool? repeat,
+    bool? reverse,
+    LottieDelegates? delegates,
+    LottieOptions? options,
+    void Function(LottieComposition)? onLoaded,
+    LottieImageProviderFactory? imageProviderFactory,
+    Key? key,
+    AssetBundle? bundle,
+    Widget Function(BuildContext, Widget, LottieComposition?)? frameBuilder,
+    ImageErrorWidgetBuilder? errorBuilder,
+    double? width,
+    double? height,
+    BoxFit? fit,
+    AlignmentGeometry? alignment,
+    String? package,
+    bool? addRepaintBoundary,
+    FilterQuality? filterQuality,
+    void Function(String)? onWarning,
+  }) {
+    return Lottie.asset(
+      _assetName,
+      controller: controller,
+      animate: animate,
+      frameRate: frameRate,
+      repeat: repeat,
+      reverse: reverse,
+      delegates: delegates,
+      options: options,
+      onLoaded: onLoaded,
+      imageProviderFactory: imageProviderFactory,
+      key: key,
+      bundle: bundle,
+      frameBuilder: frameBuilder,
+      errorBuilder: errorBuilder,
+      width: width,
+      height: height,
+      fit: fit,
+      alignment: alignment,
+      package: package,
+      addRepaintBoundary: addRepaintBoundary,
+      filterQuality: filterQuality,
+      onWarning: onWarning,
     );
   }
 

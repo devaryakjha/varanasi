@@ -53,11 +53,12 @@ class MediaColorPalette {
 
 class MediaPlayerCubit extends AppCubit<MediaPlayerState>
     with DataProviderProtocol, CacheableService {
-  final ConfigCubit Function() configCubitGetter;
   late final AudioHandlerImpl audioHandler;
   late final Box _box;
 
-  MediaPlayerCubit(this.configCubitGetter) : super(const MediaPlayerState());
+  MediaPlayerCubit() : super(const MediaPlayerState());
+
+  ConfigCubit get _configCubit => ConfigCubit.read();
 
   Future<void> playFromMediaPlaylist<T extends PlayableMedia>(
     MediaPlaylist<T> playlist, [
@@ -72,6 +73,7 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
       }
       return;
     }
+    unawaited(_configCubit.saveCurrentPlaylist(playlist));
     emit(state.copyWith(currentPlaylist: playlist.id));
     await audioHandler.updateQueue(playlist.mediaItemsAsMediaItems);
     if (startIndex != null) {
@@ -79,7 +81,6 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
     } else if (autoPlay) {
       await play();
     }
-    await configCubitGetter().saveCurrentPlaylist(playlist);
   }
 
   Future<void> playFromSong(PlayableMedia media) async {
@@ -149,7 +150,7 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
       _box = value;
     });
     audioHandler = await AudioService.init(
-      builder: () => AudioHandlerImpl(configCubitGetter()),
+      builder: () => AudioHandlerImpl(_configCubit),
       config: const AudioServiceConfig(
         androidNotificationOngoing: true,
         androidStopForegroundOnPause: true,
@@ -159,18 +160,16 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
       final playing = state.playing;
       if (!playing) return;
       final position = state.position;
-      final configCubit = configCubitGetter();
-      configCubit.saveCurrentPosition(position);
+      _configCubit.saveCurrentPosition(position);
     });
     audioHandler.playbackState
         .map((event) => event.queueIndex)
         .distinct()
         .listen((index) {
-      final configCubit = configCubitGetter();
       if (index != null) {
-        final controller = configCubit.miniPlayerPageController;
-        final carouselController = configCubit.playerPageController;
-        configCubit.saveCurrentPlaylistIndex(index);
+        final controller = _configCubit.miniPlayerPageController;
+        final carouselController = _configCubit.playerPageController;
+        _configCubit.saveCurrentPlaylistIndex(index);
         animateToPage(index, controller);
         animateToPage(index, carouselController);
       }
@@ -183,7 +182,7 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
     ).distinct().listen((value) async {
       PaletteGenerator? palette;
       if (value.$2 != null) {
-        palette = await configCubitGetter()
+        palette = await _configCubit
             .generatePalleteGenerator(value.$2?.artUri.toString() ?? '');
       } else {
         palette = null;
