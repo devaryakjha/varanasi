@@ -2,10 +2,10 @@ import 'package:audio_service/audio_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:varanasi_mobile_app/models/app_config.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
@@ -13,18 +13,22 @@ import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/models/sort_type.dart';
 import 'package:varanasi_mobile_app/utils/app_cubit.dart';
 import 'package:varanasi_mobile_app/utils/constants/strings.dart';
+import 'package:varanasi_mobile_app/utils/helpers/get_app_context.dart';
 import 'package:varanasi_mobile_app/utils/logger.dart';
 
 part 'config_state.dart';
 
 class ConfigCubit extends AppCubit<ConfigState> {
-  final _configBox = AppConfig.getBox;
-  final _cacheBox = Hive.box(AppStrings.commonCacheBoxName);
   final Map<String, CachedNetworkImageProvider> _imageProviderCache = {};
   late final Expando<PaletteGenerator> _paletteGeneratorExpando;
   Logger logger = Logger.instance;
 
+  Box<AppConfig> get _configBox => AppConfig.getBox;
+  Box get _cacheBox => Hive.box(AppStrings.commonCacheBoxName);
+
   ConfigCubit() : super(ConfigInitial());
+
+  static ConfigCubit read() => appContext.read<ConfigCubit>();
 
   Box get cacheBox => _cacheBox;
 
@@ -38,6 +42,16 @@ class ConfigCubit extends AppCubit<ConfigState> {
     } else {
       logger.i('Config box is not empty');
     }
+    _cacheBox.watch(key: AppStrings.currentPlaylistCacheKey).listen((event) {
+      logger.i('Current playlist is changed to ${event.value}');
+      emit(configLoadedState.copyWith(currentPlaylist: event.value));
+    });
+    _cacheBox
+        .watch(key: AppStrings.currentPlaylistIndexCacheKey)
+        .listen((event) {
+      logger.i('Current playlist index is changed to ${event.value}');
+      emit(configLoadedState.copyWith(currentQueueIndex: event.value));
+    });
     _configBox.watch().listen((event) {
       final config = event.value;
       if (config is! AppConfig) return;
@@ -60,6 +74,8 @@ class ConfigCubit extends AppCubit<ConfigState> {
       playerPageController: CarouselController(),
       miniPlayerPageController: CarouselController(),
       packageInfo: packageInfo,
+      currentQueueIndex: savedPlaylistIndex,
+      currentPlaylist: savedPlaylist,
     ));
   }
 
@@ -122,10 +138,6 @@ class ConfigCubit extends AppCubit<ConfigState> {
     return _cacheBox.get(AppStrings.currentPlaylistCacheKey);
   }
 
-  Stream<MediaPlaylist?> get savedPlaylistStream => _cacheBox
-      .watch(key: AppStrings.currentPlaylistCacheKey)
-      .map((event) => event.value);
-
   Future<void> saveCurrentPlaylistIndex(int index) {
     return _cacheBox.put(AppStrings.currentPlaylistIndexCacheKey, index);
   }
@@ -137,10 +149,6 @@ class ConfigCubit extends AppCubit<ConfigState> {
   int? get savedPlaylistIndex {
     return _cacheBox.get(AppStrings.currentPlaylistIndexCacheKey);
   }
-
-  Stream<int?> get savedPlaylistIndexStream => _cacheBox
-      .watch(key: AppStrings.currentPlaylistIndexCacheKey)
-      .map((event) => event.value);
 
   Future<void> saveCurrentPosition(Duration duration) {
     return _cacheBox.put(
@@ -180,10 +188,4 @@ class ConfigCubit extends AppCubit<ConfigState> {
 
   PlayableMedia? get currentMedia =>
       savedPlaylist?.mediaItems?[savedPlaylistIndex ?? 0];
-
-  Stream<PlayableMedia?> get currentMediaStream =>
-      Rx.combineLatest2(savedPlaylistStream, savedPlaylistIndexStream, (a, b) {
-        if (a == null || b == null) return null;
-        return a.mediaItems?[b];
-      });
 }

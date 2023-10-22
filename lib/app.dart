@@ -32,8 +32,7 @@ class Varanasi extends StatelessWidget {
               ),
               BlocProvider(
                 lazy: false,
-                create: (ctx) =>
-                    MediaPlayerCubit(() => ctx.read<ConfigCubit>())..init(),
+                create: (ctx) => MediaPlayerCubit()..init(),
               ),
             ],
             child: Builder(builder: (context) {

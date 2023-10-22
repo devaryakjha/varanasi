@@ -12,9 +12,12 @@ final class ConfigInitial extends ConfigState {}
 
 final class ConfigLoaded extends ConfigState {
   final AppConfig config;
-  final CarouselController? miniPlayerPageController, playerPageController;
+  final CarouselController? miniPlayerPageController;
+  final CarouselController? playerPageController;
   final PanelController panelController;
   final PackageInfo packageInfo;
+  final MediaPlaylist? currentPlaylist;
+  final int? currentQueueIndex;
 
   const ConfigLoaded({
     required this.config,
@@ -22,6 +25,8 @@ final class ConfigLoaded extends ConfigState {
     this.playerPageController,
     required this.panelController,
     required this.packageInfo,
+    this.currentPlaylist,
+    this.currentQueueIndex,
   });
 
   @override
@@ -31,6 +36,8 @@ final class ConfigLoaded extends ConfigState {
         panelController,
         playerPageController,
         packageInfo,
+        currentPlaylist,
+        currentQueueIndex,
       ];
 
   ConfigLoaded copyWith({
@@ -39,14 +46,23 @@ final class ConfigLoaded extends ConfigState {
     CarouselController? playerPageController,
     PanelController? panelController,
     PackageInfo? packageInfo,
+    MediaPlaylist? currentPlaylist,
+    int? currentQueueIndex,
   }) {
     return ConfigLoaded(
-      packageInfo: packageInfo ?? this.packageInfo,
       config: config ?? this.config,
-      playerPageController: playerPageController ?? this.playerPageController,
-      panelController: panelController ?? this.panelController,
       miniPlayerPageController:
           miniPlayerPageController ?? this.miniPlayerPageController,
+      playerPageController: playerPageController ?? this.playerPageController,
+      panelController: panelController ?? this.panelController,
+      packageInfo: packageInfo ?? this.packageInfo,
+      currentPlaylist: currentPlaylist ?? this.currentPlaylist,
+      currentQueueIndex: currentQueueIndex ?? this.currentQueueIndex,
     );
+  }
+
+  PlayableMedia? get currentMedia {
+    if (currentPlaylist == null || currentQueueIndex == null) return null;
+    return currentPlaylist?.mediaItems?.elementAtOrNull(currentQueueIndex ?? 0);
   }
 }
