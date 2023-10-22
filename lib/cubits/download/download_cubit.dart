@@ -134,6 +134,8 @@ class DownloadCubit extends AppCubit<DownloadState> {
   }
 
   Future<void> batchDownload(MediaPlaylist playlist) async {
+    final quality = await getDownloadQuality();
+    if (quality == null) return;
     final songs = playlist.mediaItems ?? [];
     final filteredsong = songs.whereType<Song>().where(_isNotDownloaded);
     final tasks = filteredsong.map(_songToTask).toList();
