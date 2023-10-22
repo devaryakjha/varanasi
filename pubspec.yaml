@@ -73,6 +73,7 @@ dependencies:
   google_sign_in: ^6.1.5
   flutter_native_splash: ^2.3.3
   background_downloader: ^7.10.1
+  lottie: ^2.7.0
 
 dev_dependencies:
   flutter_test:
@@ -164,3 +165,4 @@ flutter:
 flutter_gen:
   integrations:
     flutter_svg: true
+    lottie: true

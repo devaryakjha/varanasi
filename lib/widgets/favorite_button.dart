@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:varanasi_mobile_app/features/user-library/cubit/user_library_cubit.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
@@ -30,10 +31,12 @@ class FavoriteButton extends StatelessWidget {
             } else {
               cubit.favoriteSong(source);
             }
+            HapticFeedback.lightImpact();
           },
           icon: isAdded
               ? const Icon(Icons.favorite)
               : const Icon(Icons.favorite_border_rounded),
+          color: isAdded ? Colors.red : null,
         );
       },
     );

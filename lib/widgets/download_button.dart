@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:varanasi_mobile_app/cubits/download/download_cubit.dart';
 import 'package:varanasi_mobile_app/features/user-library/cubit/user_library_cubit.dart';
 import 'package:varanasi_mobile_app/gen/assets.gen.dart';
@@ -32,12 +34,22 @@ class DownloadButton extends StatelessWidget {
               } else {
                 cubit.downloadSong(media);
               }
+              HapticFeedback.mediumImpact();
             },
-            icon: switch (downloaded) {
-              true => Assets.icon.downloadFilled,
-              false => Assets.icon.download,
-            }
-                .svg(color: Colors.white, width: 24),
+            icon: SizedBox(
+              width: 24,
+              height: 24,
+              child: Center(
+                child: downloading
+                    ? Assets.icon.circularLoader
+                        .lottie(width: 36, height: 36, frameRate: FrameRate.max)
+                    : switch (downloaded) {
+                        true => Assets.icon.downloadFilled,
+                        false => Assets.icon.download,
+                      }
+                        .svg(color: Colors.white),
+              ),
+            ),
             color: context.colorScheme.onBackground,
           );
         });
@@ -65,6 +77,7 @@ class DownloadPlaylist extends StatelessWidget {
               !values.any((element) => !(element?.downloadComplete ?? false));
           return IconButton(
             onPressed: () {
+              HapticFeedback.mediumImpact();
               final cubit = context.read<DownloadCubit>();
               if (downloading) {
                 cubit.batchCancel(playlist);
