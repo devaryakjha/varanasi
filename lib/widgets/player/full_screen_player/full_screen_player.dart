@@ -2,9 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
+import 'package:varanasi_mobile_app/models/media_playlist.dart';
+import 'package:varanasi_mobile_app/utils/constants/strings.dart';
 import 'package:varanasi_mobile_app/utils/extensions/media_query.dart';
 import 'package:varanasi_mobile_app/widgets/play_pause_button.dart';
 
@@ -26,10 +29,10 @@ class Player extends StatefulWidget {
 class _PlayerState extends State<Player> {
   @override
   Widget build(BuildContext context) {
-    final controller = context.select((ConfigCubit cubit) =>
+    final (controller, configBox) = context.select((ConfigCubit cubit) =>
         cubit.state is ConfigLoaded
-            ? (cubit.state as ConfigLoaded).playerPageController
-            : null);
+            ? (cubit.configLoadedState.playerPageController, cubit.cacheBox)
+            : (null, cubit.cacheBox));
     final (state, audioHandler) = context
         .select((MediaPlayerCubit cubit) => (cubit.state, cubit.audioHandler));
     final queueState = state.queueState;
@@ -82,7 +85,27 @@ class _PlayerState extends State<Player> {
                 ),
               ),
             ),
-            MediaInfo(mediaItem: mediaItem),
+            ValueListenableBuilder(
+              valueListenable: configBox.listenable(keys: [
+                AppStrings.currentPlaylistCacheKey,
+                AppStrings.currentPlaylistIndexCacheKey
+              ]),
+              builder: (context, box, _) {
+                final MediaPlaylist currentPlaylist = box.get(
+                    AppStrings.currentPlaylistCacheKey,
+                    defaultValue: const MediaPlaylist.empty());
+                final int currentPlaylistIndex = box.get(
+                  AppStrings.currentPlaylistIndexCacheKey,
+                  defaultValue: 0,
+                );
+                final mediaItems = currentPlaylist.mediaItems ?? [];
+                final currentMedia = mediaItems[currentPlaylistIndex];
+                return MediaInfo(
+                  mediaItem: mediaItem,
+                  currentMedia: currentMedia,
+                );
+              },
+            ),
             AudioSeekbar(audioHandler: audioHandler),
             const SizedBox(height: 16),
             Row(

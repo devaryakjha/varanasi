@@ -5,9 +5,11 @@ import 'package:equatable/equatable.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:varanasi_mobile_app/models/app_config.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
+import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/models/sort_type.dart';
 import 'package:varanasi_mobile_app/utils/app_cubit.dart';
 import 'package:varanasi_mobile_app/utils/constants/strings.dart';
@@ -23,6 +25,8 @@ class ConfigCubit extends AppCubit<ConfigState> {
   Logger logger = Logger.instance;
 
   ConfigCubit() : super(ConfigInitial());
+
+  Box get cacheBox => _cacheBox;
 
   @override
   void init() async {
@@ -118,6 +122,10 @@ class ConfigCubit extends AppCubit<ConfigState> {
     return _cacheBox.get(AppStrings.currentPlaylistCacheKey);
   }
 
+  Stream<MediaPlaylist?> get savedPlaylistStream => _cacheBox
+      .watch(key: AppStrings.currentPlaylistCacheKey)
+      .map((event) => event.value);
+
   Future<void> saveCurrentPlaylistIndex(int index) {
     return _cacheBox.put(AppStrings.currentPlaylistIndexCacheKey, index);
   }
@@ -129,6 +137,10 @@ class ConfigCubit extends AppCubit<ConfigState> {
   int? get savedPlaylistIndex {
     return _cacheBox.get(AppStrings.currentPlaylistIndexCacheKey);
   }
+
+  Stream<int?> get savedPlaylistIndexStream => _cacheBox
+      .watch(key: AppStrings.currentPlaylistIndexCacheKey)
+      .map((event) => event.value);
 
   Future<void> saveCurrentPosition(Duration duration) {
     return _cacheBox.put(
@@ -165,4 +177,13 @@ class ConfigCubit extends AppCubit<ConfigState> {
 
   ConfigLoaded? get configOrNull =>
       state is ConfigLoaded ? state as ConfigLoaded : null;
+
+  PlayableMedia? get currentMedia =>
+      savedPlaylist?.mediaItems?[savedPlaylistIndex ?? 0];
+
+  Stream<PlayableMedia?> get currentMediaStream =>
+      Rx.combineLatest2(savedPlaylistStream, savedPlaylistIndexStream, (a, b) {
+        if (a == null || b == null) return null;
+        return a.mediaItems?[b];
+      });
 }

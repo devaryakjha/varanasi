@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:varanasi_mobile_app/cubits/download/download_cubit.dart';
+import 'package:varanasi_mobile_app/features/user-library/cubit/user_library_cubit.dart';
+import 'package:varanasi_mobile_app/gen/assets.gen.dart';
 import 'package:varanasi_mobile_app/models/download.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 
 class DownloadButton extends StatelessWidget {
-  const DownloadButton(this.song, {super.key});
+  const DownloadButton(this.media, {super.key});
 
-  final PlayableMedia song;
+  final PlayableMedia media;
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DownloadedMedia?>(
-        stream: context.select((DownloadCubit value) => value.listen(song)),
+        stream: context.select((DownloadCubit value) => value.listen(media)),
         builder: (context, snapshot) {
           final data = snapshot.data;
           final downloaded = data?.downloadComplete ?? false;
@@ -23,20 +26,18 @@ class DownloadButton extends StatelessWidget {
             onPressed: () {
               final cubit = context.read<DownloadCubit>();
               if (downloaded) {
-                cubit.deleteDownloadedMedia(song);
+                cubit.deleteDownloadedMedia(media);
               } else if (downloading) {
-                cubit.cancelDownload(song);
+                cubit.cancelDownload(media);
               } else {
-                cubit.downloadSong(song);
+                cubit.downloadSong(media);
               }
             },
-            icon: Icon(
-              downloading
-                  ? Icons.downloading_rounded
-                  : downloaded
-                      ? Icons.delete_outline_rounded
-                      : Icons.download_outlined,
-            ),
+            icon: switch (downloaded) {
+              true => Assets.icon.downloadFilled,
+              false => Assets.icon.download,
+            }
+                .svg(color: Colors.white, width: 24),
             color: context.colorScheme.onBackground,
           );
         });
@@ -52,24 +53,36 @@ class DownloadPlaylist extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final stream = context
-        .select((DownloadCubit cubit) => cubit.listenToPlaylist(playlist));
-    return StreamBuilder(
-        stream: stream,
-        builder: (context, snapshot) {
-          final downloading = snapshot.data?.downloading ?? false;
-          final downloaded = snapshot.data?.downloaded ?? false;
+    final downloadBox = context.read<DownloadCubit>().downloadBox;
+    final keys = playlist.mediaItems?.map((e) => e.itemId).toList();
+    return ValueListenableBuilder(
+        valueListenable: downloadBox.listenable(keys: keys),
+        builder: (context, box, _) {
+          final values = keys?.map((key) => box.get(key)).toList() ?? [];
+          final downloading =
+              values.any((element) => element?.downloading ?? false);
+          final downloaded =
+              !values.any((element) => !(element?.downloadComplete ?? false));
           return IconButton(
             onPressed: () {
-              context.read<DownloadCubit>().batchDownload(playlist);
+              final cubit = context.read<DownloadCubit>();
+              if (downloading) {
+                cubit.batchCancel(playlist);
+                return;
+              }
+              if (downloaded) {
+                cubit.batchDelete(playlist);
+                return;
+              }
+              context.read<UserLibraryCubit>().addToLibrary(playlist);
+              cubit.batchDownload(playlist);
             },
-            icon: Icon(
-              downloading
-                  ? Icons.downloading_rounded
-                  : downloaded
-                      ? Icons.delete_outline_rounded
-                      : Icons.download_outlined,
-            ),
+            icon: switch (downloaded) {
+              true => Assets.icon.downloadFilled,
+              false when !downloading => Assets.icon.download,
+              false => Assets.icon.downloading,
+            }
+                .svg(color: Colors.white, width: 24),
           );
         });
   }

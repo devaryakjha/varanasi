@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:background_downloader/background_downloader.dart';
 import 'package:equatable/equatable.dart';
@@ -23,6 +24,8 @@ class DownloadCubit extends AppCubit<DownloadState> {
   late final Map<String, Song> _songMap;
 
   Logger get _logger => Logger.instance;
+
+  Box<DownloadedMedia> get downloadBox => _downloadBox;
 
   @override
   FutureOr<void> init() async {
@@ -88,6 +91,9 @@ class DownloadCubit extends AppCubit<DownloadState> {
           ),
         );
         _logger.i('Download complete for ${item.id} path: $path');
+      } else if (update.status == TaskStatus.canceled) {
+        _downloadBox.delete(item.id);
+        _logger.i('Download canceled for ${item.id}');
       } else if (update.status.isFinalState) {
         _downloadBox.delete(item.id);
         _logger.i('Download failed for ${item.id}');
@@ -141,6 +147,12 @@ class DownloadCubit extends AppCubit<DownloadState> {
   Future<void> cancelDownload(PlayableMedia media) =>
       _downloader.cancelTaskWithId(media.itemId);
 
+  Future<void> batchCancel(MediaPlaylist media) async {
+    await _downloader.cancelTasksWithIds(
+        media.mediaItems?.map((e) => e.itemId).toList() ?? []);
+    await batchDelete(media);
+  }
+
   /// Returns a stream of [DownloadedMedia] for the given [song].
   ///
   /// The stream will emit the current download status of the song and
@@ -170,6 +182,42 @@ class DownloadCubit extends AppCubit<DownloadState> {
   DownloadedMedia? getDownloadedMedia(PlayableMedia song) =>
       _downloadBox.get(song.itemId);
 
-  Future<void> deleteDownloadedMedia(PlayableMedia song) =>
-      _downloadBox.delete(song.itemId);
+  Future<void> deleteDownloadedMedia(PlayableMedia song) {
+    final item = _downloadBox.get(song.itemId);
+    if (item?.path.isNotEmpty ?? false) {
+      _deleteFile(item!.path);
+    }
+    return _downloadBox.delete(song.itemId);
+  }
+
+  Future<void> batchDelete(MediaPlaylist song) {
+    final keys = song.mediaItems?.map((e) => e.itemId) ?? [];
+    final values = keys
+        .map((e) => _downloadBox.get(e))
+        .whereType<DownloadedMedia>()
+        .toList();
+    // delete files from disk
+    for (final value in values) {
+      if (value.path.isNotEmpty) {
+        _deleteFile(value.path);
+      }
+    }
+    return _downloadBox.deleteAll(song.mediaItems?.map((e) => e.itemId) ?? []);
+  }
+
+  Future<void> _deleteFile(String path) async {
+    try {
+      final file = File(path);
+      final exists = file.existsSync();
+      if (!exists) {
+        _logger.i('File does not exist: $path');
+        return Future.value(null);
+      }
+      await file.delete(recursive: true);
+      _logger.i('Deleted file: $path');
+    } catch (e) {
+      _logger.e('Error deleting file: $e');
+      return Future.value(null);
+    }
+  }
 }

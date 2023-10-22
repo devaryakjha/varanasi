@@ -21,10 +21,22 @@ class $AssetsIconGen {
   SvgGenImage get appIconMonotone =>
       const SvgGenImage('assets/icon/app_icon_monotone.svg');
 
+  /// File path: assets/icon/download.svg
+  SvgGenImage get download => const SvgGenImage('assets/icon/download.svg');
+
+  /// File path: assets/icon/download_filled.svg
+  SvgGenImage get downloadFilled =>
+      const SvgGenImage('assets/icon/download_filled.svg');
+
+  /// File path: assets/icon/downloading.svg
+  SvgGenImage get downloading =>
+      const SvgGenImage('assets/icon/downloading.svg');
+
   $AssetsIconNavGen get nav => const $AssetsIconNavGen();
 
   /// List of all assets
-  List<dynamic> get values => [appIcon, appIconMonotone];
+  List<dynamic> get values =>
+      [appIcon, appIconMonotone, download, downloadFilled, downloading];
 }
 
 class $AssetsImagesGen {

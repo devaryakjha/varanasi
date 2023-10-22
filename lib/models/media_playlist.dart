@@ -2,8 +2,10 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
 import 'package:varanasi_mobile_app/models/image.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
+import 'package:varanasi_mobile_app/models/song.dart';
 
 part 'media_playlist.g.dart';
 
@@ -102,6 +104,16 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
       description: description ?? this.description,
       mediaItems: mediaItems ?? this.mediaItems,
       images: images ?? this.images,
+    );
+  }
+
+  PlaylistLibrary toUserLibrary() {
+    return PlaylistLibrary(
+      id: id!,
+      title: title,
+      description: description,
+      mediaItems: mediaItems?.whereType<Song>().toList() ?? [],
+      images: images,
     );
   }
 }
