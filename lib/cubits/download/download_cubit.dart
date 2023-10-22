@@ -126,7 +126,7 @@ class DownloadCubit extends AppCubit<DownloadState> {
 
   Future<void> batchDownload(MediaPlaylist playlist) async {
     final songs = playlist.mediaItems ?? [];
-    final filteredsong = songs.whereType<Song>();
+    final filteredsong = songs.whereType<Song>().where(_isNotDownloaded);
     final tasks = filteredsong.map(_songToTask).toList();
     for (final song in filteredsong) {
       _songMap[song.itemId] = song;
@@ -231,4 +231,9 @@ class DownloadCubit extends AppCubit<DownloadState> {
     }
     await _downloadBox.clear();
   }
+
+  bool _isDownloaded(PlayableMedia song) =>
+      _downloadBox.containsKey(song.itemId);
+
+  bool _isNotDownloaded(PlayableMedia song) => !_isDownloaded(song);
 }

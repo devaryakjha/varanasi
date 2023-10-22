@@ -21,7 +21,7 @@ class UserLibraryRepository {
   List<UserLibrary> getLibraries() => _box.values.toList();
 
   Future<void> addLibrary<E extends UserLibrary>(E library) =>
-      _box.add(library);
+      _box.put(library.id, library);
 
   Future<void> updateLibrary<E extends UserLibrary>(E library) =>
       _box.put(library.id, library);
