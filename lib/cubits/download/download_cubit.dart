@@ -220,4 +220,15 @@ class DownloadCubit extends AppCubit<DownloadState> {
       return Future.value(null);
     }
   }
+
+  Future deleteAll() async {
+    final keys = _downloadBox.keys.toList();
+    for (final key in keys) {
+      final item = _downloadBox.get(key);
+      if (item?.path.isNotEmpty ?? false) {
+        await _deleteFile(item!.path);
+      }
+    }
+    await _downloadBox.clear();
+  }
 }
