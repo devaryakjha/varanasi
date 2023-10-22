@@ -11,6 +11,7 @@ import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/app_cubit.dart';
 import 'package:varanasi_mobile_app/utils/constants/strings.dart';
+import 'package:varanasi_mobile_app/utils/dialogs/app_dialog.dart';
 import 'package:varanasi_mobile_app/utils/logger.dart';
 
 part 'download_state.dart';
@@ -149,8 +150,9 @@ class DownloadCubit extends AppCubit<DownloadState> {
 
   Future<void> batchCancel(MediaPlaylist media) async {
     await _downloader.cancelTasksWithIds(
-        media.mediaItems?.map((e) => e.itemId).toList() ?? []);
-    await batchDelete(media);
+      media.mediaItems?.map((e) => e.itemId).toList() ?? [],
+    );
+    await _batchDelete(media);
   }
 
   /// Returns a stream of [DownloadedMedia] for the given [song].
@@ -182,15 +184,33 @@ class DownloadCubit extends AppCubit<DownloadState> {
   DownloadedMedia? getDownloadedMedia(PlayableMedia song) =>
       _downloadBox.get(song.itemId);
 
-  Future<void> deleteDownloadedMedia(PlayableMedia song) {
-    final item = _downloadBox.get(song.itemId);
+  Future<void> deleteSingle(PlayableMedia media) {
+    return AppDialog.showAlertDialog(
+      title: "Remove from Downloads?",
+      message: "You won't be able to listen to this song offline.",
+      onConfirm: () async => _deleteSingle(media),
+      confirmLabel: "Remove",
+    );
+  }
+
+  Future<void> _deleteSingle(PlayableMedia media) {
+    final item = _downloadBox.get(media.itemId);
     if (item?.path.isNotEmpty ?? false) {
       _deleteFile(item!.path);
     }
-    return _downloadBox.delete(song.itemId);
+    return _downloadBox.delete(media.itemId);
   }
 
-  Future<void> batchDelete(MediaPlaylist song) {
+  Future<void> batchDelete(MediaPlaylist song) async {
+    await AppDialog.showAlertDialog(
+      title: "Remove from Downloads?",
+      message: "You won't be able to listen to these songs offline.",
+      onConfirm: () => _batchDelete(song),
+      confirmLabel: "Remove",
+    );
+  }
+
+  Future<void> _batchDelete(MediaPlaylist song) async {
     final keys = song.mediaItems?.map((e) => e.itemId) ?? [];
     final values = keys
         .map((e) => _downloadBox.get(e))

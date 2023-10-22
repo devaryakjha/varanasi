@@ -74,6 +74,7 @@ dependencies:
   flutter_native_splash: ^2.3.3
   background_downloader: ^7.10.1
   lottie: ^2.7.0
+  percent_indicator: ^4.2.3
 
 dev_dependencies:
   flutter_test:

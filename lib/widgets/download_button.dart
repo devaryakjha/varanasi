@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:varanasi_mobile_app/cubits/download/download_cubit.dart';
 import 'package:varanasi_mobile_app/features/user-library/cubit/user_library_cubit.dart';
 import 'package:varanasi_mobile_app/models/download.dart';
@@ -27,7 +31,7 @@ class DownloadButton extends StatelessWidget {
             onPressed: () {
               final cubit = context.read<DownloadCubit>();
               if (downloaded) {
-                cubit.deleteDownloadedMedia(media);
+                cubit.deleteSingle(media);
               } else if (downloading) {
                 cubit.cancelDownload(media);
               } else {
@@ -39,6 +43,7 @@ class DownloadButton extends StatelessWidget {
               downloading: downloading,
               progress: progress,
               downloaded: downloaded,
+              hideStopIconOnIos: true,
             ),
             color: context.colorScheme.onBackground,
           );
@@ -100,12 +105,14 @@ class DownloadStatus extends StatelessWidget {
     required this.progress,
     this.dimension = 22,
     required this.downloaded,
+    this.hideStopIconOnIos = false,
   });
 
   final bool downloading;
   final bool downloaded;
   final double progress;
   final double dimension;
+  final bool hideStopIconOnIos;
 
   double get iconSize => dimension * 0.6;
 
@@ -126,32 +133,51 @@ class DownloadStatus extends StatelessWidget {
             size: iconSize,
           ),
         ),
-        child: Stack(
-          children: [
-            if (downloading)
-              CircularProgressIndicator(
-                strokeWidth: 2,
-                value: downloading ? progress : 1,
-                valueColor: const AlwaysStoppedAnimation(Colors.white),
-                backgroundColor: Colors.white.withOpacity(0.3),
-              ),
-            if (!downloading)
-              Container(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.fromBorderSide(
-                    BorderSide(color: Colors.white, width: 1.5),
-                  ),
-                ),
-              ),
-            Positioned.fill(
-              child: Icon(
-                downloading ? Icons.stop_rounded : Icons.arrow_downward_rounded,
-                color: Colors.white,
-                size: iconSize,
+        child: Visibility(
+          visible: downloading,
+          replacement: DecoratedBox(
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.fromBorderSide(
+                BorderSide(color: Colors.white, width: 1.25),
               ),
             ),
-          ],
+            child: Icon(
+              Icons.arrow_downward_rounded,
+              color: Colors.white,
+              size: iconSize,
+            ),
+          ),
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: hideStopIconOnIos
+                    ? CupertinoActivityIndicator(
+                        radius: dimension / 2,
+                        color: Colors.white,
+                      )
+                    : CircularPercentIndicator(
+                        radius: dimension / 2,
+                        percent: progress,
+                        lineWidth: 2,
+                        progressColor: Colors.white,
+                        backgroundColor: Colors.white.withOpacity(0.3),
+                        circularStrokeCap: CircularStrokeCap.round,
+                      ),
+              ),
+              if (hideStopIconOnIos && Platform.isIOS) ...[
+                const SizedBox.shrink(),
+              ] else ...[
+                Positioned.fill(
+                  child: Icon(
+                    Icons.stop_rounded,
+                    color: Colors.white,
+                    size: iconSize,
+                  ),
+                ),
+              ],
+            ],
+          ),
         ),
       ),
     );

@@ -11,7 +11,7 @@ import 'package:varanasi_mobile_app/flavors.dart';
 import 'package:varanasi_mobile_app/models/app_config.dart';
 import 'package:varanasi_mobile_app/models/download_url.dart';
 import 'package:varanasi_mobile_app/utils/clear_cache.dart';
-import 'package:varanasi_mobile_app/utils/dialogs/alert_dialog.dart';
+import 'package:varanasi_mobile_app/utils/dialogs/app_dialog.dart';
 import 'package:varanasi_mobile_app/utils/extensions/flex_scheme.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -110,10 +110,10 @@ class SettingsPage extends StatelessWidget {
                       message: "Cache is already empty 👍🏻",
                     ).show(context);
                   } else {
-                    showAlertDialog(
-                      context,
-                      "Clear cache",
-                      "Are you sure you want to clear the cache?",
+                    AppDialog.showAlertDialog(
+                      context: context,
+                      title: "Clear cache",
+                      message: "Are you sure you want to clear the cache?",
                       onConfirm: () {
                         clearCache().then((value) {
                           FlushbarHelper.createSuccess(
