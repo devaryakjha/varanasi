@@ -5,9 +5,11 @@ import 'package:background_downloader/background_downloader.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
 import 'package:varanasi_mobile_app/models/app_config.dart';
 import 'package:varanasi_mobile_app/models/download.dart';
 import 'package:varanasi_mobile_app/models/download_url.dart';
+import 'package:varanasi_mobile_app/models/image.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
@@ -278,5 +280,22 @@ class DownloadCubit extends AppCubit<DownloadState> {
       title: "Select Download Quality",
     );
     return AppConfig.effectiveDlQuality;
+  }
+
+  Stream<UserLibrary> get downloadLibraryStream {
+    return _downloadBox.watch().map((event) => toUserLibrary());
+  }
+
+  UserLibrary toUserLibrary() {
+    final List<DownloadedMedia> values = _downloadBox.values.toList();
+    final library = UserLibrary(
+      id: "downloads",
+      title: "Downloads",
+      description: "Your downloaded songs",
+      mediaItems: values.map((e) => e.media).toList(),
+      images: const [Image.likedSongs],
+      type: UserLibraryType.download,
+    );
+    return library;
   }
 }

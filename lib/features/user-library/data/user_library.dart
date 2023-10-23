@@ -14,7 +14,9 @@ enum UserLibraryType {
   @HiveField(1)
   album('album'),
   @HiveField(2)
-  playlist('playlist');
+  playlist('playlist'),
+  @HiveField(3)
+  download('download');
   // TODO: Add Artist
 
   final String type;
@@ -24,10 +26,11 @@ enum UserLibraryType {
   bool get isFavorite => this == UserLibraryType.favorite;
   bool get isAlbum => this == UserLibraryType.album;
   bool get isPlaylist => this == UserLibraryType.playlist;
+  bool get isDownload => this == UserLibraryType.download;
 }
 
 @HiveType(typeId: 18)
-class UserLibrary extends Equatable {
+class UserLibrary with EquatableMixin implements Comparable<UserLibrary> {
   @HiveField(0)
   final UserLibraryType type;
   @HiveField(1)
@@ -57,9 +60,10 @@ class UserLibrary extends Equatable {
 
   bool get isNotEmpty => mediaItems.isNotEmpty;
 
-  bool get isFavorite => type.isFavorite;
+  bool get isFavorite => type.isFavorite || id == "favorite";
   bool get isAlbum => type.isAlbum;
   bool get isPlaylist => type.isPlaylist;
+  bool get isDownload => type.isDownload || id == "downloads";
 
   const UserLibrary.empty(this.type)
       : id = "",
@@ -96,6 +100,18 @@ class UserLibrary extends Equatable {
       mediaItems: mediaItems ?? this.mediaItems,
       images: images ?? this.images,
     );
+  }
+
+  @override
+  int compareTo(UserLibrary other) {
+    // if id download then it should be first
+    if (isDownload) return -1;
+    if (other.isDownload) return 1;
+    // if id favorite then it should be first
+    if (isFavorite) return -1;
+    if (other.isFavorite) return 1;
+    // else sort by title
+    return (title ?? "").compareTo(other.title ?? "");
   }
 }
 

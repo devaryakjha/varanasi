@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:varanasi_mobile_app/cubits/download/download_cubit.dart';
-import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/features/user-library/cubit/user_library_cubit.dart';
 import 'package:varanasi_mobile_app/models/download.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
@@ -37,11 +36,6 @@ class DownloadButton extends StatelessWidget {
                 cubit.cancelDownload(media);
               } else {
                 cubit.downloadSong(media);
-              }
-              final libraryState = context.read<LibraryCubit>().state;
-              if (libraryState is LibraryLoaded) {
-                final playlist = libraryState.playlist;
-                context.read<UserLibraryCubit>().addToLibrary(playlist);
               }
               HapticFeedback.mediumImpact();
             },
