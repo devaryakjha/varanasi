@@ -26,9 +26,19 @@ class LibraryCubit extends Cubit<LibraryState> {
       String link = playlist.images.last.link!;
       if (!appContext.mounted) return;
       final configCubit = appContext.read<ConfigCubit>();
-      final colorPalette = await configCubit.generatePalleteGenerator(link);
+      PaletteGenerator.fromColors([]);
+      if (!appContext.mounted) return;
+      final colorPalette = playlist.isDownload && appContext.mounted
+          ? PaletteGenerator.fromColors(
+              [PaletteColor(appContext.colorScheme.secondaryContainer, 1)])
+          : await configCubit.generatePalleteGenerator(link);
       final image = configCubit.getProvider(link);
-      emit(LibraryLoaded(playlist.toMediaPlaylist(), colorPalette!, image));
+      emit(LibraryLoaded(
+        playlist.toMediaPlaylist(),
+        colorPalette!,
+        image,
+        sourceLibrary: playlist,
+      ));
     } catch (e, s) {
       emit(LibraryError(e, stackTrace: s));
     }

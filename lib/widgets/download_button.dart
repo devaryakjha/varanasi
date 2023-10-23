@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:varanasi_mobile_app/cubits/download/download_cubit.dart';
-import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/features/user-library/cubit/user_library_cubit.dart';
 import 'package:varanasi_mobile_app/models/download.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
@@ -38,11 +37,6 @@ class DownloadButton extends StatelessWidget {
               } else {
                 cubit.downloadSong(media);
               }
-              final libraryState = context.read<LibraryCubit>().state;
-              if (libraryState is LibraryLoaded) {
-                final playlist = libraryState.playlist;
-                context.read<UserLibraryCubit>().addToLibrary(playlist);
-              }
               HapticFeedback.mediumImpact();
             },
             icon: DownloadStatus(
@@ -67,7 +61,7 @@ class DownloadPlaylist extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final progress = context.select((DownloadCubit value) =>
-        value.state.playlistProgressMap[playlist.id] ?? 0);
+        value.loadedState.playlistProgressMap[playlist.id] ?? 0);
     final downloadBox = context.read<DownloadCubit>().downloadBox;
     final keys = playlist.mediaItems?.map((e) => e.itemId).toList();
     return ValueListenableBuilder(

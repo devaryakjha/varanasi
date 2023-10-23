@@ -62,10 +62,13 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
 
   Future<void> playFromMediaPlaylist<T extends PlayableMedia>(
     MediaPlaylist<T> playlist, [
-    int? startIndex,
+    PlayableMedia? initialMedia,
     bool autoPlay = true,
   ]) async {
     if (playlist.id == state.currentPlaylist && !audioHandler.player.playing) {
+      final startIndex = initialMedia == null
+          ? null
+          : state.queueState.queue.indexOf(initialMedia.toMediaItem());
       if (startIndex != null) {
         await skipToIndex(startIndex, autoPlay);
       } else if (autoPlay) {
@@ -76,6 +79,13 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
     unawaited(_configCubit.saveCurrentPlaylist(playlist));
     emit(state.copyWith(currentPlaylist: playlist.id));
     await audioHandler.updateQueue(playlist.mediaItemsAsMediaItems);
+    final shuffleModeEnabled = audioHandler.player.shuffleModeEnabled;
+    if (shuffleModeEnabled) {
+      await audioHandler.setShuffleMode(AudioServiceShuffleMode.all);
+    }
+    final startIndex = initialMedia == null
+        ? null
+        : state.queueState.queue.indexOf(initialMedia.toMediaItem());
     if (startIndex != null) {
       await skipToIndex(startIndex, autoPlay);
     } else if (autoPlay) {

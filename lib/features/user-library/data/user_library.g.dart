@@ -208,6 +208,8 @@ class UserLibraryTypeAdapter extends TypeAdapter<UserLibraryType> {
         return UserLibraryType.album;
       case 2:
         return UserLibraryType.playlist;
+      case 3:
+        return UserLibraryType.download;
       default:
         return UserLibraryType.favorite;
     }
@@ -224,6 +226,9 @@ class UserLibraryTypeAdapter extends TypeAdapter<UserLibraryType> {
         break;
       case UserLibraryType.playlist:
         writer.writeByte(2);
+        break;
+      case UserLibraryType.download:
+        writer.writeByte(3);
         break;
     }
   }

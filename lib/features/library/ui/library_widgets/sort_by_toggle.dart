@@ -1,11 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/models/sort_type.dart';
+import 'package:varanasi_mobile_app/utils/dialogs/app_dialog.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
-import 'package:varanasi_mobile_app/utils/helpers/show_bottom_sheet.dart';
 
 class SortByToggle extends StatelessWidget {
   const SortByToggle({super.key});
@@ -31,30 +29,12 @@ class SortByToggle extends StatelessWidget {
       ),
       child: const Text('Sort'),
       onPressed: () async {
-        final padding = MediaQuery.paddingOf(context);
-        // show dialog
-        final value = await showAppBottomSheet<SortBy>(
+        final value = await AppDialog.showOptionsPicker(
           context,
-          builder: (context) => ListView(
-            padding: padding.copyWith(left: 8, right: 8, top: 16),
-            children: [
-              ListTile(
-                title: const Text('Sort by'),
-                titleTextStyle: context.textTheme.bodyLarge
-                    ?.copyWith(fontWeight: FontWeight.bold),
-              ),
-              ...SortBy.values.map(
-                (e) => RadioListTile(
-                  controlAffinity: ListTileControlAffinity.trailing,
-                  groupValue: sortBy,
-                  value: e,
-                  onChanged: (value) => context.pop(value),
-                  title: Text(describeEnum(e).capitalize),
-                  selected: sortBy == e,
-                ),
-              ),
-            ],
-          ),
+          sortBy,
+          SortBy.values,
+          (e) => e.name.capitalize,
+          title: "Sort by",
         );
         if (context.mounted && value != null) {
           context.read<ConfigCubit>().setSortType(value);

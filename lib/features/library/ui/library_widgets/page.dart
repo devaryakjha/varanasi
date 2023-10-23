@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Typography;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -10,6 +11,7 @@ import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/extensions/media_query.dart';
 import 'package:varanasi_mobile_app/widgets/add_to_library.dart';
+import 'package:varanasi_mobile_app/widgets/disable_child.dart';
 import 'package:varanasi_mobile_app/widgets/download_button.dart';
 import 'package:varanasi_mobile_app/widgets/media_list.dart';
 import 'package:varanasi_mobile_app/widgets/play_pause_button.dart';
@@ -128,8 +130,17 @@ class _LibraryContentState extends State<LibraryContent> {
                           Row(
                             key: titleKey,
                             children: [
-                              AddToLibrary(state.playlist),
-                              DownloadPlaylist(playlist: state.playlist),
+                              AddToLibrary(
+                                state.playlist,
+                                sourceLibrary: state.sourceLibrary,
+                              ),
+                              DisableChild(
+                                disabled: !kDebugMode &&
+                                    state.sourceLibrary?.isDownload == true,
+                                child: DownloadPlaylist(
+                                  playlist: state.playlist,
+                                ),
+                              ),
                               const Spacer(),
                               const ShuffleModeToggle(iconSize: 24),
                             ],
@@ -151,7 +162,7 @@ class _LibraryContentState extends State<LibraryContent> {
                       } else {
                         context.readMediaPlayerCubit.playFromMediaPlaylist(
                           state.playlist.copyWith(mediaItems: sortedMediaItems),
-                          index,
+                          mediaItem,
                         );
                       }
                     },
