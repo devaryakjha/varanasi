@@ -162,7 +162,7 @@ class _LibraryContentState extends State<LibraryContent> {
                       } else {
                         context.readMediaPlayerCubit.playFromMediaPlaylist(
                           state.playlist.copyWith(mediaItems: sortedMediaItems),
-                          index,
+                          mediaItem,
                         );
                       }
                     },
