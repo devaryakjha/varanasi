@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:background_downloader/background_downloader.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
 import 'package:varanasi_mobile_app/models/app_config.dart';
@@ -21,7 +23,7 @@ import 'package:varanasi_mobile_app/utils/logger.dart';
 part 'download_state.dart';
 
 class DownloadCubit extends AppCubit<DownloadState> {
-  DownloadCubit() : super(const DownloadState());
+  DownloadCubit() : super(DownloadInitial());
 
   late final Box<DownloadedMedia> _downloadBox;
   late final FileDownloader _downloader;
@@ -32,11 +34,19 @@ class DownloadCubit extends AppCubit<DownloadState> {
 
   Box<DownloadedMedia> get downloadBox => _downloadBox;
 
+  FileDownloader get downloader => _downloader;
+
+  DownloadLoadedState get loadedState => state as DownloadLoadedState;
+
   @override
   FutureOr<void> init() async {
+    final baseDir = await getApplicationDocumentsDirectory();
+    emit(DownloadLoadedState(downloadDirectory: baseDir));
     _songMap = {};
     _downloadBox = Hive.box<DownloadedMedia>(AppStrings.downloadBoxName);
-    _downloader = FileDownloader();
+    _downloader = FileDownloader()
+      ..trackTasks()
+      ..resumeFromBackground();
     _downloader.updates.listen((update) {
       if (update is TaskStatusUpdate) {
         _handleTaskStatusUpdate(update);
@@ -144,12 +154,13 @@ class DownloadCubit extends AppCubit<DownloadState> {
     for (final song in filteredsong) {
       _songMap[song.itemId] = song;
     }
-    emit(state.updateProgress(MapEntry(playlist.id!, 0)));
+    emit(loadedState.updateProgress(MapEntry(playlist.id!, 0)));
     await _downloader.downloadBatch(
       tasks,
       batchProgressCallback: (succeeded, failed) {
         final percentComplete = (succeeded + failed) / tasks.length;
-        emit(state.updateProgress(MapEntry(playlist.id!, percentComplete)));
+        emit(loadedState
+            .updateProgress(MapEntry(playlist.id!, percentComplete)));
         _logger.i('Batch progress: $succeeded, $failed');
       },
       taskStatusCallback: _handleTaskStatusUpdate,
@@ -297,5 +308,17 @@ class DownloadCubit extends AppCubit<DownloadState> {
       type: UserLibraryType.download,
     );
     return library;
+  }
+
+  String getDownloadPath(String id) {
+    final item = _downloadBox.get(id);
+    final filename = _fileNameFromSong(item!.media);
+    return path.join(loadedState.downloadDirectory.path, '', filename);
+  }
+
+  File? getCacheFile(String itemId, String itemUrl) {
+    final ext = itemUrl.split('.').last;
+    final fileName = '$itemId.$ext';
+    return File(path.join(loadedState.downloadDirectory.path, '', fileName));
   }
 }

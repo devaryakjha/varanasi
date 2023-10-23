@@ -2,13 +2,16 @@ import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
+import 'package:varanasi_mobile_app/cubits/download/download_cubit.dart';
 import 'package:varanasi_mobile_app/models/app_config.dart';
 import 'package:varanasi_mobile_app/models/download.dart';
 import 'package:varanasi_mobile_app/utils/constants/strings.dart';
+import 'package:varanasi_mobile_app/utils/helpers/get_app_context.dart';
 
 import 'typings.dart';
 
@@ -183,13 +186,14 @@ final class AudioHandlerImpl extends BaseAudioHandler
     final downloaded = _isSongDownloaded(itemId);
     if (!downloaded) {
       final uri = Uri.parse(mediaItem.id);
+      // final cacheFile =
+      //     appContext.read<DownloadCubit>().getCacheFile(itemId, mediaItem.id);
       final audioSource = LockCachingAudioSource(uri);
       _mediaItemExpando[audioSource] = mediaItem;
       return audioSource;
     }
-    final box = Hive.box<DownloadedMedia>(AppStrings.downloadBoxName);
-    final downloadedMedia = box.get(itemId);
-    final audioSource = AudioSource.file(downloadedMedia!.path);
+    final path = appContext.read<DownloadCubit>().getDownloadPath(itemId);
+    final audioSource = AudioSource.file(path);
     _mediaItemExpando[audioSource] = mediaItem;
     return audioSource;
   }
@@ -199,7 +203,8 @@ final class AudioHandlerImpl extends BaseAudioHandler
 
   @override
   Future<void> addQueueItem(MediaItem mediaItem) async {
-    await _playlist.add(_itemToSource(mediaItem));
+    final source = _itemToSource(mediaItem);
+    await _playlist.add(source);
   }
 
   @override
@@ -209,7 +214,8 @@ final class AudioHandlerImpl extends BaseAudioHandler
 
   @override
   Future<void> insertQueueItem(int index, MediaItem mediaItem) async {
-    await _playlist.insert(index, _itemToSource(mediaItem));
+    final source = _itemToSource(mediaItem);
+    await _playlist.insert(index, source);
   }
 
   @override

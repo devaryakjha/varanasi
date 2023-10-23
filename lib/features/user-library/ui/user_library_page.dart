@@ -52,6 +52,7 @@ class UserLibraryPage extends HookWidget {
           }
           final library = [...state.library, downloadSnapshot.data]
               .whereType<UserLibrary>()
+              .where((element) => element.isNotEmpty)
               .toList()
             ..sort();
           if (library.isEmpty) return const EmptyUserLibrary();

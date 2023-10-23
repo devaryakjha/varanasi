@@ -75,6 +75,8 @@ dependencies:
   background_downloader: ^7.10.1
   lottie: ^2.7.0
   percent_indicator: ^4.2.3
+  path_provider: ^2.1.1
+  path: ^1.8.3
 
 dev_dependencies:
   flutter_test:

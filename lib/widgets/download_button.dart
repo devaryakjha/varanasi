@@ -61,7 +61,7 @@ class DownloadPlaylist extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final progress = context.select((DownloadCubit value) =>
-        value.state.playlistProgressMap[playlist.id] ?? 0);
+        value.loadedState.playlistProgressMap[playlist.id] ?? 0);
     final downloadBox = context.read<DownloadCubit>().downloadBox;
     final keys = playlist.mediaItems?.map((e) => e.itemId).toList();
     return ValueListenableBuilder(
