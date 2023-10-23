@@ -319,6 +319,7 @@ class DownloadCubit extends AppCubit<DownloadState> {
   File? getCacheFile(String itemId, String itemUrl) {
     final ext = itemUrl.split('.').last;
     final fileName = '$itemId.$ext';
-    return File(path.join(loadedState.downloadDirectory.path, '', fileName));
+    return File(
+        path.join(loadedState.downloadDirectory.path, 'cache', fileName));
   }
 }

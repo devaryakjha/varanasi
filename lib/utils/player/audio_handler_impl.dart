@@ -186,9 +186,9 @@ final class AudioHandlerImpl extends BaseAudioHandler
     final downloaded = _isSongDownloaded(itemId);
     if (!downloaded) {
       final uri = Uri.parse(mediaItem.id);
-      // final cacheFile =
-      //     appContext.read<DownloadCubit>().getCacheFile(itemId, mediaItem.id);
-      final audioSource = LockCachingAudioSource(uri);
+      final cacheFile =
+          appContext.read<DownloadCubit>().getCacheFile(itemId, mediaItem.id);
+      final audioSource = LockCachingAudioSource(uri, cacheFile: cacheFile);
       _mediaItemExpando[audioSource] = mediaItem;
       return audioSource;
     }
