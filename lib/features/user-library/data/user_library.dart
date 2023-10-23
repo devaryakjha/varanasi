@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:varanasi_mobile_app/models/image.dart';
@@ -79,6 +80,23 @@ class UserLibrary extends Equatable {
       mediaItems: mediaItems,
     );
   }
+
+  UserLibrary copyWith({
+    String? id,
+    String? title,
+    String? description,
+    List<Song>? mediaItems,
+    List<Image>? images,
+  }) {
+    return UserLibrary(
+      type: type,
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      mediaItems: mediaItems ?? this.mediaItems,
+      images: images ?? this.images,
+    );
+  }
 }
 
 @HiveType(typeId: 19)
@@ -96,14 +114,6 @@ final class Favorite extends UserLibrary {
   static const String boxKey = "favorite";
 
   const Favorite.empty() : super.empty(UserLibraryType.favorite);
-
-  Favorite copyWith({
-    List<Song>? mediaItems,
-  }) {
-    return Favorite(
-      mediaItems: mediaItems ?? this.mediaItems,
-    );
-  }
 }
 
 @HiveType(typeId: 20)

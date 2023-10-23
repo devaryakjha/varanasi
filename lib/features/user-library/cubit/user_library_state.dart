@@ -28,10 +28,10 @@ class UserLibraryLoaded extends UserLibraryState {
   @override
   List<Object> get props => [library];
 
-  Favorite get favorite => library.firstWhere(
-        (library) => library is Favorite,
+  UserLibrary get favorite => library.firstWhere(
+        (library) => library.id == Favorite.boxKey,
         orElse: () => const Favorite.empty(),
-      ) as Favorite;
+      );
 
   bool get isEmpty => library.isEmpty;
 
