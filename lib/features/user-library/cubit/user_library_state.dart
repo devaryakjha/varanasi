@@ -30,7 +30,7 @@ class UserLibraryLoaded extends UserLibraryState {
 
   UserLibrary get favorite => library.firstWhere(
         (library) => library.id == Favorite.boxKey,
-        orElse: () => const Favorite.empty(),
+        orElse: () => Favorite.empty(),
       );
 
   bool get isEmpty => library.isEmpty;
