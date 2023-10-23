@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/features/user-library/cubit/user_library_cubit.dart';
+import 'package:varanasi_mobile_app/features/user-library/ui/widgets/add_playlist_button.dart';
+import 'package:varanasi_mobile_app/gen/assets.gen.dart';
+import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
+
+import 'widgets/empty.dart';
 
 class UserLibraryPage extends StatelessWidget {
   const UserLibraryPage({super.key});
@@ -12,8 +17,20 @@ class UserLibraryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Library'),
+        title: Row(
+          children: [
+            Assets.icon.appIconMonotone.svg(width: 36, height: 36),
+            const SizedBox(width: 8),
+            Text(
+              'Your Library',
+              style: context.textTheme.titleLarge
+                  ?.copyWith(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
         centerTitle: false,
+        actions: const [AddPlaylistButton()],
+        elevation: 10,
       ),
       body: BlocBuilder<UserLibraryCubit, UserLibraryState>(
         builder: (context, state) {
@@ -21,6 +38,7 @@ class UserLibraryPage extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
           final library = state.library;
+          if (library.isEmpty) return const EmptyUserLibrary();
           return ListView.builder(
             itemBuilder: (context, index) {
               final item = library[index];
