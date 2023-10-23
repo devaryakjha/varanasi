@@ -12,6 +12,7 @@ import 'package:varanasi_mobile_app/gen/assets.gen.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/helpers/get_app_context.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
+import 'package:varanasi_mobile_app/widgets/downloads_icon.dart';
 
 import 'widgets/empty.dart';
 
@@ -62,16 +63,7 @@ class UserLibraryPage extends HookWidget {
               return ListTile(
                 onTap: () => context.push(AppRoutes.library.path, extra: item),
                 leading: Visibility(
-                  replacement: Container(
-                    height: 48,
-                    width: 48,
-                    decoration: BoxDecoration(
-                      color: context.colorScheme.secondaryContainer,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Icon(Icons.download_rounded,
-                        color: context.theme.colorScheme.onSecondaryContainer),
-                  ),
+                  replacement: const DownloadsIcon(),
                   visible: !item.isDownload,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),

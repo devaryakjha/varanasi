@@ -17,6 +17,11 @@ class LibraryAppBar extends StatelessWidget {
   final LibraryLoaded<PlayableMedia> state;
   final EdgeInsets padding;
 
+  bool get isFromUserLibrary =>
+      state.sourceLibrary != null &&
+      (state.sourceLibrary!.isDownload == true ||
+          state.sourceLibrary!.isFavorite == true);
+
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
@@ -24,7 +29,7 @@ class LibraryAppBar extends StatelessWidget {
       elevation: 0,
       scrolledUnderElevation: 10,
       stretch: true,
-      expandedHeight: kSliverExpandedHeight,
+      expandedHeight: isFromUserLibrary ? 130 : kSliverExpandedHeight,
       pinned: kSliverAppBarPinned,
       collapsedHeight: kToolbarHeight,
       flexibleSpace: LayoutBuilder(builder: (context, constraints) {
@@ -64,7 +69,7 @@ class LibraryAppBar extends StatelessWidget {
                 children: [
                   Container(
                     height: 64,
-                    width: context.width * 0.85,
+                    width: context.width * 0.8,
                     alignment: Alignment.topCenter,
                     child: SizedBox(
                       height: 32,
@@ -79,17 +84,19 @@ class LibraryAppBar extends StatelessWidget {
                       ),
                     ),
                   ),
-                  AnimatedContainer(
-                    duration: kThemeAnimationDuration,
-                    height: imageHeight,
-                    width: imageHeight,
-                    decoration: BoxDecoration(boxShadow: state.boxShadow),
-                    child: Image(
+                  if (!isFromUserLibrary)
+                    AnimatedContainer(
+                      duration: kThemeAnimationDuration,
                       height: imageHeight,
                       width: imageHeight,
-                      image: state.image,
+                      decoration: BoxDecoration(boxShadow: state.boxShadow),
+                      child: Image(
+                        height: imageHeight,
+                        width: imageHeight,
+                        image: state.image,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),
