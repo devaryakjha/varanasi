@@ -47,4 +47,11 @@ class UserLibraryCubit extends AppCubit<UserLibraryState> {
     final library = _repository.getLibraries();
     emit(UserLibraryLoaded(library: library));
   }
+
+  Future<void> removeFromLibrary(MediaPlaylist playlist) async {
+    _repository.deleteLibrary(playlist.toUserLibrary());
+    final library = _repository.getLibraries();
+    emit(UserLibraryLoaded(library: library));
+    AppSnackbar.show("Removed from library");
+  }
 }

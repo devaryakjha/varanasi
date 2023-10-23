@@ -94,7 +94,7 @@ class _PlayerState extends State<Player> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ShuffleModeToggle(audioHandler: audioHandler),
+                const ShuffleModeToggle(),
                 SkipToPrevious(queueState: queueState),
                 PlayPauseMediaButton(
                   backgroundColor: Colors.white,

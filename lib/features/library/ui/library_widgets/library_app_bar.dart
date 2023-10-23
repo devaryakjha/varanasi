@@ -42,9 +42,20 @@ class LibraryAppBar extends StatelessWidget {
           ),
           child: FlexibleSpaceBar(
             centerTitle: true,
-            title: state.showTitleInAppBar
-                ? Text(state.title, style: context.textTheme.headlineSmall)
-                : null,
+            title: AnimatedCrossFade(
+              crossFadeState: state.showTitleInAppBar
+                  ? CrossFadeState.showSecond
+                  : CrossFadeState.showFirst,
+              firstChild: const SizedBox.shrink(),
+              secondChild: Text(
+                state.title,
+                style: context.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.5,
+                ),
+              ),
+              duration: const Duration(milliseconds: 100),
+            ),
             collapseMode: CollapseMode.pin,
             background: AnimatedContainer(
               duration: kThemeAnimationDuration,

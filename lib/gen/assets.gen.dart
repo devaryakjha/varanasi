@@ -39,6 +39,9 @@ class $AssetsIconGen {
 
   $AssetsIconNavGen get nav => const $AssetsIconNavGen();
 
+  /// File path: assets/icon/shuffle.svg
+  SvgGenImage get shuffle => const SvgGenImage('assets/icon/shuffle.svg');
+
   /// List of all assets
   List<dynamic> get values => [
         appIcon,
@@ -46,7 +49,8 @@ class $AssetsIconGen {
         circularLoader,
         download,
         downloadFilled,
-        downloading
+        downloading,
+        shuffle
       ];
 }
 
