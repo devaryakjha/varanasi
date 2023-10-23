@@ -7,10 +7,10 @@ String generateGreeting() {
     'Hello!'
   ];
   if (hour < 12) {
-    return '${greetings[0]} Ready for some music?';
+    return greetings[0];
   } else if (hour < 18) {
-    return '${greetings[1]} How about some tunes?';
+    return greetings[1];
   } else {
-    return '${greetings[2]} Time for some music?';
+    return greetings[2];
   }
 }

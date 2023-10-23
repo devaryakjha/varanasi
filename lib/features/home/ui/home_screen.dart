@@ -5,6 +5,8 @@ import 'package:varanasi_mobile_app/features/home/bloc/home_bloc.dart';
 import 'package:varanasi_mobile_app/features/home/data/helpers/home_state_selectors.dart';
 import 'package:varanasi_mobile_app/features/home/ui/home_widgets/spacer.dart';
 import 'package:varanasi_mobile_app/features/home/ui/home_widgets/trending/trending.dart';
+import 'package:varanasi_mobile_app/gen/assets.gen.dart';
+import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/generate_greeting.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
 import 'package:varanasi_mobile_app/widgets/animated_overflow_text.dart';
@@ -29,7 +31,18 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: AnimatedText(greeting, maxLines: 1),
+        title: Row(
+          children: [
+            Assets.icon.appIconMonotone.svg(width: 32, height: 32),
+            const SizedBox(width: 8),
+            AnimatedText(
+              greeting,
+              maxLines: 1,
+              style: context.textTheme.titleLarge
+                  ?.copyWith(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
         actions: [
           IconButton(
             iconSize: 30,
