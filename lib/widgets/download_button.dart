@@ -97,8 +97,8 @@ class DownloadPlaylist extends StatelessWidget {
               downloading: downloading,
               downloaded: downloaded,
               progress: progress,
+              dimension: 26,
             ),
-            iconSize: 24,
           );
         });
   }
@@ -120,7 +120,7 @@ class DownloadStatus extends StatelessWidget {
   final double dimension;
   final bool hideStopIconOnIos;
 
-  double get iconSize => dimension * 0.6;
+  double get iconSize => dimension * 0.8;
 
   @override
   Widget build(BuildContext context) {

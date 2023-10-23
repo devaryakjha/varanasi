@@ -7,11 +7,13 @@ import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_widgets/library_app_bar.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
+import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/extensions/media_query.dart';
+import 'package:varanasi_mobile_app/widgets/add_to_library.dart';
 import 'package:varanasi_mobile_app/widgets/download_button.dart';
 import 'package:varanasi_mobile_app/widgets/media_list.dart';
 import 'package:varanasi_mobile_app/widgets/play_pause_button.dart';
-import 'package:varanasi_mobile_app/widgets/typography.dart';
+import 'package:varanasi_mobile_app/widgets/player/full_screen_player/shuffle_mode_toggle.dart';
 
 class LibraryContent extends StatefulHookWidget {
   /// The source of the library content
@@ -107,20 +109,31 @@ class _LibraryContentState extends State<LibraryContent> {
                   LibraryAppBar(state: state, padding: padding),
                   SliverToBoxAdapter(
                     child: Padding(
-                      key: titleKey,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
                         vertical: 16,
                       ).copyWith(right: 84),
-                      child: Row(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                            child: Typography(
-                              state.title,
-                              secondary: state.subtitle,
+                          Text(
+                            state.title,
+                            style: context.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.5,
                             ),
                           ),
-                          DownloadPlaylist(playlist: state.playlist),
+                          Text(state.subtitle),
+                          Row(
+                            key: titleKey,
+                            children: [
+                              AddToLibrary(state.playlist),
+                              DownloadPlaylist(playlist: state.playlist),
+                              const Spacer(),
+                              const ShuffleModeToggle(iconSize: 24),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -166,6 +179,7 @@ class _LibraryContentState extends State<LibraryContent> {
                     );
                   },
                   isPlaying: isThisPlaylistPlaying,
+                  size: 36,
                 ),
               )
             ],

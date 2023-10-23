@@ -2,21 +2,25 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
+import 'package:varanasi_mobile_app/gen/assets.gen.dart';
 import 'package:varanasi_mobile_app/utils/extensions/theme.dart';
-import 'package:varanasi_mobile_app/utils/player/audio_handler_impl.dart';
 
 class ShuffleModeToggle extends StatelessWidget {
   const ShuffleModeToggle({
     super.key,
-    required this.audioHandler,
+    this.iconSize = 32,
   });
 
-  final AudioHandlerImpl audioHandler;
+  final double iconSize;
+
+  double get smallSize => iconSize * 0.18;
 
   @override
   Widget build(BuildContext context) {
+    final audioHandler = context.read<MediaPlayerCubit>().audioHandler;
     return StreamBuilder(
       stream: audioHandler.playbackState.map((event) => event.shuffleMode),
+      initialData: AudioServiceShuffleMode.none,
       builder: (context, snapshot) {
         final shuffleEnabled =
             ![null, AudioServiceShuffleMode.none].contains(snapshot.data);
@@ -35,14 +39,16 @@ class ShuffleModeToggle extends StatelessWidget {
           icon: Badge(
             alignment: Alignment.bottomCenter,
             isLabelVisible: shuffleEnabled,
-            backgroundColor: context.colorScheme.primary,
-            child: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 4.0),
-              child: Icon(Icons.shuffle),
+            smallSize: smallSize,
+            child: Assets.icon.shuffle.svg(
+              width: iconSize,
+              height: iconSize,
+              color:
+                  shuffleEnabled ? context.colorScheme.primary : Colors.white,
             ),
           ),
           color: shuffleEnabled ? context.colorScheme.primary : null,
-          iconSize: 32,
+          iconSize: iconSize,
         );
       },
     );

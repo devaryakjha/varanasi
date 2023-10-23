@@ -32,4 +32,10 @@ class UserLibraryLoaded extends UserLibraryState {
         (library) => library is Favorite,
         orElse: () => const Favorite.empty(),
       ) as Favorite;
+
+  bool get isEmpty => library.isEmpty;
+
+  bool isAdded(MediaPlaylist playlist) {
+    return library.any((a) => playlist.id == a.id);
+  }
 }
