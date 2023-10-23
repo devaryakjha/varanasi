@@ -37,7 +37,7 @@ class UserLibraryRepository {
     final favourites = _box.get(
       Favorite.boxKey,
       defaultValue: const Favorite.empty(),
-    ) as Favorite;
+    ) as UserLibrary;
     final newFavourites = favourites.copyWith(
       mediaItems: [...favourites.mediaItems, song],
     );
@@ -48,7 +48,7 @@ class UserLibraryRepository {
     final favourites = _box.get(
       Favorite.boxKey,
       defaultValue: const Favorite.empty(),
-    ) as Favorite;
+    ) as UserLibrary;
     final newFavourites = favourites.copyWith(
       mediaItems: favourites.mediaItems.where((e) => e.id != song.id).toList(),
     );
