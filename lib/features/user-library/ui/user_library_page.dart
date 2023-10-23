@@ -75,7 +75,17 @@ class UserLibraryPage extends HookWidget {
                   ),
                 ),
                 title: Text(item.title ?? ''),
-                subtitle: Text(item.description ?? ''),
+                subtitle: Row(
+                  children: [
+                    if (item.isDownload || item.isFavorite)
+                      Icon(
+                        Icons.push_pin_rounded,
+                        size: 12,
+                        color: context.colorScheme.primary,
+                      ),
+                    Expanded(child: Text(item.description ?? '')),
+                  ],
+                ),
               );
             },
             itemCount: library.length,
