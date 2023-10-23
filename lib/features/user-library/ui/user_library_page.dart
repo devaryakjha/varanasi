@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/features/user-library/cubit/user_library_cubit.dart';
 import 'package:varanasi_mobile_app/features/user-library/ui/widgets/add_playlist_button.dart';
+import 'package:varanasi_mobile_app/flavors.dart';
 import 'package:varanasi_mobile_app/gen/assets.gen.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
@@ -29,7 +30,7 @@ class UserLibraryPage extends StatelessWidget {
           ],
         ),
         centerTitle: false,
-        actions: const [AddPlaylistButton()],
+        actions: F.appFlavor.isProd ? null : const [AddPlaylistButton()],
         elevation: 10,
       ),
       body: BlocBuilder<UserLibraryCubit, UserLibraryState>(
