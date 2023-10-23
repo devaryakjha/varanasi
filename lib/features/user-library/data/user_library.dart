@@ -113,7 +113,9 @@ final class Favorite extends UserLibrary {
 
   static const String boxKey = "favorite";
 
-  const Favorite.empty() : super.empty(UserLibraryType.favorite);
+  factory Favorite.empty() {
+    return const Favorite(mediaItems: []);
+  }
 }
 
 @HiveType(typeId: 20)
@@ -125,8 +127,6 @@ final class AlbumLibrary extends UserLibrary {
     required super.mediaItems,
     required super.images,
   }) : super(type: UserLibraryType.album);
-
-  const AlbumLibrary.empty() : super.empty(UserLibraryType.album);
 }
 
 @HiveType(typeId: 21)
@@ -138,6 +138,4 @@ final class PlaylistLibrary extends UserLibrary {
     required super.mediaItems,
     required super.images,
   }) : super(type: UserLibraryType.playlist);
-
-  const PlaylistLibrary.empty() : super.empty(UserLibraryType.playlist);
 }

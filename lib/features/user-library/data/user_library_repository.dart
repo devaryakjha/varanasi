@@ -36,8 +36,8 @@ class UserLibraryRepository {
   Future<void> favoriteSong(Song song) async {
     final favourites = _box.get(
       Favorite.boxKey,
-      defaultValue: const Favorite.empty(),
-    ) as UserLibrary;
+      defaultValue: Favorite.empty(),
+    )!;
     final newFavourites = favourites.copyWith(
       mediaItems: [...favourites.mediaItems, song],
     );
@@ -47,8 +47,8 @@ class UserLibraryRepository {
   Future<void> unfavoriteSong(Song song) async {
     final favourites = _box.get(
       Favorite.boxKey,
-      defaultValue: const Favorite.empty(),
-    ) as UserLibrary;
+      defaultValue: Favorite.empty(),
+    )!;
     final newFavourites = favourites.copyWith(
       mediaItems: favourites.mediaItems.where((e) => e.id != song.id).toList(),
     );
