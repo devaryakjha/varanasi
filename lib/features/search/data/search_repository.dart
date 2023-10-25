@@ -2,7 +2,6 @@ import 'package:hive/hive.dart';
 import 'package:varanasi_mobile_app/features/search/data/search_data_provider.dart';
 import 'package:varanasi_mobile_app/features/search/data/top_search_result/top_search_result.dart';
 import 'package:varanasi_mobile_app/utils/constants/strings.dart';
-import 'package:varanasi_mobile_app/utils/logger.dart';
 import 'package:varanasi_mobile_app/utils/mixins/cachable_mixin.dart';
 
 import 'search_result/data.dart';
@@ -21,8 +20,6 @@ class SearchRepository with CacheableService {
 
   @override
   String get cacheBoxName => AppStrings.commonCacheBoxName;
-
-  Logger get _logger => Logger.instance;
 
   final Map<String, SearchResult> _searchResultsCache = {};
 
