@@ -56,7 +56,7 @@ class LibraryCubit extends Cubit<LibraryState> {
       final configCubit = appContext.read<ConfigCubit>();
       final colorPalette = await configCubit.generatePalleteGenerator(link);
       final image = configCubit.getProvider(link);
-      emit(LibraryLoaded(playlist, colorPalette!, image));
+      emit(LibraryLoaded(playlist, colorPalette!, image, media: media));
     } on Exception catch (e, s) {
       LibraryRepository.instance.deleteCache(media.cacheKey);
       emit(LibraryError(e, stackTrace: s));

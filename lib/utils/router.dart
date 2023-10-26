@@ -47,21 +47,19 @@ final routerConfig = GoRouter(
               path: AppRoutes.library.path,
               builder: (context, state) {
                 final extra = state.extra!;
-                return switch (extra) {
-                  _ when extra is PlayableMedia => BlocProvider(
-                      key: state.pageKey,
-                      lazy: false,
-                      create: (context) => LibraryCubit()..fetchLibrary(extra),
-                      child: LibraryPage(source: extra),
-                    ),
-                  _ => BlocProvider(
-                      key: state.pageKey,
-                      lazy: false,
-                      create: (context) =>
-                          LibraryCubit()..loadUserLibrary(extra as UserLibrary),
-                      child: const LibraryPage(),
-                    ),
-                };
+                final isMedia = extra is PlayableMedia;
+                final child = LibraryPage(
+                  source: isMedia ? extra : null,
+                  key: state.pageKey,
+                );
+                if (isMedia) {
+                  context.read<LibraryCubit>().fetchLibrary(extra);
+                } else {
+                  context
+                      .read<LibraryCubit>()
+                      .loadUserLibrary(extra as UserLibrary);
+                }
+                return child;
               },
               routes: [
                 GoRoute(
