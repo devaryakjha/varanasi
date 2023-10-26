@@ -39,4 +39,7 @@ class Image extends Equatable {
     link:
         'https://community.spotify.com/t5/image/serverpage/image-id/104727iC92B541DB372FBC7/image-dimensions/2500?v=v2&px=-1',
   );
+
+  factory Image.fromString(String link) =>
+      Image(quality: '500x500', link: link);
 }

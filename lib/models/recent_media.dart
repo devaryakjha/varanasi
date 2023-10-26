@@ -4,6 +4,8 @@ import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/helpers/get_app_context.dart';
 
+import 'playable_item_impl.dart';
+
 part 'recent_media.g.dart';
 
 @HiveType(typeId: 23)
@@ -15,7 +17,7 @@ class RecentMedia extends PlayableMedia implements Comparable<RecentMedia> {
   @HiveField(2)
   final UserLibrary? sourceLibrary;
   @HiveField(3)
-  final PlayableMedia? sourceMedia;
+  final PlayableMediaImpl? sourceMedia;
 
   const RecentMedia(
     this._itemId,
@@ -28,7 +30,7 @@ class RecentMedia extends PlayableMedia implements Comparable<RecentMedia> {
         media.itemId,
         DateTime.now(),
         null,
-        media,
+        media.toPlayableMediaImpl(),
       );
 
   factory RecentMedia.fromUserLibrary(UserLibrary library) => RecentMedia(

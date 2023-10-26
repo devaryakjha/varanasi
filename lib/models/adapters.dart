@@ -10,11 +10,13 @@ import 'artist.dart';
 import 'download_url.dart';
 import 'image.dart';
 import 'media_playlist.dart';
+import 'playable_item_impl.dart';
 import 'playlist.dart';
 import 'primary_artist.dart';
 import 'song.dart';
 
 void registerCommonTypeAdapters() {
+  Hive.registerAdapter<PlayableMediaImpl>(PlayableMediaImplAdapter());
   Hive.registerAdapter<DownloadQuality>(DownloadQualityAdapter());
   Hive.registerAdapter<SortBy>(SortByAdapter());
   Hive.registerAdapter<AppConfig>(AppConfigAdapter());
@@ -32,5 +34,5 @@ void registerCommonTypeAdapters() {
   Hive.registerAdapter<Favorite>(FavoriteAdapter());
   Hive.registerAdapter<AlbumLibrary>(AlbumLibraryAdapter());
   Hive.registerAdapter<PlaylistLibrary>(PlaylistLibraryAdapter());
-  Hive.registerAdapter<RecentMedia>(RecentMediaAdapter());
+  Hive.registerAdapter<RecentMedia>(RecentMediaAdapter(), override: true);
 }
