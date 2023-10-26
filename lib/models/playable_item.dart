@@ -5,7 +5,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:varanasi_mobile_app/models/app_config.dart';
 import 'package:varanasi_mobile_app/models/download_url.dart';
+import 'package:varanasi_mobile_app/models/image.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
+import 'package:varanasi_mobile_app/models/playable_item_impl.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/configs.dart';
 
@@ -137,6 +139,18 @@ abstract class PlayableMedia extends Equatable {
       description: itemSubtitle,
       id: itemId,
       mediaItems: [this as T],
+      images: [Image.fromString(itemUrl)],
+    );
+  }
+
+  PlayableMediaImpl toPlayableMediaImpl() {
+    return PlayableMediaImpl(
+      itemId,
+      itemTitle,
+      itemSubtitle,
+      itemUrl,
+      itemType.name,
+      artworkUrl,
     );
   }
 }

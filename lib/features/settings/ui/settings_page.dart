@@ -11,6 +11,7 @@ import 'package:varanasi_mobile_app/models/download_url.dart';
 import 'package:varanasi_mobile_app/utils/clear_cache.dart';
 import 'package:varanasi_mobile_app/utils/dialogs/app_dialog.dart';
 import 'package:varanasi_mobile_app/utils/extensions/flex_scheme.dart';
+import 'package:varanasi_mobile_app/utils/services/recent_media_service.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -91,6 +92,11 @@ class SettingsPage extends StatelessWidget {
                     ),
                   );
                 },
+              ),
+              SettingsTile.navigation(
+                title: const Text("Clear Recently Played"),
+                leading: const Icon(Icons.delete_forever_outlined),
+                onPressed: (_) => RecentMediaService.clearRecentMedia(),
               ),
             ],
           ),

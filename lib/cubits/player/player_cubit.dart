@@ -63,10 +63,11 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
   ConfigCubit get _configCubit => ConfigCubit.read();
 
   Future<void> playFromMediaPlaylist<T extends PlayableMedia>(
-    MediaPlaylist<T> playlist, [
+    MediaPlaylist<T> playlist, {
     PlayableMedia? initialMedia,
     bool autoPlay = true,
-  ]) async {
+    RecentMedia? recentMedia,
+  }) async {
     RecentMediaService.addRecentMedia(RecentMedia.fromLibraryCubit());
     if (playlist.id == state.currentPlaylist && !audioHandler.player.playing) {
       final startIndex = initialMedia == null

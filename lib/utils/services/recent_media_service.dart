@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:varanasi_mobile_app/models/recent_media.dart';
+import 'package:varanasi_mobile_app/utils/app_snackbar.dart';
 import 'package:varanasi_mobile_app/utils/constants/strings.dart';
 
 class RecentMediaService {
@@ -28,4 +29,10 @@ class RecentMediaService {
             .map((_) => getAllRecentMedia())
             .distinctUnique(equals: listEquals),
       ]);
+
+  static Future<int> clearRecentMedia() async {
+    final result = await _box.clear();
+    AppSnackbar.show("Cleared recent media");
+    return result;
+  }
 }
