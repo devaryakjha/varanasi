@@ -11,8 +11,6 @@ import 'package:varanasi_mobile_app/widgets/player/full_screen_player/full_scree
 
 import 'player/mini_player.dart';
 
-const bottomNavHeight = 114.0;
-
 const iconSize = 24.0;
 
 class PageWithNavbar extends HookWidget {
@@ -22,6 +20,7 @@ class PageWithNavbar extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final positionState = useState(0.0);
+    final bottomNavHeight = 80 + context.bottomPadding;
     final position = positionState.value;
     final opacity = 1 - position;
     final currentHeight = bottomNavHeight * (1 - position);
@@ -66,6 +65,7 @@ class PageWithNavbar extends HookWidget {
             child: OverflowBox(
               maxHeight: bottomNavHeight,
               child: NavigationBar(
+                height: bottomNavHeight,
                 indicatorColor: Colors.transparent,
                 selectedIndex: child.currentIndex,
                 onDestinationSelected: (value) {
