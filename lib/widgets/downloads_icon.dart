@@ -9,6 +9,8 @@ class DownloadsIcon extends StatelessWidget {
 
   final double dimension;
 
+  double get iconSize => dimension * 0.4;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,8 +20,11 @@ class DownloadsIcon extends StatelessWidget {
         color: context.colorScheme.secondaryContainer,
         borderRadius: BorderRadius.circular(4),
       ),
-      child: Icon(Icons.download_rounded,
-          color: context.theme.colorScheme.onSecondaryContainer),
+      child: Icon(
+        Icons.download_rounded,
+        color: context.theme.colorScheme.onSecondaryContainer,
+        size: iconSize,
+      ),
     );
   }
 }
