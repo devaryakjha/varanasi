@@ -104,20 +104,24 @@ flavorizr:
     development:
       app:
         name: "Project Varanasi Dev"
-      android:
-        applicationId: "dev.aryak.varanasi.dev"
-        customConfig:
-          versionNameSuffix: '"-dev"'
-      ios:
+      # android:
+      #   applicationId: "dev.aryak.varanasi.dev"
+      #   customConfig:
+      #     versionNameSuffix: '"-dev"'
+      # ios:
+      #   bundleId: "dev.aryak.varanasi.dev"
+      macos:
         bundleId: "dev.aryak.varanasi.dev"
     production:
       app:
         name: "Project Varanasi"
-      android:
-        applicationId: "dev.aryak.varanasi"
-        customConfig:
-          versionNameSuffix: '"-prod"'
-      ios:
+      # android:
+      #   applicationId: "dev.aryak.varanasi"
+      #   customConfig:
+      #     versionNameSuffix: '"-prod"'
+      # ios:
+      #   bundleId: "dev.aryak.varanasi"
+      macos:
         bundleId: "dev.aryak.varanasi"
 
 # For information on the generic Dart part of this file, see the
