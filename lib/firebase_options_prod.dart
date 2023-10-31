@@ -25,13 +25,9 @@ class DefaultFirebaseOptions {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
+      case TargetPlatform.macOS:
       case TargetPlatform.iOS:
         return ios;
-      case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -63,6 +59,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '371448231205',
     projectId: 'project-varanasi-prod',
     storageBucket: 'project-varanasi-prod.appspot.com',
+    androidClientId:
+        '371448231205-nfvi3hie1ic2kt8ht5t1gefpjk4iq9hs.apps.googleusercontent.com',
+    iosClientId:
+        '371448231205-7inrtv982orcdou42vs3sa6gjt89bkbt.apps.googleusercontent.com',
     iosBundleId: 'dev.aryak.varanasi',
   );
 }

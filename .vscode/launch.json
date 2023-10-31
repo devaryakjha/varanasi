@@ -15,6 +15,12 @@
             ]
         },
         {
+            "name": "Development MacOs",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_development.dart",
+        },
+        {
             "name": "Production",
             "request": "launch",
             "type": "dart",
@@ -56,6 +62,13 @@
                 "--flavor",
                 "development"
             ]
+        },
+        {
+            "name": "Development (release mode) - MACOS",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "program": "lib/main_development.dart",
         },
         {
             "name": "Production (release mode)",
