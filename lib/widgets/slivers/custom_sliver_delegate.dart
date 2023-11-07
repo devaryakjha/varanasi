@@ -51,6 +51,7 @@ class CustomHeaderDelegate extends SliverPersistentHeaderDelegate {
               borderRadius: const BorderRadius.all(Radius.circular(6)),
               onSubmitted: onSearch,
               autocorrect: false,
+              onChanged: onSearch,
             ),
           ),
           SizedBox(height: bottomPadding),
