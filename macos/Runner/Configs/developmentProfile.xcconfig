@@ -1,0 +1,7 @@
+#include "../../Flutter/developmentProfile.xcconfig"
+#include "Warnings.xcconfig"
+
+FLUTTER_TARGET=lib/main_development.dart
+ASSET_PREFIX=development
+BUNDLE_NAME=Project Varanasi Dev
+BUNDLE_DISPLAY_NAME=Project Varanasi Dev
