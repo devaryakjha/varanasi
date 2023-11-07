@@ -33,13 +33,14 @@ class SearchDataProvider with DataProviderProtocol {
         : TopSearchResult.fromJson(json);
   }
 
-  Future<(dynamic, SearchResult?)> triggerSearch(String query) async {
+  Future<(dynamic, AllSearchResult?)> triggerSearch(String query) async {
     try {
-      return await fetch<SearchResult?>(
+      return await fetch<AllSearchResult?>(
         "${appConfig.endpoint.search.all}?query=${Uri.encodeQueryComponent(query)}",
         options: CommonOptions(
           transformer: (response) async {
-            return await compute((res) => SearchResult.fromJson(res), response);
+            return await compute(
+                (res) => AllSearchResult.fromJson(res), response);
           },
         ),
       );

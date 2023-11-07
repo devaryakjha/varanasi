@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
 import 'package:varanasi_mobile_app/features/search/data/search_data_provider.dart';
 import 'package:varanasi_mobile_app/features/search/data/top_search_result/top_search_result.dart';
 import 'package:varanasi_mobile_app/utils/constants/strings.dart';
@@ -21,7 +22,7 @@ class SearchRepository with CacheableService {
   @override
   String get cacheBoxName => AppStrings.commonCacheBoxName;
 
-  final Map<String, SearchResult> _searchResultsCache = {};
+  final Map<String, AllSearchResult> _searchResultsCache = {};
 
   Future<TopSearchResult?> fetchTopSearchResults() async {
     final (_, searchResults) =
@@ -29,7 +30,8 @@ class SearchRepository with CacheableService {
     return searchResults;
   }
 
-  Future<SearchResult?> triggerSearch(String query) async {
+  Future<AllSearchResult?> triggerSearch(
+      String query, SearchFilter filter) async {
     final cacheKey = AppStrings.searchResultsCacheKey(query);
     if (_searchResultsCache.containsKey(cacheKey)) {
       return _searchResultsCache[cacheKey];

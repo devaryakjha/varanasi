@@ -17,7 +17,7 @@ class SearchPage extends StatelessWidget {
     final isSearching =
         context.select((SearchCubit cubit) => cubit.state.isSearching);
     final showTrendingSearches = searchResults == null || isSearching;
-    final searchMediaItems = searchResults?.toMediaPlaylist() ?? [];
+    final results = searchResults?.toMediaPlaylist() ?? [];
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -26,6 +26,7 @@ class SearchPage extends StatelessWidget {
             delegate: CustomHeaderDelegate(
               padding: padding,
               onSearch: context.read<SearchCubit>().triggerSearch,
+              showFilter: !showTrendingSearches,
             ),
           ),
           const SliverPadding(padding: EdgeInsets.only(top: 32)),
@@ -33,9 +34,8 @@ class SearchPage extends StatelessWidget {
           if (!showTrendingSearches)
             SliverList.separated(
               separatorBuilder: (ctx, idx) => const SizedBox(height: 32),
-              itemBuilder: (ctx, idx) =>
-                  MediaCarousel(playlist: searchMediaItems[idx]),
-              itemCount: searchMediaItems.length,
+              itemBuilder: (_, i) => MediaCarousel(playlist: results[i]),
+              itemCount: results.length,
             ),
         ],
       ),

@@ -6,7 +6,8 @@ part of 'data.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SearchResult _$SearchResultFromJson(Map<String, dynamic> json) => SearchResult(
+AllSearchResult _$SearchResultFromJson(Map<String, dynamic> json) =>
+    AllSearchResult(
       topQuery: json['topQuery'] == null
           ? null
           : TopQuery.fromJson(json['topQuery'] as Map<String, dynamic>),
@@ -24,7 +25,7 @@ SearchResult _$SearchResultFromJson(Map<String, dynamic> json) => SearchResult(
           : Playlists.fromJson(json['playlists'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$SearchResultToJson(SearchResult instance) =>
+Map<String, dynamic> _$SearchResultToJson(AllSearchResult instance) =>
     <String, dynamic>{
       'topQuery': instance.topQuery?.toJson(),
       'songs': instance.songs?.toJson(),

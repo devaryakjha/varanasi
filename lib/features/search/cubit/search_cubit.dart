@@ -19,6 +19,11 @@ class SearchCubit extends AppCubit<SearchState> {
   @override
   FutureOr<void> init() async {
     await fetchTopSearchResults();
+    stream.map((e) => e.filter).distinct().listen((filter) {
+      if (state.query.isNotEmpty) {
+        triggerSearch(state.query);
+      }
+    });
   }
 
   Future<void> fetchTopSearchResults() async {
@@ -36,12 +41,16 @@ class SearchCubit extends AppCubit<SearchState> {
     // debounce the search
     _debounce(() async {
       if (state.isSearching) return;
-      emit(state.copyWith(isSearching: true));
-      final results = await repository.triggerSearch(query);
+      emit(state.copyWith(isSearching: true, query: query));
+      final results = await repository.triggerSearch(query, state.filter);
       if (results != null) {
         emit(state.copyWith(searchResults: results));
       }
       emit(state.copyWith(isSearching: false));
     });
+  }
+
+  void updateFilter(SearchFilter filter) {
+    emit(state.copyWith(filter: filter));
   }
 }

@@ -10,35 +10,63 @@ import 'top_query.dart';
 
 part 'data.g.dart';
 
+@JsonEnum(valueField: 'type')
+enum SearchType {
+  all._('all'),
+  songs._('songs'),
+  albums._('albums'),
+  artists._('artists'),
+  playlists._('playlists');
+
+  const SearchType._(this.type);
+
+  final String type;
+}
+
+sealed class SearchResult extends Equatable {
+  final SearchType type;
+
+  const SearchResult(this.type);
+
+  @override
+  List<Object?> get props => [type];
+
+  bool get isAll => type == SearchType.all;
+  bool get isSongs => type == SearchType.songs;
+  bool get isAlbums => type == SearchType.albums;
+  bool get isArtists => type == SearchType.artists;
+  bool get isPlaylists => type == SearchType.playlists;
+}
+
 @JsonSerializable(explicitToJson: true)
-class SearchResult extends Equatable {
+class AllSearchResult extends SearchResult {
   final TopQuery? topQuery;
   final Songs? songs;
   final Albums? albums;
   final Artists? artists;
   final Playlists? playlists;
 
-  const SearchResult({
+  const AllSearchResult({
     this.topQuery,
     this.songs,
     this.albums,
     this.artists,
     this.playlists,
-  });
+  }) : super(SearchType.all);
 
-  factory SearchResult.fromJson(Map<String, dynamic> json) =>
+  factory AllSearchResult.fromJson(Map<String, dynamic> json) =>
       _$SearchResultFromJson(json);
 
   Map<String, dynamic> toJson() => _$SearchResultToJson(this);
 
-  SearchResult copyWith({
+  AllSearchResult copyWith({
     TopQuery? topQuery,
     Songs? songs,
     Albums? albums,
     Artists? artists,
     Playlists? playlists,
   }) {
-    return SearchResult(
+    return AllSearchResult(
       topQuery: topQuery ?? this.topQuery,
       songs: songs ?? this.songs,
       albums: albums ?? this.albums,
@@ -58,6 +86,7 @@ class SearchResult extends Equatable {
       albums,
       artists,
       playlists,
+      type,
     ];
   }
 
