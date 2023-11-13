@@ -22,13 +22,24 @@ enum SearchFilter {
   bool get isAlbums => this == SearchFilter.albums;
 }
 
+enum ScrollPosition {
+  top,
+  bottom,
+  somewhere;
+
+  bool get isTop => this == ScrollPosition.top;
+  bool get isBottom => this == ScrollPosition.bottom;
+}
+
 final class SearchState extends _SearchState {
   final bool isFetchingTopSearchResults;
   final bool isSearching;
+  final bool isFetchingMore;
   final TopSearchResult? topSearchResult;
   final SearchResult? searchResults;
   final SearchFilter filter;
   final String query;
+  final ScrollPosition scrollPosition;
 
   const SearchState({
     this.topSearchResult,
@@ -37,6 +48,8 @@ final class SearchState extends _SearchState {
     this.isSearching = false,
     this.filter = SearchFilter.all,
     this.query = '',
+    this.scrollPosition = ScrollPosition.top,
+    this.isFetchingMore = false,
   });
 
   @override
@@ -47,15 +60,19 @@ final class SearchState extends _SearchState {
         isSearching,
         filter,
         query,
+        scrollPosition,
+        isFetchingMore,
       ];
 
   SearchState copyWith({
     bool? isFetchingTopSearchResults,
     bool? isSearching,
+    bool? isFetchingMore,
     TopSearchResult? topSearchResult,
     SearchResult? searchResults,
     SearchFilter? filter,
     String? query,
+    ScrollPosition? scrollPosition,
   }) {
     return SearchState(
       isFetchingTopSearchResults:
@@ -65,6 +82,8 @@ final class SearchState extends _SearchState {
       searchResults: searchResults ?? this.searchResults,
       filter: filter ?? this.filter,
       query: query ?? this.query,
+      scrollPosition: scrollPosition ?? this.scrollPosition,
+      isFetchingMore: isFetchingMore ?? this.isFetchingMore,
     );
   }
 }

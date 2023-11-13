@@ -13,6 +13,7 @@ class AppStrings {
 
   static const String topSearchesCacheKey = 'top_searches';
 
-  static String searchResultsCacheKey(String query, SearchFilter filter) =>
-      'search_results_${Uri.encodeQueryComponent(query)}_${filter.filter}';
+  static String searchResultsCacheKey(String query, SearchFilter filter,
+          [int page = 1, int n = 25]) =>
+      'search_results_${Uri.encodeQueryComponent(query)}_${filter.filter}_${page}_$n';
 }

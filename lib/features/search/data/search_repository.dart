@@ -30,8 +30,9 @@ class SearchRepository with CacheableService {
     return searchResults;
   }
 
-  Future<SearchResult?> triggerSearch(String query, SearchFilter filter) async {
-    final cacheKey = AppStrings.searchResultsCacheKey(query, filter);
+  Future<SearchResult?> triggerSearch(String query, SearchFilter filter,
+      [int page = 1]) async {
+    final cacheKey = AppStrings.searchResultsCacheKey(query, filter, page);
     if (_searchResultsCache.containsKey(cacheKey)) {
       return _searchResultsCache[cacheKey];
     }
@@ -39,7 +40,7 @@ class SearchRepository with CacheableService {
       SearchFilter.songs => SearchDataProvider.instance.triggerSearchSongs,
       _ => SearchDataProvider.instance.triggerSearchAll,
     };
-    final (_, searchResults) = await search(query);
+    final (_, searchResults) = await search(query, page);
     if (searchResults != null) {
       _searchResultsCache[cacheKey] = searchResults;
     } else {

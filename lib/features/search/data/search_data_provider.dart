@@ -36,7 +36,8 @@ class SearchDataProvider with DataProviderProtocol {
         : TopSearchResult.fromJson(json);
   }
 
-  SearchResponse<AllSearchResult> triggerSearchAll(String query) async {
+  SearchResponse<AllSearchResult> triggerSearchAll(String query,
+      [int page = 1]) async {
     try {
       return await fetch<AllSearchResult?>(
         "${appConfig.endpoint.search.all}?query=${Uri.encodeQueryComponent(query)}",
@@ -50,10 +51,11 @@ class SearchDataProvider with DataProviderProtocol {
     }
   }
 
-  SearchResponse<SongSearchResult> triggerSearchSongs(String query) async {
+  SearchResponse<SongSearchResult> triggerSearchSongs(String query,
+      [int page = 1]) async {
     try {
       return await fetch<SongSearchResult?>(
-        "${appConfig.endpoint.search.songs}?query=${Uri.encodeQueryComponent(query)}",
+        "${appConfig.endpoint.search.songs}?query=${Uri.encodeQueryComponent(query)}&n=25&p=$page",
         options: CommonOptions(
           transformer: (r) {
             return compute((res) => SongSearchResult.fromJson(res), r);

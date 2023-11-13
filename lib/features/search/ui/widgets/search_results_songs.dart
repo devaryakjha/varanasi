@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
+import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
 import 'package:varanasi_mobile_app/features/search/data/search_result/data.dart';
 import 'package:varanasi_mobile_app/widgets/media_list.dart';
 
@@ -12,6 +13,8 @@ class SearchResultsSongs extends SearchResults<SongSearchResult> {
   @override
   Widget build(BuildContext context) {
     final items = searchResults.results ?? [];
+    final isFetchingMore =
+        context.select((SearchCubit cubit) => cubit.state.isFetchingMore);
     final currentMediaItem = context
         .select((MediaPlayerCubit cubit) => cubit.state.currentMediaItem);
     return MediaListView.sliver(
@@ -22,6 +25,7 @@ class SearchResultsSongs extends SearchResults<SongSearchResult> {
         context.readMediaPlayerCubit
             .playFromMediaPlaylist(media.toMediaPlaylist());
       },
+      loading: isFetchingMore,
     );
   }
 }

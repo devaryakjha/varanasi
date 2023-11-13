@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:varanasi_mobile_app/features/search/data/search_repository.dart';
 import 'package:varanasi_mobile_app/features/search/data/search_result/data.dart';
 import 'package:varanasi_mobile_app/features/search/data/top_search_result/top_search_result.dart';
@@ -41,10 +42,31 @@ class SearchCubit extends AppCubit<SearchState> {
     // debounce the search
     _debounce(() async {
       if (state.isSearching) return;
-      emit(state.copyWith(isSearching: true, query: query));
-      final results = await repository.triggerSearch(query, state.filter);
+      final currResults = state.searchResults;
+      if (state.filter.isSongs &&
+          currResults is SongSearchResult &&
+          !currResults.hasNextPage) return;
+
+      final page = switch (currResults) {
+        // use total and start to calculate page
+        (SongSearchResult curr) => curr.nextPage,
+        (_) => 1,
+      };
+
+      emit(state.copyWith(
+          isSearching: page == 1, query: query, isFetchingMore: page > 1));
+      final results = await repository.triggerSearch(query, state.filter, page);
       if (results != null) {
-        emit(state.copyWith(searchResults: results));
+        if (results is SongSearchResult) {
+          final data = switch (state.searchResults) {
+            (SongSearchResult curr) =>
+              state.copyWith(searchResults: curr.copyFromSearchResult(results)),
+            (_) => state.copyWith(searchResults: results),
+          };
+          emit(data);
+        } else {
+          emit(state.copyWith(searchResults: results));
+        }
       }
       emit(state.copyWith(isSearching: false));
     });
@@ -52,5 +74,21 @@ class SearchCubit extends AppCubit<SearchState> {
 
   void updateFilter(SearchFilter filter) {
     emit(state.copyWith(filter: filter));
+  }
+
+  bool handleScrollUpdate(ScrollUpdateNotification notification) {
+    if (state.filter.isAll) return false;
+    final metrics = notification.metrics;
+    final position = metrics.pixels;
+    final max = metrics.maxScrollExtent;
+    if (position == 0) {
+      emit(state.copyWith(scrollPosition: ScrollPosition.top));
+    } else if (position == max) {
+      emit(state.copyWith(scrollPosition: ScrollPosition.bottom));
+      if (state.filter.isSongs) {
+        triggerSearch(state.query);
+      }
+    }
+    return true;
   }
 }

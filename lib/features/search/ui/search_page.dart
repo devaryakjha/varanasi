@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide ScrollPosition;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
 import 'package:varanasi_mobile_app/features/search/ui/widgets/search_results.dart';
@@ -12,26 +12,27 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final padding = context.padding;
-    final searchResults =
-        context.select((SearchCubit cubit) => cubit.state.searchResults);
-    final isSearching =
-        context.select((SearchCubit cubit) => cubit.state.isSearching);
+    final (searchResults, isSearching) = context.select((SearchCubit cubit) =>
+        (cubit.state.searchResults, cubit.state.isSearching));
     final showTrendingSearches = searchResults == null || isSearching;
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverPersistentHeader(
-            pinned: true,
-            delegate: CustomHeaderDelegate(
-              padding: padding,
-              onSearch: context.read<SearchCubit>().triggerSearch,
-              showFilter: !showTrendingSearches,
+      body: NotificationListener(
+        onNotification: context.read<SearchCubit>().handleScrollUpdate,
+        child: CustomScrollView(
+          slivers: [
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: CustomHeaderDelegate(
+                padding: padding,
+                onSearch: context.read<SearchCubit>().triggerSearch,
+                showFilter: !showTrendingSearches,
+              ),
             ),
-          ),
-          const SliverPadding(padding: EdgeInsets.only(top: 32)),
-          if (showTrendingSearches) const TrendingSearchesCarousel(),
-          if (!showTrendingSearches) SearchResults.fromType(searchResults),
-        ],
+            const SliverPadding(padding: EdgeInsets.only(top: 32)),
+            if (showTrendingSearches) const TrendingSearchesCarousel(),
+            if (!showTrendingSearches) SearchResults.fromType(searchResults),
+          ],
+        ),
       ),
     );
   }

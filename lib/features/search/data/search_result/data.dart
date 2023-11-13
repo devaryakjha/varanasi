@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
@@ -156,4 +157,34 @@ class SongSearchResult extends SearchResult {
       _$SongSearchResultFromJson(json);
 
   Map<String, dynamic> toJson() => _$SongSearchResultToJson(this);
+
+  SongSearchResult copyFromSearchResult(SongSearchResult result) {
+    return SongSearchResult(
+      total: result.total,
+      start: result.start,
+      results: [...(results ?? []), ...(result.results ?? [])],
+    );
+  }
+
+  SongSearchResult copyWith({
+    int? total,
+    int? start,
+    List<Song>? results,
+  }) {
+    return SongSearchResult(
+      total: total ?? this.total,
+      start: start ?? this.start,
+      results: results ?? this.results,
+    );
+  }
+
+  int get currPage => ((((start ?? 1) - 1) / 25).floor() + 1);
+
+  int get nextPage => currPage + 1;
+
+  int get totalPages => ((total ?? 0) / 25).ceil();
+
+  bool get hasNextPage => currPage < totalPages;
+
+  bool get isLastPage => currPage == totalPages;
 }
