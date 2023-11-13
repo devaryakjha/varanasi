@@ -6,7 +6,7 @@ part of 'data.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AllSearchResult _$SearchResultFromJson(Map<String, dynamic> json) =>
+AllSearchResult _$AllSearchResultFromJson(Map<String, dynamic> json) =>
     AllSearchResult(
       topQuery: json['topQuery'] == null
           ? null
@@ -25,11 +25,27 @@ AllSearchResult _$SearchResultFromJson(Map<String, dynamic> json) =>
           : Playlists.fromJson(json['playlists'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$SearchResultToJson(AllSearchResult instance) =>
+Map<String, dynamic> _$AllSearchResultToJson(AllSearchResult instance) =>
     <String, dynamic>{
       'topQuery': instance.topQuery?.toJson(),
       'songs': instance.songs?.toJson(),
       'albums': instance.albums?.toJson(),
       'artists': instance.artists?.toJson(),
       'playlists': instance.playlists?.toJson(),
+    };
+
+SongSearchResult _$SongSearchResultFromJson(Map<String, dynamic> json) =>
+    SongSearchResult(
+      total: json['total'] as int?,
+      start: json['start'] as int?,
+      results: (json['results'] as List<dynamic>?)
+          ?.map((e) => Song.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$SongSearchResultToJson(SongSearchResult instance) =>
+    <String, dynamic>{
+      'total': instance.total,
+      'start': instance.start,
+      'results': instance.results?.map((e) => e.toJson()).toList(),
     };

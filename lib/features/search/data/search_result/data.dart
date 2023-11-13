@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
+import 'package:varanasi_mobile_app/models/song.dart';
 
 import 'albums.dart';
 import 'artists.dart';
@@ -55,9 +56,9 @@ class AllSearchResult extends SearchResult {
   }) : super(SearchType.all);
 
   factory AllSearchResult.fromJson(Map<String, dynamic> json) =>
-      _$SearchResultFromJson(json);
+      _$AllSearchResultFromJson(json);
 
-  Map<String, dynamic> toJson() => _$SearchResultToJson(this);
+  Map<String, dynamic> toJson() => _$AllSearchResultToJson(this);
 
   AllSearchResult copyWith({
     TopQuery? topQuery,
@@ -134,4 +135,25 @@ class AllSearchResult extends SearchResult {
 
     return mediaPlayList;
   }
+}
+
+@JsonSerializable(explicitToJson: true)
+class SongSearchResult extends SearchResult {
+  final int? total;
+  final int? start;
+  final List<Song>? results;
+
+  const SongSearchResult({
+    this.total,
+    this.start,
+    this.results,
+  }) : super(SearchType.songs);
+
+  @override
+  List<Object?> get props => [total, start, results];
+
+  factory SongSearchResult.fromJson(Map<String, dynamic> json) =>
+      _$SongSearchResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SongSearchResultToJson(this);
 }

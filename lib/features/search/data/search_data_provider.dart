@@ -6,12 +6,15 @@ import 'package:varanasi_mobile_app/utils/services/http_services.dart';
 
 import 'search_result/data.dart';
 
+typedef SearchResponse<T extends SearchResult> = Future<(dynamic, T?)>;
+typedef SearchTopResponse = Future<(dynamic, TopSearchResult?)>;
+
 class SearchDataProvider with DataProviderProtocol {
   SearchDataProvider._();
 
   static final instance = SearchDataProvider._();
 
-  Future<(dynamic, TopSearchResult?)> fetchTopSearchResults() async {
+  SearchTopResponse fetchTopSearchResults() async {
     try {
       return await fetch<TopSearchResult?>(
         appConfig.endpoint.search.topSearches,
@@ -33,14 +36,27 @@ class SearchDataProvider with DataProviderProtocol {
         : TopSearchResult.fromJson(json);
   }
 
-  Future<(dynamic, AllSearchResult?)> triggerSearch(String query) async {
+  SearchResponse<AllSearchResult> triggerSearchAll(String query) async {
     try {
       return await fetch<AllSearchResult?>(
         "${appConfig.endpoint.search.all}?query=${Uri.encodeQueryComponent(query)}",
         options: CommonOptions(
-          transformer: (response) async {
-            return await compute(
-                (res) => AllSearchResult.fromJson(res), response);
+          transformer: (r) =>
+              compute((res) => AllSearchResult.fromJson(res), r),
+        ),
+      );
+    } catch (e) {
+      return (e, null);
+    }
+  }
+
+  SearchResponse<SongSearchResult> triggerSearchSongs(String query) async {
+    try {
+      return await fetch<SongSearchResult?>(
+        "${appConfig.endpoint.search.songs}?query=${Uri.encodeQueryComponent(query)}",
+        options: CommonOptions(
+          transformer: (r) {
+            return compute((res) => SongSearchResult.fromJson(res), r);
           },
         ),
       );

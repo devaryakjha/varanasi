@@ -22,7 +22,7 @@ class SearchRepository with CacheableService {
   @override
   String get cacheBoxName => AppStrings.commonCacheBoxName;
 
-  final Map<String, AllSearchResult> _searchResultsCache = {};
+  final Map<String, SearchResult> _searchResultsCache = {};
 
   Future<TopSearchResult?> fetchTopSearchResults() async {
     final (_, searchResults) =
@@ -30,14 +30,16 @@ class SearchRepository with CacheableService {
     return searchResults;
   }
 
-  Future<AllSearchResult?> triggerSearch(
-      String query, SearchFilter filter) async {
-    final cacheKey = AppStrings.searchResultsCacheKey(query);
+  Future<SearchResult?> triggerSearch(String query, SearchFilter filter) async {
+    final cacheKey = AppStrings.searchResultsCacheKey(query, filter);
     if (_searchResultsCache.containsKey(cacheKey)) {
       return _searchResultsCache[cacheKey];
     }
-    final (_, searchResults) =
-        await SearchDataProvider.instance.triggerSearch(query);
+    final search = switch (filter) {
+      SearchFilter.songs => SearchDataProvider.instance.triggerSearchSongs,
+      _ => SearchDataProvider.instance.triggerSearchAll,
+    };
+    final (_, searchResults) = await search(query);
     if (searchResults != null) {
       _searchResultsCache[cacheKey] = searchResults;
     } else {

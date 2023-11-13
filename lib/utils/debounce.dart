@@ -4,9 +4,7 @@ class Debounce {
   Duration delay;
   Timer? _timer;
 
-  Debounce(
-    this.delay,
-  );
+  Debounce(this.delay);
 
   void call(void Function() callback) {
     _timer?.cancel();

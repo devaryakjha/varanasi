@@ -15,6 +15,10 @@ import 'package:lottie/lottie.dart';
 class $AssetsIconGen {
   const $AssetsIconGen();
 
+  /// File path: assets/icon/Integrate-with-Samsung-IAP-05212021.pdf
+  String get integrateWithSamsungIAP05212021 =>
+      'assets/icon/Integrate-with-Samsung-IAP-05212021.pdf';
+
   /// File path: assets/icon/app_icon.jpg
   AssetGenImage get appIcon => const AssetGenImage('assets/icon/app_icon.jpg');
 
@@ -44,6 +48,7 @@ class $AssetsIconGen {
 
   /// List of all assets
   List<dynamic> get values => [
+        integrateWithSamsungIAP05212021,
         appIcon,
         appIconMonotone,
         circularLoader,

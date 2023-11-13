@@ -26,7 +26,7 @@ final class SearchState extends _SearchState {
   final bool isFetchingTopSearchResults;
   final bool isSearching;
   final TopSearchResult? topSearchResult;
-  final AllSearchResult? searchResults;
+  final SearchResult? searchResults;
   final SearchFilter filter;
   final String query;
 
@@ -53,7 +53,7 @@ final class SearchState extends _SearchState {
     bool? isFetchingTopSearchResults,
     bool? isSearching,
     TopSearchResult? topSearchResult,
-    AllSearchResult? searchResults,
+    SearchResult? searchResults,
     SearchFilter? filter,
     String? query,
   }) {
