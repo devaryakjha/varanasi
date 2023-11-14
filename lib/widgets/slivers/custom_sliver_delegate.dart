@@ -9,11 +9,16 @@ class CustomHeaderDelegate extends SliverPersistentHeaderDelegate {
   final EdgeInsets padding;
   final bool showFilter;
   final ValueChanged<String> onSearch;
+  final VoidCallback? onClear;
+  final TextEditingController? controller;
 
-  CustomHeaderDelegate(
-      {required this.padding,
-      required this.onSearch,
-      required this.showFilter});
+  CustomHeaderDelegate({
+    required this.padding,
+    required this.onSearch,
+    required this.showFilter,
+    this.onClear,
+    this.controller,
+  });
 
   @override
   Widget build(context, shrinkOffset, overlapsContent) {
@@ -47,6 +52,7 @@ class CustomHeaderDelegate extends SliverPersistentHeaderDelegate {
           SizedBox(
             height: searchFieldHeight,
             child: CupertinoSearchTextField(
+              controller: controller,
               backgroundColor: Colors.white,
               placeholder: "What do you want to listen to?",
               itemColor: Colors.black87,
@@ -58,6 +64,7 @@ class CustomHeaderDelegate extends SliverPersistentHeaderDelegate {
               onSubmitted: onSearch,
               autocorrect: false,
               onChanged: onSearch,
+              onSuffixTap: onClear,
             ),
           ),
           SizedBox(height: bottomPadding),

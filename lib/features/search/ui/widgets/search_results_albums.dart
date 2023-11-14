@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
 import 'package:varanasi_mobile_app/features/search/data/search_result/data.dart';
+import 'package:varanasi_mobile_app/utils/routes.dart';
 import 'package:varanasi_mobile_app/widgets/media_list.dart';
 
 import 'search_results.dart';
@@ -19,8 +21,7 @@ class SearchResultsAlbums extends SearchResults<AlbumSearchResult> {
       isPlaying: false,
       isItemPlaying: (media) => false,
       onItemTap: (index, media) {
-        // context.readMediaPlayerCubit
-        //     .playFromMediaPlaylist(media.toMediaPlaylist());
+        context.push(AppRoutes.library.path, extra: media);
       },
       loading: isFetchingMore,
     );

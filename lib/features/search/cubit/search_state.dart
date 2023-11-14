@@ -52,6 +52,8 @@ final class SearchState extends _SearchState {
     this.isFetchingMore = false,
   });
 
+  SearchState cleared() => SearchState(topSearchResult: topSearchResult);
+
   @override
   List<Object?> get props => [
         topSearchResult,

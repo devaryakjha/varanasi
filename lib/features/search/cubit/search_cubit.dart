@@ -7,6 +7,7 @@ import 'package:varanasi_mobile_app/features/search/data/search_result/data.dart
 import 'package:varanasi_mobile_app/features/search/data/top_search_result/top_search_result.dart';
 import 'package:varanasi_mobile_app/utils/app_cubit.dart';
 import 'package:varanasi_mobile_app/utils/debounce.dart';
+import 'package:varanasi_mobile_app/utils/logger.dart';
 
 part 'search_state.dart';
 
@@ -38,11 +39,17 @@ class SearchCubit extends AppCubit<SearchState> {
     }
   }
 
+  void clearSearch() {
+    Logger.instance.d('clearing search');
+    emit(state.cleared());
+  }
+
   Future<void> triggerSearch(String query) async {
     // debounce the search
     _debounce(() async {
       if (state.isSearching) return;
       final currResults = state.searchResults;
+      Logger.instance.d('triggering search $query');
       if (!state.filter.isAll &&
           currResults is PaginatedResult &&
           !currResults.hasNextPage) return;
@@ -58,12 +65,15 @@ class SearchCubit extends AppCubit<SearchState> {
       if (results != null) {
         if (results is PaginatedResult) {
           if (results.type == currResults?.type) {
+            Logger.instance.d('copying from paginated result');
             emit(state.copyWith(
-              searchResults: results.copyFromPaginatedResult(results),
+              searchResults: (currResults as PaginatedResult)
+                  .copyFromPaginatedResult(results),
               isSearching: false,
               isFetchingMore: false,
             ));
           } else {
+            Logger.instance.d('copying from all result ${results.total}');
             emit(state.copyWith(
               searchResults: results,
               isSearching: false,
@@ -71,6 +81,7 @@ class SearchCubit extends AppCubit<SearchState> {
             ));
           }
         } else {
+          Logger.instance.d('copying from all result');
           emit(state.copyWith(
             searchResults: results,
             isSearching: false,
@@ -99,7 +110,7 @@ class SearchCubit extends AppCubit<SearchState> {
       emit(state.copyWith(scrollPosition: ScrollPosition.top));
     } else if (position == max) {
       emit(state.copyWith(scrollPosition: ScrollPosition.bottom));
-      if (state.filter.isSongs) {
+      if (!state.filter.isAll) {
         triggerSearch(state.query);
       }
     }
