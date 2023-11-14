@@ -1,3 +1,5 @@
+import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
+
 class AppStrings {
   static const String appName = 'Project Varanasi';
   static const String configBoxName = 'config';
@@ -11,6 +13,7 @@ class AppStrings {
 
   static const String topSearchesCacheKey = 'top_searches';
 
-  static String searchResultsCacheKey(String query) =>
-      'search_results_${Uri.encodeQueryComponent(query)}';
+  static String searchResultsCacheKey(String query, SearchFilter filter,
+          [int page = 1, int n = 25]) =>
+      'search_results_${Uri.encodeQueryComponent(query)}_${filter.filter}_${page}_$n';
 }

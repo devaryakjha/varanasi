@@ -23,6 +23,7 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
   final MediaListOnTap<Media>? onItemTap;
   final Color? itemSelectedColor;
   final PlayableMediaType? mediaType;
+  final bool loading;
 
   /// Creates a [MediaListView] widget with a [ListView].
   const MediaListView(
@@ -34,6 +35,7 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
     required this.isItemPlaying,
     this.itemSelectedColor,
     this.mediaType,
+    this.loading = false,
   })  : _type = _MediaListType.list,
         itemBuilder = null;
 
@@ -46,6 +48,7 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
     required this.isItemPlaying,
     this.itemSelectedColor,
     this.mediaType,
+    this.loading = false,
   })  : _type = _MediaListType.sliver,
         itemBuilder = null;
 
@@ -60,6 +63,7 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
     this.onItemTap,
     bool needSliver = false,
     this.mediaType,
+    this.loading = false,
   }) : _type = needSliver ? _MediaListType.sliver : _MediaListType.list;
 
   MediaListViewBuilder<Media> get _itemBuilder =>
@@ -74,7 +78,10 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
             selected: isItemPlaying(media),
             selectedColor: itemSelectedColor,
             parentMediaType: mediaType ?? PlayableMediaType.song,
+            key: ValueKey(media.heroTag),
           );
+
+  int get itemCount => loading ? mediaItems.length + 1 : mediaItems.length;
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +97,7 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
       isItemPlaying: isItemPlaying,
       itemSelectedColor: itemSelectedColor,
       mediaType: mediaType,
+      loading: loading,
     );
   }
 }
@@ -104,13 +112,20 @@ class _MediaSliverListView<Media extends PlayableMedia>
     required super.isItemPlaying,
     super.itemSelectedColor,
     required super.mediaType,
+    super.loading = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return SliverList.builder(
-      itemCount: mediaItems.length,
+      itemCount: itemCount,
       itemBuilder: (context, index) {
+        if (index == mediaItems.length) {
+          return const SizedBox(
+            height: 100,
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
         final media = mediaItems[index];
         return _itemBuilder(context, media, index);
       },
@@ -127,13 +142,20 @@ class _MediaListView<Media extends PlayableMedia> extends MediaListView<Media> {
     required super.isItemPlaying,
     super.itemSelectedColor,
     required super.mediaType,
+    super.loading = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: mediaItems.length,
+      itemCount: itemCount,
       itemBuilder: (context, index) {
+        if (index == mediaItems.length) {
+          return const SizedBox(
+            height: 100,
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
         final media = mediaItems[index];
         return _itemBuilder(context, media, index);
       },

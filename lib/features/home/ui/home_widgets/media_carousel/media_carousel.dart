@@ -44,8 +44,8 @@ class MediaCarousel extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: totalItems,
               itemBuilder: (context, index) {
-                final heroTagPrefix = playlist.title;
                 final media = playlist.mediaItems![index];
+                final heroTagPrefix = media.heroTag;
                 return MediaCard(
                   key: ValueKey(media.itemId),
                   heroTagPrefix: heroTagPrefix,

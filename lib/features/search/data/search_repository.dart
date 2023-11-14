@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
 import 'package:varanasi_mobile_app/features/search/data/search_data_provider.dart';
 import 'package:varanasi_mobile_app/features/search/data/top_search_result/top_search_result.dart';
 import 'package:varanasi_mobile_app/utils/constants/strings.dart';
@@ -29,17 +30,22 @@ class SearchRepository with CacheableService {
     return searchResults;
   }
 
-  Future<SearchResult?> triggerSearch(String query) async {
-    final cacheKey = AppStrings.searchResultsCacheKey(query);
+  Future<SearchResult?> triggerSearch(String query, SearchFilter filter,
+      [int page = 1]) async {
+    final cacheKey = AppStrings.searchResultsCacheKey(query, filter, page);
     if (_searchResultsCache.containsKey(cacheKey)) {
       return _searchResultsCache[cacheKey];
     }
-    final (_, searchResults) =
-        await SearchDataProvider.instance.triggerSearch(query);
+    final search = switch (filter) {
+      SearchFilter.playlists =>
+        SearchDataProvider.instance.triggerSearchPlaylists,
+      SearchFilter.albums => SearchDataProvider.instance.triggerSearchAlbums,
+      SearchFilter.songs => SearchDataProvider.instance.triggerSearchSongs,
+      _ => SearchDataProvider.instance.triggerSearchAll,
+    };
+    final (_, searchResults) = await search(query, page);
     if (searchResults != null) {
       _searchResultsCache[cacheKey] = searchResults;
-    } else {
-      throw Exception('Failed to fetch top searches');
     }
     return searchResults;
   }

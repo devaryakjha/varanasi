@@ -359,6 +359,12 @@ class MediaTile<Media extends PlayableMedia> extends StatelessWidget {
       imageUrl: media.artworkUrl!,
       height: 56,
       width: 56,
+      errorWidget: (context, url, error) {
+        return const SizedBox.square(
+          dimension: 56,
+          child: Icon(Icons.music_note),
+        );
+      },
     );
   }
 
@@ -411,7 +417,7 @@ class MediaTile<Media extends PlayableMedia> extends StatelessWidget {
   Widget _buildTrailing() {
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: [DownloadButton(media)],
+      children: [if (media.itemType.isSong) DownloadButton(media)],
     );
   }
 
