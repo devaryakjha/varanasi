@@ -43,13 +43,12 @@ class SearchCubit extends AppCubit<SearchState> {
     _debounce(() async {
       if (state.isSearching) return;
       final currResults = state.searchResults;
-      if (state.filter.isSongs &&
-          currResults is SongSearchResult &&
+      if (!state.filter.isAll &&
+          currResults is PaginatedResult &&
           !currResults.hasNextPage) return;
 
       final page = switch (currResults) {
-        // use total and start to calculate page
-        (SongSearchResult curr) => curr.nextPage,
+        (PaginatedResult curr) => curr.nextPage,
         (_) => 1,
       };
 
@@ -57,18 +56,33 @@ class SearchCubit extends AppCubit<SearchState> {
           isSearching: page == 1, query: query, isFetchingMore: page > 1));
       final results = await repository.triggerSearch(query, state.filter, page);
       if (results != null) {
-        if (results is SongSearchResult) {
-          final data = switch (state.searchResults) {
-            (SongSearchResult curr) =>
-              state.copyWith(searchResults: curr.copyFromSearchResult(results)),
-            (_) => state.copyWith(searchResults: results),
-          };
-          emit(data);
+        if (results is PaginatedResult) {
+          if (results.type == currResults?.type) {
+            emit(state.copyWith(
+              searchResults: results.copyFromPaginatedResult(results),
+              isSearching: false,
+              isFetchingMore: false,
+            ));
+          } else {
+            emit(state.copyWith(
+              searchResults: results,
+              isSearching: false,
+              isFetchingMore: false,
+            ));
+          }
         } else {
-          emit(state.copyWith(searchResults: results));
+          emit(state.copyWith(
+            searchResults: results,
+            isSearching: false,
+            isFetchingMore: false,
+          ));
         }
+      } else {
+        emit(state.copyWith(
+          isSearching: false,
+          isFetchingMore: false,
+        ));
       }
-      emit(state.copyWith(isSearching: false));
     });
   }
 
