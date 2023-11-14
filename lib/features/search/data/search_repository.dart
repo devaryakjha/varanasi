@@ -37,14 +37,13 @@ class SearchRepository with CacheableService {
       return _searchResultsCache[cacheKey];
     }
     final search = switch (filter) {
+      SearchFilter.albums => SearchDataProvider.instance.triggerSearchAlbums,
       SearchFilter.songs => SearchDataProvider.instance.triggerSearchSongs,
       _ => SearchDataProvider.instance.triggerSearchAll,
     };
     final (_, searchResults) = await search(query, page);
     if (searchResults != null) {
       _searchResultsCache[cacheKey] = searchResults;
-    } else {
-      throw Exception('Failed to fetch top searches');
     }
     return searchResults;
   }

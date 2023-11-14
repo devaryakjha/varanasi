@@ -66,4 +66,20 @@ class SearchDataProvider with DataProviderProtocol {
       return (e, null);
     }
   }
+
+  SearchResponse<AlbumSearchResult> triggerSearchAlbums(String query,
+      [int page = 1]) async {
+    try {
+      return await fetch<AlbumSearchResult?>(
+        "${appConfig.endpoint.search.albums}?query=${Uri.encodeQueryComponent(query)}&n=25&p=$page",
+        options: CommonOptions(
+          transformer: (r) {
+            return compute((res) => AlbumSearchResult.fromJson(res), r);
+          },
+        ),
+      );
+    } catch (e) {
+      return (e, null);
+    }
+  }
 }

@@ -36,14 +36,30 @@ Map<String, dynamic> _$AllSearchResultToJson(AllSearchResult instance) =>
 
 SongSearchResult _$SongSearchResultFromJson(Map<String, dynamic> json) =>
     SongSearchResult(
-      total: json['total'] as int?,
-      start: json['start'] as int?,
+      total: json['total'] as int? ?? 0,
+      start: json['start'] as int? ?? 1,
       results: (json['results'] as List<dynamic>?)
           ?.map((e) => Song.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$SongSearchResultToJson(SongSearchResult instance) =>
+    <String, dynamic>{
+      'total': instance.total,
+      'start': instance.start,
+      'results': instance.results?.map((e) => e.toJson()).toList(),
+    };
+
+AlbumSearchResult _$AlbumSearchResultFromJson(Map<String, dynamic> json) =>
+    AlbumSearchResult(
+      total: json['total'] as int? ?? 0,
+      start: json['start'] as int? ?? 1,
+      results: (json['results'] as List<dynamic>?)
+          ?.map((e) => Album.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$AlbumSearchResultToJson(AlbumSearchResult instance) =>
     <String, dynamic>{
       'total': instance.total,
       'start': instance.start,

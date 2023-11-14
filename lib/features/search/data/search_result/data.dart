@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:varanasi_mobile_app/models/album.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
+import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
 
 import 'albums.dart';
@@ -26,6 +28,7 @@ enum SearchType {
 }
 
 sealed class SearchResult extends Equatable {
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final SearchType type;
 
   const SearchResult(this.type);
@@ -41,7 +44,7 @@ sealed class SearchResult extends Equatable {
 }
 
 @JsonSerializable(explicitToJson: true)
-class AllSearchResult extends SearchResult {
+final class AllSearchResult extends SearchResult {
   final TopQuery? topQuery;
   final Songs? songs;
   final Albums? albums;
@@ -138,53 +141,98 @@ class AllSearchResult extends SearchResult {
   }
 }
 
-@JsonSerializable(explicitToJson: true)
-class SongSearchResult extends SearchResult {
+sealed class PaginatedResult<T extends PlayableMedia> extends SearchResult {
   final int? total;
   final int? start;
-  final List<Song>? results;
+  final List<T>? results;
 
-  const SongSearchResult({
-    this.total,
-    this.start,
+  const PaginatedResult({
+    required this.total,
+    required this.start,
+    required SearchType type,
     this.results,
-  }) : super(SearchType.songs);
+  }) : super(type);
+
+  /// Returns the number of items per page
+  int get itemsPerPage => 25;
+
+  /// Returns the current page
+  int get currPage => ((((start ?? 1) - 1) / itemsPerPage).floor() + 1);
+
+  /// Returns the next page
+  int get nextPage => currPage + 1;
+
+  /// Returns the total number of pages
+  int get totalPages => (((total ?? 0) / itemsPerPage).ceil());
+
+  /// Returns true if there is a next page
+  bool get hasNextPage => currPage < totalPages;
+
+  /// Returns true if there is a previous page
+  bool get isLastPage => currPage == totalPages;
 
   @override
   List<Object?> get props => [total, start, results];
 
-  factory SongSearchResult.fromJson(Map<String, dynamic> json) =>
-      _$SongSearchResultFromJson(json);
-
-  Map<String, dynamic> toJson() => _$SongSearchResultToJson(this);
-
-  SongSearchResult copyFromSearchResult(SongSearchResult result) {
-    return SongSearchResult(
+  PaginatedResult<T> copyFromPaginatedResult(PaginatedResult<T> result) {
+    return copyWith(
       total: result.total,
       start: result.start,
       results: [...(results ?? []), ...(result.results ?? [])],
     );
   }
 
-  SongSearchResult copyWith({
+  PaginatedResult<T> copyWith({
     int? total,
     int? start,
-    List<Song>? results,
-  }) {
+    List<T>? results,
+  });
+}
+
+@JsonSerializable(explicitToJson: true)
+final class SongSearchResult extends PaginatedResult<Song> {
+  const SongSearchResult({
+    super.total = 0,
+    super.start = 1,
+    super.results,
+    super.type = SearchType.songs,
+  });
+
+  factory SongSearchResult.fromJson(Map<String, dynamic> json) =>
+      _$SongSearchResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SongSearchResultToJson(this);
+
+  @override
+  SongSearchResult copyWith({total, start, results}) {
     return SongSearchResult(
       total: total ?? this.total,
       start: start ?? this.start,
       results: results ?? this.results,
     );
   }
+}
 
-  int get currPage => ((((start ?? 1) - 1) / 25).floor() + 1);
+@JsonSerializable(explicitToJson: true)
+final class AlbumSearchResult extends PaginatedResult<Album> {
+  const AlbumSearchResult({
+    super.total = 0,
+    super.start = 1,
+    super.results,
+    super.type = SearchType.albums,
+  });
 
-  int get nextPage => currPage + 1;
+  @override
+  AlbumSearchResult copyWith({total, start, results}) {
+    return AlbumSearchResult(
+      total: total ?? this.total,
+      start: start ?? this.start,
+      results: results ?? this.results,
+    );
+  }
 
-  int get totalPages => ((total ?? 0) / 25).ceil();
+  factory AlbumSearchResult.fromJson(Map<String, dynamic> json) =>
+      _$AlbumSearchResultFromJson(json);
 
-  bool get hasNextPage => currPage < totalPages;
-
-  bool get isLastPage => currPage == totalPages;
+  Map<String, dynamic> toJson() => _$AlbumSearchResultToJson(this);
 }
