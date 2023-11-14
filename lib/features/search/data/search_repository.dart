@@ -37,6 +37,8 @@ class SearchRepository with CacheableService {
       return _searchResultsCache[cacheKey];
     }
     final search = switch (filter) {
+      SearchFilter.playlists =>
+        SearchDataProvider.instance.triggerSearchPlaylists,
       SearchFilter.albums => SearchDataProvider.instance.triggerSearchAlbums,
       SearchFilter.songs => SearchDataProvider.instance.triggerSearchSongs,
       _ => SearchDataProvider.instance.triggerSearchAll,

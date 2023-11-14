@@ -65,3 +65,21 @@ Map<String, dynamic> _$AlbumSearchResultToJson(AlbumSearchResult instance) =>
       'start': instance.start,
       'results': instance.results?.map((e) => e.toJson()).toList(),
     };
+
+PlaylistSearchResult _$PlaylistSearchResultFromJson(
+        Map<String, dynamic> json) =>
+    PlaylistSearchResult(
+      total: json['total'] as int? ?? 0,
+      start: json['start'] as int? ?? 1,
+      results: (json['results'] as List<dynamic>?)
+          ?.map((e) => Playlist.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$PlaylistSearchResultToJson(
+        PlaylistSearchResult instance) =>
+    <String, dynamic>{
+      'total': instance.total,
+      'start': instance.start,
+      'results': instance.results?.map((e) => e.toJson()).toList(),
+    };

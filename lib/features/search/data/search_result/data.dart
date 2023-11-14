@@ -4,6 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:varanasi_mobile_app/models/album.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
+import 'package:varanasi_mobile_app/models/playlist.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
 
 import 'albums.dart';
@@ -235,4 +236,28 @@ final class AlbumSearchResult extends PaginatedResult<Album> {
       _$AlbumSearchResultFromJson(json);
 
   Map<String, dynamic> toJson() => _$AlbumSearchResultToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+final class PlaylistSearchResult extends PaginatedResult<Playlist> {
+  const PlaylistSearchResult({
+    super.total = 0,
+    super.start = 1,
+    super.results,
+    super.type = SearchType.playlists,
+  });
+
+  @override
+  PlaylistSearchResult copyWith({total, start, results}) {
+    return PlaylistSearchResult(
+      total: total ?? this.total,
+      start: start ?? this.start,
+      results: results ?? this.results,
+    );
+  }
+
+  factory PlaylistSearchResult.fromJson(Map<String, dynamic> json) =>
+      _$PlaylistSearchResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PlaylistSearchResultToJson(this);
 }

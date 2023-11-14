@@ -82,4 +82,20 @@ class SearchDataProvider with DataProviderProtocol {
       return (e, null);
     }
   }
+
+  SearchResponse<PlaylistSearchResult> triggerSearchPlaylists(String query,
+      [int page = 1]) async {
+    try {
+      return await fetch<PlaylistSearchResult?>(
+        "${appConfig.endpoint.search.playlists}?query=${Uri.encodeQueryComponent(query)}&n=25&p=$page",
+        options: CommonOptions(
+          transformer: (r) {
+            return compute((res) => PlaylistSearchResult.fromJson(res), r);
+          },
+        ),
+      );
+    } catch (e) {
+      return (e, null);
+    }
+  }
 }

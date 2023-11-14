@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:varanasi_mobile_app/features/search/data/search_result/data.dart';
+import 'package:varanasi_mobile_app/features/search/ui/widgets/search_results_playlists.dart';
 import 'package:varanasi_mobile_app/features/search/ui/widgets/search_results_songs.dart';
 
 import 'search_results_albums.dart';
@@ -15,6 +16,7 @@ abstract class SearchResults<D extends SearchResult> extends StatelessWidget {
       (PaginatedResult r) => switch (r) {
           (SongSearchResult r) => SearchResultsSongs(r),
           (AlbumSearchResult r) => SearchResultsAlbums(r),
+          (PlaylistSearchResult r) => SearchResultsPlaylists(r),
         },
     };
   }

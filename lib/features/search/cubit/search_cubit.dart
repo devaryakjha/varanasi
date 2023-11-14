@@ -52,10 +52,13 @@ class SearchCubit extends AppCubit<SearchState> {
       Logger.instance.d('triggering search $query');
       if (!state.filter.isAll &&
           currResults is PaginatedResult &&
+          currResults.type.type == state.filter.filter.toLowerCase() &&
           !currResults.hasNextPage) return;
 
       final page = switch (currResults) {
-        (PaginatedResult curr) => curr.nextPage,
+        (PaginatedResult curr)
+            when curr.type.type == state.filter.filter.toLowerCase() =>
+          curr.nextPage,
         (_) => 1,
       };
 

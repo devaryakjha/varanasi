@@ -11,7 +11,8 @@ sealed class _SearchState extends Equatable {
 enum SearchFilter {
   all("All"),
   songs("Songs"),
-  albums("Albums");
+  albums("Albums"),
+  playlists("Playlists");
 
   const SearchFilter(this.filter);
 
