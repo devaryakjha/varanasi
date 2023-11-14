@@ -78,6 +78,7 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
             selected: isItemPlaying(media),
             selectedColor: itemSelectedColor,
             parentMediaType: mediaType ?? PlayableMediaType.song,
+            key: ValueKey(media.heroTag),
           );
 
   int get itemCount => loading ? mediaItems.length + 1 : mediaItems.length;
