@@ -619,6 +619,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 7573STCA2W;
+				ENABLE_HARDENED_RUNTIME = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -747,6 +748,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 7573STCA2W;
+				ENABLE_HARDENED_RUNTIME = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -769,6 +771,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 7573STCA2W;
+				ENABLE_HARDENED_RUNTIME = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1124,6 +1127,7 @@
 			baseConfigurationReference = ACFD0275BDE6255B8BF5A14F /* Pods-Runner.debug-development.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 7573STCA2W;
+				ENABLE_HARDENED_RUNTIME = NO;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Debug-development";
@@ -1133,6 +1137,7 @@
 			baseConfigurationReference = C585EDBAAECABA5DCC62512C /* Pods-Runner.profile-development.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 7573STCA2W;
+				ENABLE_HARDENED_RUNTIME = NO;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Profile-development";
@@ -1142,6 +1147,7 @@
 			baseConfigurationReference = C7582C81EC84F1276E943847 /* Pods-Runner.release-development.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 7573STCA2W;
+				ENABLE_HARDENED_RUNTIME = NO;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Release-development";
@@ -1151,6 +1157,7 @@
 			baseConfigurationReference = 903336E847FF699C6EA382CC /* Pods-Runner.debug-production.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 7573STCA2W;
+				ENABLE_HARDENED_RUNTIME = NO;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Debug-production";
@@ -1160,6 +1167,7 @@
 			baseConfigurationReference = FC570E6025F431CF42643B49 /* Pods-Runner.profile-production.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 7573STCA2W;
+				ENABLE_HARDENED_RUNTIME = NO;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Profile-production";
@@ -1168,7 +1176,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C77486F0517E6E95930986DB /* Pods-Runner.release-production.xcconfig */;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				DEVELOPMENT_TEAM = 7573STCA2W;
+				ENABLE_HARDENED_RUNTIME = NO;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Release-production";
