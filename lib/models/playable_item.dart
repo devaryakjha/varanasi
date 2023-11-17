@@ -2,7 +2,6 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:varanasi_mobile_app/models/app_config.dart';
 import 'package:varanasi_mobile_app/models/download_url.dart';
 import 'package:varanasi_mobile_app/models/image.dart';
@@ -131,7 +130,7 @@ abstract class PlayableMedia extends Equatable {
   /// {@template getCacheKey}
   /// Returns a unique key for the [PlayableMedia] to be used in the cache.
   /// {@endtemplate}
-  String get cacheKey => '$itemId-${describeEnum(itemType)}';
+  String get cacheKey => '$itemId-${itemType.name}';
 
   MediaPlaylist<T> toMediaPlaylist<T extends PlayableMedia>() {
     return MediaPlaylist<T>(
