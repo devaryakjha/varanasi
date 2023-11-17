@@ -12,7 +12,7 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion(
-      value: const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
+      value: SystemUiOverlayStyle.light,
       child: Scaffold(
         body: SafeArea(
           child: Align(

@@ -36,6 +36,7 @@ class SessionCubit extends AppCubit<SessionState> {
       final userCredential = await _auth.signInWithCredential(credential);
       _logger.d(userCredential.user?.toString());
     } catch (e) {
+      await _googleSignIn.signOut();
       _logger.d(e.toString());
     }
   }
