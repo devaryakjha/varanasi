@@ -39,6 +39,10 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Log in'),
+        titleTextStyle: context.textTheme.bodyLarge?.copyWith(
+          fontWeight: FontWeight.bold,
+          letterSpacing: 0.5,
+        ),
       ),
       body: SizedBox(
         width: context.width,
@@ -95,19 +99,7 @@ class _LoginPageState extends State<LoginPage> {
               inputType: InputType.password,
               maxLines: 1,
               obscureText: !isPasswordVisible,
-              decoration: InputDecoration(
-                suffixIcon: GestureDetector(
-                  onTap: () => setState(() {
-                    isPasswordVisible = !isPasswordVisible;
-                  }),
-                  child: Icon(
-                    isPasswordVisible
-                        ? Icons.visibility_outlined
-                        : Icons.visibility_off_outlined,
-                    size: 24,
-                  ),
-                ),
-              ),
+              decoration: InputDecoration(suffixIcon: _buildSuffix()),
             ),
             const SizedBox(height: 24),
             LoginButton(
@@ -117,6 +109,20 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  GestureDetector _buildSuffix() {
+    return GestureDetector(
+      onTap: () => setState(() {
+        isPasswordVisible = !isPasswordVisible;
+      }),
+      child: Icon(
+        isPasswordVisible
+            ? Icons.visibility_outlined
+            : Icons.visibility_off_outlined,
+        size: 24,
       ),
     );
   }
