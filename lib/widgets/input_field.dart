@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/input_validators.dart';
+
+part 'filled_input_field.dart';
 
 class InputFormField extends TextFormField {
   InputFormField({
