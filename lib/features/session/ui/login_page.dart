@@ -1,10 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/extensions/media_query.dart';
+import 'package:varanasi_mobile_app/utils/logger.dart';
 import 'package:varanasi_mobile_app/widgets/input_field.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  late final GlobalKey<FormState> _formKey;
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+  bool isFormValid = false;
+  bool isPasswordVisible = false;
+
+  @override
+  void initState() {
+    _formKey = GlobalKey<FormState>();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _formKey.currentState?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +44,17 @@ class LoginPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Form(
+            key: _formKey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            onChanged: () {
+              final isValid = _formKey.currentState?.validate() ?? false;
+              if (isValid != isFormValid) {
+                setState(() {
+                  isFormValid = isValid;
+                });
+              }
+              Logger.instance.d('Form changed $isValid');
+            },
             child: AutofillGroup(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,6 +66,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   InputFormField(
+                    controller: _emailController,
                     decoration: InputDecoration(
                       filled: true,
                       isDense: true,
@@ -46,6 +83,7 @@ class LoginPage extends StatelessWidget {
                     autofillHints: const [AutofillHints.email],
                     autofocus: true,
                     inputType: InputType.email,
+                    textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(height: 24),
                   Text(
@@ -55,6 +93,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   InputFormField(
+                    controller: _passwordController,
                     decoration: InputDecoration(
                       filled: true,
                       isDense: true,
@@ -66,11 +105,42 @@ class LoginPage extends StatelessWidget {
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(4),
                       ),
+                      suffixIcon: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isPasswordVisible = !isPasswordVisible;
+                          });
+                        },
+                        child: Icon(
+                          isPasswordVisible
+                              ? Icons.visibility_outlined
+                              : Icons.visibility_off_outlined,
+                          size: 30,
+                        ),
+                      ),
                     ),
                     autofocus: true,
                     autofillHints: const [AutofillHints.password],
                     inputType: InputType.password,
                     maxLines: 1,
+                    obscureText: !isPasswordVisible,
+                  ),
+                  const SizedBox(height: 24),
+                  Align(
+                    alignment: Alignment.center,
+                    child: FilledButton.tonal(
+                      onPressed: isFormValid ? () {} : null,
+                      style: FilledButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 12,
+                          horizontal: 36,
+                        ),
+                      ),
+                      child: const Text(
+                        'Log in',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ),
                 ],
               ),
