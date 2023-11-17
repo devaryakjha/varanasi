@@ -41,6 +41,22 @@ class SessionCubit extends AppCubit<SessionState> {
     }
   }
 
+  Future<void> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    emit(Authenticating());
+    try {
+      final userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      _logger.d(userCredential.user?.toString());
+    } catch (e) {
+      _logger.d(e.toString());
+    }
+  }
+
   Future<void> signOut() async {
     emit(Authenticating());
     try {

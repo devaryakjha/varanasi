@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:varanasi_mobile_app/features/session/cubit/session_cubit.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/extensions/media_query.dart';
 import 'package:varanasi_mobile_app/utils/logger.dart';
@@ -65,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                         ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
-                  InputFormField(
+                  InputFormField.small(
                     controller: _emailController,
                     decoration: InputDecoration(
                       filled: true,
@@ -92,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                         ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
-                  InputFormField(
+                  InputFormField.small(
                     controller: _passwordController,
                     decoration: InputDecoration(
                       filled: true,
@@ -115,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                           isPasswordVisible
                               ? Icons.visibility_outlined
                               : Icons.visibility_off_outlined,
-                          size: 30,
+                          size: 24,
                         ),
                       ),
                     ),
@@ -126,26 +128,56 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: !isPasswordVisible,
                   ),
                   const SizedBox(height: 24),
-                  Align(
-                    alignment: Alignment.center,
-                    child: FilledButton.tonal(
-                      onPressed: isFormValid ? () {} : null,
-                      style: FilledButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 12,
-                          horizontal: 36,
-                        ),
-                      ),
-                      child: const Text(
-                        'Log in',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
+                  LoginButton(
+                    isFormValid: isFormValid,
+                    emailController: _emailController,
+                    passwordController: _passwordController,
                   ),
                 ],
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class LoginButton extends StatelessWidget {
+  const LoginButton({
+    super.key,
+    required this.isFormValid,
+    required TextEditingController emailController,
+    required TextEditingController passwordController,
+  })  : _emailController = emailController,
+        _passwordController = passwordController;
+
+  final bool isFormValid;
+  final TextEditingController _emailController;
+  final TextEditingController _passwordController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.center,
+      child: FilledButton.tonal(
+        onPressed: isFormValid
+            ? () {
+                context.read<SessionCubit>().signInWithEmailAndPassword(
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                    );
+              }
+            : null,
+        style: FilledButton.styleFrom(
+          padding: const EdgeInsets.symmetric(
+            vertical: 12,
+            horizontal: 36,
+          ),
+        ),
+        child: const Text(
+          'Log in',
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
     );
