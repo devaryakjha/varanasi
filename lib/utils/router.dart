@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/features/home/bloc/home_bloc.dart';
@@ -7,6 +11,7 @@ import 'package:varanasi_mobile_app/features/library/ui/library_screen.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_search_page.dart';
 import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
 import 'package:varanasi_mobile_app/features/search/ui/search_page.dart';
+import 'package:varanasi_mobile_app/features/session/cubit/session_cubit.dart';
 import 'package:varanasi_mobile_app/features/session/ui/auth_page.dart';
 import 'package:varanasi_mobile_app/features/settings/ui/settings_page.dart';
 import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
@@ -19,9 +24,40 @@ import 'package:varanasi_mobile_app/widgets/transitions/fade_transition_page.dar
 
 import 'keys.dart';
 
+class StreamListener<T> extends ChangeNotifier {
+  /// Creates a [StreamListener].
+  ///
+  /// Every time the [Stream] receives an event this [ChangeNotifier] will
+  /// notify its listeners.
+  StreamListener(Stream<T> stream) {
+    notifyListeners();
+    _subscription = stream.asBroadcastStream().listen((_) => notifyListeners());
+  }
+
+  late final StreamSubscription<T> _subscription;
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
+}
+
 final routerConfig = GoRouter(
   initialLocation: AppRoutes.home.path,
   navigatorKey: rootNavigatorKey,
+  refreshListenable: StreamListener(FirebaseAuth.instance.userChanges()),
+  redirect: (context, state) {
+    final session = context.read<SessionCubit>().state;
+    if (session is UnAuthenticated) {
+      return AppRoutes.authentication.path;
+    }
+    if (session is Authenticated &&
+        [AppRoutes.authentication.path].contains(state.matchedLocation)) {
+      return AppRoutes.home.path;
+    }
+    return null;
+  },
   routes: [
     StatefulShellRoute.indexedStack(
       parentNavigatorKey: rootNavigatorKey,

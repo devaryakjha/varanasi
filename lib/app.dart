@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
+import 'package:varanasi_mobile_app/features/session/cubit/session_cubit.dart';
 import 'package:varanasi_mobile_app/features/user-library/cubit/user_library_cubit.dart';
 import 'package:varanasi_mobile_app/utils/constants/constants.dart';
 import 'package:varanasi_mobile_app/utils/router.dart';
@@ -36,6 +37,7 @@ class Varanasi extends StatelessWidget {
                 create: (ctx) => MediaPlayerCubit()..init(),
               ),
               BlocProvider(lazy: false, create: (ctx) => LibraryCubit()),
+              BlocProvider(lazy: false, create: (_) => SessionCubit()..init()),
             ],
             child: Builder(builder: (context) {
               final scheme = context.select(
