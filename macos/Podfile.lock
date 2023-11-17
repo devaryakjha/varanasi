@@ -3,28 +3,28 @@ PODS:
     - FlutterMacOS
   - audio_session (0.0.1):
     - FlutterMacOS
-  - Firebase/Auth (10.15.0):
+  - Firebase/Auth (10.17.0):
     - Firebase/CoreOnly
-    - FirebaseAuth (~> 10.15.0)
-  - Firebase/CoreOnly (10.15.0):
-    - FirebaseCore (= 10.15.0)
-  - firebase_auth (4.10.1):
-    - Firebase/Auth (~> 10.15.0)
-    - Firebase/CoreOnly (~> 10.15.0)
+    - FirebaseAuth (~> 10.17.0)
+  - Firebase/CoreOnly (10.17.0):
+    - FirebaseCore (= 10.17.0)
+  - firebase_auth (4.14.0):
+    - Firebase/Auth (~> 10.17.0)
+    - Firebase/CoreOnly (~> 10.17.0)
     - firebase_core
     - FlutterMacOS
-  - firebase_core (2.17.0):
-    - Firebase/CoreOnly (~> 10.15.0)
+  - firebase_core (2.22.0):
+    - Firebase/CoreOnly (~> 10.17.0)
     - FlutterMacOS
   - FirebaseAppCheckInterop (10.18.0)
-  - FirebaseAuth (10.15.0):
-    - FirebaseAppCheckInterop (~> 10.0)
+  - FirebaseAuth (10.17.0):
+    - FirebaseAppCheckInterop (~> 10.17)
     - FirebaseCore (~> 10.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.8)
     - GoogleUtilities/Environment (~> 7.8)
     - GTMSessionFetcher/Core (< 4.0, >= 2.1)
     - RecaptchaInterop (~> 100.0)
-  - FirebaseCore (10.15.0):
+  - FirebaseCore (10.17.0):
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/Logger (~> 7.8)
@@ -108,12 +108,12 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   audio_service: b88ff778e0e3915efd4cd1a5ad6f0beef0c950a9
   audio_session: dea1f41890dbf1718f04a56f1d6150fd50039b72
-  Firebase: 66043bd4579e5b73811f96829c694c7af8d67435
-  firebase_auth: cc27deb838ef5f5dd99571b879f62cea79f290b4
-  firebase_core: 4d1711af1e10f9907f468e04f995c59f60bdc710
+  Firebase: f4ac0b02927af9253ae094d23deecf0890da7374
+  firebase_auth: 2904ae3072a2290e76ae5b3766b1c5b10db4955e
+  firebase_core: d22fa4b76891afdb8eeebaad2336c89ed14dd877
   FirebaseAppCheckInterop: 3cd914842ba46f4304050874cd284de82f154ffd
-  FirebaseAuth: a55ec5f7f8a5b1c2dd750235c1bb419bfb642445
-  FirebaseCore: 2cec518b43635f96afe7ac3a9c513e47558abd2e
+  FirebaseAuth: 8d285d9f6e39cc8e23be53a4edd83a923ea629d8
+  FirebaseCore: 534544dd98cabcf4bf8598d88ec683b02319a528
   FirebaseCoreInternal: 8eb002e564b533bdcf1ba011f33f2b5c10e2ed4a
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
