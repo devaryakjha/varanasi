@@ -13,6 +13,7 @@ import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
 import 'package:varanasi_mobile_app/features/search/ui/search_page.dart';
 import 'package:varanasi_mobile_app/features/session/cubit/session_cubit.dart';
 import 'package:varanasi_mobile_app/features/session/ui/auth_page.dart';
+import 'package:varanasi_mobile_app/features/session/ui/login_page.dart';
 import 'package:varanasi_mobile_app/features/settings/ui/settings_page.dart';
 import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
 import 'package:varanasi_mobile_app/features/user-library/ui/user_library_page.dart';
@@ -49,14 +50,16 @@ final routerConfig = GoRouter(
   refreshListenable: StreamListener(FirebaseAuth.instance.userChanges()),
   redirect: (context, state) {
     final session = context.read<SessionCubit>().state;
-    if (session is UnAuthenticated) {
-      return AppRoutes.authentication.path;
-    }
-    if (session is Authenticated &&
-        [AppRoutes.authentication.path].contains(state.matchedLocation)) {
-      return AppRoutes.home.path;
-    }
-    return null;
+    final allowedLoggedOutRoutes = [
+      AppRoutes.authentication.name,
+      AppRoutes.login.name
+    ].map(state.namedLocation);
+    final isInsideAuth = allowedLoggedOutRoutes.contains(state.matchedLocation);
+    return switch (session) {
+      (UnAuthenticated _) when !isInsideAuth => AppRoutes.authentication.path,
+      (Authenticated _) when isInsideAuth => AppRoutes.home.path,
+      _ => null,
+    };
   },
   routes: [
     StatefulShellRoute.indexedStack(
@@ -153,6 +156,13 @@ final routerConfig = GoRouter(
       name: AppRoutes.authentication.name,
       path: AppRoutes.authentication.path,
       builder: (context, state) => AuthPage(key: state.pageKey),
+      routes: [
+        GoRoute(
+          name: AppRoutes.login.name,
+          path: AppRoutes.login.path,
+          builder: (context, state) => LoginPage(key: state.pageKey),
+        ),
+      ],
     ),
   ],
 );

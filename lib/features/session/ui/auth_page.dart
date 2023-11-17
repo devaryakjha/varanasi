@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/features/session/cubit/session_cubit.dart';
 import 'package:varanasi_mobile_app/gen/assets.gen.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/helpers/ressponsive_sizer.dart';
+import 'package:varanasi_mobile_app/utils/routes.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -64,7 +66,7 @@ class AuthPage extends StatelessWidget {
                     style: TextButton.styleFrom(
                       foregroundColor: context.colorScheme.onBackground,
                     ),
-                    onPressed: () {},
+                    onPressed: () => context.pushNamed(AppRoutes.login.name),
                     child: const Text(
                       "Log in",
                       style: TextStyle(fontWeight: FontWeight.bold),
