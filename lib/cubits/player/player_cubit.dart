@@ -111,7 +111,10 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
       media.moreInfoUrl,
       options: CommonOptions(
         transformer: (response) {
-          final data = response as List<dynamic>;
+          if (response is! List<dynamic>) {
+            throw Exception('Invalid response');
+          }
+          final data = response;
           if (data.isEmpty) {
             throw Exception('No data found');
           }

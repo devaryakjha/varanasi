@@ -31,9 +31,11 @@ class Songs {
 
 class Albums {
   final String link;
+  final String id;
 
   const Albums({
     required this.link,
+    required this.id,
   });
 }
 
@@ -119,7 +121,7 @@ Config get appConfig {
     endpoint: Endpoint(
       modules: '/modules',
       playlists: Playlists(id: 'playlists'),
-      albums: Albums(link: 'albums'),
+      albums: Albums(id: 'albums', link: 'albums'),
       songs: Songs(id: 'songs', link: 'songs'),
       search: Search(
         all: "/search/all",
