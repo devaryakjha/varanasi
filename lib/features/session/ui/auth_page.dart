@@ -39,7 +39,7 @@ class AuthPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 36),
                   FilledButton.tonal(
-                    onPressed: () {},
+                    onPressed: () => context.pushNamed(AppRoutes.signup.name),
                     child: const Text(
                       "Sign up for free",
                       style: TextStyle(

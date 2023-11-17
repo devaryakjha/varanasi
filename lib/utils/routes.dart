@@ -6,6 +6,7 @@ class AppRoutes {
   static const Route librarySearch = (name: 'library-search', path: 'search');
   static const Route authentication = (name: 'auth', path: '/auth');
   static const Route login = (name: 'login', path: 'login');
+  static const Route signup = (name: 'signup', path: 'signup');
   static const Route splash = (name: 'splash', path: '/splash');
 
   // home specific routes

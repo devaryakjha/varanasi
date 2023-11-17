@@ -14,6 +14,7 @@ import 'package:varanasi_mobile_app/features/search/ui/search_page.dart';
 import 'package:varanasi_mobile_app/features/session/cubit/session_cubit.dart';
 import 'package:varanasi_mobile_app/features/session/ui/auth_page.dart';
 import 'package:varanasi_mobile_app/features/session/ui/login_page.dart';
+import 'package:varanasi_mobile_app/features/session/ui/signup_page.dart';
 import 'package:varanasi_mobile_app/features/settings/ui/settings_page.dart';
 import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
 import 'package:varanasi_mobile_app/features/user-library/ui/user_library_page.dart';
@@ -52,7 +53,8 @@ final routerConfig = GoRouter(
     final session = context.read<SessionCubit>().state;
     final allowedLoggedOutRoutes = [
       AppRoutes.authentication.name,
-      AppRoutes.login.name
+      AppRoutes.login.name,
+      AppRoutes.signup.name,
     ].map(state.namedLocation);
     final isInsideAuth = allowedLoggedOutRoutes.contains(state.matchedLocation);
     return switch (session) {
@@ -162,6 +164,11 @@ final routerConfig = GoRouter(
           path: AppRoutes.login.path,
           builder: (context, state) => LoginPage(key: state.pageKey),
         ),
+        GoRoute(
+          path: AppRoutes.signup.path,
+          name: AppRoutes.signup.name,
+          builder: (context, state) => SignupPage(key: state.pageKey),
+        )
       ],
     ),
   ],

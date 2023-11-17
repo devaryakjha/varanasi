@@ -1,4 +1,19 @@
 class InputValidators {
+  static String? validateName(String? value) {
+    // name should be at least 2 characters long
+    if (value == null || value.isEmpty) {
+      return 'Name is required';
+    }
+    if (value.length < 2) {
+      return 'Name should be at least 2 characters long';
+    }
+    // name should not contain any numbers or special characters
+    if (value.contains(RegExp(r'[0-9!@#\$&*~]'))) {
+      return 'Name should not contain any numbers or special characters';
+    }
+    return null;
+  }
+
   static String? validateEmail(String? value) {
     // email should be in the format of an email address
     // make sure emails in format `john.doe+1@gmail.com` and `john.doe@gmail.com` both are accepted

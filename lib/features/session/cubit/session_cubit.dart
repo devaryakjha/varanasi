@@ -65,6 +65,7 @@ class SessionCubit extends AppCubit<SessionState> {
   Future<void> signUpWithEmailAndPassword({
     required String email,
     required String password,
+    required String name,
   }) async {
     emit(Authenticating());
     try {
@@ -72,6 +73,7 @@ class SessionCubit extends AppCubit<SessionState> {
         email: email,
         password: password,
       );
+      await userCredential.user?.updateDisplayName(name);
       _logger.d(userCredential.user?.toString());
     } on FirebaseAuthException catch (e) {
       _handleException(e);
