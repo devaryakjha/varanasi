@@ -15,13 +15,6 @@ import 'package:lottie/lottie.dart';
 class $AssetsIconGen {
   const $AssetsIconGen();
 
-  /// File path: assets/icon/Integrate-with-Samsung-IAP-05212021.pdf
-  String get integrateWithSamsungIAP05212021 =>
-      'assets/icon/Integrate-with-Samsung-IAP-05212021.pdf';
-
-  /// File path: assets/icon/app_icon.jpg
-  AssetGenImage get appIcon => const AssetGenImage('assets/icon/app_icon.jpg');
-
   /// File path: assets/icon/app_icon_monotone.svg
   SvgGenImage get appIconMonotone =>
       const SvgGenImage('assets/icon/app_icon_monotone.svg');
@@ -51,8 +44,6 @@ class $AssetsIconGen {
 
   /// List of all assets
   List<dynamic> get values => [
-        integrateWithSamsungIAP05212021,
-        appIcon,
         appIconMonotone,
         circularLoader,
         download,
@@ -65,8 +56,6 @@ class $AssetsIconGen {
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
-
-  $AssetsImagesErrorGen get error => const $AssetsImagesErrorGen();
 }
 
 class $AssetsIconNavGen {
@@ -96,17 +85,6 @@ class $AssetsIconNavGen {
   /// List of all assets
   List<SvgGenImage> get values =>
       [home, homeSelected, library, librarySelected, search, searchSelected];
-}
-
-class $AssetsImagesErrorGen {
-  const $AssetsImagesErrorGen();
-
-  /// File path: assets/images/error/something_went_wrong.png
-  AssetGenImage get somethingWentWrong =>
-      const AssetGenImage('assets/images/error/something_went_wrong.png');
-
-  /// List of all assets
-  List<AssetGenImage> get values => [somethingWentWrong];
 }
 
 class Assets {
