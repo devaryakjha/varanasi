@@ -3,7 +3,6 @@ import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
 import 'package:varanasi_mobile_app/models/image.dart';
-import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/logger.dart';
 import 'package:varanasi_mobile_app/utils/services/firestore_service.dart';
@@ -24,14 +23,6 @@ class UserLibraryRepository {
   List<UserLibrary> get libraries => librariesStream.value;
 
   Future<void> init() async {
-    FirestoreService.getUserDocument()
-        .collection('user-library')
-        .get()
-        .then((value) {
-      final libraries =
-          value.docs.map((e) => UserLibrary.fromFirestore(e)).toList();
-      librariesStream.value = libraries;
-    });
     FirestoreService.getUserDocument()
         .collection('user-library')
         .snapshots()
@@ -78,6 +69,7 @@ class UserLibraryRepository {
         id: "favorite",
         title: "Liked Songs",
         description: "Songs you liked",
+        url: null,
       );
 
   Future<void> favoriteSong(Song song) async {
@@ -95,12 +87,10 @@ class UserLibraryRepository {
     }
   }
 
-  Future<void> unfavoriteSong(PlayableMedia song) async {
+  Future<void> unfavoriteSong(Song song) async {
     // remove song from favoriteSongs directly in firestore
     await _baseCollection.doc(favouriteSongs.id).update({
-      'mediaItems': FieldValue.arrayRemove(
-        [song.toPlayableMediaImpl().toFirestorePayload()],
-      ),
+      'mediaItems': FieldValue.arrayRemove([song.toJson()]),
     });
   }
 }

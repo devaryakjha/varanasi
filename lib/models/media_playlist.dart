@@ -115,6 +115,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
       mediaItems: mediaItems?.whereType<Song>().toList() ?? [],
       images: images,
       type: UserLibraryType.playlist,
+      url: null,
     );
   }
 }

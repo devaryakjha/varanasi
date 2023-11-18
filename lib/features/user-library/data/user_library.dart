@@ -1,14 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:hive/hive.dart';
 import 'package:varanasi_mobile_app/models/image.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/models/playable_item_impl.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
-
-part 'user_library.g.dart';
 
 enum UserLibraryType {
   favorite('favorite'),
@@ -35,6 +32,7 @@ class UserLibrary with EquatableMixin implements Comparable<UserLibrary> {
   final String? description;
   final List<PlayableMedia> mediaItems;
   final List<Image> images;
+  final String? url;
 
   const UserLibrary({
     required this.id,
@@ -44,6 +42,7 @@ class UserLibrary with EquatableMixin implements Comparable<UserLibrary> {
     this.images = const [],
     required this.type,
     this.reference,
+    required this.url,
   });
 
   @override
@@ -65,7 +64,8 @@ class UserLibrary with EquatableMixin implements Comparable<UserLibrary> {
         title = null,
         description = null,
         mediaItems = const [],
-        images = const [];
+        images = const [],
+        url = null;
 
   @override
   bool? get stringify => true;
@@ -80,6 +80,18 @@ class UserLibrary with EquatableMixin implements Comparable<UserLibrary> {
     );
   }
 
+  PlayableMediaImpl toPlayableMedia() {
+    return PlayableMediaImpl(
+      id,
+      title ?? "",
+      description ?? "",
+      "",
+      type.type,
+      images.lastOrNull?.link ?? "",
+      // images ?? [],
+    );
+  }
+
   UserLibrary copyWith({
     String? id,
     String? title,
@@ -87,6 +99,7 @@ class UserLibrary with EquatableMixin implements Comparable<UserLibrary> {
     List<PlayableMedia>? mediaItems,
     List<Image>? images,
     DocumentReference<Map<String, dynamic>>? reference,
+    String? url,
   }) {
     return UserLibrary(
       type: type,
@@ -96,6 +109,7 @@ class UserLibrary with EquatableMixin implements Comparable<UserLibrary> {
       mediaItems: mediaItems ?? this.mediaItems,
       images: images ?? this.images,
       reference: reference ?? this.reference,
+      url: url ?? this.url,
     );
   }
 
@@ -125,6 +139,7 @@ class UserLibrary with EquatableMixin implements Comparable<UserLibrary> {
               .toList()
           : [],
       'type': type.type,
+      'url': url,
     };
   }
 
@@ -135,6 +150,9 @@ class UserLibrary with EquatableMixin implements Comparable<UserLibrary> {
       (element) => element.type == data['type'],
       orElse: () => UserLibraryType.favorite,
     );
+    final List<PlayableMedia> items = type.isFavorite
+        ? List<Song>.from(data['mediaItems'].map((d) => Song.fromJson(d)))
+        : [];
     return UserLibrary(
       reference: snapshot.reference,
       id: data['id'],
@@ -143,12 +161,9 @@ class UserLibrary with EquatableMixin implements Comparable<UserLibrary> {
       images: List<Image>.from(
         data['images'].map((e) => Image.fromJson(e)),
       ),
-      mediaItems: List<PlayableMedia>.from(
-        data['mediaItems'].map(
-          (e) => PlayableMediaImpl.fromFirestorePayload(e),
-        ),
-      ),
+      mediaItems: items,
       type: type,
+      url: data['url'],
     );
   }
 }

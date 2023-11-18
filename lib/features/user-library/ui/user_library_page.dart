@@ -53,7 +53,9 @@ class UserLibraryPage extends HookWidget {
           }
           final library = [...state.library, downloadSnapshot.data]
               .whereType<UserLibrary>()
-              .where((element) => element.isNotEmpty)
+              .where((element) =>
+                  (!element.isFavorite && !element.isDownload) ||
+                  element.isNotEmpty)
               .toList()
             ..sort();
           if (library.isEmpty) return const EmptyUserLibrary();
@@ -61,7 +63,12 @@ class UserLibraryPage extends HookWidget {
             itemBuilder: (context, index) {
               final item = library[index];
               return ListTile(
-                onTap: () => context.push(AppRoutes.library.path, extra: item),
+                onTap: () {
+                  context.push(AppRoutes.library.path,
+                      extra: (item.isDownload || item.isFavorite)
+                          ? item
+                          : item.toPlayableMedia());
+                },
                 leading: Visibility(
                   replacement: const DownloadsIcon(),
                   visible: !item.isDownload,

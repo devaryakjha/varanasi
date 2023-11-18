@@ -306,6 +306,7 @@ class DownloadCubit extends AppCubit<DownloadState> {
       mediaItems: values.map((e) => e.media).toList(),
       images: const [Image.likedSongs],
       type: UserLibraryType.download,
+      url: null,
     );
     return library;
   }
