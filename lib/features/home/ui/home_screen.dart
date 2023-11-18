@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
 import 'package:varanasi_mobile_app/features/home/bloc/home_bloc.dart';
 import 'package:varanasi_mobile_app/features/home/data/helpers/home_state_selectors.dart';
 import 'package:varanasi_mobile_app/features/home/ui/home_widgets/spacer.dart';
@@ -127,7 +128,13 @@ class RecentlyPlayed extends StatelessWidget {
             ),
             onItemTap: (index) {
               final item = mediaItems[index];
-              context.push(AppRoutes.library.path, extra: item);
+              if (item.isSong) {
+                context
+                    .read<MediaPlayerCubit>()
+                    .playFromSong(PlayableMediaImpl.fromMediaPlaylist(item));
+              } else {
+                context.push(AppRoutes.library.path, extra: item);
+              }
             },
           ),
         );

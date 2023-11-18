@@ -38,6 +38,8 @@ enum MediaPlaylistType {
         return MediaPlaylistType.playlist;
       case 'download':
         return MediaPlaylistType.download;
+      case 'song':
+        return MediaPlaylistType.song;
       default:
         return MediaPlaylistType.playlist;
     }

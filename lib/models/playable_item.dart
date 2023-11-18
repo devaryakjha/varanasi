@@ -44,8 +44,15 @@ abstract class PlayableMedia extends Equatable {
   String get heroTag => itemId;
   String get itemSubtitle;
 
-  bool get preferLinkOverId =>
-      (itemType.isSong || itemType.isAlbum) && itemUrl.isNotEmpty;
+  bool get preferLinkOverId {
+    if (itemType.isSong) {
+      if (itemUrl.contains('.mp4')) {
+        return false;
+      }
+      return itemUrl.isNotEmpty;
+    }
+    return (itemType.isSong || itemType.isAlbum) && itemUrl.isNotEmpty;
+  }
 
   PlayableMediaType get itemType;
   String? get artworkUrl;
