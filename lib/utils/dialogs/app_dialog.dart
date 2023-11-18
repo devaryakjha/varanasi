@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/helpers/get_app_context.dart';
+import 'package:varanasi_mobile_app/widgets/input_field.dart';
 
 enum AppDialogAction {
   cancel,
@@ -214,6 +215,31 @@ class AppDialog {
     String initialValue = '',
     TextEditingController? controller,
   }) {
+    controller ??= TextEditingController(text: initialValue);
+
+    Widget buildInputField(BuildContext context) {
+      switch (context.theme.platform) {
+        case TargetPlatform.android:
+        case TargetPlatform.fuchsia:
+        case TargetPlatform.linux:
+        case TargetPlatform.windows:
+          return InputFormField.small(
+            controller: controller,
+            autofocus: true,
+            style: context.textTheme.bodyMedium,
+            decoration: filledInputDecorationMedium(context, noBorder: true),
+          );
+        case TargetPlatform.iOS:
+        case TargetPlatform.macOS:
+          return CupertinoTextField(
+            controller: controller,
+            placeholder: placeholder,
+            autofocus: true,
+            style: context.textTheme.bodyMedium,
+          );
+      }
+    }
+
     return showAdaptiveDialog<T>(
       context: context ?? appContext,
       builder: (context) {
@@ -222,12 +248,7 @@ class AppDialog {
           titleTextStyle: titleStyle,
           content: Padding(
             padding: const EdgeInsets.only(top: 16),
-            child: CupertinoTextField(
-              controller: controller,
-              placeholder: placeholder,
-              autofocus: true,
-              style: context.textTheme.bodyMedium,
-            ),
+            child: buildInputField(context),
           ),
           contentTextStyle: messageStyle,
           actions: [

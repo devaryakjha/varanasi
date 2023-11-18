@@ -93,7 +93,14 @@ class _SettingsPageState extends State<SettingsPage> {
                 title: const Text("Sign out"),
                 leading: const Icon(Icons.logout_outlined),
                 onPressed: (context) {
-                  context.read<SessionCubit>().signOut();
+                  AppDialog.showAlertDialog(
+                    context: context,
+                    title: "Sign out",
+                    message: "Are you sure you want to sign out?",
+                    onConfirm: () {
+                      context.read<SessionCubit>().signOut();
+                    },
+                  );
                 },
               ),
             ],
