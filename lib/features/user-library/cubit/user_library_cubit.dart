@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
 import 'package:varanasi_mobile_app/features/user-library/data/user_library_repository.dart';
@@ -17,22 +18,19 @@ class UserLibraryCubit extends AppCubit<UserLibraryState> {
 
   @override
   FutureOr<void> init() async {
+    _repository.librariesStream.listen((event) {
+      emit(UserLibraryLoaded(library: event));
+    });
     await _repository.init();
-    final library = _repository.getLibraries();
-    emit(UserLibraryLoaded(library: library));
   }
 
   Future<void> favoriteSong(Song song) async {
     await _repository.favoriteSong(song);
-    final library = _repository.getLibraries();
-    emit(UserLibraryLoaded(library: library));
     AppSnackbar.show("Added to favorites");
   }
 
   Future<void> unfavoriteSong(Song song) async {
     await _repository.unfavoriteSong(song);
-    final library = _repository.getLibraries();
-    emit(UserLibraryLoaded(library: library));
     AppSnackbar.show("Removed from favorites");
   }
 
@@ -44,14 +42,10 @@ class UserLibraryCubit extends AppCubit<UserLibraryState> {
       _repository.addLibrary(playlist.toUserLibrary());
       AppSnackbar.show("Added to library");
     }
-    final library = _repository.getLibraries();
-    emit(UserLibraryLoaded(library: library));
   }
 
   Future<void> removeFromLibrary(MediaPlaylist playlist) async {
     _repository.deleteLibrary(playlist.toUserLibrary());
-    final library = _repository.getLibraries();
-    emit(UserLibraryLoaded(library: library));
     AppSnackbar.show("Removed from library");
   }
 }

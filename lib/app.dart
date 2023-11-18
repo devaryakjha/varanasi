@@ -23,11 +23,9 @@ class Varanasi extends StatelessWidget {
         builder: (context, orientation, screenType) {
           return MultiBlocProvider(
             providers: [
-              BlocProvider(lazy: false, create: (_) => DownloadCubit()..init()),
               BlocProvider(
-                lazy: false,
-                create: (_) => UserLibraryCubit()..init(),
-              ),
+                  lazy: false, create: (_) => UserLibraryCubit()..init()),
+              BlocProvider(lazy: false, create: (_) => DownloadCubit()..init()),
               BlocProvider(
                 lazy: false,
                 create: (context) => ConfigCubit()..init(),

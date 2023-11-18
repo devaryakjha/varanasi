@@ -44,4 +44,26 @@ class PlayableMediaImpl extends PlayableMedia {
 
   @override
   String get itemUrl => _itemUrl;
+
+  Map<String, dynamic> toFirestorePayload() {
+    return {
+      'id': _itemId,
+      'title': _itemTitle,
+      'subtitle': _itemSubtitle,
+      'url': _itemUrl,
+      'type': _itemType,
+      'artworkUrl': _artworkUrl,
+    };
+  }
+
+  factory PlayableMediaImpl.fromFirestorePayload(Map<String, dynamic> payload) {
+    return PlayableMediaImpl(
+      payload['id'],
+      payload['title'],
+      payload['subtitle'],
+      payload['url'],
+      payload['type'],
+      payload['artworkUrl'],
+    );
+  }
 }

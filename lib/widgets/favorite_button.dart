@@ -21,8 +21,9 @@ class FavoriteButton extends StatelessWidget {
         if (state is! UserLibraryLoaded || source == null || source is! Song) {
           return const SizedBox.shrink();
         }
-        final isAdded =
-            state.favorite.mediaItems.any((item) => item.id == source.id);
+        final isAdded = state.favorite?.mediaItems
+                .any((item) => item.itemId == source.id) ??
+            false;
         return IconButton(
           onPressed: () {
             final cubit = context.read<UserLibraryCubit>();

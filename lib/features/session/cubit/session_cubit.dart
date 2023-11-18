@@ -25,7 +25,7 @@ class SessionCubit extends AppCubit<SessionState> {
       return user == null ? UnAuthenticated() : Authenticated(user: user);
     }).listen((state) {
       if (state is Authenticated) {
-        FirestoreService.init(state.user);
+        FirestoreService.init();
       }
       emit(state);
     });

@@ -1,21 +1,19 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:varanasi_mobile_app/models/image.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
+import 'package:varanasi_mobile_app/models/playable_item.dart';
+import 'package:varanasi_mobile_app/models/playable_item_impl.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
 
 part 'user_library.g.dart';
 
-@HiveType(typeId: 22)
 enum UserLibraryType {
-  @HiveField(0)
   favorite('favorite'),
-  @HiveField(1)
   album('album'),
-  @HiveField(2)
   playlist('playlist'),
-  @HiveField(3)
   download('download');
   // TODO: Add Artist
 
@@ -29,19 +27,13 @@ enum UserLibraryType {
   bool get isDownload => this == UserLibraryType.download;
 }
 
-@HiveType(typeId: 18)
 class UserLibrary with EquatableMixin implements Comparable<UserLibrary> {
-  @HiveField(0)
+  final DocumentReference<Map<String, dynamic>>? reference;
   final UserLibraryType type;
-  @HiveField(1)
   final String id;
-  @HiveField(2)
   final String? title;
-  @HiveField(3)
   final String? description;
-  @HiveField(4, defaultValue: [])
-  final List<Song> mediaItems;
-  @HiveField(5, defaultValue: [])
+  final List<PlayableMedia> mediaItems;
   final List<Image> images;
 
   const UserLibrary({
@@ -51,10 +43,12 @@ class UserLibrary with EquatableMixin implements Comparable<UserLibrary> {
     this.mediaItems = const [],
     this.images = const [],
     required this.type,
+    this.reference,
   });
 
   @override
-  List<Object?> get props => [id, title, description, mediaItems, images];
+  List<Object?> get props =>
+      [id, title, description, mediaItems, images, reference];
 
   bool get isEmpty => mediaItems.isEmpty;
 
@@ -66,7 +60,8 @@ class UserLibrary with EquatableMixin implements Comparable<UserLibrary> {
   bool get isDownload => type.isDownload || id == "downloads";
 
   const UserLibrary.empty(this.type)
-      : id = "",
+      : reference = null,
+        id = "",
         title = null,
         description = null,
         mediaItems = const [],
@@ -75,7 +70,7 @@ class UserLibrary with EquatableMixin implements Comparable<UserLibrary> {
   @override
   bool? get stringify => true;
 
-  MediaPlaylist<Song> toMediaPlaylist() {
+  MediaPlaylist toMediaPlaylist() {
     return MediaPlaylist(
       id: id,
       title: title,
@@ -89,8 +84,9 @@ class UserLibrary with EquatableMixin implements Comparable<UserLibrary> {
     String? id,
     String? title,
     String? description,
-    List<Song>? mediaItems,
+    List<PlayableMedia>? mediaItems,
     List<Image>? images,
+    DocumentReference<Map<String, dynamic>>? reference,
   }) {
     return UserLibrary(
       type: type,
@@ -99,6 +95,7 @@ class UserLibrary with EquatableMixin implements Comparable<UserLibrary> {
       description: description ?? this.description,
       mediaItems: mediaItems ?? this.mediaItems,
       images: images ?? this.images,
+      reference: reference ?? this.reference,
     );
   }
 
@@ -112,5 +109,44 @@ class UserLibrary with EquatableMixin implements Comparable<UserLibrary> {
     if (other.isFavorite) return 1;
     // else sort by title
     return (title ?? "").compareTo(other.title ?? "");
+  }
+
+  Map<String, dynamic> toFirestorePayload() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'images': images.map((e) => e.toJson()).toList(),
+      'mediaItems': isFavorite
+          ? mediaItems
+              .map((e) => e.toPlayableMediaImpl().toFirestorePayload())
+              .toList()
+          : [],
+      'type': type.type,
+    };
+  }
+
+  factory UserLibrary.fromFirestore(
+      DocumentSnapshot<Map<String, dynamic>> snapshot) {
+    final data = snapshot.data()!;
+    final type = UserLibraryType.values.firstWhere(
+      (element) => element.type == data['type'],
+      orElse: () => UserLibraryType.favorite,
+    );
+    return UserLibrary(
+      reference: snapshot.reference,
+      id: data['id'],
+      title: data['title'],
+      description: data['description'],
+      images: List<Image>.from(
+        data['images'].map((e) => Image.fromJson(e)),
+      ),
+      mediaItems: List<PlayableMedia>.from(
+        data['mediaItems'].map(
+          (e) => PlayableMediaImpl.fromFirestorePayload(e),
+        ),
+      ),
+      type: type,
+    );
   }
 }
