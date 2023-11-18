@@ -34,24 +34,24 @@ class UserLibraryRepository {
   Future<void> clearLibrary() => _box.clear();
 
   Future<void> favoriteSong(Song song) async {
-    final favourites = _box.get(
-      Favorite.boxKey,
-      defaultValue: Favorite.empty(),
-    )!;
-    final newFavourites = favourites.copyWith(
-      mediaItems: [...favourites.mediaItems, song],
-    );
-    await _box.put(Favorite.boxKey, newFavourites);
+    // final favourites = _box.get(
+    //   Favorite.boxKey,
+    //   defaultValue: Favorite.empty(),
+    // )!;
+    // final newFavourites = favourites.copyWith(
+    //   mediaItems: [...favourites.mediaItems, song],
+    // );
+    // await _box.put(Favorite.boxKey, newFavourites);
   }
 
   Future<void> unfavoriteSong(Song song) async {
-    final favourites = _box.get(
-      Favorite.boxKey,
-      defaultValue: Favorite.empty(),
-    )!;
-    final newFavourites = favourites.copyWith(
-      mediaItems: favourites.mediaItems.where((e) => e.id != song.id).toList(),
-    );
-    await _box.put(Favorite.boxKey, newFavourites);
+    // final favourites = _box.get(
+    //   Favorite.boxKey,
+    //   defaultValue: Favorite.empty(),
+    // )!;
+    // final newFavourites = favourites.copyWith(
+    //   mediaItems: favourites.mediaItems.where((e) => e.id != song.id).toList(),
+    // );
+    // await _box.put(Favorite.boxKey, newFavourites);
   }
 }

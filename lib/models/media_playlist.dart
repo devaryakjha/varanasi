@@ -107,13 +107,14 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
     );
   }
 
-  PlaylistLibrary toUserLibrary() {
-    return PlaylistLibrary(
+  UserLibrary toUserLibrary() {
+    return UserLibrary(
       id: id!,
       title: title,
       description: description,
       mediaItems: mediaItems?.whereType<Song>().toList() ?? [],
       images: images,
+      type: UserLibraryType.playlist,
     );
   }
 }

@@ -31,8 +31,5 @@ void registerCommonTypeAdapters() {
   Hive.registerAdapter<MediaPlaylist>(MediaPlaylistAdapter());
   Hive.registerAdapter<UserLibraryType>(UserLibraryTypeAdapter());
   Hive.registerAdapter<UserLibrary>(UserLibraryAdapter());
-  Hive.registerAdapter<Favorite>(FavoriteAdapter());
-  Hive.registerAdapter<AlbumLibrary>(AlbumLibraryAdapter());
-  Hive.registerAdapter<PlaylistLibrary>(PlaylistLibraryAdapter());
   Hive.registerAdapter<RecentMedia>(RecentMediaAdapter(), override: true);
 }
