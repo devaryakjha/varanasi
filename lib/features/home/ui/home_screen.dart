@@ -54,10 +54,10 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: TriStateVisibility(
-        state: switch (state.runtimeType) {
-          HomeErrorState => TriState.error,
-          HomeLoadingState => TriState.loading,
-          _ => TriState.loaded,
+        state: switch (state) {
+          (HomeErrorState _) => TriState.error,
+          (HomeLoadingState _) => TriState.loading,
+          (_) => TriState.loaded,
         },
         loadingChild: const HomePageLoader(),
         errorChild: switch (state) {

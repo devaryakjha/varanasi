@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/features/home/bloc/home_bloc.dart';
@@ -7,7 +11,10 @@ import 'package:varanasi_mobile_app/features/library/ui/library_screen.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_search_page.dart';
 import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
 import 'package:varanasi_mobile_app/features/search/ui/search_page.dart';
+import 'package:varanasi_mobile_app/features/session/cubit/session_cubit.dart';
 import 'package:varanasi_mobile_app/features/session/ui/auth_page.dart';
+import 'package:varanasi_mobile_app/features/session/ui/login_page.dart';
+import 'package:varanasi_mobile_app/features/session/ui/signup_page.dart';
 import 'package:varanasi_mobile_app/features/settings/ui/settings_page.dart';
 import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
 import 'package:varanasi_mobile_app/features/user-library/ui/user_library_page.dart';
@@ -19,9 +26,43 @@ import 'package:varanasi_mobile_app/widgets/transitions/fade_transition_page.dar
 
 import 'keys.dart';
 
+class StreamListener<T> extends ChangeNotifier {
+  /// Creates a [StreamListener].
+  ///
+  /// Every time the [Stream] receives an event this [ChangeNotifier] will
+  /// notify its listeners.
+  StreamListener(Stream<T> stream) {
+    notifyListeners();
+    _subscription = stream.asBroadcastStream().listen((_) => notifyListeners());
+  }
+
+  late final StreamSubscription<T> _subscription;
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
+}
+
 final routerConfig = GoRouter(
   initialLocation: AppRoutes.home.path,
   navigatorKey: rootNavigatorKey,
+  refreshListenable: StreamListener(FirebaseAuth.instance.userChanges()),
+  redirect: (context, state) {
+    final session = context.read<SessionCubit>().state;
+    final allowedLoggedOutRoutes = [
+      AppRoutes.authentication.name,
+      AppRoutes.login.name,
+      AppRoutes.signup.name,
+    ].map(state.namedLocation);
+    final isInsideAuth = allowedLoggedOutRoutes.contains(state.matchedLocation);
+    return switch (session) {
+      (UnAuthenticated _) when !isInsideAuth => AppRoutes.authentication.path,
+      (Authenticated _) when isInsideAuth => AppRoutes.home.path,
+      _ => null,
+    };
+  },
   routes: [
     StatefulShellRoute.indexedStack(
       parentNavigatorKey: rootNavigatorKey,
@@ -117,6 +158,18 @@ final routerConfig = GoRouter(
       name: AppRoutes.authentication.name,
       path: AppRoutes.authentication.path,
       builder: (context, state) => AuthPage(key: state.pageKey),
+      routes: [
+        GoRoute(
+          name: AppRoutes.login.name,
+          path: AppRoutes.login.path,
+          builder: (context, state) => LoginPage(key: state.pageKey),
+        ),
+        GoRoute(
+          path: AppRoutes.signup.path,
+          name: AppRoutes.signup.name,
+          builder: (context, state) => SignupPage(key: state.pageKey),
+        )
+      ],
     ),
   ],
 );

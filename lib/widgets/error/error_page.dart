@@ -18,8 +18,8 @@ class ErrorPage<E extends AppException> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return switch (error.runtimeType) {
-      NetworkException => NetworkErrorPage(
+    return switch (error) {
+      (NetworkException _) => NetworkErrorPage(
           error: error as NetworkException,
           retryCallback: retryCallback,
         ),

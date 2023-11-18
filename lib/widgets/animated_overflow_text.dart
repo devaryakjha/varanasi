@@ -26,7 +26,6 @@ class AnimatedText extends StatelessWidget {
     this.wrapWords = true,
     this.overflow,
     this.overflowReplacement,
-    this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
   }) : textSpan = null;
@@ -51,7 +50,6 @@ class AnimatedText extends StatelessWidget {
     this.wrapWords = true,
     this.overflow,
     this.overflowReplacement,
-    this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
   }) : data = null;
@@ -174,18 +172,6 @@ class AnimatedText extends StatelessWidget {
   /// displayed instead.
   final Widget? overflowReplacement;
 
-  /// The number of font pixels for each logical pixel.
-  ///
-  /// For example, if the text scale factor is 1.5, text will be 50% larger than
-  /// the specified font size.
-  ///
-  /// This property also affects [minFontSize], [maxFontSize] and [presetFontSizes].
-  ///
-  /// The value given to the constructor as textScaleFactor. If null, will
-  /// use the [MediaQueryData.textScaleFactor] obtained from the ambient
-  /// [MediaQuery], or 1.0 if there is no [MediaQuery] in scope.
-  final double? textScaleFactor;
-
   /// An optional maximum number of lines for the text to span, wrapping if necessary.
   /// If the text exceeds the given number of lines, it will be resized according
   /// to the specified bounds and if necessary truncated according to [overflow].
@@ -249,7 +235,6 @@ class AnimatedText extends StatelessWidget {
         overflow: overflow,
         overflowReplacement:
             overflowReplacement ?? buildDefaultOverfowReplacement(),
-        textScaleFactor: textScaleFactor,
         maxLines: maxLines,
         semanticsLabel: semanticsLabel,
       );
@@ -273,7 +258,6 @@ class AnimatedText extends StatelessWidget {
       overflow: overflow,
       overflowReplacement:
           overflowReplacement ?? buildDefaultOverfowReplacement(),
-      textScaleFactor: textScaleFactor,
       maxLines: maxLines,
       semanticsLabel: semanticsLabel,
     );

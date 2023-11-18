@@ -1,11 +1,12 @@
+const greetings = [
+  'Good morning!',
+  'Good afternoon!',
+  'Good evening!',
+  'Hello!'
+];
+
 String generateGreeting() {
   var hour = DateTime.now().hour;
-  var greetings = [
-    'Good morning!',
-    'Good afternoon!',
-    'Good evening!',
-    'Hello!'
-  ];
   if (hour < 12) {
     return greetings[0];
   } else if (hour < 18) {

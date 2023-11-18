@@ -83,7 +83,7 @@ class Result extends PlayableMedia with EquatableMixin {
   String? get artworkUrl => image?.lastOrNull?.link ?? '';
 
   @override
-  String get itemId => itemType.isSong
+  String get itemId => itemType.isSong && itemUrl.isNotEmpty
       ? (itemUrl.split('/').lastOrNull ?? id ?? '')
       : (id ?? '');
 
@@ -98,7 +98,4 @@ class Result extends PlayableMedia with EquatableMixin {
 
   @override
   String get itemUrl => url ?? '';
-
-  @override
-  bool get preferLinkOverId => itemType.isSong || itemType.isAlbum;
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
@@ -31,50 +32,53 @@ class PageWithNavbar extends HookWidget {
     final queue = context
         .select((MediaPlayerCubit cubit) => cubit.state.queueState.queue);
     final showPlayer = controller != null && queue.isNotEmpty;
-    return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(
-            bottom: showPlayer ? 56 : 0,
-            child: child,
-          ),
-          if (showPlayer)
-            SlidingUpPanel(
-              controller: controller,
-              renderPanelSheet: false,
-              backdropEnabled: true,
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(8),
-              collapsed: MiniPlayer(panelController: controller),
-              minHeight: 56,
-              maxHeight: context.height,
-              panel: position > 0
-                  ? Player(panelController: controller)
-                  : const SizedBox.shrink(),
-              onPanelSlide: (pos) => positionState.value = pos,
+    return AnnotatedRegion(
+      value: SystemUiOverlayStyle.light,
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Positioned.fill(
+              bottom: showPlayer ? 56 : 0,
+              child: child,
             ),
-        ],
-      ),
-      bottomNavigationBar: SizedBox(
-        height: currentHeight,
-        child: Transform.translate(
-          offset: Offset(0.0, currentHeight * position * 0.5),
-          child: AnimatedOpacity(
-            duration: const Duration(milliseconds: 200),
-            opacity: opacity,
-            child: OverflowBox(
-              maxHeight: bottomNavHeight,
-              child: NavigationBar(
-                height: bottomNavHeight,
-                indicatorColor: Colors.transparent,
-                selectedIndex: child.currentIndex,
-                onDestinationSelected: (value) {
-                  child.goBranch(
-                    value,
-                    initialLocation: child.currentIndex == value,
-                  );
-                },
-                destinations: navItems.map(_createDestination).toList(),
+            if (showPlayer)
+              SlidingUpPanel(
+                controller: controller,
+                renderPanelSheet: false,
+                backdropEnabled: true,
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(8),
+                collapsed: MiniPlayer(panelController: controller),
+                minHeight: 56,
+                maxHeight: context.height,
+                panel: position > 0
+                    ? Player(panelController: controller)
+                    : const SizedBox.shrink(),
+                onPanelSlide: (pos) => positionState.value = pos,
+              ),
+          ],
+        ),
+        bottomNavigationBar: SizedBox(
+          height: currentHeight,
+          child: Transform.translate(
+            offset: Offset(0.0, currentHeight * position * 0.5),
+            child: AnimatedOpacity(
+              duration: const Duration(milliseconds: 200),
+              opacity: opacity,
+              child: OverflowBox(
+                maxHeight: bottomNavHeight,
+                child: NavigationBar(
+                  height: bottomNavHeight,
+                  indicatorColor: Colors.transparent,
+                  selectedIndex: child.currentIndex,
+                  onDestinationSelected: (value) {
+                    child.goBranch(
+                      value,
+                      initialLocation: child.currentIndex == value,
+                    );
+                  },
+                  destinations: navItems.map(_createDestination).toList(),
+                ),
               ),
             ),
           ),

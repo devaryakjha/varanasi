@@ -2,7 +2,6 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:varanasi_mobile_app/models/app_config.dart';
 import 'package:varanasi_mobile_app/models/download_url.dart';
 import 'package:varanasi_mobile_app/models/image.dart';
@@ -41,7 +40,8 @@ abstract class PlayableMedia extends Equatable {
   String get heroTag => itemId;
   String get itemSubtitle;
 
-  bool get preferLinkOverId => false;
+  bool get preferLinkOverId =>
+      (itemType.isSong || itemType.isAlbum) && itemUrl.isNotEmpty;
 
   PlayableMediaType get itemType;
   String? get artworkUrl;
@@ -111,16 +111,19 @@ abstract class PlayableMedia extends Equatable {
   Uri get moreInfoUrl {
     return switch (itemType) {
       PlayableMediaType.song when !preferLinkOverId => Uri.parse(
-          '${appConfig.endpoint.songs!.id}?id=$itemId&language=hindi,english',
+          '${appConfig.endpoint.songs!.id}?id=$itemId',
         ),
       PlayableMediaType.song => Uri.parse(
-          '${appConfig.endpoint.songs!.link}?link=${Uri.encodeComponent(itemUrl)}&language=hindi,english',
+          '${appConfig.endpoint.songs!.link}?link=${Uri.encodeComponent(itemUrl)}',
+        ),
+      PlayableMediaType.album when preferLinkOverId => Uri.parse(
+          '${appConfig.endpoint.albums!.link}?link=$itemUrl',
         ),
       PlayableMediaType.album => Uri.parse(
-          '${appConfig.endpoint.albums!.link}?link=$itemUrl&language=hindi,english',
+          '${appConfig.endpoint.albums!.id}?id=$itemId',
         ),
       PlayableMediaType.playlist => Uri.parse(
-          '${appConfig.endpoint.playlists!.id}?id=$itemId&language=hindi,english',
+          '${appConfig.endpoint.playlists!.id}?id=$itemId',
         ),
       PlayableMediaType.artist => Uri.parse(
           '${appConfig.endpoint.artists?.id}?id=$itemId&language=hindi,english',
@@ -131,7 +134,7 @@ abstract class PlayableMedia extends Equatable {
   /// {@template getCacheKey}
   /// Returns a unique key for the [PlayableMedia] to be used in the cache.
   /// {@endtemplate}
-  String get cacheKey => '$itemId-${describeEnum(itemType)}';
+  String get cacheKey => '$itemId-${itemType.name}';
 
   MediaPlaylist<T> toMediaPlaylist<T extends PlayableMedia>() {
     return MediaPlaylist<T>(

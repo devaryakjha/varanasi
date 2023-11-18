@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
+import 'package:varanasi_mobile_app/features/session/cubit/session_cubit.dart';
 import 'package:varanasi_mobile_app/flavors.dart';
 import 'package:varanasi_mobile_app/models/app_config.dart';
 import 'package:varanasi_mobile_app/models/download_url.dart';
@@ -28,6 +29,18 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(title: const Text("Settings"), centerTitle: true),
       body: SettingsList(
         sections: [
+          SettingsSection(
+            title: const Text("Account"),
+            tiles: [
+              SettingsTile(
+                title: const Text("Sign out"),
+                leading: const Icon(Icons.logout_outlined),
+                onPressed: (context) {
+                  context.read<SessionCubit>().signOut();
+                },
+              ),
+            ],
+          ),
           SettingsSection(
             title: const Text("General"),
             tiles: [

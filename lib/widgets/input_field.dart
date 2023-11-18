@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
+import 'package:varanasi_mobile_app/utils/input_validators.dart';
+
+part 'filled_input_field.dart';
 
 class InputFormField extends TextFormField {
   InputFormField({
@@ -53,9 +57,11 @@ class InputFormField extends TextFormField {
     super.mouseCursor,
     super.restorationId,
     super.onSaved,
-    super.validator,
+    InputValidator? validator,
     InputType inputType = InputType.none,
-  }) : super(obscureText: obscureText ?? inputType == InputType.password);
+  }) : super(
+            validator: validator ?? _getInputValidator(inputType),
+            obscureText: obscureText ?? inputType == InputType.password);
 
   InputFormField.custom({
     super.key,
@@ -110,9 +116,10 @@ class InputFormField extends TextFormField {
     super.mouseCursor,
     super.restorationId,
     super.onSaved,
-    super.validator,
+    InputValidator? validator,
     InputType inputType = InputType.none,
   }) : super(
+          validator: validator ?? _getInputValidator(inputType),
           keyboardType: keyboardType ?? _getTextInputType(inputType),
           obscureText: obscureText ?? inputType == InputType.password,
           decoration: size == InputFieldSize.medium
@@ -171,9 +178,10 @@ class InputFormField extends TextFormField {
     super.mouseCursor,
     super.restorationId,
     super.onSaved,
-    super.validator,
+    InputValidator? validator,
     InputType inputType = InputType.none,
   }) : super(
+          validator: validator ?? _getInputValidator(inputType),
           keyboardType: keyboardType ?? _getTextInputType(inputType),
           obscureText: obscureText ?? inputType == InputType.password,
           decoration:
@@ -207,3 +215,11 @@ TextInputType? _getTextInputType(InputType inputType) {
       return null;
   }
 }
+
+typedef InputValidator = String? Function(String? value);
+
+InputValidator? _getInputValidator(InputType inputType) => switch (inputType) {
+      InputType.email => InputValidators.validateEmail,
+      InputType.password => InputValidators.validatePassword,
+      _ => null,
+    };
