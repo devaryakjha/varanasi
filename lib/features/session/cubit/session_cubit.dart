@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:varanasi_mobile_app/utils/app_cubit.dart';
 import 'package:varanasi_mobile_app/utils/app_snackbar.dart';
 import 'package:varanasi_mobile_app/utils/logger.dart';
+import 'package:varanasi_mobile_app/utils/services/firestore_service.dart';
 
 part 'session_state.dart';
 
@@ -22,7 +23,12 @@ class SessionCubit extends AppCubit<SessionState> {
   FutureOr<void> init() {
     _auth.userChanges().map((user) {
       return user == null ? UnAuthenticated() : Authenticated(user: user);
-    }).listen(emit);
+    }).listen((state) {
+      if (state is Authenticated) {
+        FirestoreService.init(state.user);
+      }
+      emit(state);
+    });
   }
 
   Future<void> continueWithGoogle() async {
