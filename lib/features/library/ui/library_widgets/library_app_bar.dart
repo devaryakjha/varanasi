@@ -5,7 +5,6 @@ import 'package:varanasi_mobile_app/features/library/ui/library_widgets/sort_by_
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/constants/dimensions.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
-import 'package:varanasi_mobile_app/utils/extensions/media_query.dart';
 
 class LibraryAppBar extends StatelessWidget {
   const LibraryAppBar({

@@ -9,7 +9,6 @@ import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_widgets/library_app_bar.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
-import 'package:varanasi_mobile_app/utils/extensions/media_query.dart';
 import 'package:varanasi_mobile_app/widgets/add_to_library.dart';
 import 'package:varanasi_mobile_app/widgets/disable_child.dart';
 import 'package:varanasi_mobile_app/widgets/download_button.dart';

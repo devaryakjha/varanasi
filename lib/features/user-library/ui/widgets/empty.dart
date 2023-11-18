@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
-import 'package:varanasi_mobile_app/utils/extensions/media_query.dart';
 
 class EmptyUserLibrary extends StatelessWidget {
   const EmptyUserLibrary({super.key});
