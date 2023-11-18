@@ -5,10 +5,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/cubits/download/download_cubit.dart';
 import 'package:varanasi_mobile_app/features/user-library/cubit/user_library_cubit.dart';
-import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
 import 'package:varanasi_mobile_app/features/user-library/ui/widgets/add_playlist_button.dart';
 import 'package:varanasi_mobile_app/flavors.dart';
 import 'package:varanasi_mobile_app/gen/assets.gen.dart';
+import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/helpers/get_app_context.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
@@ -20,7 +20,7 @@ class UserLibraryPage extends HookWidget {
   const UserLibraryPage({super.key});
 
   DownloadCubit get downloadCubit => appContext.read<DownloadCubit>();
-  Stream<UserLibrary> get downloadLibraryStream =>
+  Stream<MediaPlaylist> get downloadLibraryStream =>
       downloadCubit.downloadLibraryStream;
 
   @override
@@ -52,7 +52,7 @@ class UserLibraryPage extends HookWidget {
             return const Center(child: CircularProgressIndicator());
           }
           final library = [...state.library, downloadSnapshot.data]
-              .whereType<UserLibrary>()
+              .whereType<MediaPlaylist>()
               .where((element) =>
                   (!element.isFavorite && !element.isDownload) ||
                   element.isNotEmpty)
@@ -64,10 +64,7 @@ class UserLibraryPage extends HookWidget {
               final item = library[index];
               return ListTile(
                 onTap: () {
-                  context.push(AppRoutes.library.path,
-                      extra: (item.isDownload || item.isFavorite)
-                          ? item
-                          : item.toPlayableMedia());
+                  context.push(AppRoutes.library.path, extra: item);
                 },
                 leading: Visibility(
                   replacement: const DownloadsIcon(),

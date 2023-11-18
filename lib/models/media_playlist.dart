@@ -1,13 +1,46 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:audio_service/audio_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
 import 'package:varanasi_mobile_app/models/image.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
-import 'package:varanasi_mobile_app/models/song.dart';
+
+import 'song.dart';
 
 part 'media_playlist.g.dart';
+
+enum MediaPlaylistType {
+  favorite('favorite'),
+  album('album'),
+  playlist('playlist'),
+  download('download');
+  // TODO: Add Artist
+
+  final String type;
+
+  const MediaPlaylistType(this.type);
+
+  bool get isFavorite => this == MediaPlaylistType.favorite;
+  bool get isAlbum => this == MediaPlaylistType.album;
+  bool get isPlaylist => this == MediaPlaylistType.playlist;
+  bool get isDownload => this == MediaPlaylistType.download;
+
+  static MediaPlaylistType fromString(String? type) {
+    switch (type) {
+      case 'favorite':
+        return MediaPlaylistType.favorite;
+      case 'album':
+        return MediaPlaylistType.album;
+      case 'playlist':
+        return MediaPlaylistType.playlist;
+      case 'download':
+        return MediaPlaylistType.download;
+      default:
+        return MediaPlaylistType.playlist;
+    }
+  }
+}
 
 @HiveType(typeId: 15)
 class MediaPlaylist<T extends PlayableMedia> extends Equatable {
@@ -120,18 +153,47 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
     );
   }
 
-  UserLibrary toUserLibrary() {
-    return UserLibrary(
-      id: id!,
-      title: title,
-      description: description,
-      mediaItems: mediaItems?.whereType<Song>().toList() ?? [],
-      images: images,
-      type: UserLibraryType.values.firstWhere(
-        (element) => element.name == type,
-        orElse: () => UserLibraryType.playlist,
-      ),
-      url: url,
+  MediaPlaylistType get mediaPlaylistType => MediaPlaylistType.fromString(type);
+
+  bool get isFavorite => mediaPlaylistType.isFavorite;
+  bool get isAlbum => mediaPlaylistType.isAlbum;
+  bool get isPlaylist => mediaPlaylistType.isPlaylist;
+  bool get isDownload => mediaPlaylistType.isDownload;
+
+  bool get isNotEmpty => mediaItems?.isNotEmpty ?? false;
+
+  Map<String, dynamic> toFirestorePayload() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'images': images.map((e) => e.toJson()).toList(),
+      'mediaItems': isFavorite && mediaItems != null
+          ? mediaItems!.whereType<Song>().map((e) => e.toJson()).toList()
+          : [],
+      'type': type,
+      'url': url,
+    };
+  }
+
+  factory MediaPlaylist.fromFirestore(
+      DocumentSnapshot<Map<String, dynamic>> snapshot) {
+    final data = snapshot.data()!;
+    final type = MediaPlaylistType.values.firstWhere(
+      (element) => element.type == data['type'],
+      orElse: () => MediaPlaylistType.favorite,
+    );
+    final List<T>? items = type.isFavorite
+        ? List<T>.from(data['mediaItems'].map((d) => Song.fromJson(d)))
+        : null;
+    return MediaPlaylist(
+      id: data['id'],
+      title: data['title'],
+      description: data['description'],
+      images: List<Image>.from(data['images'].map((e) => Image.fromJson(e))),
+      mediaItems: items,
+      type: data['type'],
+      url: data['url'],
     );
   }
 }

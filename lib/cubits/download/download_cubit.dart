@@ -7,7 +7,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
 import 'package:varanasi_mobile_app/models/app_config.dart';
 import 'package:varanasi_mobile_app/models/download.dart';
 import 'package:varanasi_mobile_app/models/download_url.dart';
@@ -293,19 +292,19 @@ class DownloadCubit extends AppCubit<DownloadState> {
     return AppConfig.effectiveDlQuality;
   }
 
-  Stream<UserLibrary> get downloadLibraryStream {
+  Stream<MediaPlaylist> get downloadLibraryStream {
     return _downloadBox.watch().map((event) => toUserLibrary());
   }
 
-  UserLibrary toUserLibrary() {
+  MediaPlaylist toUserLibrary() {
     final List<DownloadedMedia> values = _downloadBox.values.toList();
-    final library = UserLibrary(
+    final library = MediaPlaylist(
       id: "downloads",
       title: "Downloads",
       description: "Your downloaded songs",
       mediaItems: values.map((e) => e.media).toList(),
       images: const [Image.likedSongs],
-      type: UserLibraryType.download,
+      type: 'download',
       url: null,
     );
     return library;

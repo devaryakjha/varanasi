@@ -17,9 +17,7 @@ class LibraryAppBar extends StatelessWidget {
   final EdgeInsets padding;
 
   bool get isFromUserLibrary =>
-      state.sourceLibrary != null &&
-      (state.sourceLibrary!.isDownload == true ||
-          state.sourceLibrary!.isFavorite == true);
+      state.playlist.isDownload || state.playlist.isFavorite;
 
   @override
   Widget build(BuildContext context) {

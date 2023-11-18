@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
 import 'package:varanasi_mobile_app/models/image.dart';
+import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/logger.dart';
 import 'package:varanasi_mobile_app/utils/services/firestore_service.dart';
@@ -17,10 +17,10 @@ class UserLibraryRepository {
   CollectionReference<Map<String, dynamic>> get _baseCollection =>
       FirestoreService.getUserDocument().collection('user-library');
 
-  BehaviorSubject<List<UserLibrary>> librariesStream =
+  BehaviorSubject<List<MediaPlaylist>> librariesStream =
       BehaviorSubject.seeded([]);
 
-  List<UserLibrary> get libraries => librariesStream.value;
+  List<MediaPlaylist> get libraries => librariesStream.value;
 
   Future<void> init() async {
     FirestoreService.getUserDocument()
@@ -28,7 +28,7 @@ class UserLibraryRepository {
         .snapshots()
         .listen((event) {
       for (var element in event.docChanges) {
-        final library = UserLibrary.fromFirestore(element.doc);
+        final library = MediaPlaylist.fromFirestore(element.doc);
         if (element.type == DocumentChangeType.added) {
           librariesStream.value = [...librariesStream.value, library];
         } else if (element.type == DocumentChangeType.modified) {
@@ -49,23 +49,23 @@ class UserLibraryRepository {
 
   bool libraryExists(String id) => libraries.any((element) => element.id == id);
 
-  Future<void> addLibrary<E extends UserLibrary>(E library) async {
+  Future<void> addLibrary(MediaPlaylist library) async {
     await _baseCollection.doc(library.id).set(library.toFirestorePayload());
   }
 
-  Future<void> updateLibrary<E extends UserLibrary>(E library) async {
+  Future<void> updateLibrary(MediaPlaylist library) async {
     await _baseCollection.doc(library.id).update(library.toFirestorePayload());
   }
 
-  Future<void> deleteLibrary<E extends UserLibrary>(E library) async {
+  Future<void> deleteLibrary(MediaPlaylist library) async {
     await _baseCollection.doc(library.id).delete();
   }
 
-  UserLibrary get favouriteSongs =>
+  MediaPlaylist get favouriteSongs =>
       libraries.firstWhereOrNull((element) => element.isFavorite) ??
-      const UserLibrary(
-        type: UserLibraryType.favorite,
-        images: [Image.likedSongs],
+      MediaPlaylist(
+        type: 'favorite',
+        images: const [Image.likedSongs],
         id: "favorite",
         title: "Liked Songs",
         description: "Songs you liked",

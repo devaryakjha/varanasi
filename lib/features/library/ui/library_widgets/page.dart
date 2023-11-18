@@ -129,16 +129,12 @@ class _LibraryContentState extends State<LibraryContent> {
                           Row(
                             key: titleKey,
                             children: [
-                              AddToLibrary(
-                                state.playlist,
-                                sourceLibrary: state.sourceLibrary,
-                              ),
+                              AddToLibrary(state.playlist),
                               DisableChild(
-                                disabled: !kDebugMode &&
-                                    state.sourceLibrary?.isDownload == true,
-                                child: DownloadPlaylist(
-                                  playlist: state.playlist,
-                                ),
+                                disabled:
+                                    !kDebugMode && state.playlist.isDownload,
+                                child:
+                                    DownloadPlaylist(playlist: state.playlist),
                               ),
                               const Spacer(),
                               const ShuffleModeToggle(iconSize: 24),

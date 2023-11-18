@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
 import 'package:varanasi_mobile_app/features/user-library/data/user_library_repository.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
@@ -37,15 +35,15 @@ class UserLibraryCubit extends AppCubit<UserLibraryState> {
   Future<void> addToLibrary(MediaPlaylist playlist) async {
     final alreadyExists = _repository.libraryExists(playlist.id!);
     if (alreadyExists) {
-      _repository.updateLibrary(playlist.toUserLibrary());
+      _repository.updateLibrary(playlist);
     } else {
-      _repository.addLibrary(playlist.toUserLibrary());
+      _repository.addLibrary(playlist);
       AppSnackbar.show("Added to library");
     }
   }
 
   Future<void> removeFromLibrary(MediaPlaylist playlist) async {
-    _repository.deleteLibrary(playlist.toUserLibrary());
+    _repository.deleteLibrary(playlist);
     AppSnackbar.show("Removed from library");
   }
 }

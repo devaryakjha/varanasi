@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
-import 'package:varanasi_mobile_app/models/recent_media.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
 import 'package:varanasi_mobile_app/widgets/downloads_icon.dart';
@@ -50,17 +49,10 @@ class MediaCard extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           final item = media;
-          if (item is RecentMedia) {
-            context.push(
-              AppRoutes.library.path,
-              extra: item.sourceLibrary ?? item.sourceMedia,
-            );
+          if (item.itemType.isSong) {
+            context.read<MediaPlayerCubit>().playFromSong(item);
           } else {
-            if (item.itemType.isSong) {
-              context.read<MediaPlayerCubit>().playFromSong(item);
-            } else {
-              context.push(AppRoutes.library.path, extra: item);
-            }
+            context.push(AppRoutes.library.path, extra: item);
           }
         },
         child: Padding(
@@ -73,9 +65,7 @@ class MediaCard extends StatelessWidget {
                 Expanded(
                   child: Visibility(
                     replacement: DownloadsIcon(dimension: dimension),
-                    visible: media is! RecentMedia ||
-                        !((media as RecentMedia).sourceLibrary?.isDownload ??
-                            false),
+                    visible: false,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(4),
                       child: CachedNetworkImage(
