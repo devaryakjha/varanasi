@@ -21,7 +21,9 @@ class LibraryDataProvider with DataProviderProtocol {
         options: CommonOptions(
           transformer: (response) async {
             final response1 = await compute(
-                parseMediaPlaylist, response as Map<String, dynamic>);
+              parseMediaPlaylist,
+              response as Map<String, dynamic>,
+            );
             return response1;
           },
         ),

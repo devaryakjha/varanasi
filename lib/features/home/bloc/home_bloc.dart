@@ -1,16 +1,17 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:varanasi_mobile_app/features/home/data/home_repository.dart';
 import 'package:varanasi_mobile_app/features/home/data/models/home_page_data.dart';
+import 'package:varanasi_mobile_app/utils/app_cubit.dart';
 import 'package:varanasi_mobile_app/utils/exceptions/app_exception.dart';
+import 'package:varanasi_mobile_app/utils/services/recent_media_service.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
 
-class HomeBloc extends Cubit<HomeState> {
-  HomeBloc() : super(const HomeInitialState());
+class HomeCubit extends AppCubit<HomeState> {
+  HomeCubit() : super(const HomeInitialState());
 
   FutureOr<void> fetchModule({bool refetch = false}) async {
     try {
@@ -21,5 +22,11 @@ class HomeBloc extends Cubit<HomeState> {
     } on AppException catch (e) {
       emit(HomeErrorState(e));
     }
+  }
+
+  @override
+  FutureOr<void> init() async {
+    RecentMediaService.init();
+    await fetchModule();
   }
 }

@@ -1,4 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 
 part 'playable_item_impl.g.dart';
@@ -64,6 +65,17 @@ class PlayableMediaImpl extends PlayableMedia {
       payload['url'],
       payload['type'],
       payload['artworkUrl'],
+    );
+  }
+
+  factory PlayableMediaImpl.fromMediaPlaylist(MediaPlaylist mediaPlaylist) {
+    return PlayableMediaImpl(
+      mediaPlaylist.id!,
+      mediaPlaylist.title!,
+      mediaPlaylist.description!,
+      mediaPlaylist.url!,
+      mediaPlaylist.type!,
+      mediaPlaylist.images.lastOrNull?.link,
     );
   }
 }

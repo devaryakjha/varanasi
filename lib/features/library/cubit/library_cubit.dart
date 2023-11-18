@@ -19,25 +19,6 @@ class LibraryCubit extends Cubit<LibraryState> {
 
   static LibraryCubit of(BuildContext context) => context.read<LibraryCubit>();
 
-  Future<void> loadUserLibrary(MediaPlaylist playlist) async {
-    try {
-      emit(const LibraryLoading());
-      String link = playlist.images.last.link!;
-      if (!appContext.mounted) return;
-      final configCubit = appContext.read<ConfigCubit>();
-      PaletteGenerator.fromColors([]);
-      if (!appContext.mounted) return;
-      final colorPalette = playlist.isDownload && appContext.mounted
-          ? PaletteGenerator.fromColors(
-              [PaletteColor(appContext.colorScheme.secondaryContainer, 1)])
-          : await configCubit.generatePalleteGenerator(link);
-      final image = configCubit.getProvider(link);
-      emit(LibraryLoaded(playlist, colorPalette!, image));
-    } catch (e, s) {
-      emit(LibraryError(e, stackTrace: s));
-    }
-  }
-
   Future<void> fetchLibrary(PlayableMedia media) async {
     try {
       emit(const LibraryLoading());

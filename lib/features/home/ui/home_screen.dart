@@ -6,9 +6,12 @@ import 'package:varanasi_mobile_app/features/home/data/helpers/home_state_select
 import 'package:varanasi_mobile_app/features/home/ui/home_widgets/spacer.dart';
 import 'package:varanasi_mobile_app/features/home/ui/home_widgets/trending/trending.dart';
 import 'package:varanasi_mobile_app/gen/assets.gen.dart';
+import 'package:varanasi_mobile_app/models/media_playlist.dart';
+import 'package:varanasi_mobile_app/models/playable_item_impl.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/generate_greeting.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
+import 'package:varanasi_mobile_app/utils/services/recent_media_service.dart';
 import 'package:varanasi_mobile_app/widgets/animated_overflow_text.dart';
 import 'package:varanasi_mobile_app/widgets/error/error_page.dart';
 import 'package:varanasi_mobile_app/widgets/tri_state_visibility.dart';
@@ -62,14 +65,14 @@ class HomePage extends StatelessWidget {
           (HomeErrorState state) => ErrorPage(
               error: state.error,
               retryCallback: () {
-                context.read<HomeBloc>().fetchModule(refetch: true);
+                context.read<HomeCubit>().fetchModule(refetch: true);
               },
             ),
           _ => const SizedBox.shrink(),
         },
         child: RefreshIndicator(
           onRefresh: () async {
-            context.read<HomeBloc>().fetchModule(refetch: true);
+            context.read<HomeCubit>().fetchModule(refetch: true);
           },
           child: ListView.builder(
             itemCount: mediaPlaylist.length,
@@ -82,7 +85,7 @@ class HomePage extends StatelessWidget {
                       modules.trending != null &&
                       index == 0) ...[
                     TrendingSongsList(trending: modules.trending!),
-                    // const RecentlyPlayed(),
+                    const RecentlyPlayed(),
                   ],
                   const HomeSpacer(),
                   MediaCarousel(playlist: playlist),
@@ -98,31 +101,32 @@ class HomePage extends StatelessWidget {
   }
 }
 
-// class RecentlyPlayed extends StatelessWidget {
-//   const RecentlyPlayed({super.key});
+class RecentlyPlayed extends StatelessWidget {
+  const RecentlyPlayed({super.key});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return StreamBuilder(
-//       stream: RecentMediaService.watchRecentMedia(),
-//       builder: (context, snapshot) {
-//         final mediaItems = snapshot.data ?? [];
-//         if (mediaItems.isEmpty) {
-//           return const SizedBox.shrink();
-//         }
-//         return Padding(
-//           padding: const EdgeInsets.only(top: 30.0),
-//           child: MediaCarousel(
-//             playlist: MediaPlaylist(
-//               id: 'recently-played',
-//               title: 'Recently Played',
-//               description: 'Your recently played songs',
-//               mediaItems: snapshot.data,
-//               url: null,
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: RecentMediaService.recentMediaStream,
+      builder: (context, snapshot) {
+        final mediaItems = snapshot.data ?? [];
+        if (mediaItems.isEmpty) {
+          return const SizedBox.shrink();
+        }
+        return Padding(
+          padding: const EdgeInsets.only(top: 30.0),
+          child: MediaCarousel(
+            playlist: MediaPlaylist(
+              id: 'recently-played',
+              title: 'Recently Played',
+              description: 'Your recently played songs',
+              mediaItems:
+                  mediaItems.map(PlayableMediaImpl.fromMediaPlaylist).toList(),
+              url: null,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}

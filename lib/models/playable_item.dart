@@ -2,11 +2,11 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:varanasi_mobile_app/models/album.dart';
 import 'package:varanasi_mobile_app/models/app_config.dart';
 import 'package:varanasi_mobile_app/models/download_url.dart';
-import 'package:varanasi_mobile_app/models/image.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
-import 'package:varanasi_mobile_app/models/playable_item_impl.dart';
+import 'package:varanasi_mobile_app/models/playlist.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/configs.dart';
 
@@ -131,25 +131,20 @@ abstract class PlayableMedia extends Equatable {
   /// {@endtemplate}
   String get cacheKey => '$itemId-${itemType.name}';
 
-  MediaPlaylist<T> toMediaPlaylist<T extends PlayableMedia>() {
-    return MediaPlaylist<T>(
+  MediaPlaylist toMediaPlaylist() {
+    return MediaPlaylist(
       title: itemTitle,
       description: itemSubtitle,
       id: itemId,
-      mediaItems: [this as T],
-      images: [Image.fromString(itemUrl)],
+      mediaItems: [this],
+      images: switch (this) {
+        (Song song) => song.image ?? const [],
+        (Album album) => album.image ?? const [],
+        (Playlist playlist) => playlist.image ?? const [],
+        (_) => const [],
+      },
       url: itemUrl,
-    );
-  }
-
-  PlayableMediaImpl toPlayableMediaImpl() {
-    return PlayableMediaImpl(
-      itemId,
-      itemTitle,
-      itemSubtitle,
-      itemUrl,
-      itemType.name,
-      artworkUrl,
+      type: itemType.name,
     );
   }
 }

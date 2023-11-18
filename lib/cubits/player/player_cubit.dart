@@ -21,6 +21,7 @@ import 'package:varanasi_mobile_app/utils/player/audio_handler_impl.dart';
 import 'package:varanasi_mobile_app/utils/player/typings.dart';
 import 'package:varanasi_mobile_app/utils/safe_animate_to_pageview.dart';
 import 'package:varanasi_mobile_app/utils/services/http_services.dart';
+import 'package:varanasi_mobile_app/utils/services/recent_media_service.dart';
 
 part 'player_state.dart';
 
@@ -65,7 +66,7 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
     PlayableMedia? initialMedia,
     bool autoPlay = true,
   }) async {
-    // RecentMediaService.addRecentMedia(RecentMedia.fromLibraryCubit());
+    RecentMediaService.addToRecentlyPlayed(playlist);
     if (playlist.id == state.currentPlaylist && !audioHandler.player.playing) {
       final startIndex = initialMedia == null
           ? null
@@ -100,7 +101,7 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
     final cached = maybeGetCached<Song>(media.cacheKey);
 
     if (cached != null) {
-      await playFromMediaPlaylist(cached.toMediaPlaylist<Song>());
+      await playFromMediaPlaylist(cached.toMediaPlaylist());
       return;
     }
 
@@ -125,7 +126,7 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
     );
     final song = response.$2!;
     cache(media.cacheKey, song);
-    await playFromMediaPlaylist(song.toMediaPlaylist<Song>());
+    await playFromMediaPlaylist(song.toMediaPlaylist());
   }
 
   Future<void> play() async {

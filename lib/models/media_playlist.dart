@@ -11,6 +11,7 @@ import 'song.dart';
 part 'media_playlist.g.dart';
 
 enum MediaPlaylistType {
+  song('song'),
   favorite('favorite'),
   album('album'),
   playlist('playlist'),
@@ -21,6 +22,7 @@ enum MediaPlaylistType {
 
   const MediaPlaylistType(this.type);
 
+  bool get isSong => this == MediaPlaylistType.song;
   bool get isFavorite => this == MediaPlaylistType.favorite;
   bool get isAlbum => this == MediaPlaylistType.album;
   bool get isPlaylist => this == MediaPlaylistType.playlist;
@@ -142,6 +144,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
     List<T>? mediaItems,
     List<Image>? images,
     String? url,
+    String? type,
   }) {
     return MediaPlaylist<T>(
       id: id ?? this.id,
@@ -150,6 +153,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
       mediaItems: mediaItems ?? this.mediaItems,
       images: images ?? this.images,
       url: url ?? this.url,
+      type: type ?? this.type,
     );
   }
 
@@ -159,16 +163,17 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
   bool get isAlbum => mediaPlaylistType.isAlbum;
   bool get isPlaylist => mediaPlaylistType.isPlaylist;
   bool get isDownload => mediaPlaylistType.isDownload;
+  bool get isSong => mediaPlaylistType.isSong;
 
   bool get isNotEmpty => mediaItems?.isNotEmpty ?? false;
 
-  Map<String, dynamic> toFirestorePayload() {
+  Map<String, dynamic> toFirestorePayload([bool keepMediaItems = false]) {
     return {
       'id': id,
       'title': title,
       'description': description,
       'images': images.map((e) => e.toJson()).toList(),
-      'mediaItems': isFavorite && mediaItems != null
+      'mediaItems': (isFavorite && mediaItems != null) || keepMediaItems
           ? mediaItems!.whereType<Song>().map((e) => e.toJson()).toList()
           : [],
       'type': type,

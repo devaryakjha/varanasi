@@ -1,29 +1,43 @@
+import 'package:rxdart/rxdart.dart';
+import 'package:varanasi_mobile_app/models/media_playlist.dart';
+import 'package:varanasi_mobile_app/utils/services/firestore_service.dart';
+
 class RecentMediaService {
-  // /// Fetches the recent media from the cache
-  // static List<PlayableMedia> getAllRecentMedia() =>
-  //     _box.values.toList()..sort();
+  RecentMediaService._();
 
-  // /// Adds the given [media] to the recent media cache
-  // static Future<void> addRecentMedia(RecentMedia media) {
-  //   if (media.itemId.isEmpty) return Future.value();
-  //   return _box.put(media.itemId, media);
-  // }
+  static final RecentMediaService instance = RecentMediaService._();
 
-  // /// Get the recent media from the cache for the given [itemId]
-  // static RecentMedia? getRecentMedia(String itemId) => _box.get(itemId);
+  static bool initialized = false;
 
-  // /// Stream of recent media
-  // static Stream<List<RecentMedia>> watchRecentMedia() => Rx.concat([
-  //       Stream.value(getAllRecentMedia()),
-  //       _box
-  //           .watch()
-  //           .map((_) => getAllRecentMedia())
-  //           .distinctUnique(equals: listEquals),
-  //     ]);
+  static void init() {
+    if (initialized) return;
+    initialized = true;
+    watchRecentMedia().pipe(_recentMediaSubject);
+  }
 
-  // static Future<int> clearRecentMedia() async {
-  //   final result = await _box.clear();
-  //   AppSnackbar.show("Cleared recent media");
-  //   return result;
-  // }
+  static final BehaviorSubject<List<MediaPlaylist>> _recentMediaSubject =
+      BehaviorSubject<List<MediaPlaylist>>.seeded([]);
+
+  static Stream<List<MediaPlaylist>> get recentMediaStream =>
+      _recentMediaSubject.stream;
+
+  static List<MediaPlaylist> get recentMedia => _recentMediaSubject.value;
+
+  static Stream<List<MediaPlaylist>> watchRecentMedia() {
+    return FirestoreService.getUserDocument()
+        .collection('recent_media')
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map(MediaPlaylist.fromFirestore).toList());
+  }
+
+  static void addToRecentlyPlayed(MediaPlaylist media) {
+    if (recentMedia.any((element) => element.id == media.id)) {
+      return;
+    }
+    FirestoreService.getUserDocument()
+        .collection('recent_media')
+        .doc(media.id)
+        .set(media.toFirestorePayload(media.isSong));
+  }
 }

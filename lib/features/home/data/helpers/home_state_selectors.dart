@@ -7,7 +7,7 @@ typedef HomeStateData = (
   List<MediaPlaylist>,
 );
 
-HomeStateData homePageDataSelector(HomeBloc value) {
+HomeStateData homePageDataSelector(HomeCubit value) {
   final state = value.state;
   final List<MediaPlaylist> medialist = [];
   return switch (state) {

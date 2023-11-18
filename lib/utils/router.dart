@@ -76,7 +76,7 @@ final routerConfig = GoRouter(
                 return NoTransitionPage(
                   child: BlocProvider(
                     lazy: false,
-                    create: (context) => HomeBloc()..fetchModule(),
+                    create: (context) => HomeCubit()..init(),
                     child: const HomePage(),
                   ),
                 );
@@ -88,18 +88,13 @@ final routerConfig = GoRouter(
               builder: (context, state) {
                 final extra = state.extra!;
                 final isMedia = extra is PlayableMedia;
-                final child = LibraryPage(
+                context
+                    .read<LibraryCubit>()
+                    .fetchLibrary(extra as PlayableMedia);
+                return LibraryPage(
                   source: isMedia ? extra : null,
                   key: state.pageKey,
                 );
-                if (isMedia) {
-                  context.read<LibraryCubit>().fetchLibrary(extra);
-                } else {
-                  // context
-                  //     .read<LibraryCubit>()
-                  //     .loadUserLibrary(extra as UserLibrary);
-                }
-                return child;
               },
               routes: [
                 GoRoute(
