@@ -56,6 +56,7 @@ class LibraryDataProvider with DataProviderProtocol {
         mediaItems: songs,
         images: images,
         url: url,
+        type: json['type'],
       );
     } on Exception {
       return MediaPlaylist(
