@@ -138,6 +138,7 @@ abstract class PlayableMedia extends Equatable {
       id: itemId,
       mediaItems: [this as T],
       images: [Image.fromString(itemUrl)],
+      url: itemUrl,
     );
   }
 

@@ -120,6 +120,7 @@ class RecentlyPlayed extends StatelessWidget {
               title: 'Recently Played',
               description: 'Your recently played songs',
               mediaItems: snapshot.data,
+              url: null,
             ),
           ),
         );

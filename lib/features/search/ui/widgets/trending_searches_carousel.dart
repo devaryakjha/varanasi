@@ -68,6 +68,7 @@ class TrendingSearchesCarousel extends StatelessWidget {
         playlist: MediaPlaylist(
           mediaItems: trendingSearches,
           title: 'Trending Searches',
+          url: null,
         ),
       ),
     );

@@ -21,6 +21,8 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
   final List<T>? mediaItems;
   @HiveField(4)
   final List<Image> images;
+  @HiveField(5)
+  final String? url;
 
   /// Default constructor for [MediaPlaylist].
   MediaPlaylist({
@@ -29,6 +31,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
     this.description,
     List<T>? mediaItems,
     this.images = const [],
+    required this.url,
   }) : mediaItems =
             // TODO: Remove this when the API is fixed
             mediaItems?.where((element) => !element.itemType.isArtist).toList();
@@ -38,7 +41,8 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
         title = null,
         description = null,
         mediaItems = null,
-        images = const [];
+        images = const [],
+        url = null;
 
   /// Returns a new [MediaPlaylist] with prefilled values for [title] as `Popular Today`.
   factory MediaPlaylist.popularToday(
@@ -53,6 +57,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
         description: description,
         id: id,
         images: images ?? const [],
+        url: null,
       );
 
   /// Returns a new [MediaPlaylist] with prefilled values for [title] as `Albums`.
@@ -68,6 +73,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
         description: description,
         id: id,
         images: images ?? const [],
+        url: null,
       );
 
   /// Returns a new [MediaPlaylist] with prefilled values for [title] as `Playlists`.
@@ -83,6 +89,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
         description: description,
         id: id,
         images: images ?? const [],
+        url: null,
       );
 
   List<MediaItem> get mediaItemsAsMediaItems =>
@@ -97,6 +104,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
     String? description,
     List<T>? mediaItems,
     List<Image>? images,
+    String? url,
   }) {
     return MediaPlaylist<T>(
       id: id ?? this.id,
@@ -104,6 +112,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
       description: description ?? this.description,
       mediaItems: mediaItems ?? this.mediaItems,
       images: images ?? this.images,
+      url: url ?? this.url,
     );
   }
 
@@ -115,7 +124,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
       mediaItems: mediaItems?.whereType<Song>().toList() ?? [],
       images: images,
       type: UserLibraryType.playlist,
-      url: null,
+      url: url,
     );
   }
 }

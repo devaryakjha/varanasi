@@ -44,17 +44,24 @@ class LibraryDataProvider with DataProviderProtocol {
         json,
         () => '',
       ).capitalize;
+      final url = keepIteratingTillNotNull<String>(
+        ['url', 'link'],
+        json,
+        () => '',
+      );
       return MediaPlaylist(
         id: json['id'],
         description: description,
         title: json['name'],
         mediaItems: songs,
         images: images,
+        url: url,
       );
     } on Exception {
       return MediaPlaylist(
         id: json['id'],
         mediaItems: const [],
+        url: null,
       );
     }
   }
