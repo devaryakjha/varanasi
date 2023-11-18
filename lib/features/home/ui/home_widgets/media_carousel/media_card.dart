@@ -46,74 +46,71 @@ class MediaCard extends StatelessWidget {
     final isPlaying = context.select((MediaPlayerCubit value) {
       return value.state.isPlaying;
     });
-    return Hero(
-      tag: heroTagPrefix + media.heroTag,
-      child: GestureDetector(
-        onTap: () {
-          if (onTap != null) {
-            onTap!();
-            return;
-          }
-          final item = media;
-          if (item.itemType.isSong) {
-            context.read<MediaPlayerCubit>().playFromSong(item);
-          } else {
-            context.push(AppRoutes.library.path, extra: item);
-          }
-        },
-        child: Padding(
-          padding: padding,
-          child: SizedBox.square(
-            dimension: dimension,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Visibility(
-                    replacement: DownloadsIcon(dimension: dimension),
-                    visible: true,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: CachedNetworkImage(
-                        fit: BoxFit.cover,
-                        width: dimension,
-                        height: dimension,
-                        imageUrl: media.artworkUrl ?? '',
-                      ),
+    return GestureDetector(
+      onTap: () {
+        if (onTap != null) {
+          onTap!();
+          return;
+        }
+        final item = media;
+        if (item.itemType.isSong) {
+          context.read<MediaPlayerCubit>().playFromSong(item);
+        } else {
+          context.push(AppRoutes.library.path, extra: item);
+        }
+      },
+      child: Padding(
+        padding: padding,
+        child: SizedBox.square(
+          dimension: dimension,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Visibility(
+                  replacement: DownloadsIcon(dimension: dimension),
+                  visible: true,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: CachedNetworkImage(
+                      fit: BoxFit.cover,
+                      width: dimension,
+                      height: dimension,
+                      imageUrl: media.artworkUrl ?? '',
                     ),
                   ),
                 ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    if (isPlaylistSelected) ...[
-                      MiniMusicVisualizer(
-                        key: ValueKey(media.itemId),
-                        width: 2,
-                        height: 12,
-                        animating: isPlaying,
-                      ),
-                      const SizedBox(width: 8),
-                    ],
-                    Expanded(
-                      child: Text(
-                        title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: context.textTheme.labelLarge,
-                      ),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  if (isPlaylistSelected) ...[
+                    MiniMusicVisualizer(
+                      key: ValueKey(media.itemId),
+                      width: 2,
+                      height: 12,
+                      animating: isPlaying,
                     ),
+                    const SizedBox(width: 8),
                   ],
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: context.textTheme.labelSmall,
-                ),
-              ],
-            ),
+                  Expanded(
+                    child: Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.textTheme.labelLarge,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Text(
+                subtitle,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: context.textTheme.labelSmall,
+              ),
+            ],
           ),
         ),
       ),
