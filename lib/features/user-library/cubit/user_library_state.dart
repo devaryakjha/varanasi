@@ -33,4 +33,8 @@ class UserLibraryLoaded extends UserLibraryState {
   bool isAdded(MediaPlaylist playlist) {
     return library.any((a) => playlist.id == a.id);
   }
+
+  MediaPlaylist? get favorite {
+    return library.firstWhereOrNull((e) => e.isFavorite);
+  }
 }
