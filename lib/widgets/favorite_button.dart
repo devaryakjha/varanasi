@@ -21,17 +21,15 @@ class FavoriteButton extends StatelessWidget {
         if (state is! UserLibraryLoaded || source == null || source is! Song) {
           return const SizedBox.shrink();
         }
-        final isAdded = state.favorite?.mediaItems
-                .any((item) => item.itemId == source.id) ??
-            false;
+        const isAdded = false;
         return IconButton(
           onPressed: () {
-            final cubit = context.read<UserLibraryCubit>();
-            if (isAdded) {
-              cubit.unfavoriteSong(source);
-            } else {
-              cubit.favoriteSong(source);
-            }
+            // final cubit = context.read<UserLibraryCubit>();
+            // if (isAdded) {
+            //   cubit.unfavoriteSong(source);
+            // } else {
+            //   cubit.favoriteSong(source);
+            // }
             HapticFeedback.lightImpact();
           },
           icon: isAdded

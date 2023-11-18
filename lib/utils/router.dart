@@ -16,7 +16,6 @@ import 'package:varanasi_mobile_app/features/session/ui/auth_page.dart';
 import 'package:varanasi_mobile_app/features/session/ui/login_page.dart';
 import 'package:varanasi_mobile_app/features/session/ui/signup_page.dart';
 import 'package:varanasi_mobile_app/features/settings/ui/settings_page.dart';
-import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
 import 'package:varanasi_mobile_app/features/user-library/ui/user_library_page.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
@@ -96,9 +95,9 @@ final routerConfig = GoRouter(
                 if (isMedia) {
                   context.read<LibraryCubit>().fetchLibrary(extra);
                 } else {
-                  context
-                      .read<LibraryCubit>()
-                      .loadUserLibrary(extra as UserLibrary);
+                  // context
+                  //     .read<LibraryCubit>()
+                  //     .loadUserLibrary(extra as UserLibrary);
                 }
                 return child;
               },

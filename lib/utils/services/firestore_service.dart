@@ -10,12 +10,16 @@ class FirestoreService {
 
   static late final DocumentReference<Map<String, dynamic>> userDocument;
 
+  static bool initialised = false;
+
   static DocumentReference<Map<String, dynamic>> getUserDocument() =>
       _baseFirestore
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid);
 
   static Future<void> init() async {
+    if (initialised) return;
+    initialised = true;
     final user = FirebaseAuth.instance.currentUser!;
     userDocument = _baseFirestore.collection('users').doc(user.uid);
     userDocument.get().then((value) {
