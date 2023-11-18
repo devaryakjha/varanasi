@@ -4,6 +4,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
 import 'package:varanasi_mobile_app/models/image.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
+import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/logger.dart';
 import 'package:varanasi_mobile_app/utils/services/firestore_service.dart';
 
@@ -79,17 +80,15 @@ class UserLibraryRepository {
         description: "Songs you liked",
       );
 
-  Future<void> favoriteSong(PlayableMedia song) async {
+  Future<void> favoriteSong(Song song) async {
     try {
       final hasFavoriteSongs = libraries.any((element) => element.isFavorite);
       if (!hasFavoriteSongs) {
-        await addLibrary(favouriteSongs);
+        await addLibrary(favouriteSongs.copyWith(mediaItems: [song]));
       }
       // append song to favoriteSongs directly in firestore
       await _baseCollection.doc(favouriteSongs.id).update({
-        'mediaItems': FieldValue.arrayUnion(
-          [song.toPlayableMediaImpl().toFirestorePayload()],
-        ),
+        'mediaItems': FieldValue.arrayUnion([song.toJson()]),
       });
     } catch (e) {
       Logger.instance.d(e.toString());

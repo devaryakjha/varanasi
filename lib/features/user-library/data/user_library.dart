@@ -119,7 +119,9 @@ class UserLibrary with EquatableMixin implements Comparable<UserLibrary> {
       'images': images.map((e) => e.toJson()).toList(),
       'mediaItems': isFavorite
           ? mediaItems
-              .map((e) => e.toPlayableMediaImpl().toFirestorePayload())
+              .map((e) => e is Song
+                  ? e.toJson()
+                  : e.toPlayableMediaImpl().toFirestorePayload())
               .toList()
           : [],
       'type': type.type,
