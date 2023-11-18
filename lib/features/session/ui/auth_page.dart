@@ -64,19 +64,14 @@ class AuthPage extends StatelessWidget {
 
   ButtonStyle _buildButtonStyles() {
     return OutlinedButton.styleFrom(
-      padding: const EdgeInsets.symmetric(
-        vertical: 12,
-        horizontal: 16,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
     );
   }
 
   Text _buildText(BuildContext context, String text) {
     return Text(
       text,
-      style: context.textTheme.bodyLarge?.copyWith(
-        fontWeight: FontWeight.bold,
-      ),
+      style: context.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
     );
   }
 }
