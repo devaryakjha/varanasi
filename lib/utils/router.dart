@@ -94,12 +94,16 @@ final routerConfig = GoRouter(
                   context.read<LibraryCubit>().fetchLibrary(extra);
                 } else {
                   if (isMediaPlaylist) {
-                    final items = extra.mediaItems ?? [];
-                    if (items.isEmpty) {
-                      context.read<LibraryCubit>().fetchLibrary(
-                          PlayableMediaImpl.fromMediaPlaylist(extra));
-                    } else {
+                    if (extra.isDownload) {
                       context.read<LibraryCubit>().loadUserLibrary(extra);
+                    } else {
+                      final items = extra.mediaItems ?? [];
+                      if (items.isEmpty) {
+                        context.read<LibraryCubit>().fetchLibrary(
+                            PlayableMediaImpl.fromMediaPlaylist(extra));
+                      } else {
+                        context.read<LibraryCubit>().loadUserLibrary(extra);
+                      }
                     }
                   }
                 }

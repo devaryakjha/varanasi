@@ -95,13 +95,13 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
   }
 
   List<T> sortedMediaItems(SortBy sortBy) {
-    List<T> items = [...playlist.mediaItems ?? []];
     return switch (sortBy) {
       SortBy.title => () {
+          List<T> items = playlist.mediaItems ?? [];
           items.sort((a, b) => a.itemTitle.compareTo(b.itemTitle));
           return items;
         },
-      _ => () => items,
+      _ => () => playlist.mediaItems ?? [],
     }();
   }
 

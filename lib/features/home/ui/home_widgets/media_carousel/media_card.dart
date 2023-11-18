@@ -13,6 +13,7 @@ class MediaCard extends StatelessWidget {
   final PlayableMedia media;
   final bool isFirst, isLast;
   final String heroTagPrefix;
+  final VoidCallback? onTap;
 
   const MediaCard({
     super.key,
@@ -20,6 +21,7 @@ class MediaCard extends StatelessWidget {
     this.isFirst = false,
     this.isLast = false,
     String? heroTagPrefix,
+    this.onTap,
   }) : heroTagPrefix = heroTagPrefix ?? '';
 
   double get dimension => 120;
@@ -48,6 +50,10 @@ class MediaCard extends StatelessWidget {
       tag: heroTagPrefix + media.heroTag,
       child: GestureDetector(
         onTap: () {
+          if (onTap != null) {
+            onTap!();
+            return;
+          }
           final item = media;
           if (item.itemType.isSong) {
             context.read<MediaPlayerCubit>().playFromSong(item);

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
+import 'package:varanasi_mobile_app/cubits/download/download_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/data/library_repository.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
@@ -31,8 +32,15 @@ class LibraryCubit extends Cubit<LibraryState> {
               [PaletteColor(appContext.colorScheme.secondaryContainer, 1)])
           : await configCubit.generatePalleteGenerator(link);
       final image = configCubit.getProvider(link);
-      emit(LibraryLoaded(playlist, colorPalette!, image));
+      if (!appContext.mounted) return;
+      if (playlist.isDownload) {
+        final newPlaylist = appContext.read<DownloadCubit>().toUserLibrary();
+        emit(LibraryLoaded(newPlaylist, colorPalette!, image));
+      } else {
+        emit(LibraryLoaded(playlist, colorPalette!, image));
+      }
     } catch (e, s) {
+      Logger.instance.e(e);
       emit(LibraryError(e, stackTrace: s));
     }
   }

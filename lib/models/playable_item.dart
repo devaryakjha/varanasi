@@ -14,7 +14,8 @@ enum PlayableMediaType {
   song(1),
   album(2),
   playlist(3),
-  artist(4);
+  artist(4),
+  download(5);
 
   const PlayableMediaType(this.value);
 
@@ -22,6 +23,8 @@ enum PlayableMediaType {
         'album' => PlayableMediaType.album,
         'playlist' => PlayableMediaType.playlist,
         'artist' => PlayableMediaType.artist,
+        'download' => PlayableMediaType.download,
+        'downloads' => PlayableMediaType.download,
         _ => PlayableMediaType.song
       };
 
@@ -31,6 +34,7 @@ enum PlayableMediaType {
   bool get isAlbum => this == PlayableMediaType.album;
   bool get isPlaylist => this == PlayableMediaType.playlist;
   bool get isArtist => this == PlayableMediaType.artist;
+  bool get isDownload => this == PlayableMediaType.download;
 }
 
 abstract class PlayableMedia extends Equatable {
@@ -123,6 +127,7 @@ abstract class PlayableMedia extends Equatable {
         Uri.parse('${appConfig.endpoint.playlists!.id}?id=$itemId'),
       PlayableMediaType.artist =>
         Uri.parse('${appConfig.endpoint.artists?.id}?id=$itemId'),
+      PlayableMediaType.download => Uri.parse(''),
     };
   }
 

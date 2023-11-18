@@ -73,7 +73,7 @@ class PlayableMediaImpl extends PlayableMedia {
       mediaPlaylist.id!,
       mediaPlaylist.title!,
       mediaPlaylist.description!,
-      mediaPlaylist.url!,
+      mediaPlaylist.url ?? '',
       mediaPlaylist.type!,
       mediaPlaylist.images.lastOrNull?.link,
     );

@@ -6,10 +6,12 @@ import 'media_card.dart';
 
 class MediaCarousel extends StatelessWidget {
   final MediaPlaylist playlist;
+  final ValueChanged<int>? onItemTap;
 
   const MediaCarousel({
     super.key,
     required this.playlist,
+    this.onItemTap,
   });
 
   int get totalItems => playlist.mediaItems?.length ?? 0;
@@ -52,6 +54,7 @@ class MediaCarousel extends StatelessWidget {
                   media: media,
                   isFirst: index == 0,
                   isLast: index == totalItems - 1,
+                  onTap: onItemTap != null ? () => onItemTap!(index) : null,
                 );
               },
             ),

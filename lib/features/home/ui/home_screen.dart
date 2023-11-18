@@ -10,6 +10,7 @@ import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item_impl.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/generate_greeting.dart';
+import 'package:varanasi_mobile_app/utils/logger.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
 import 'package:varanasi_mobile_app/utils/services/recent_media_service.dart';
 import 'package:varanasi_mobile_app/widgets/animated_overflow_text.dart';
@@ -113,6 +114,8 @@ class RecentlyPlayed extends StatelessWidget {
         if (mediaItems.isEmpty) {
           return const SizedBox.shrink();
         }
+        final parsed =
+            mediaItems.map(PlayableMediaImpl.fromMediaPlaylist).toList();
         return Padding(
           padding: const EdgeInsets.only(top: 30.0),
           child: MediaCarousel(
@@ -120,10 +123,14 @@ class RecentlyPlayed extends StatelessWidget {
               id: 'recently-played',
               title: 'Recently Played',
               description: 'Your recently played songs',
-              mediaItems:
-                  mediaItems.map(PlayableMediaImpl.fromMediaPlaylist).toList(),
+              mediaItems: parsed,
               url: null,
             ),
+            onItemTap: (index) {
+              final item = mediaItems[index];
+              context.push(AppRoutes.library.path, extra: item);
+              Logger.instance.d('Recently played item tapped: $item');
+            },
           ),
         );
       },
