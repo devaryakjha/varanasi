@@ -45,7 +45,8 @@ enum MediaPlaylistType {
 }
 
 @HiveType(typeId: 15)
-class MediaPlaylist<T extends PlayableMedia> extends Equatable {
+class MediaPlaylist<T extends PlayableMedia> extends Equatable
+    implements Comparable<MediaPlaylist> {
   @HiveField(0)
   final String? id;
   @HiveField(1)
@@ -200,5 +201,17 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
       type: data['type'],
       url: data['url'],
     );
+  }
+
+  @override
+  int compareTo(MediaPlaylist<PlayableMedia> other) {
+    // if id download then it should be first
+    if (isDownload) return -1;
+    if (other.isDownload) return 1;
+    // if id favorite then it should be first
+    if (isFavorite) return -1;
+    if (other.isFavorite) return 1;
+    // else sort by title
+    return (title ?? "").compareTo(other.title ?? "");
   }
 }
