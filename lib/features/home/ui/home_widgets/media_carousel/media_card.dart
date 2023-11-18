@@ -65,7 +65,7 @@ class MediaCard extends StatelessWidget {
                 Expanded(
                   child: Visibility(
                     replacement: DownloadsIcon(dimension: dimension),
-                    visible: false,
+                    visible: true,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(4),
                       child: CachedNetworkImage(
