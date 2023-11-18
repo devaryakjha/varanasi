@@ -56,7 +56,8 @@ class UserLibraryPage extends HookWidget {
               .where((element) =>
                   (!element.isFavorite && !element.isDownload) ||
                   element.isNotEmpty)
-              .toList();
+              .toList()
+            ..sort();
           if (library.isEmpty) return const EmptyUserLibrary();
           return ListView.builder(
             itemBuilder: (context, index) {

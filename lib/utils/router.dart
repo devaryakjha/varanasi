@@ -19,6 +19,7 @@ import 'package:varanasi_mobile_app/features/settings/ui/settings_page.dart';
 import 'package:varanasi_mobile_app/features/user-library/ui/user_library_page.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
+import 'package:varanasi_mobile_app/models/playable_item_impl.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
 import 'package:varanasi_mobile_app/widgets/page_with_navbar.dart';
 import 'package:varanasi_mobile_app/widgets/transitions/fade_transition_page.dart';
@@ -88,9 +89,20 @@ final routerConfig = GoRouter(
               builder: (context, state) {
                 final extra = state.extra!;
                 final isMedia = extra is PlayableMedia;
-                context
-                    .read<LibraryCubit>()
-                    .fetchLibrary(extra as PlayableMedia);
+                final isMediaPlaylist = extra is MediaPlaylist;
+                if (isMedia) {
+                  context.read<LibraryCubit>().fetchLibrary(extra);
+                } else {
+                  if (isMediaPlaylist) {
+                    final items = extra.mediaItems ?? [];
+                    if (items.isEmpty) {
+                      context.read<LibraryCubit>().fetchLibrary(
+                          PlayableMediaImpl.fromMediaPlaylist(extra));
+                    } else {
+                      context.read<LibraryCubit>().loadUserLibrary(extra);
+                    }
+                  }
+                }
                 return LibraryPage(
                   source: isMedia ? extra : null,
                   key: state.pageKey,
