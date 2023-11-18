@@ -11,14 +11,14 @@ sealed class UserLibraryState extends Equatable {
 final class UserLibraryInitial extends UserLibraryState {}
 
 class UserLibraryLoaded extends UserLibraryState {
-  final List<UserLibrary> library;
+  final List<MediaPlaylist> library;
 
   const UserLibraryLoaded({
     required this.library,
   });
 
   UserLibraryLoaded copyWith({
-    List<UserLibrary>? library,
+    List<MediaPlaylist>? library,
   }) {
     return UserLibraryLoaded(
       library: library ?? this.library,
@@ -28,14 +28,13 @@ class UserLibraryLoaded extends UserLibraryState {
   @override
   List<Object> get props => [library];
 
-  UserLibrary get favorite => library.firstWhere(
-        (library) => library.id == Favorite.boxKey,
-        orElse: () => Favorite.empty(),
-      );
-
   bool get isEmpty => library.isEmpty;
 
   bool isAdded(MediaPlaylist playlist) {
     return library.any((a) => playlist.id == a.id);
+  }
+
+  MediaPlaylist? get favorite {
+    return library.firstWhereOrNull((e) => e.isFavorite);
   }
 }

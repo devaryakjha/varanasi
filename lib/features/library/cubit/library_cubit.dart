@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
+import 'package:varanasi_mobile_app/cubits/download/download_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/data/library_repository.dart';
-import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/models/sort_type.dart';
@@ -20,26 +20,27 @@ class LibraryCubit extends Cubit<LibraryState> {
 
   static LibraryCubit of(BuildContext context) => context.read<LibraryCubit>();
 
-  Future<void> loadUserLibrary(UserLibrary playlist) async {
+  Future<void> loadUserLibrary(MediaPlaylist playlist) async {
     try {
       emit(const LibraryLoading());
       String link = playlist.images.last.link!;
       if (!appContext.mounted) return;
       final configCubit = appContext.read<ConfigCubit>();
-      PaletteGenerator.fromColors([]);
       if (!appContext.mounted) return;
       final colorPalette = playlist.isDownload && appContext.mounted
           ? PaletteGenerator.fromColors(
               [PaletteColor(appContext.colorScheme.secondaryContainer, 1)])
           : await configCubit.generatePalleteGenerator(link);
       final image = configCubit.getProvider(link);
-      emit(LibraryLoaded(
-        playlist.toMediaPlaylist(),
-        colorPalette!,
-        image,
-        sourceLibrary: playlist,
-      ));
+      if (!appContext.mounted) return;
+      if (playlist.isDownload) {
+        final newPlaylist = appContext.read<DownloadCubit>().toUserLibrary();
+        emit(LibraryLoaded(newPlaylist, colorPalette!, image));
+      } else {
+        emit(LibraryLoaded(playlist, colorPalette!, image));
+      }
     } catch (e, s) {
+      Logger.instance.e(e);
       emit(LibraryError(e, stackTrace: s));
     }
   }

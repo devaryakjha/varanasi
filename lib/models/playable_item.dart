@@ -2,11 +2,11 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:varanasi_mobile_app/models/album.dart';
 import 'package:varanasi_mobile_app/models/app_config.dart';
 import 'package:varanasi_mobile_app/models/download_url.dart';
-import 'package:varanasi_mobile_app/models/image.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
-import 'package:varanasi_mobile_app/models/playable_item_impl.dart';
+import 'package:varanasi_mobile_app/models/playlist.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/configs.dart';
 
@@ -14,7 +14,8 @@ enum PlayableMediaType {
   song(1),
   album(2),
   playlist(3),
-  artist(4);
+  artist(4),
+  download(5);
 
   const PlayableMediaType(this.value);
 
@@ -22,6 +23,8 @@ enum PlayableMediaType {
         'album' => PlayableMediaType.album,
         'playlist' => PlayableMediaType.playlist,
         'artist' => PlayableMediaType.artist,
+        'download' => PlayableMediaType.download,
+        'downloads' => PlayableMediaType.download,
         _ => PlayableMediaType.song
       };
 
@@ -31,6 +34,7 @@ enum PlayableMediaType {
   bool get isAlbum => this == PlayableMediaType.album;
   bool get isPlaylist => this == PlayableMediaType.playlist;
   bool get isArtist => this == PlayableMediaType.artist;
+  bool get isDownload => this == PlayableMediaType.download;
 }
 
 abstract class PlayableMedia extends Equatable {
@@ -40,8 +44,15 @@ abstract class PlayableMedia extends Equatable {
   String get heroTag => itemId;
   String get itemSubtitle;
 
-  bool get preferLinkOverId =>
-      (itemType.isSong || itemType.isAlbum) && itemUrl.isNotEmpty;
+  bool get preferLinkOverId {
+    if (itemType.isSong) {
+      if (itemUrl.contains('.mp4')) {
+        return false;
+      }
+      return itemUrl.isNotEmpty;
+    }
+    return (itemType.isSong || itemType.isAlbum) && itemUrl.isNotEmpty;
+  }
 
   PlayableMediaType get itemType;
   String? get artworkUrl;
@@ -110,24 +121,20 @@ abstract class PlayableMedia extends Equatable {
   /// {@endtemplate}
   Uri get moreInfoUrl {
     return switch (itemType) {
-      PlayableMediaType.song when !preferLinkOverId => Uri.parse(
-          '${appConfig.endpoint.songs!.id}?id=$itemId',
-        ),
+      PlayableMediaType.song when !preferLinkOverId =>
+        Uri.parse('${appConfig.endpoint.songs!.id}?id=$itemId'),
       PlayableMediaType.song => Uri.parse(
           '${appConfig.endpoint.songs!.link}?link=${Uri.encodeComponent(itemUrl)}',
         ),
-      PlayableMediaType.album when preferLinkOverId => Uri.parse(
-          '${appConfig.endpoint.albums!.link}?link=$itemUrl',
-        ),
-      PlayableMediaType.album => Uri.parse(
-          '${appConfig.endpoint.albums!.id}?id=$itemId',
-        ),
-      PlayableMediaType.playlist => Uri.parse(
-          '${appConfig.endpoint.playlists!.id}?id=$itemId',
-        ),
-      PlayableMediaType.artist => Uri.parse(
-          '${appConfig.endpoint.artists?.id}?id=$itemId&language=hindi,english',
-        ),
+      PlayableMediaType.album when preferLinkOverId =>
+        Uri.parse('${appConfig.endpoint.albums!.link}?link=$itemUrl'),
+      PlayableMediaType.album =>
+        Uri.parse('${appConfig.endpoint.albums!.id}?id=$itemId'),
+      PlayableMediaType.playlist =>
+        Uri.parse('${appConfig.endpoint.playlists!.id}?id=$itemId'),
+      PlayableMediaType.artist =>
+        Uri.parse('${appConfig.endpoint.artists?.id}?id=$itemId'),
+      PlayableMediaType.download => Uri.parse(''),
     };
   }
 
@@ -136,24 +143,20 @@ abstract class PlayableMedia extends Equatable {
   /// {@endtemplate}
   String get cacheKey => '$itemId-${itemType.name}';
 
-  MediaPlaylist<T> toMediaPlaylist<T extends PlayableMedia>() {
-    return MediaPlaylist<T>(
+  MediaPlaylist toMediaPlaylist() {
+    return MediaPlaylist(
       title: itemTitle,
       description: itemSubtitle,
       id: itemId,
-      mediaItems: [this as T],
-      images: [Image.fromString(itemUrl)],
-    );
-  }
-
-  PlayableMediaImpl toPlayableMediaImpl() {
-    return PlayableMediaImpl(
-      itemId,
-      itemTitle,
-      itemSubtitle,
-      itemUrl,
-      itemType.name,
-      artworkUrl,
+      mediaItems: [this],
+      images: switch (this) {
+        (Song song) => song.image ?? const [],
+        (Album album) => album.image ?? const [],
+        (Playlist playlist) => playlist.image ?? const [],
+        (_) => const [],
+      },
+      url: itemUrl,
+      type: itemType.name,
     );
   }
 }

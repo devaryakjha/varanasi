@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -28,7 +27,7 @@ class DownloadButton extends StatelessWidget {
           final progress = data?.progress ?? 0;
 
           return IconButton(
-            onPressed: () {
+            onPressed: Feedback.wrapForTap(() {
               final cubit = context.read<DownloadCubit>();
               if (downloaded) {
                 cubit.deleteSingle(media);
@@ -37,8 +36,7 @@ class DownloadButton extends StatelessWidget {
               } else {
                 cubit.downloadSong(media);
               }
-              HapticFeedback.mediumImpact();
-            },
+            }, context),
             icon: DownloadStatus(
               downloading: downloading,
               progress: progress,
@@ -73,8 +71,7 @@ class DownloadPlaylist extends StatelessWidget {
           final downloaded =
               !values.any((element) => !(element?.downloadComplete ?? false));
           return IconButton(
-            onPressed: () {
-              HapticFeedback.mediumImpact();
+            onPressed: Feedback.wrapForTap(() {
               final cubit = context.read<DownloadCubit>();
               if (downloading) {
                 cubit.batchCancel(playlist);
@@ -86,7 +83,7 @@ class DownloadPlaylist extends StatelessWidget {
               }
               context.read<UserLibraryCubit>().addToLibrary(playlist);
               cubit.batchDownload(playlist);
-            },
+            }, context),
             icon: DownloadStatus(
               downloading: downloading,
               downloaded: downloaded,

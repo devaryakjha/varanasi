@@ -1,4 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 
 part 'playable_item_impl.g.dart';
@@ -44,4 +45,37 @@ class PlayableMediaImpl extends PlayableMedia {
 
   @override
   String get itemUrl => _itemUrl;
+
+  Map<String, dynamic> toFirestorePayload() {
+    return {
+      'id': _itemId,
+      'title': _itemTitle,
+      'subtitle': _itemSubtitle,
+      'url': _itemUrl,
+      'type': _itemType,
+      'artworkUrl': _artworkUrl,
+    };
+  }
+
+  factory PlayableMediaImpl.fromFirestorePayload(Map<String, dynamic> payload) {
+    return PlayableMediaImpl(
+      payload['id'],
+      payload['title'],
+      payload['subtitle'],
+      payload['url'],
+      payload['type'],
+      payload['artworkUrl'],
+    );
+  }
+
+  factory PlayableMediaImpl.fromMediaPlaylist(MediaPlaylist mediaPlaylist) {
+    return PlayableMediaImpl(
+      mediaPlaylist.id!,
+      mediaPlaylist.title!,
+      mediaPlaylist.description!,
+      mediaPlaylist.url ?? '',
+      mediaPlaylist.type!,
+      mediaPlaylist.images.lastOrNull?.link,
+    );
+  }
 }

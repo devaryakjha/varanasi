@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
 import 'package:varanasi_mobile_app/features/home/bloc/home_bloc.dart';
 import 'package:varanasi_mobile_app/features/home/data/helpers/home_state_selectors.dart';
 import 'package:varanasi_mobile_app/features/home/ui/home_widgets/spacer.dart';
 import 'package:varanasi_mobile_app/features/home/ui/home_widgets/trending/trending.dart';
 import 'package:varanasi_mobile_app/gen/assets.gen.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
+import 'package:varanasi_mobile_app/models/playable_item_impl.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/generate_greeting.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
@@ -64,14 +66,14 @@ class HomePage extends StatelessWidget {
           (HomeErrorState state) => ErrorPage(
               error: state.error,
               retryCallback: () {
-                context.read<HomeBloc>().fetchModule(refetch: true);
+                context.read<HomeCubit>().fetchModule(refetch: true);
               },
             ),
           _ => const SizedBox.shrink(),
         },
         child: RefreshIndicator(
           onRefresh: () async {
-            context.read<HomeBloc>().fetchModule(refetch: true);
+            context.read<HomeCubit>().fetchModule(refetch: true);
           },
           child: ListView.builder(
             itemCount: mediaPlaylist.length,
@@ -106,12 +108,14 @@ class RecentlyPlayed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: RecentMediaService.watchRecentMedia(),
+      stream: RecentMediaService.recentMediaStream,
       builder: (context, snapshot) {
         final mediaItems = snapshot.data ?? [];
         if (mediaItems.isEmpty) {
           return const SizedBox.shrink();
         }
+        final parsed =
+            mediaItems.map(PlayableMediaImpl.fromMediaPlaylist).toList();
         return Padding(
           padding: const EdgeInsets.only(top: 30.0),
           child: MediaCarousel(
@@ -119,8 +123,19 @@ class RecentlyPlayed extends StatelessWidget {
               id: 'recently-played',
               title: 'Recently Played',
               description: 'Your recently played songs',
-              mediaItems: snapshot.data,
+              mediaItems: parsed,
+              url: null,
             ),
+            onItemTap: (index) {
+              final item = mediaItems[index];
+              if (item.isSong) {
+                context
+                    .read<MediaPlayerCubit>()
+                    .playFromSong(PlayableMediaImpl.fromMediaPlaylist(item));
+              } else {
+                context.push(AppRoutes.library.path, extra: item);
+              }
+            },
           ),
         );
       },

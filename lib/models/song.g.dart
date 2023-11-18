@@ -137,14 +137,16 @@ Song _$SongFromJson(Map<String, dynamic> json) => Song(
 Map<String, dynamic> _$SongToJson(Song instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'album': instance.album,
+      'album': instance.album?.toJson(),
       'year': instance.year,
       'releaseDate': instance.releaseDate,
       'duration': instance.duration,
       'label': instance.label,
-      'primaryArtists': instance.primaryArtists,
+      'primaryArtists':
+          instance.primaryArtists?.map((e) => e.toJson()).toList(),
       'primaryArtistsId': instance.primaryArtistsId,
-      'featuredArtists': instance.featuredArtists,
+      'featuredArtists':
+          instance.featuredArtists?.map((e) => e.toJson()).toList(),
       'featuredArtistsId': instance.featuredArtistsId,
       'explicitContent': instance.explicitContent,
       'playCount': instance.playCount,
@@ -152,7 +154,7 @@ Map<String, dynamic> _$SongToJson(Song instance) => <String, dynamic>{
       'hasLyrics': instance.hasLyrics,
       'url': instance.url,
       'copyright': instance.copyright,
-      'image': instance.image,
-      'downloadUrl': instance.downloadUrl,
+      'image': instance.image?.map((e) => e.toJson()).toList(),
+      'downloadUrl': instance.downloadUrl?.map((e) => e.toJson()).toList(),
       'description': instance.description,
     };

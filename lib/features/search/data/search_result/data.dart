@@ -110,26 +110,31 @@ final class AllSearchResult extends SearchResult {
             return MediaPlaylist(
               mediaItems: e.results,
               title: 'Top Queries',
+              url: null,
             );
           } else if (e is Songs) {
             return MediaPlaylist(
               mediaItems: e.results,
               title: 'Songs',
+              url: null,
             );
           } else if (e is Albums) {
             return MediaPlaylist(
               mediaItems: e.results,
               title: 'Albums',
+              url: null,
             );
           } else if (e is Artists) {
             return MediaPlaylist(
               mediaItems: e.results,
               title: 'Artists',
+              url: null,
             );
           } else if (e is Playlists) {
             return MediaPlaylist(
               mediaItems: e.results,
               title: 'Playlists',
+              url: null,
             );
           } else {
             throw Exception('Unknown type');

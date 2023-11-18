@@ -16,10 +16,10 @@ import 'package:varanasi_mobile_app/features/session/ui/auth_page.dart';
 import 'package:varanasi_mobile_app/features/session/ui/login_page.dart';
 import 'package:varanasi_mobile_app/features/session/ui/signup_page.dart';
 import 'package:varanasi_mobile_app/features/settings/ui/settings_page.dart';
-import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
 import 'package:varanasi_mobile_app/features/user-library/ui/user_library_page.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
+import 'package:varanasi_mobile_app/models/playable_item_impl.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
 import 'package:varanasi_mobile_app/widgets/page_with_navbar.dart';
 import 'package:varanasi_mobile_app/widgets/transitions/fade_transition_page.dart';
@@ -77,7 +77,7 @@ final routerConfig = GoRouter(
                 return NoTransitionPage(
                   child: BlocProvider(
                     lazy: false,
-                    create: (context) => HomeBloc()..fetchModule(),
+                    create: (context) => HomeCubit()..init(),
                     child: const HomePage(),
                   ),
                 );
@@ -89,18 +89,28 @@ final routerConfig = GoRouter(
               builder: (context, state) {
                 final extra = state.extra!;
                 final isMedia = extra is PlayableMedia;
-                final child = LibraryPage(
-                  source: isMedia ? extra : null,
-                  key: state.pageKey,
-                );
+                final isMediaPlaylist = extra is MediaPlaylist;
                 if (isMedia) {
                   context.read<LibraryCubit>().fetchLibrary(extra);
                 } else {
-                  context
-                      .read<LibraryCubit>()
-                      .loadUserLibrary(extra as UserLibrary);
+                  if (isMediaPlaylist) {
+                    if (extra.isDownload) {
+                      context.read<LibraryCubit>().loadUserLibrary(extra);
+                    } else {
+                      final items = extra.mediaItems ?? [];
+                      if (items.isEmpty) {
+                        context.read<LibraryCubit>().fetchLibrary(
+                            PlayableMediaImpl.fromMediaPlaylist(extra));
+                      } else {
+                        context.read<LibraryCubit>().loadUserLibrary(extra);
+                      }
+                    }
+                  }
                 }
-                return child;
+                return LibraryPage(
+                  source: isMedia ? extra : null,
+                  key: state.pageKey,
+                );
               },
               routes: [
                 GoRoute(

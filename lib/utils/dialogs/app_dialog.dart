@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/helpers/get_app_context.dart';
+import 'package:varanasi_mobile_app/widgets/input_field.dart';
 
 enum AppDialogAction {
   cancel,
@@ -27,7 +28,7 @@ class AppDialog {
     bool isDestructiveAction = false,
     TextStyle? textStyle,
   }) {
-    final ThemeData theme = Theme.of(context);
+    final theme = context.theme;
     switch (theme.platform) {
       case TargetPlatform.android:
       case TargetPlatform.fuchsia:
@@ -195,5 +196,85 @@ class AppDialog {
           builder: builder,
         );
     }
+  }
+
+  static Future<T?> showInputDialog<T>({
+    BuildContext? context,
+    required String title,
+    required ValueChanged<String> onConfirm,
+    String? placeholder,
+    VoidCallback? onCancel,
+    String cancelLabel = 'Cancel',
+    String confirmLabel = 'Yes',
+    AppDialogAction defaultAction = AppDialogAction.cancel,
+    TextStyle? titleStyle,
+    TextStyle? messageStyle,
+    TextStyle? cancelLabelStyle,
+    TextStyle? confirmLabelStyle,
+    T Function()? onWillPop,
+    String initialValue = '',
+    TextEditingController? controller,
+  }) {
+    controller ??= TextEditingController(text: initialValue);
+
+    Widget buildInputField(BuildContext context) {
+      switch (context.theme.platform) {
+        case TargetPlatform.android:
+        case TargetPlatform.fuchsia:
+        case TargetPlatform.linux:
+        case TargetPlatform.windows:
+          return InputFormField.small(
+            controller: controller,
+            autofocus: true,
+            style: context.textTheme.bodyMedium,
+            decoration: filledInputDecorationMedium(context, noBorder: true),
+          );
+        case TargetPlatform.iOS:
+        case TargetPlatform.macOS:
+          return CupertinoTextField(
+            controller: controller,
+            placeholder: placeholder,
+            autofocus: true,
+            style: context.textTheme.bodyMedium,
+          );
+      }
+    }
+
+    return showAdaptiveDialog<T>(
+      context: context ?? appContext,
+      builder: (context) {
+        return AlertDialog.adaptive(
+          title: Text(title, style: titleStyle),
+          titleTextStyle: titleStyle,
+          content: Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: buildInputField(context),
+          ),
+          contentTextStyle: messageStyle,
+          actions: [
+            _adaptiveAction(
+              isDefaultAction: defaultAction.isCancel,
+              context: context,
+              onPressed: () {
+                context.pop();
+                onCancel?.call();
+              },
+              textStyle: cancelLabelStyle,
+              child: Text(cancelLabel, style: cancelLabelStyle),
+            ),
+            _adaptiveAction(
+              isDefaultAction: defaultAction.isConfirm,
+              context: context,
+              onPressed: () {
+                context.pop(onWillPop?.call());
+                onConfirm(controller?.text ?? initialValue);
+              },
+              child: Text(confirmLabel, style: confirmLabelStyle),
+              textStyle: confirmLabelStyle,
+            ),
+          ],
+        );
+      },
+    );
   }
 }

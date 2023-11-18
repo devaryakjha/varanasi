@@ -1,57 +1,96 @@
-import 'package:hive_flutter/adapters.dart';
-import 'package:varanasi_mobile_app/features/user-library/data/user_library.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:varanasi_mobile_app/models/image.dart';
+import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
-import 'package:varanasi_mobile_app/utils/constants/strings.dart';
+import 'package:varanasi_mobile_app/utils/logger.dart';
+import 'package:varanasi_mobile_app/utils/services/firestore_service.dart';
 
 class UserLibraryRepository {
   UserLibraryRepository._();
 
-  static final UserLibraryRepository _instance = UserLibraryRepository._();
+  static final instance = UserLibraryRepository._();
 
-  factory UserLibraryRepository() => _instance;
+  factory UserLibraryRepository() => instance;
 
-  late final Box<UserLibrary> _box;
+  CollectionReference<Map<String, dynamic>> get _baseCollection =>
+      FirestoreService.getUserDocument().collection('user-library');
 
-  Box<UserLibrary> get box => _box;
+  BehaviorSubject<List<MediaPlaylist>> librariesStream =
+      BehaviorSubject.seeded([]);
+
+  List<MediaPlaylist> get libraries => librariesStream.value;
 
   Future<void> init() async {
-    _box = await Hive.openBox<UserLibrary>(AppStrings.userLibraryCacheKey);
+    FirestoreService.getUserDocument()
+        .collection('user-library')
+        .snapshots()
+        .listen((event) {
+      for (var element in event.docChanges) {
+        final library = MediaPlaylist.fromFirestore(element.doc);
+        if (element.type == DocumentChangeType.added) {
+          librariesStream.value = [...librariesStream.value, library];
+        } else if (element.type == DocumentChangeType.modified) {
+          librariesStream.value = [
+            ...librariesStream.value
+                .where((element) => element.id != library.id),
+            library
+          ];
+        } else if (element.type == DocumentChangeType.removed) {
+          librariesStream.value = [
+            ...librariesStream.value
+                .where((element) => element.id != library.id),
+          ];
+        }
+      }
+    });
   }
 
-  List<UserLibrary> getLibraries() => _box.values.toList();
+  bool libraryExists(String id) => libraries.any((element) => element.id == id);
 
-  bool libraryExists(String id) => _box.containsKey(id);
+  Future<void> addLibrary(MediaPlaylist library) async {
+    await _baseCollection.doc(library.id).set(library.toFirestorePayload());
+  }
 
-  Future<void> addLibrary<E extends UserLibrary>(E library) =>
-      _box.put(library.id, library);
+  Future<void> updateLibrary(MediaPlaylist library) async {
+    await _baseCollection.doc(library.id).update(library.toFirestorePayload());
+  }
 
-  Future<void> updateLibrary<E extends UserLibrary>(E library) =>
-      _box.put(library.id, library);
+  Future<void> deleteLibrary(MediaPlaylist library) async {
+    await _baseCollection.doc(library.id).delete();
+  }
 
-  Future<void> deleteLibrary<E extends UserLibrary>(E library) =>
-      _box.delete(library.id);
-
-  Future<void> clearLibrary() => _box.clear();
+  MediaPlaylist get favouriteSongs =>
+      libraries.firstWhereOrNull((element) => element.isFavorite) ??
+      MediaPlaylist(
+        type: 'favorite',
+        images: const [Image.likedSongs],
+        id: "favorite",
+        title: "Liked Songs",
+        description: "Songs you liked",
+        url: null,
+      );
 
   Future<void> favoriteSong(Song song) async {
-    final favourites = _box.get(
-      Favorite.boxKey,
-      defaultValue: Favorite.empty(),
-    )!;
-    final newFavourites = favourites.copyWith(
-      mediaItems: [...favourites.mediaItems, song],
-    );
-    await _box.put(Favorite.boxKey, newFavourites);
+    try {
+      final hasFavoriteSongs = libraries.any((element) => element.isFavorite);
+      if (!hasFavoriteSongs) {
+        await addLibrary(favouriteSongs.copyWith(mediaItems: [song]));
+      }
+      // append song to favoriteSongs directly in firestore
+      await _baseCollection.doc(favouriteSongs.id).update({
+        'mediaItems': FieldValue.arrayUnion([song.toJson()]),
+      });
+    } catch (e) {
+      Logger.instance.d(e.toString());
+    }
   }
 
   Future<void> unfavoriteSong(Song song) async {
-    final favourites = _box.get(
-      Favorite.boxKey,
-      defaultValue: Favorite.empty(),
-    )!;
-    final newFavourites = favourites.copyWith(
-      mediaItems: favourites.mediaItems.where((e) => e.id != song.id).toList(),
-    );
-    await _box.put(Favorite.boxKey, newFavourites);
+    // remove song from favoriteSongs directly in firestore
+    await _baseCollection.doc(favouriteSongs.id).update({
+      'mediaItems': FieldValue.arrayRemove([song.toJson()]),
+    });
   }
 }

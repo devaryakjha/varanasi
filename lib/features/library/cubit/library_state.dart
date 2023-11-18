@@ -27,7 +27,6 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
   final PaletteGenerator colorPalette;
   final ImageProvider image;
   final bool showTitleInAppBar;
-  final UserLibrary? sourceLibrary;
   final PlayableMedia? media;
 
   const LibraryLoaded(
@@ -35,7 +34,6 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
     this.colorPalette,
     this.image, {
     this.showTitleInAppBar = false,
-    this.sourceLibrary,
     this.media,
   });
 
@@ -45,7 +43,6 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
         colorPalette,
         image,
         showTitleInAppBar,
-        sourceLibrary,
         media,
       ];
 
@@ -86,7 +83,6 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
     PaletteGenerator? colorPalette,
     ImageProvider? image,
     bool? showTitleInAppBar,
-    UserLibrary? sourceLibrary,
     PlayableMedia? media,
   }) {
     return LibraryLoaded<T>(
@@ -94,7 +90,6 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
       colorPalette ?? this.colorPalette,
       image ?? this.image,
       showTitleInAppBar: showTitleInAppBar ?? this.showTitleInAppBar,
-      sourceLibrary: sourceLibrary ?? this.sourceLibrary,
       media: media ?? this.media,
     );
   }
@@ -102,11 +97,11 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
   List<T> sortedMediaItems(SortBy sortBy) {
     return switch (sortBy) {
       SortBy.title => () {
-          final items = [...playlist.mediaItems!];
+          List<T> items = playlist.mediaItems ?? [];
           items.sort((a, b) => a.itemTitle.compareTo(b.itemTitle));
           return items;
         },
-      _ => () => playlist.mediaItems!,
+      _ => () => playlist.mediaItems ?? [],
     }();
   }
 

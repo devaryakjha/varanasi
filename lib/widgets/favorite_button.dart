@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:varanasi_mobile_app/features/user-library/cubit/user_library_cubit.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
@@ -21,18 +20,18 @@ class FavoriteButton extends StatelessWidget {
         if (state is! UserLibraryLoaded || source == null || source is! Song) {
           return const SizedBox.shrink();
         }
-        final isAdded =
-            state.favorite.mediaItems.any((item) => item.id == source.id);
+        final isAdded = state.favorite?.mediaItems
+                ?.any((item) => item.itemId == source.id) ??
+            false;
         return IconButton(
-          onPressed: () {
+          onPressed: Feedback.wrapForTap(() {
             final cubit = context.read<UserLibraryCubit>();
             if (isAdded) {
               cubit.unfavoriteSong(source);
             } else {
               cubit.favoriteSong(source);
             }
-            HapticFeedback.lightImpact();
-          },
+          }, context),
           icon: isAdded
               ? const Icon(Icons.favorite)
               : const Icon(Icons.favorite_border_rounded),

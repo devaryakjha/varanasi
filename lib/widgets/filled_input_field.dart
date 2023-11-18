@@ -56,17 +56,31 @@ class FilledInputField extends InputFormField {
     super.validator,
     super.inputType,
     required BuildContext context,
+    bool noBorder = false,
   }) : super(
-          decoration: decoration.copyWith(
-            filled: true,
-            isDense: true,
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: context.colorScheme.primary),
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(4),
-            ),
+          decoration: filledInputDecorationMedium(
+            context,
+            decoration: decoration,
           ),
         );
+}
+
+InputDecoration filledInputDecorationMedium(
+  BuildContext context, {
+  InputDecoration? decoration,
+  bool noBorder = false,
+}) {
+  return (decoration ?? const InputDecoration()).copyWith(
+    filled: true,
+    isDense: true,
+    focusedBorder: noBorder
+        ? null
+        : OutlineInputBorder(
+            borderSide: BorderSide(color: context.colorScheme.primary),
+          ),
+    border: OutlineInputBorder(
+      borderSide: BorderSide.none,
+      borderRadius: BorderRadius.circular(4),
+    ),
+  );
 }

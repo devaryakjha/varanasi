@@ -4,7 +4,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:varanasi_mobile_app/features/home/data/models/adapters.dart';
 import 'package:varanasi_mobile_app/models/download.dart';
-import 'package:varanasi_mobile_app/models/recent_media.dart';
 
 import 'app.dart';
 import 'models/adapters.dart';
@@ -19,7 +18,6 @@ Future<void> main() async {
   await AppConfig.openBox();
   await Hive.openBox(AppStrings.commonCacheBoxName);
   await Hive.openBox<DownloadedMedia>(AppStrings.downloadBoxName);
-  await Hive.openBox<RecentMedia>(AppStrings.recentMediaBoxName);
   FlutterNativeSplash.remove();
   runApp(const Varanasi());
 }

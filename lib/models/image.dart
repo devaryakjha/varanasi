@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'image.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 @HiveType(typeId: 3)
 class Image extends Equatable {
   @HiveField(0)

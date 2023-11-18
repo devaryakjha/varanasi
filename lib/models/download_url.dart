@@ -38,7 +38,7 @@ enum DownloadQuality {
       };
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 @HiveType(typeId: 10)
 class DownloadUrl extends Equatable {
   @HiveField(0)

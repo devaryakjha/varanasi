@@ -23,6 +23,7 @@ class MediaPlaylistAdapter<T extends PlayableMedia>
       description: fields[2] as String?,
       mediaItems: (fields[3] as List?)?.cast<T>(),
       images: (fields[4] as List).cast<Image>(),
+      url: fields[5] as String?,
     );
   }
 
@@ -39,7 +40,9 @@ class MediaPlaylistAdapter<T extends PlayableMedia>
       ..writeByte(3)
       ..write(obj.mediaItems)
       ..writeByte(4)
-      ..write(obj.images);
+      ..write(obj.images)
+      ..writeByte(5)
+      ..write(obj.url);
   }
 
   @override

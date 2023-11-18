@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
-import 'package:varanasi_mobile_app/models/recent_media.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
 import 'package:varanasi_mobile_app/widgets/downloads_icon.dart';
@@ -14,6 +13,7 @@ class MediaCard extends StatelessWidget {
   final PlayableMedia media;
   final bool isFirst, isLast;
   final String heroTagPrefix;
+  final VoidCallback? onTap;
 
   const MediaCard({
     super.key,
@@ -21,6 +21,7 @@ class MediaCard extends StatelessWidget {
     this.isFirst = false,
     this.isLast = false,
     String? heroTagPrefix,
+    this.onTap,
   }) : heroTagPrefix = heroTagPrefix ?? '';
 
   double get dimension => 120;
@@ -45,79 +46,71 @@ class MediaCard extends StatelessWidget {
     final isPlaying = context.select((MediaPlayerCubit value) {
       return value.state.isPlaying;
     });
-    return Hero(
-      tag: heroTagPrefix + media.heroTag,
-      child: GestureDetector(
-        onTap: () {
-          final item = media;
-          if (item is RecentMedia) {
-            context.push(
-              AppRoutes.library.path,
-              extra: item.sourceLibrary ?? item.sourceMedia,
-            );
-          } else {
-            if (item.itemType.isSong) {
-              context.read<MediaPlayerCubit>().playFromSong(item);
-            } else {
-              context.push(AppRoutes.library.path, extra: item);
-            }
-          }
-        },
-        child: Padding(
-          padding: padding,
-          child: SizedBox.square(
-            dimension: dimension,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Visibility(
-                    replacement: DownloadsIcon(dimension: dimension),
-                    visible: media is! RecentMedia ||
-                        !((media as RecentMedia).sourceLibrary?.isDownload ??
-                            false),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: CachedNetworkImage(
-                        fit: BoxFit.cover,
-                        width: dimension,
-                        height: dimension,
-                        imageUrl: media.artworkUrl ?? '',
-                      ),
+    return GestureDetector(
+      onTap: () {
+        if (onTap != null) {
+          onTap!();
+          return;
+        }
+        final item = media;
+        if (item.itemType.isSong) {
+          context.read<MediaPlayerCubit>().playFromSong(item);
+        } else {
+          context.push(AppRoutes.library.path, extra: item);
+        }
+      },
+      child: Padding(
+        padding: padding,
+        child: SizedBox.square(
+          dimension: dimension,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Visibility(
+                  replacement: DownloadsIcon(dimension: dimension),
+                  visible: true,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: CachedNetworkImage(
+                      fit: BoxFit.cover,
+                      width: dimension,
+                      height: dimension,
+                      imageUrl: media.artworkUrl ?? '',
                     ),
                   ),
                 ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    if (isPlaylistSelected) ...[
-                      MiniMusicVisualizer(
-                        key: ValueKey(media.itemId),
-                        width: 2,
-                        height: 12,
-                        animating: isPlaying,
-                      ),
-                      const SizedBox(width: 8),
-                    ],
-                    Expanded(
-                      child: Text(
-                        title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: context.textTheme.labelLarge,
-                      ),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  if (isPlaylistSelected) ...[
+                    MiniMusicVisualizer(
+                      key: ValueKey(media.itemId),
+                      width: 2,
+                      height: 12,
+                      animating: isPlaying,
                     ),
+                    const SizedBox(width: 8),
                   ],
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: context.textTheme.labelSmall,
-                ),
-              ],
-            ),
+                  Expanded(
+                    child: Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.textTheme.labelLarge,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Text(
+                subtitle,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: context.textTheme.labelSmall,
+              ),
+            ],
           ),
         ),
       ),

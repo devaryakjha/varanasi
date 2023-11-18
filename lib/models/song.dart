@@ -10,7 +10,7 @@ import 'image.dart';
 
 part 'song.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 @HiveType(typeId: 12)
 class Song extends PlayableMedia {
   @HiveField(0)

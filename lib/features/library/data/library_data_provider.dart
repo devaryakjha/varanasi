@@ -21,7 +21,9 @@ class LibraryDataProvider with DataProviderProtocol {
         options: CommonOptions(
           transformer: (response) async {
             final response1 = await compute(
-                parseMediaPlaylist, response as Map<String, dynamic>);
+              parseMediaPlaylist,
+              response as Map<String, dynamic>,
+            );
             return response1;
           },
         ),
@@ -44,17 +46,25 @@ class LibraryDataProvider with DataProviderProtocol {
         json,
         () => '',
       ).capitalize;
+      final url = keepIteratingTillNotNull<String>(
+        ['url', 'link'],
+        json,
+        () => '',
+      );
       return MediaPlaylist(
         id: json['id'],
         description: description,
         title: json['name'],
         mediaItems: songs,
         images: images,
+        url: url,
+        type: json['type'],
       );
     } on Exception {
       return MediaPlaylist(
         id: json['id'],
         mediaItems: const [],
+        url: null,
       );
     }
   }
