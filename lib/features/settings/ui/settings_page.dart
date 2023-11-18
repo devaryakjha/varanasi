@@ -14,8 +14,21 @@ import 'package:varanasi_mobile_app/utils/dialogs/app_dialog.dart';
 import 'package:varanasi_mobile_app/utils/extensions/flex_scheme.dart';
 import 'package:varanasi_mobile_app/utils/services/recent_media_service.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
+
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  late final TextEditingController _nameEditingController;
+
+  @override
+  void initState() {
+    _nameEditingController = TextEditingController();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +38,12 @@ class SettingsPage extends StatelessWidget {
     final packageInfo = context.select(
       (ConfigCubit cubit) => cubit.configLoadedState.packageInfo,
     );
+    final user = context.select(
+      (SessionCubit cubit) => switch (cubit.state) {
+        (Authenticated state) => state.user,
+        (_) => null,
+      },
+    );
     return Scaffold(
       appBar: AppBar(title: const Text("Settings"), centerTitle: true),
       body: SettingsList(
@@ -32,6 +51,44 @@ class SettingsPage extends StatelessWidget {
           SettingsSection(
             title: const Text("Account"),
             tiles: [
+              SettingsTile(
+                leading: const Icon(Icons.person_outline),
+                title: const Text("Name"),
+                onPressed: (context) {
+                  _nameEditingController.text = user?.displayName ?? "";
+                  AppDialog.showInputDialog(
+                    context: context,
+                    title: "Change name",
+                    onConfirm: context.read<SessionCubit>().updateName,
+                    confirmLabel: "Change",
+                    initialValue: user?.displayName ?? "",
+                    placeholder: "Enter your name",
+                    controller: _nameEditingController,
+                  );
+                },
+                trailing: Row(
+                  children: [
+                    Text(user?.displayName ?? ""),
+                    const SizedBox(width: 8),
+                    const Icon(Icons.edit_outlined, size: 16),
+                  ],
+                ),
+              ),
+              SettingsTile(
+                leading: const Icon(Icons.email_outlined),
+                title: const Text("Email"),
+                value: Text(user?.email ?? ""),
+              ),
+              SettingsTile(
+                leading: const Icon(Icons.image_outlined),
+                title: const Text("Avatar"),
+                trailing: CircleAvatar(
+                  radius: 14,
+                  backgroundImage: user?.photoURL == null
+                      ? null
+                      : NetworkImage(user?.photoURL ?? ""),
+                ),
+              ),
               SettingsTile(
                 title: const Text("Sign out"),
                 leading: const Icon(Icons.logout_outlined),

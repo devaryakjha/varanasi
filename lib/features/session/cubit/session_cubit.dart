@@ -82,6 +82,18 @@ class SessionCubit extends AppCubit<SessionState> {
     }
   }
 
+  Future<void> updateName(String name) async {
+    try {
+      final user = _auth.currentUser;
+      await user?.updateDisplayName(name);
+      _logger.d(user?.toString());
+    } on FirebaseAuthException catch (e) {
+      _handleException(e);
+    } catch (e) {
+      _logger.d(e.toString());
+    }
+  }
+
   Future<void> signOut() async {
     emit(Authenticating());
     try {

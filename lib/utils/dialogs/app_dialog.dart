@@ -27,7 +27,7 @@ class AppDialog {
     bool isDestructiveAction = false,
     TextStyle? textStyle,
   }) {
-    final ThemeData theme = Theme.of(context);
+    final theme = context.theme;
     switch (theme.platform) {
       case TargetPlatform.android:
       case TargetPlatform.fuchsia:
@@ -195,5 +195,65 @@ class AppDialog {
           builder: builder,
         );
     }
+  }
+
+  static Future<T?> showInputDialog<T>({
+    BuildContext? context,
+    required String title,
+    required ValueChanged<String> onConfirm,
+    String? placeholder,
+    VoidCallback? onCancel,
+    String cancelLabel = 'Cancel',
+    String confirmLabel = 'Yes',
+    AppDialogAction defaultAction = AppDialogAction.cancel,
+    TextStyle? titleStyle,
+    TextStyle? messageStyle,
+    TextStyle? cancelLabelStyle,
+    TextStyle? confirmLabelStyle,
+    T Function()? onWillPop,
+    String initialValue = '',
+    TextEditingController? controller,
+  }) {
+    return showAdaptiveDialog<T>(
+      context: context ?? appContext,
+      builder: (context) {
+        return AlertDialog.adaptive(
+          title: Text(title, style: titleStyle),
+          titleTextStyle: titleStyle,
+          content: Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: CupertinoTextField(
+              controller: controller,
+              placeholder: placeholder,
+              autofocus: true,
+              style: context.textTheme.bodyMedium,
+            ),
+          ),
+          contentTextStyle: messageStyle,
+          actions: [
+            _adaptiveAction(
+              isDefaultAction: defaultAction.isCancel,
+              context: context,
+              onPressed: () {
+                context.pop();
+                onCancel?.call();
+              },
+              textStyle: cancelLabelStyle,
+              child: Text(cancelLabel, style: cancelLabelStyle),
+            ),
+            _adaptiveAction(
+              isDefaultAction: defaultAction.isConfirm,
+              context: context,
+              onPressed: () {
+                context.pop(onWillPop?.call());
+                onConfirm(controller?.text ?? initialValue);
+              },
+              child: Text(confirmLabel, style: confirmLabelStyle),
+              textStyle: confirmLabelStyle,
+            ),
+          ],
+        );
+      },
+    );
   }
 }
