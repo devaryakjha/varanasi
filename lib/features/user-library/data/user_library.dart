@@ -78,6 +78,7 @@ class UserLibrary with EquatableMixin implements Comparable<UserLibrary> {
       images: images,
       mediaItems: mediaItems,
       url: url,
+      type: type.type,
     );
   }
 

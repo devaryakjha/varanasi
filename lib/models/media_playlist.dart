@@ -23,6 +23,8 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
   final List<Image> images;
   @HiveField(5)
   final String? url;
+  @HiveField(6)
+  final String? type;
 
   /// Default constructor for [MediaPlaylist].
   MediaPlaylist({
@@ -32,6 +34,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
     List<T>? mediaItems,
     this.images = const [],
     required this.url,
+    this.type = 'playlist',
   }) : mediaItems =
             // TODO: Remove this when the API is fixed
             mediaItems?.where((element) => !element.itemType.isArtist).toList();
@@ -42,7 +45,8 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
         description = null,
         mediaItems = null,
         images = const [],
-        url = null;
+        url = null,
+        type = null;
 
   /// Returns a new [MediaPlaylist] with prefilled values for [title] as `Popular Today`.
   factory MediaPlaylist.popularToday(
@@ -123,7 +127,10 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable {
       description: description,
       mediaItems: mediaItems?.whereType<Song>().toList() ?? [],
       images: images,
-      type: UserLibraryType.playlist,
+      type: UserLibraryType.values.firstWhere(
+        (element) => element.name == type,
+        orElse: () => UserLibraryType.playlist,
+      ),
       url: url,
     );
   }
