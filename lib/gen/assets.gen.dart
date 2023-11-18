@@ -3,13 +3,13 @@
 ///  FlutterGen
 /// *****************************************************
 
-import 'package:flutter/services.dart';
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal,deprecated_member_use
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 
 class $AssetsIconGen {
@@ -41,6 +41,9 @@ class $AssetsIconGen {
   SvgGenImage get downloading =>
       const SvgGenImage('assets/icon/downloading.svg');
 
+  /// File path: assets/icon/google.svg
+  SvgGenImage get google => const SvgGenImage('assets/icon/google.svg');
+
   $AssetsIconNavGen get nav => const $AssetsIconNavGen();
 
   /// File path: assets/icon/shuffle.svg
@@ -55,6 +58,7 @@ class $AssetsIconGen {
         download,
         downloadFilled,
         downloading,
+        google,
         shuffle
       ];
 }
