@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:varanasi_mobile_app/features/user-library/cubit/user_library_cubit.dart';
 import 'package:varanasi_mobile_app/utils/app_cubit.dart';
 import 'package:varanasi_mobile_app/utils/app_snackbar.dart';
+import 'package:varanasi_mobile_app/utils/helpers/get_app_context.dart';
 import 'package:varanasi_mobile_app/utils/logger.dart';
 import 'package:varanasi_mobile_app/utils/services/firestore_service.dart';
 
@@ -26,6 +29,10 @@ class SessionCubit extends AppCubit<SessionState> {
     }).listen((state) {
       if (state is Authenticated) {
         FirestoreService.init();
+        appContext.read<UserLibraryCubit>().setupListeners();
+      } else {
+        FirestoreService.dispose();
+        appContext.read<UserLibraryCubit>().disposeListeners();
       }
       emit(state);
     });

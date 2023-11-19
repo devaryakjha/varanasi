@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
@@ -22,8 +24,12 @@ class UserLibraryRepository {
 
   List<MediaPlaylist> get libraries => librariesStream.value;
 
-  Future<void> init() async {
-    FirestoreService.getUserDocument()
+  Future<void> init() async {}
+
+  StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? _subscription;
+
+  void setupListeners() {
+    _subscription = FirestoreService.getUserDocument()
         .collection('user-library')
         .snapshots()
         .listen((event) {
@@ -45,6 +51,11 @@ class UserLibraryRepository {
         }
       }
     });
+  }
+
+  void dispose() {
+    _subscription?.cancel();
+    librariesStream.add([]);
   }
 
   bool libraryExists(String id) => libraries.any((element) => element.id == id);

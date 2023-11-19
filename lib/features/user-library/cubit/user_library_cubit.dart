@@ -16,11 +16,17 @@ class UserLibraryCubit extends AppCubit<UserLibraryState> {
   UserLibraryRepository get _repository => UserLibraryRepository();
 
   @override
-  FutureOr<void> init() async {
+  FutureOr<void> init() async {}
+
+  void setupListeners() {
     _repository.librariesStream.listen((event) {
       emit(UserLibraryLoaded(library: event));
     });
-    await _repository.init();
+    _repository.setupListeners();
+  }
+
+  void disposeListeners() {
+    _repository.dispose();
   }
 
   Future<void> favoriteSong(Song song) async {
