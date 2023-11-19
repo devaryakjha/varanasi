@@ -8,7 +8,7 @@ class FirestoreService {
 
   static FirebaseFirestore get _baseFirestore => FirebaseFirestore.instance;
 
-  static late final DocumentReference<Map<String, dynamic>> userDocument;
+  static DocumentReference<Map<String, dynamic>>? userDocument;
 
   static bool initialised = false;
 
@@ -22,9 +22,9 @@ class FirestoreService {
     initialised = true;
     final user = FirebaseAuth.instance.currentUser!;
     userDocument = _baseFirestore.collection('users').doc(user.uid);
-    userDocument.get().then((value) {
+    userDocument?.get().then((value) {
       if (!value.exists) {
-        userDocument.set({
+        userDocument?.set({
           'name': user.displayName,
           'email': user.email,
           'photoUrl': user.photoURL,
@@ -35,10 +35,14 @@ class FirestoreService {
   }
 
   static Future<void> update(Map<String, dynamic> data) async {
-    await userDocument.update(data);
+    await userDocument?.update(data);
   }
 
   static Future<void> delete() async {
-    await userDocument.delete();
+    await userDocument?.delete();
+  }
+
+  static Future<void> dispose() async {
+    initialised = false;
   }
 }

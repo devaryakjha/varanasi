@@ -46,7 +46,7 @@ class StreamListener<T> extends ChangeNotifier {
 }
 
 final routerConfig = GoRouter(
-  initialLocation: AppRoutes.home.path,
+  initialLocation: AppRoutes.authentication.path,
   navigatorKey: rootNavigatorKey,
   refreshListenable: StreamListener(FirebaseAuth.instance.userChanges()),
   redirect: (context, state) {
