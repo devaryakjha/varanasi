@@ -31,10 +31,10 @@
 		4CB555BFFD57C5A2516A24EC /* developmentDebug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8DE56F7BF4AF29EF8B8662F8 /* developmentDebug.xcconfig */; };
 		50E065FA29BE81C1A79D901C /* productionProfile.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1FE0698997FC2FE4458CB429 /* productionProfile.xcconfig */; };
 		5404D526A46BBC3A210B9D7C /* developmentRelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 220B788079C5A7A3C51FD75A /* developmentRelease.xcconfig */; };
-		8CF837D3535CAFE1DD132F73 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E7B3C334699C512FD0DE738B /* GoogleService-Info.plist */; };
 		97AA9AE2F75990E583B90DC2 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A3F7D3228F16687EDF8DB4A /* Pods_RunnerTests.framework */; };
 		AF6ECABD236C5A7CF42EF136 /* developmentProfile.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1987823CFEECE6ADA04A2D16 /* developmentProfile.xcconfig */; };
 		B07B7F5FCA73768306F28BCA /* productionDebug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 10112B4EBD367E0C88EF998C /* productionDebug.xcconfig */; };
+		F12388FA5B2DECFF1B0A156A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 05E906B62F4676536948406D /* GoogleService-Info.plist */; };
 		F98A75A5673D2053824A34DB /* productionRelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A0310DA34073E45F6AB4C095 /* productionRelease.xcconfig */; };
 /* End PBXBuildFile section */
 
@@ -69,6 +69,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		05E906B62F4676536948406D /* GoogleService-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Runner/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		10112B4EBD367E0C88EF998C /* productionDebug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = productionDebug.xcconfig; path = Runner/Configs/productionDebug.xcconfig; sourceTree = "<group>"; };
 		166FA43286E6A6D4AAC8CB6C /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		17A6812FBAD786BE188B850F /* Pods-RunnerTests.debug-production.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug-production.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug-production.xcconfig"; sourceTree = "<group>"; };
@@ -171,6 +172,7 @@
 				1FE0698997FC2FE4458CB429 /* productionProfile.xcconfig */,
 				A0310DA34073E45F6AB4C095 /* productionRelease.xcconfig */,
 				E7B3C334699C512FD0DE738B /* GoogleService-Info.plist */,
+				05E906B62F4676536948406D /* GoogleService-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -285,6 +287,7 @@
 				33CC110E2044A8840003C045 /* Bundle Framework */,
 				3399D490228B24CF009A79C7 /* ShellScript */,
 				3FF3F48C7842596071987F6A /* [CP] Embed Pods Frameworks */,
+				C9B23147F4DC02DC717DDBE0 /* FlutterFire: "flutterfire upload-crashlytics-symbols" */,
 			);
 			buildRules = (
 			);
@@ -366,7 +369,7 @@
 				B07B7F5FCA73768306F28BCA /* productionDebug.xcconfig in Resources */,
 				50E065FA29BE81C1A79D901C /* productionProfile.xcconfig in Resources */,
 				F98A75A5673D2053824A34DB /* productionRelease.xcconfig in Resources */,
-				8CF837D3535CAFE1DD132F73 /* GoogleService-Info.plist in Resources */,
+				F12388FA5B2DECFF1B0A156A /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,6 +474,24 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		C9B23147F4DC02DC717DDBE0 /* FlutterFire: "flutterfire upload-crashlytics-symbols" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "FlutterFire: \"flutterfire upload-crashlytics-symbols\"";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\n#!/bin/bash\nPATH=${PATH}:$FLUTTER_ROOT/bin:$HOME/.pub-cache/bin\nflutterfire upload-crashlytics-symbols --upload-symbols-script-path=$PODS_ROOT/FirebaseCrashlytics/upload-symbols --debug-symbols-path=${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME} --info-plist-path=${SRCROOT}/${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH} --platform=macos --apple-project-path=${SRCROOT} --default-config=default\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
