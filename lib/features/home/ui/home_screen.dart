@@ -102,8 +102,25 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class RecentlyPlayed extends StatelessWidget {
+class RecentlyPlayed extends StatefulWidget {
   const RecentlyPlayed({super.key});
+
+  @override
+  State<RecentlyPlayed> createState() => _RecentlyPlayedState();
+}
+
+class _RecentlyPlayedState extends State<RecentlyPlayed> {
+  @override
+  void initState() {
+    RecentMediaService.setupListeners();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    RecentMediaService.disposeListeners();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

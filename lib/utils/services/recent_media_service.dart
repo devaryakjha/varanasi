@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:rxdart/rxdart.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/utils/services/firestore_service.dart';
@@ -9,10 +11,19 @@ class RecentMediaService {
 
   static bool initialized = false;
 
-  static void init() {
-    if (initialized) return;
-    initialized = true;
-    watchRecentMedia().pipe(_recentMediaSubject);
+  static StreamSubscription<List<MediaPlaylist>>? _subscription;
+
+  static setupListeners() {
+    _subscription = FirestoreService.getUserDocument()
+        .collection('recent_media')
+        .snapshots()
+        .map((s) => s.docs.map(MediaPlaylist.fromFirestore).toList())
+        .listen((event) => _recentMediaSubject.add(event));
+  }
+
+  static disposeListeners() {
+    _subscription?.cancel();
+    _recentMediaSubject.add([]);
   }
 
   static final BehaviorSubject<List<MediaPlaylist>> _recentMediaSubject =

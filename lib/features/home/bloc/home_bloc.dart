@@ -5,7 +5,6 @@ import 'package:varanasi_mobile_app/features/home/data/home_repository.dart';
 import 'package:varanasi_mobile_app/features/home/data/models/home_page_data.dart';
 import 'package:varanasi_mobile_app/utils/app_cubit.dart';
 import 'package:varanasi_mobile_app/utils/exceptions/app_exception.dart';
-import 'package:varanasi_mobile_app/utils/services/recent_media_service.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -26,7 +25,6 @@ class HomeCubit extends AppCubit<HomeState> {
 
   @override
   FutureOr<void> init() async {
-    RecentMediaService.init();
     await fetchModule();
   }
 }
