@@ -34,14 +34,6 @@ class RecentMediaService {
 
   static List<MediaPlaylist> get recentMedia => _recentMediaSubject.value;
 
-  static Stream<List<MediaPlaylist>> watchRecentMedia() {
-    return FirestoreService.getUserDocument()
-        .collection('recent_media')
-        .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map(MediaPlaylist.fromFirestore).toList());
-  }
-
   static void addToRecentlyPlayed(MediaPlaylist media) {
     if (recentMedia.any((element) => element.id == media.id)) {
       return;
