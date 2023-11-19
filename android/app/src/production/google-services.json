@@ -39,10 +39,10 @@
               "client_type": 3
             },
             {
-              "client_id": "371448231205-7inrtv982orcdou42vs3sa6gjt89bkbt.apps.googleusercontent.com",
+              "client_id": "371448231205-12k93spoirphl2jp56121u87h5mg7tsi.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "dev.aryak.varanasi"
+                "bundle_id": "dev.aryak.varanasiMobileApp.RunnerTests"
               }
             }
           ]

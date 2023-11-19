@@ -25,9 +25,10 @@ class DefaultFirebaseOptions {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
-      case TargetPlatform.macOS:
       case TargetPlatform.iOS:
         return ios;
+      case TargetPlatform.macOS:
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -59,10 +60,19 @@ class DefaultFirebaseOptions {
     messagingSenderId: '371448231205',
     projectId: 'project-varanasi-prod',
     storageBucket: 'project-varanasi-prod.appspot.com',
-    androidClientId:
-        '371448231205-nfvi3hie1ic2kt8ht5t1gefpjk4iq9hs.apps.googleusercontent.com',
-    iosClientId:
-        '371448231205-7inrtv982orcdou42vs3sa6gjt89bkbt.apps.googleusercontent.com',
+    androidClientId: '371448231205-nfvi3hie1ic2kt8ht5t1gefpjk4iq9hs.apps.googleusercontent.com',
+    iosClientId: '371448231205-7inrtv982orcdou42vs3sa6gjt89bkbt.apps.googleusercontent.com',
     iosBundleId: 'dev.aryak.varanasi',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyAuqfYLhMmeW11OTSLLlHR84WHLPNMBuyI',
+    appId: '1:371448231205:ios:5b7b1f561989f218ae16cc',
+    messagingSenderId: '371448231205',
+    projectId: 'project-varanasi-prod',
+    storageBucket: 'project-varanasi-prod.appspot.com',
+    androidClientId: '371448231205-nfvi3hie1ic2kt8ht5t1gefpjk4iq9hs.apps.googleusercontent.com',
+    iosClientId: '371448231205-12k93spoirphl2jp56121u87h5mg7tsi.apps.googleusercontent.com',
+    iosBundleId: 'dev.aryak.varanasiMobileApp.RunnerTests',
   );
 }
