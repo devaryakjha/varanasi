@@ -33,9 +33,6 @@ class HomePage extends StatelessWidget {
     };
     final greeting = generateGreeting();
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => throw Exception('Test Crash'),
-      ),
       appBar: AppBar(
         centerTitle: false,
         title: Row(
