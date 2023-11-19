@@ -12,6 +12,7 @@ import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/helpers/get_app_context.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
+import 'package:varanasi_mobile_app/widgets/animated_overflow_text.dart';
 import 'package:varanasi_mobile_app/widgets/downloads_icon.dart';
 
 import 'widgets/empty.dart';
@@ -78,7 +79,14 @@ class UserLibraryPage extends HookWidget {
                     ),
                   ),
                 ),
-                title: Text(item.title ?? ''),
+                title: SizedBox(
+                  height: 24,
+                  child: AnimatedText(
+                    item.title ?? '',
+                    maxLines: 1,
+                    minFontSize: 14,
+                  ),
+                ),
                 subtitle: Row(
                   children: [
                     if (item.isDownload || item.isFavorite)
