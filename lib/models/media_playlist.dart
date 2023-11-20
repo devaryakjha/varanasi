@@ -204,9 +204,10 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable
       (element) => element.type == data['type'],
       orElse: () => MediaPlaylistType.favorite,
     );
-    final List<T>? items = type.isFavorite
-        ? List<T>.from(data['mediaItems'].map((d) => Song.fromJson(d)))
-        : null;
+    final List<T>? items =
+        type.isFavorite || type.isSong || type.isCustomPlaylist
+            ? List<T>.from(data['mediaItems'].map((d) => Song.fromJson(d)))
+            : null;
     return MediaPlaylist(
       id: data['id'],
       title: data['title'],

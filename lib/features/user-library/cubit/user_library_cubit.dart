@@ -53,14 +53,37 @@ class UserLibraryCubit extends AppCubit<UserLibraryState> {
     }
   }
 
+  Future<void> appendItemToLibrary(MediaPlaylist playlist, Song item) async {
+    _repository.appendItemToLibrary(item, playlist.id!);
+  }
+
   Future<void> removeFromLibrary(MediaPlaylist playlist) async {
     _repository.deleteLibrary(playlist);
     AppSnackbar.show("Removed from library");
   }
 
-  Future<List<MediaPlaylist>> generateAddToPlaylistSuggestions() async {
-    final currentlibraries = [..._repository.libraries];
-    currentlibraries.addAll(RecentMediaService.recentMedia);
-    return currentlibraries;
+  Future<List<MediaPlaylist>> generateAddToPlaylistSuggestions(
+      MediaPlaylist selected) async {
+    final currentlibraries = [..._repository.libraries]
+        .where((element) => element.id != selected.id)
+        .toList();
+    // currentlibraries.addAll(RecentMediaService.recentMedia);
+    final MediaPlaylist recentMedia = MediaPlaylist(
+      url: '',
+      title: 'Recent Media',
+      description: 'Recently played media',
+      id: 'recent-media',
+      mediaItems: RecentMediaService.recentMedia
+          .map((e) => e.mediaItems ?? [])
+          .flattened
+          .toList(growable: false),
+    );
+    currentlibraries.add(recentMedia);
+    return currentlibraries.where((element) => element.isNotEmpty).toList();
   }
+
+  MediaPlaylist findPlaylist(MediaPlaylist playlist) =>
+      (state as UserLibraryLoaded)
+          .library
+          .firstWhere((el) => el.id == playlist.id);
 }

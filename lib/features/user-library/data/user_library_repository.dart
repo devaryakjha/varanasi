@@ -52,6 +52,12 @@ class UserLibraryRepository {
     await _baseCollection.doc(library.id).update(library.toFirestorePayload());
   }
 
+  Future<void> appendItemToLibrary(Song item, String playlistId) async {
+    await _baseCollection.doc(playlistId).update({
+      'mediaItems': FieldValue.arrayUnion([item.toJson()]),
+    });
+  }
+
   Future<void> deleteLibrary(MediaPlaylist library) async {
     await _baseCollection.doc(library.id).delete();
   }

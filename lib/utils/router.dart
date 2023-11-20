@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sheet/route.dart';
+import 'package:sheet/sheet.dart';
 import 'package:varanasi_mobile_app/features/home/bloc/home_bloc.dart';
 import 'package:varanasi_mobile_app/features/home/ui/home_screen.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_screen.dart';
@@ -46,7 +47,7 @@ class StreamListener<T> extends ChangeNotifier {
 }
 
 Page _pageWithBottomSheet(Widget child, [LocalKey? key]) =>
-    CupertinoExtendedPage(child: child, key: key);
+    MaterialExtendedPage(child: child, key: key);
 
 final routerConfig = GoRouter(
   initialLocation: AppRoutes.authentication.path,
@@ -150,7 +151,7 @@ final routerConfig = GoRouter(
       path: AppRoutes.createLibrary.path,
       pageBuilder: (_, state) => CupertinoSheetPage<void>(
         key: state.pageKey,
-        child: const CreatePlaylistPage(),
+        child: const DefaultSheetController(child: CreatePlaylistPage()),
       ),
     ),
     GoRoute(
@@ -159,7 +160,7 @@ final routerConfig = GoRouter(
       path: AppRoutes.addToLibrary.path,
       pageBuilder: (_, state) => CupertinoSheetPage<void>(
         key: state.pageKey,
-        child: const AddToPlaylistPage(),
+        child: const DefaultSheetController(child: AddToPlaylistPage()),
       ),
     ),
     GoRoute(

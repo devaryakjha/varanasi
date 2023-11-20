@@ -415,6 +415,7 @@ class MediaTile<Media extends PlayableMedia> extends StatelessWidget {
   }
 
   Widget _buildTrailing() {
+    if (trailing != null) return trailing!;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [if (media.itemType.isSong) DownloadButton(media)],
