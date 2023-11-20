@@ -76,7 +76,7 @@ dependencies:
   path: ^1.8.3
   cloud_firestore: ^4.13.1
   firebase_crashlytics: ^3.4.4
-  modal_bottom_sheet: ^3.0.0-pre
+  sheet: ^1.0.0-pre
 
 dev_dependencies:
   flutter_test:

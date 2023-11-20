@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sheet/route.dart';
 import 'package:varanasi_mobile_app/features/home/bloc/home_bloc.dart';
 import 'package:varanasi_mobile_app/features/home/ui/home_screen.dart';
 import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
@@ -44,6 +45,8 @@ class StreamListener<T> extends ChangeNotifier {
     super.dispose();
   }
 }
+
+Page _pageWithBottomSheet(Widget child) => CupertinoExtendedPage(child: child);
 
 final routerConfig = GoRouter(
   initialLocation: AppRoutes.authentication.path,
@@ -86,7 +89,7 @@ final routerConfig = GoRouter(
             GoRoute(
               name: AppRoutes.library.name,
               path: AppRoutes.library.path,
-              builder: (context, state) {
+              pageBuilder: (context, state) {
                 final extra = state.extra!;
                 final isMedia = extra is PlayableMedia;
                 final isMediaPlaylist = extra is MediaPlaylist;
@@ -107,10 +110,10 @@ final routerConfig = GoRouter(
                     }
                   }
                 }
-                return LibraryPage(
+                return _pageWithBottomSheet(LibraryPage(
                   source: isMedia ? extra : null,
                   key: state.pageKey,
-                );
+                ));
               },
               routes: [
                 GoRoute(
@@ -134,11 +137,11 @@ final routerConfig = GoRouter(
             GoRoute(
               name: AppRoutes.search.name,
               path: AppRoutes.search.path,
-              builder: (context, state) => BlocProvider(
+              pageBuilder: (_, state) => _pageWithBottomSheet(BlocProvider(
                 lazy: true,
                 create: (context) => SearchCubit()..init(),
                 child: SearchPage(key: state.pageKey),
-              ),
+              )),
             ),
           ],
         ),
@@ -148,36 +151,40 @@ final routerConfig = GoRouter(
             GoRoute(
               name: AppRoutes.userlibrary.name,
               path: AppRoutes.userlibrary.path,
-              builder: (context, state) => UserLibraryPage(key: state.pageKey),
+              pageBuilder: (_, state) =>
+                  _pageWithBottomSheet(UserLibraryPage(key: state.pageKey)),
             ),
           ],
         ),
       ],
-      builder: (context, state, navigationShell) {
-        return PageWithNavbar(child: navigationShell);
-      },
+      pageBuilder: (_, __, shell) =>
+          _pageWithBottomSheet(PageWithNavbar(child: shell)),
     ),
     GoRoute(
       parentNavigatorKey: rootNavigatorKey,
       name: AppRoutes.settings.name,
       path: AppRoutes.settings.path,
-      builder: (context, state) => SettingsPage(key: state.pageKey),
+      pageBuilder: (_, state) =>
+          _pageWithBottomSheet(SettingsPage(key: state.pageKey)),
     ),
     GoRoute(
       parentNavigatorKey: rootNavigatorKey,
       name: AppRoutes.authentication.name,
       path: AppRoutes.authentication.path,
-      builder: (context, state) => AuthPage(key: state.pageKey),
+      pageBuilder: (_, state) =>
+          _pageWithBottomSheet(AuthPage(key: state.pageKey)),
       routes: [
         GoRoute(
           name: AppRoutes.login.name,
           path: AppRoutes.login.path,
-          builder: (context, state) => LoginPage(key: state.pageKey),
+          pageBuilder: (_, state) =>
+              _pageWithBottomSheet(LoginPage(key: state.pageKey)),
         ),
         GoRoute(
           path: AppRoutes.signup.path,
           name: AppRoutes.signup.name,
-          builder: (context, state) => SignupPage(key: state.pageKey),
+          pageBuilder: (_, state) =>
+              _pageWithBottomSheet(SignupPage(key: state.pageKey)),
         )
       ],
     ),
