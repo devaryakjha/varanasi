@@ -48,15 +48,15 @@ class _LibraryPageState extends State<LibraryPage> {
   Widget build(BuildContext context) {
     final isLoading =
         context.select((LibraryCubit source) => source.state is LibraryLoading);
-    return Visibility(
-      visible: !isLoading,
-      replacement: const LibraryLoader(),
-      child: LibraryContent(
+    if (isLoading) {
+      return const LibraryLoader();
+    } else {
+      return LibraryContent(
         source: switch (widget.source) {
           (PlayableMedia media) => media,
           (_) => null,
         },
-      ),
-    );
+      );
+    }
   }
 }

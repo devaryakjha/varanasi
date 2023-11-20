@@ -53,4 +53,9 @@ class UserLibraryCubit extends AppCubit<UserLibraryState> {
     _repository.deleteLibrary(playlist);
     AppSnackbar.show("Removed from library");
   }
+
+  Future<List<MediaPlaylist>> generateAddToPlaylistSuggestions() async {
+    final currentlibraries = _repository.libraries;
+    return currentlibraries;
+  }
 }
