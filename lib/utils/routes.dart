@@ -17,6 +17,8 @@ class AppRoutes {
 
   // user specific routes
   static const Route userlibrary = (name: 'library', path: '/library');
+  static const Route createLibrary =
+      (name: 'create-library', path: '/create-library');
 
   // settings specific routes
   static const Route settings = (name: 'settings', path: '/settings');

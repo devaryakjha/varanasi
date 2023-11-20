@@ -115,7 +115,7 @@ class Config extends Equatable {
 Config get appConfig {
   const server = kReleaseMode
       ? Server('https://saavn.aryak.dev')
-      : Server('http://localhost:3000');
+      : Server('https://saavn.aryak.dev');
   return const Config(
     env: kReleaseMode ? 'production' : 'development',
     endpoint: Endpoint(

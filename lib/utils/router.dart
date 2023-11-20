@@ -18,6 +18,7 @@ import 'package:varanasi_mobile_app/features/session/ui/login_page.dart';
 import 'package:varanasi_mobile_app/features/session/ui/signup_page.dart';
 import 'package:varanasi_mobile_app/features/settings/ui/settings_page.dart';
 import 'package:varanasi_mobile_app/features/user-library/ui/user_library_page.dart';
+import 'package:varanasi_mobile_app/features/user-library/ui/widgets/create_playlist.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/models/playable_item_impl.dart';
@@ -46,7 +47,8 @@ class StreamListener<T> extends ChangeNotifier {
   }
 }
 
-Page _pageWithBottomSheet(Widget child) => CupertinoExtendedPage(child: child);
+Page _pageWithBottomSheet(Widget child, [LocalKey? key]) =>
+    CupertinoExtendedPage(child: child, key: key);
 
 final routerConfig = GoRouter(
   initialLocation: AppRoutes.authentication.path,
@@ -137,11 +139,13 @@ final routerConfig = GoRouter(
             GoRoute(
               name: AppRoutes.search.name,
               path: AppRoutes.search.path,
-              pageBuilder: (_, state) => _pageWithBottomSheet(BlocProvider(
-                lazy: true,
-                create: (context) => SearchCubit()..init(),
-                child: SearchPage(key: state.pageKey),
-              )),
+              pageBuilder: (_, state) => _pageWithBottomSheet(
+                  BlocProvider(
+                    lazy: true,
+                    create: (context) => SearchCubit()..init(),
+                    child: const SearchPage(),
+                  ),
+                  state.pageKey),
             ),
           ],
         ),
@@ -151,8 +155,10 @@ final routerConfig = GoRouter(
             GoRoute(
               name: AppRoutes.userlibrary.name,
               path: AppRoutes.userlibrary.path,
-              pageBuilder: (_, state) =>
-                  _pageWithBottomSheet(UserLibraryPage(key: state.pageKey)),
+              pageBuilder: (_, state) => _pageWithBottomSheet(
+                const UserLibraryPage(),
+                state.pageKey,
+              ),
             ),
           ],
         ),
@@ -162,29 +168,38 @@ final routerConfig = GoRouter(
     ),
     GoRoute(
       parentNavigatorKey: rootNavigatorKey,
+      name: AppRoutes.createLibrary.name,
+      path: AppRoutes.createLibrary.path,
+      pageBuilder: (_, state) => CupertinoSheetPage<void>(
+        key: state.pageKey,
+        child: const CreatePlaylistPage(),
+      ),
+    ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
       name: AppRoutes.settings.name,
       path: AppRoutes.settings.path,
       pageBuilder: (_, state) =>
-          _pageWithBottomSheet(SettingsPage(key: state.pageKey)),
+          _pageWithBottomSheet(const SettingsPage(), state.pageKey),
     ),
     GoRoute(
       parentNavigatorKey: rootNavigatorKey,
       name: AppRoutes.authentication.name,
       path: AppRoutes.authentication.path,
       pageBuilder: (_, state) =>
-          _pageWithBottomSheet(AuthPage(key: state.pageKey)),
+          _pageWithBottomSheet(const AuthPage(), state.pageKey),
       routes: [
         GoRoute(
           name: AppRoutes.login.name,
           path: AppRoutes.login.path,
           pageBuilder: (_, state) =>
-              _pageWithBottomSheet(LoginPage(key: state.pageKey)),
+              _pageWithBottomSheet(const LoginPage(), state.pageKey),
         ),
         GoRoute(
           path: AppRoutes.signup.path,
           name: AppRoutes.signup.name,
           pageBuilder: (_, state) =>
-              _pageWithBottomSheet(SignupPage(key: state.pageKey)),
+              _pageWithBottomSheet(const SignupPage(), state.pageKey),
         )
       ],
     ),
