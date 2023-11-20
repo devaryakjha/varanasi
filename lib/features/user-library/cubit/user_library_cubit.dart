@@ -59,7 +59,7 @@ class UserLibraryCubit extends AppCubit<UserLibraryState> {
   }
 
   Future<List<MediaPlaylist>> generateAddToPlaylistSuggestions() async {
-    final currentlibraries = _repository.libraries;
+    final currentlibraries = [..._repository.libraries];
     currentlibraries.addAll(RecentMediaService.recentMedia);
     return currentlibraries;
   }

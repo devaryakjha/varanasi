@@ -19,7 +19,7 @@ class UserLibraryRepository {
   CollectionReference<Map<String, dynamic>> get _baseCollection =>
       FirestoreService.getUserDocument().collection('user-library');
 
-  BehaviorSubject<List<MediaPlaylist>> librariesStream =
+  final BehaviorSubject<List<MediaPlaylist>> librariesStream =
       BehaviorSubject.seeded([]);
 
   List<MediaPlaylist> get libraries => librariesStream.value;
@@ -29,28 +29,12 @@ class UserLibraryRepository {
   StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? _subscription;
 
   void setupListeners() {
-    _subscription = FirestoreService.getUserDocument()
+    FirestoreService.getUserDocument()
         .collection('user-library')
         .snapshots()
-        .listen((event) {
-      for (var element in event.docChanges) {
-        final library = MediaPlaylist.fromFirestore(element.doc);
-        var list = librariesStream.value;
-        if (element.type == DocumentChangeType.added) {
-          list = [...list, library];
-        } else if (element.type == DocumentChangeType.modified) {
-          list = [
-            ...list.where((element) => element.id != library.id),
-            library
-          ];
-        } else if (element.type == DocumentChangeType.removed) {
-          list = [
-            ...list.where((element) => element.id != library.id),
-          ];
-        }
-        librariesStream.value = list;
-      }
-    });
+        .map((event) =>
+            event.docs.map(MediaPlaylist.fromFirestore).toList()..sort())
+        .pipe(librariesStream);
   }
 
   void dispose() {
