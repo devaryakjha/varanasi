@@ -99,7 +99,7 @@ final routerConfig = GoRouter(
                   context.read<LibraryCubit>().fetchLibrary(extra);
                 } else {
                   if (isMediaPlaylist) {
-                    if (extra.isDownload) {
+                    if (extra.isDownload || extra.isCustomPlaylist) {
                       context.read<LibraryCubit>().loadUserLibrary(extra);
                     } else {
                       final items = extra.mediaItems ?? [];

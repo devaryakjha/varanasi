@@ -116,9 +116,9 @@ Config get appConfig {
   const server = kReleaseMode
       ? Server('https://saavn.aryak.dev')
       : Server('https://saavn.aryak.dev');
-  return const Config(
+  return Config(
     env: kReleaseMode ? 'production' : 'development',
-    endpoint: Endpoint(
+    endpoint: const Endpoint(
       modules: '/modules',
       playlists: Playlists(id: 'playlists'),
       albums: Albums(id: 'albums', link: 'albums'),
@@ -133,6 +133,6 @@ Config get appConfig {
       ),
     ),
     server: server,
-    placeholderImageLink: 'http://192.168.31.130:3000/audio.jpg',
+    placeholderImageLink: '${server.baseUrl}audio.jpg',
   );
 }

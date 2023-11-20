@@ -81,6 +81,7 @@ dependencies:
       url: git@github.com:devaryakjha/sheet.git
       ref: main
       path: sheet
+  nanoid: ^1.0.0
 
 dev_dependencies:
   flutter_test:

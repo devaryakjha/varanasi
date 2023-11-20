@@ -15,7 +15,8 @@ enum MediaPlaylistType {
   favorite('favorite'),
   album('album'),
   playlist('playlist'),
-  download('download');
+  download('download'),
+  customPlaylist('custom_playlist');
   // TODO: Add Artist
 
   final String type;
@@ -27,6 +28,7 @@ enum MediaPlaylistType {
   bool get isAlbum => this == MediaPlaylistType.album;
   bool get isPlaylist => this == MediaPlaylistType.playlist;
   bool get isDownload => this == MediaPlaylistType.download;
+  bool get isCustomPlaylist => this == MediaPlaylistType.customPlaylist;
 
   static MediaPlaylistType fromString(String? type) {
     switch (type) {
@@ -40,6 +42,8 @@ enum MediaPlaylistType {
         return MediaPlaylistType.download;
       case 'song':
         return MediaPlaylistType.song;
+      case 'custom_playlist':
+        return MediaPlaylistType.customPlaylist;
       default:
         return MediaPlaylistType.playlist;
     }
@@ -167,6 +171,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable
   bool get isPlaylist => mediaPlaylistType.isPlaylist;
   bool get isDownload => mediaPlaylistType.isDownload;
   bool get isSong => mediaPlaylistType.isSong;
+  bool get isCustomPlaylist => mediaPlaylistType.isCustomPlaylist;
 
   bool get isNotEmpty => mediaItems?.isNotEmpty ?? false;
 
