@@ -1091,10 +1091,11 @@ packages:
   sheet:
     dependency: "direct main"
     description:
-      name: sheet
-      sha256: "4007db1db1c7000889d80efca8ab8009dd0ebe618dd77b5ed76cd9bda56763c0"
-      url: "https://pub.dev"
-    source: hosted
+      path: sheet
+      ref: main
+      resolved-ref: "40803fdc0435af077aaf08484025cd6e9f2ce59d"
+      url: "git@github.com:devaryakjha/sheet.git"
+    source: git
     version: "1.0.0-pre"
   shelf:
     dependency: transitive

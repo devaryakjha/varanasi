@@ -76,7 +76,11 @@ dependencies:
   path: ^1.8.3
   cloud_firestore: ^4.13.1
   firebase_crashlytics: ^3.4.4
-  sheet: ^1.0.0-pre
+  sheet:
+    git:
+      url: git@github.com:devaryakjha/sheet.git
+      ref: main
+      path: sheet
 
 dev_dependencies:
   flutter_test:
