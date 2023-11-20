@@ -35,20 +35,20 @@ class UserLibraryRepository {
         .listen((event) {
       for (var element in event.docChanges) {
         final library = MediaPlaylist.fromFirestore(element.doc);
+        var list = librariesStream.value;
         if (element.type == DocumentChangeType.added) {
-          librariesStream.value = [...librariesStream.value, library];
+          list = [...list, library];
         } else if (element.type == DocumentChangeType.modified) {
-          librariesStream.value = [
-            ...librariesStream.value
-                .where((element) => element.id != library.id),
+          list = [
+            ...list.where((element) => element.id != library.id),
             library
           ];
         } else if (element.type == DocumentChangeType.removed) {
-          librariesStream.value = [
-            ...librariesStream.value
-                .where((element) => element.id != library.id),
+          list = [
+            ...list.where((element) => element.id != library.id),
           ];
         }
+        librariesStream.value = list;
       }
     });
   }

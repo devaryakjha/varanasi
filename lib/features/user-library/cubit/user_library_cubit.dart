@@ -7,6 +7,7 @@ import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/app_cubit.dart';
 import 'package:varanasi_mobile_app/utils/app_snackbar.dart';
+import 'package:varanasi_mobile_app/utils/services/recent_media_service.dart';
 
 part 'user_library_state.dart';
 
@@ -18,14 +19,17 @@ class UserLibraryCubit extends AppCubit<UserLibraryState> {
   @override
   FutureOr<void> init() async {}
 
+  StreamSubscription<List<MediaPlaylist>>? _subscription;
+
   void setupListeners() {
-    _repository.librariesStream.listen((event) {
+    _subscription = _repository.librariesStream.listen((event) {
       emit(UserLibraryLoaded(library: event));
     });
     _repository.setupListeners();
   }
 
   void disposeListeners() {
+    _subscription?.cancel();
     _repository.dispose();
   }
 
@@ -56,6 +60,7 @@ class UserLibraryCubit extends AppCubit<UserLibraryState> {
 
   Future<List<MediaPlaylist>> generateAddToPlaylistSuggestions() async {
     final currentlibraries = _repository.libraries;
+    currentlibraries.addAll(RecentMediaService.recentMedia);
     return currentlibraries;
   }
 }

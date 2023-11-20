@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:varanasi_mobile_app/features/user-library/cubit/user_library_cubit.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
+import 'package:varanasi_mobile_app/utils/logger.dart';
 
 class AddToPlaylistPage extends StatefulWidget {
   const AddToPlaylistPage({super.key});
@@ -25,6 +26,12 @@ class _AddToPlaylistPageState extends State<AddToPlaylistPage> {
       });
       setState(() {});
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    Logger.instance.d("AddToPlaylistPage disposed");
   }
 
   @override

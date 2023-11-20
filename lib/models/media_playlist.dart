@@ -142,7 +142,15 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable
       (mediaItems ?? []).map((e) => e.toMediaItem()).toList();
 
   @override
-  List<Object?> get props => [id, title, description, mediaItems, images];
+  List<Object?> get props => [
+        id,
+        title,
+        description,
+        mediaItems,
+        images,
+        url,
+        type,
+      ];
 
   MediaPlaylist<T> copyWith({
     String? id,
