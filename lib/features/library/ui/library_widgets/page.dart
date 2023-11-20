@@ -5,6 +5,7 @@ import 'package:sliver_tools/sliver_tools.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
+import 'package:varanasi_mobile_app/features/library/ui/library_widgets/add_to_playlist.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_widgets/library_app_bar.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
@@ -202,48 +203,6 @@ class _LibraryContentState extends State<LibraryContent> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class AddToPlaylist extends StatelessWidget {
-  const AddToPlaylist({
-    super.key,
-    required this.backgroundColor,
-    required this.foregroundColor,
-  });
-
-  final Color? backgroundColor;
-  final Color? foregroundColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 32),
-        Text(
-          'Let\'s add some songs to this playlist!',
-          style: context.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-            letterSpacing: 0.75,
-          ),
-        ),
-        const SizedBox(height: 16),
-        FilledButton(
-          style: FilledButton.styleFrom(
-            backgroundColor: backgroundColor,
-          ),
-          onPressed: () {},
-          child: Text(
-            'Add to this playlist',
-            style: context.textTheme.bodyMedium?.copyWith(
-              color: foregroundColor,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 0.75,
-            ),
-          ),
-        )
-      ],
     );
   }
 }

@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:sheet/route.dart';
 import 'package:varanasi_mobile_app/features/home/bloc/home_bloc.dart';
 import 'package:varanasi_mobile_app/features/home/ui/home_screen.dart';
-import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_screen.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_search_page.dart';
 import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
@@ -18,10 +17,9 @@ import 'package:varanasi_mobile_app/features/session/ui/login_page.dart';
 import 'package:varanasi_mobile_app/features/session/ui/signup_page.dart';
 import 'package:varanasi_mobile_app/features/settings/ui/settings_page.dart';
 import 'package:varanasi_mobile_app/features/user-library/ui/user_library_page.dart';
+import 'package:varanasi_mobile_app/features/user-library/ui/widgets/add_to_playlist.dart';
 import 'package:varanasi_mobile_app/features/user-library/ui/widgets/create_playlist.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
-import 'package:varanasi_mobile_app/models/playable_item.dart';
-import 'package:varanasi_mobile_app/models/playable_item_impl.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
 import 'package:varanasi_mobile_app/widgets/page_with_navbar.dart';
 import 'package:varanasi_mobile_app/widgets/transitions/fade_transition_page.dart';
@@ -92,28 +90,8 @@ final routerConfig = GoRouter(
               name: AppRoutes.library.name,
               path: AppRoutes.library.path,
               pageBuilder: (context, state) {
-                final extra = state.extra!;
-                final isMedia = extra is PlayableMedia;
-                final isMediaPlaylist = extra is MediaPlaylist;
-                if (isMedia) {
-                  context.read<LibraryCubit>().fetchLibrary(extra);
-                } else {
-                  if (isMediaPlaylist) {
-                    if (extra.isDownload || extra.isCustomPlaylist) {
-                      context.read<LibraryCubit>().loadUserLibrary(extra);
-                    } else {
-                      final items = extra.mediaItems ?? [];
-                      if (items.isEmpty) {
-                        context.read<LibraryCubit>().fetchLibrary(
-                            PlayableMediaImpl.fromMediaPlaylist(extra));
-                      } else {
-                        context.read<LibraryCubit>().loadUserLibrary(extra);
-                      }
-                    }
-                  }
-                }
                 return _pageWithBottomSheet(LibraryPage(
-                  source: isMedia ? extra : null,
+                  source: state.extra,
                   key: state.pageKey,
                 ));
               },
@@ -173,6 +151,15 @@ final routerConfig = GoRouter(
       pageBuilder: (_, state) => CupertinoSheetPage<void>(
         key: state.pageKey,
         child: const CreatePlaylistPage(),
+      ),
+    ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
+      name: AppRoutes.addToLibrary.name,
+      path: AppRoutes.addToLibrary.path,
+      pageBuilder: (_, state) => CupertinoSheetPage<void>(
+        key: state.pageKey,
+        child: const AddToPlaylistPage(),
       ),
     ),
     GoRoute(
