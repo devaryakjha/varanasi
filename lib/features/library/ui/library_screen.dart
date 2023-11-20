@@ -45,6 +45,12 @@ class _LibraryPageState extends State<LibraryPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    context.read<LibraryCubit>().closeListeners();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final isLoading =
         context.select((LibraryCubit source) => source.state is LibraryLoading);
