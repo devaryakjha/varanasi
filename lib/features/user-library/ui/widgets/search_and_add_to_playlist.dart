@@ -7,11 +7,9 @@ import 'package:varanasi_mobile_app/features/library/data/library_repository.dar
 import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
 import 'package:varanasi_mobile_app/features/search/data/search_result/data.dart';
 import 'package:varanasi_mobile_app/features/user-library/cubit/user_library_cubit.dart';
-import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
-import 'package:varanasi_mobile_app/utils/helpers/get_app_context.dart';
 import 'package:varanasi_mobile_app/widgets/media_list.dart';
 
 class SearchAndAddToPlaylist extends StatelessWidget {
@@ -106,14 +104,9 @@ class Content extends StatefulWidget {
 
 class _ContentState extends State<Content> {
   late final TextEditingController _controller;
-  late final MediaPlaylist<PlayableMedia> selectedPlaylist;
 
   @override
   void initState() {
-    final state = appContext.read<LibraryCubit>().state;
-    if (state is LibraryLoaded) {
-      selectedPlaylist = state.playlist;
-    }
     _controller = TextEditingController();
     super.initState();
   }
@@ -128,6 +121,11 @@ class _ContentState extends State<Content> {
       },
       child: Builder(
         builder: (context) {
+          final state = context.select((LibraryCubit cubit) => cubit.state);
+          if (state is! LibraryLoaded) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final selectedPlaylist = state.playlist;
           final (appendItemToLibrary, removeItemFromLibrary) =
               context.select((UserLibraryCubit cubit) => (
                     (Song item) =>
