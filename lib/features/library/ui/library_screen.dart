@@ -45,23 +45,24 @@ class _LibraryPageState extends State<LibraryPage> {
   }
 
   @override
-  void dispose() {
-    context.read<LibraryCubit>().closeListeners();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final isLoading =
         context.select((LibraryCubit source) => source.state is LibraryLoading);
     if (isLoading) {
       return const LibraryLoader();
     } else {
-      return LibraryContent(
-        source: switch (widget.source) {
-          (PlayableMedia media) => media,
-          (_) => null,
+      return PopScope(
+        onPopInvoked: (didPop) {
+          if (didPop) {
+            context.read<LibraryCubit>().closeListeners();
+          }
         },
+        child: LibraryContent(
+          source: switch (widget.source) {
+            (PlayableMedia media) => media,
+            (_) => null,
+          },
+        ),
       );
     }
   }
