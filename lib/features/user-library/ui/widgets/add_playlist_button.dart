@@ -18,7 +18,9 @@ class AddPlaylistButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userName = context.select((SessionCubit cubit) =>
-        (cubit.state as Authenticated).user.displayName);
+        cubit.state is Authenticated
+            ? (cubit.state as Authenticated).user.displayName
+            : '');
     return IconButton(
       onPressed: () async {
         final name =

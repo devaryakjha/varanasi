@@ -46,11 +46,12 @@ class _AddToPlaylistPageState extends State<AddToPlaylistPage> {
     final selectedPlaylist = context.select(
       (LibraryCubit loaded) => (loaded.state as LibraryLoaded).playlist,
     );
-    final (mediaItems, appendItemToLibrary) =
+    final (mediaItems, appendItemToLibrary, removeItemFromLibrary) =
         context.select((UserLibraryCubit cubit) {
       return (
         cubit.findPlaylist(selectedPlaylist).mediaItems ?? [],
-        (Song item) => cubit.appendItemToLibrary(selectedPlaylist, item)
+        (Song item) => cubit.appendItemToLibrary(selectedPlaylist, item),
+        (Song item) => cubit.removeItemFromLibrary(selectedPlaylist, item),
       );
     });
     final textTheme = context.textTheme;
@@ -148,7 +149,11 @@ class _AddToPlaylistPageState extends State<AddToPlaylistPage> {
                                     trailing: IconButton(
                                       onPressed: () {
                                         if (item is Song) {
-                                          appendItemToLibrary(item);
+                                          if (isAdded) {
+                                            removeItemFromLibrary(item);
+                                          } else {
+                                            appendItemToLibrary(item);
+                                          }
                                         } else {
                                           AppSnackbar.show('Unsupported');
                                         }

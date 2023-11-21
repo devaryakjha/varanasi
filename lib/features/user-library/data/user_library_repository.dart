@@ -6,10 +6,15 @@ import 'package:rxdart/rxdart.dart';
 import 'package:varanasi_mobile_app/models/image.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
+import 'package:varanasi_mobile_app/types/types.dart';
+import 'package:varanasi_mobile_app/utils/configs.dart';
 import 'package:varanasi_mobile_app/utils/logger.dart';
+import 'package:varanasi_mobile_app/utils/mixins/repository_protocol.dart';
+import 'package:varanasi_mobile_app/utils/parsers.dart';
 import 'package:varanasi_mobile_app/utils/services/firestore_service.dart';
+import 'package:varanasi_mobile_app/utils/services/http_services.dart';
 
-class UserLibraryRepository {
+class UserLibraryRepository with DataProviderProtocol {
   UserLibraryRepository._();
 
   static final instance = UserLibraryRepository._();
@@ -58,6 +63,12 @@ class UserLibraryRepository {
     });
   }
 
+  Future<void> removeItemFromLibrary(Song item, String playlistId) async {
+    await _baseCollection.doc(playlistId).update({
+      'mediaItems': FieldValue.arrayRemove([item.toJson()]),
+    });
+  }
+
   Future<void> deleteLibrary(MediaPlaylist library) async {
     await _baseCollection.doc(library.id).delete();
   }
@@ -93,5 +104,25 @@ class UserLibraryRepository {
     await _baseCollection.doc(favouriteSongs.id).update({
       'mediaItems': FieldValue.arrayRemove([song.toJson()]),
     });
+  }
+
+  Future<MediaPlaylist?> getNewReleases([int page = 1]) async {
+    return (await fetch(
+      '${appConfig.endpoint.newReleases}?n=30&p=$page',
+      options: CommonOptions(transformer: (data) {
+        final JSONList allResults = (data["results"] as List<dynamic>)
+            .map((e) => Map<String, dynamic>.from(e))
+            .toList();
+        final parsed = parsePlayableMediaList(allResults);
+        return MediaPlaylist(
+          id: "new-releases",
+          title: "New Releases",
+          description: "New releases",
+          url: null,
+          mediaItems: parsed,
+        );
+      }),
+    ))
+        .$2;
   }
 }

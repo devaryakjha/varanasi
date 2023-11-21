@@ -57,6 +57,10 @@ class UserLibraryCubit extends AppCubit<UserLibraryState> {
     _repository.appendItemToLibrary(item, playlist.id!);
   }
 
+  Future<void> removeItemFromLibrary(MediaPlaylist playlist, Song item) async {
+    _repository.removeItemFromLibrary(item, playlist.id!);
+  }
+
   Future<void> removeFromLibrary(MediaPlaylist playlist) async {
     _repository.deleteLibrary(playlist);
     AppSnackbar.show("Removed from library");
@@ -67,7 +71,10 @@ class UserLibraryCubit extends AppCubit<UserLibraryState> {
     final currentlibraries = [..._repository.libraries]
         .where((element) => element.id != selected.id)
         .toList();
-    // currentlibraries.addAll(RecentMediaService.recentMedia);
+    final newReleases = await _repository.getNewReleases();
+    if (newReleases != null && newReleases.isNotEmpty) {
+      currentlibraries.add(newReleases);
+    }
     final MediaPlaylist recentMedia = MediaPlaylist(
       url: '',
       title: 'Recent Media',
