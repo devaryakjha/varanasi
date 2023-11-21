@@ -20,7 +20,7 @@ import 'package:varanasi_mobile_app/features/settings/ui/settings_page.dart';
 import 'package:varanasi_mobile_app/features/user-library/ui/user_library_page.dart';
 import 'package:varanasi_mobile_app/features/user-library/ui/widgets/add_to_playlist.dart';
 import 'package:varanasi_mobile_app/features/user-library/ui/widgets/create_playlist.dart';
-import 'package:varanasi_mobile_app/features/user-library/ui/widgets/search_and_add_to_playlist.dart';
+import 'package:varanasi_mobile_app/features/user-library/ui/widgets/search_and_add_to_playlist/search_and_add_to_playlist.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
 import 'package:varanasi_mobile_app/widgets/page_with_navbar.dart';
