@@ -7,6 +7,7 @@ import 'package:varanasi_mobile_app/types/types.dart';
 import 'package:varanasi_mobile_app/utils/configs.dart';
 import 'package:varanasi_mobile_app/utils/mixins/repository_protocol.dart';
 import 'package:varanasi_mobile_app/utils/parsers.dart';
+import 'package:varanasi_mobile_app/utils/select_random.dart';
 
 import 'http_services.dart';
 
@@ -59,17 +60,19 @@ class NewReleasesService with DataProviderProtocol {
     final item = newRelease;
     final allSongs = item?.copyWith(
       id: "new-releases-songs",
-      title: "New Releases (Songs)",
+      title: "Suggested Songs",
       description: "New releases (Songs)",
       mediaItems: (item.mediaItems ?? []).whereType<Song>().toList(),
     );
     if (allSongs != null) {
-      _newReleasesStream.add([..._newReleasesStream.value, allSongs]);
+      _newReleasesStream.add([allSongs]);
     }
 
     final allAlbums = (item?.mediaItems ?? []).whereType<Album>().toList();
+    // select 4 random albums
+    final random4 = selectRandom(allAlbums, 4);
     final allAlbumRequest =
-        allAlbums.map(LibraryRepository.instance.fetchLibrary);
+        random4.map(LibraryRepository.instance.fetchLibrary);
     final allAlsbumResponse = await Future.wait(allAlbumRequest);
     _newReleasesStream.add([
       ..._newReleasesStream.value,

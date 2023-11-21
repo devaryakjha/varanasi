@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
 import 'package:varanasi_mobile_app/features/home/bloc/home_bloc.dart';
@@ -13,7 +12,6 @@ import 'package:varanasi_mobile_app/models/playable_item_impl.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/generate_greeting.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
-import 'package:varanasi_mobile_app/utils/services/new_releases_service.dart';
 import 'package:varanasi_mobile_app/utils/services/recent_media_service.dart';
 import 'package:varanasi_mobile_app/widgets/animated_overflow_text.dart';
 import 'package:varanasi_mobile_app/widgets/error/error_page.dart';
@@ -22,16 +20,13 @@ import 'package:varanasi_mobile_app/widgets/tri_state_visibility.dart';
 import 'home_widgets/home_loader.dart';
 import 'home_widgets/media_carousel/media_carousel.dart';
 
-class HomePage extends HookWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final newReleases =
-        useStream(NewReleasesService.instance.newReleaseStream).data;
     final padding = MediaQuery.paddingOf(context);
-    final (state, mediaPlaylist) =
-        context.select(homePageDataSelector(newReleases));
+    final (state, mediaPlaylist) = context.select(homePageDataSelector);
     final modules = switch (state) {
       (HomeLoadedState state) => state.modules,
       _ => null,

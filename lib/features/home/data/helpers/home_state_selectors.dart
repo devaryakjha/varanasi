@@ -7,21 +7,13 @@ typedef HomeStateData = (
   List<MediaPlaylist>,
 );
 
-HomeStateData Function(HomeCubit) homePageDataSelector(
-    MediaPlaylist? newReleases) {
-  return (HomeCubit value) {
-    final state = value.state;
-    final List<MediaPlaylist> medialist = [];
-    return switch (state) {
-      (HomeLoadedState state) => (
-          state,
-          newReleases != null
-              ? [newReleases, ...extractMediaList(state)]
-              : extractMediaList(state)
-        ),
-      (HomeErrorState state) => (state, medialist),
-      _ => (state, medialist),
-    };
+HomeStateData homePageDataSelector(HomeCubit value) {
+  final state = value.state;
+  final List<MediaPlaylist> medialist = [];
+  return switch (state) {
+    (HomeLoadedState state) => (state, extractMediaList(state)),
+    (HomeErrorState state) => (state, medialist),
+    _ => (state, medialist),
   };
 }
 
