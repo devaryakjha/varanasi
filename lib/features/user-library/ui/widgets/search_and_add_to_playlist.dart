@@ -25,9 +25,10 @@ class _SearchAndAddToPlaylistState extends State<SearchAndAddToPlaylist> {
 
   @override
   Widget build(BuildContext context) {
-    final (searchResults, updateFilter) = context.select(
+    final (searchResults, filter, updateFilter) = context.select(
       (SearchCubit cubit) => (
         cubit.state.searchResults,
+        cubit.state.filter,
         (SearchFilter filter) => cubit.updateFilter(filter)
       ),
     );
@@ -60,25 +61,27 @@ class _SearchAndAddToPlaylistState extends State<SearchAndAddToPlaylist> {
                 physics: const NeverScrollableScrollPhysics(),
                 onItemTap: (index, media) {},
               ),
-              const Divider(),
-              ...[SearchFilter.songs, SearchFilter.albums].map(
-                (e) => ListTile(
-                  dense: true,
-                  visualDensity: VisualDensity.compact,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 24),
-                  onTap: () => updateFilter(e),
-                  title: Text(
-                    'See all ${e.name}',
-                    style: context.textTheme.bodyLarge,
-                  ),
-                  trailing: const Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    size: 20,
-                    color: Colors.white,
+              if (filter.isAll) ...[
+                const Divider(),
+                ...[SearchFilter.songs, SearchFilter.albums].map(
+                  (e) => ListTile(
+                    dense: true,
+                    visualDensity: VisualDensity.compact,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 24),
+                    onTap: () => updateFilter(e),
+                    title: Text(
+                      'See all ${e.name}',
+                      style: context.textTheme.bodyLarge,
+                    ),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      size: 20,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 36),
+                const SizedBox(height: 36),
+              ],
             ],
           ),
         ),
