@@ -116,7 +116,7 @@ class Config extends Equatable {
 
 Config get appConfig {
   const server = kReleaseMode
-      ? Server('https://aryak.dev/varanasi')
+      ? Server('https://aryak.dev/api/varanasi')
       : Server('https://varanasi-backend-297lplmib-devaryakjha.vercel.app');
   return Config(
     env: kReleaseMode ? 'production' : 'development',
