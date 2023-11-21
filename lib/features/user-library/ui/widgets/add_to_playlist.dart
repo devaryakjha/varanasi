@@ -28,8 +28,7 @@ class _AddToPlaylistPageState extends State<AddToPlaylistPage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       context
           .read<UserLibraryCubit>()
-          .generateAddToPlaylistSuggestions(
-              (context.read<LibraryCubit>().state as LibraryLoaded).playlist)
+          .generateAddToPlaylistSuggestions()
           .then((value) {
         _playlists = value;
         setState(() {});
@@ -129,7 +128,7 @@ class _AddToPlaylistPageState extends State<AddToPlaylistPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              playlist.title!,
+                              playlist.title!.sanitize,
                               style: context.textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 1,

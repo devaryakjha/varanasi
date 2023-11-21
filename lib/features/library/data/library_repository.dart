@@ -25,8 +25,12 @@ class LibraryRepository with CacheableService {
 
   Future<MediaPlaylist<Song>> fetchLibrary(PlayableMedia media) async {
     await initcache().then((value) {
-      if (value == null) return;
-      _box = value;
+      try {
+        if (value == null) return;
+        _box = value;
+      } catch (e) {
+        _logger.e(e);
+      }
     });
     final cached = maybeGetCached(media.cacheKey);
     if (cached != null) {

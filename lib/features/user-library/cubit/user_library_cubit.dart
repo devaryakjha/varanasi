@@ -7,6 +7,7 @@ import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/app_cubit.dart';
 import 'package:varanasi_mobile_app/utils/app_snackbar.dart';
+import 'package:varanasi_mobile_app/utils/services/new_releases_service.dart';
 import 'package:varanasi_mobile_app/utils/services/recent_media_service.dart';
 
 part 'user_library_state.dart';
@@ -66,16 +67,14 @@ class UserLibraryCubit extends AppCubit<UserLibraryState> {
     AppSnackbar.show("Removed from library");
   }
 
-  Future<List<MediaPlaylist>> generateAddToPlaylistSuggestions(
-      MediaPlaylist selected) async {
-    final currentlibraries = [..._repository.libraries]
-        .where((element) => element.id != selected.id)
-        .toList();
-    final newReleases = await _repository.getNewReleases();
-    if (newReleases != null && newReleases.isNotEmpty) {
-      currentlibraries.add(newReleases);
+  Future<List<MediaPlaylist>> generateAddToPlaylistSuggestions() async {
+    await NewReleasesService.instance.nestedFetchNewsReleases();
+    final List<MediaPlaylist> currentlibraries = [];
+    final newReleases = NewReleasesService.instance.newReleases;
+    if (newReleases.isNotEmpty) {
+      currentlibraries.addAll(newReleases);
     }
-    final MediaPlaylist recentMedia = MediaPlaylist(
+    final recentMedia = MediaPlaylist(
       url: '',
       title: 'Recent Media',
       description: 'Recently played media',
@@ -85,7 +84,7 @@ class UserLibraryCubit extends AppCubit<UserLibraryState> {
           .flattened
           .toList(growable: false),
     );
-    currentlibraries.add(recentMedia);
+    currentlibraries.insert(0, recentMedia);
     return currentlibraries.where((element) => element.isNotEmpty).toList();
   }
 

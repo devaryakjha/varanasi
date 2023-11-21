@@ -148,11 +148,12 @@ class _LibraryContentState extends State<LibraryContent> {
                       ),
                     ),
                   ),
-                  AddToPlaylist(
-                    backgroundColor: backgroundColor,
-                    foregroundColor: foregroundColor,
-                    isEmpty: sortedMediaItems.isEmpty,
-                  ),
+                  if (state.playlist.isCustomPlaylist)
+                    AddToPlaylist(
+                      backgroundColor: backgroundColor,
+                      foregroundColor: foregroundColor,
+                      isEmpty: sortedMediaItems.isEmpty,
+                    ),
                   Visibility(
                     visible: sortedMediaItems.isNotEmpty,
                     child: MediaListView.sliver(
