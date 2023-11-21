@@ -1,40 +1,24 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'library_cubit.dart';
 
-abstract class LibraryState extends Equatable {
+class LibraryState extends Equatable {
   const LibraryState();
 
   @override
   List<Object?> get props => [];
 }
 
-class LibraryInitial extends LibraryState {
-  const LibraryInitial();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class LibraryLoading extends LibraryState {
-  const LibraryLoading();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
+class MediaState<T extends PlayableMedia> extends LibraryState {
   final MediaPlaylist<T> playlist;
   final PaletteGenerator colorPalette;
   final ImageProvider image;
   final bool showTitleInAppBar;
-  final PlayableMedia? media;
 
-  const LibraryLoaded(
+  const MediaState(
     this.playlist,
     this.colorPalette,
     this.image, {
     this.showTitleInAppBar = false,
-    this.media,
   });
 
   @override
@@ -43,7 +27,6 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
         colorPalette,
         image,
         showTitleInAppBar,
-        media,
       ];
 
   PaletteColor? get baseColor =>
@@ -78,19 +61,17 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
 
   bool get needSearchBar => length > 10;
 
-  LibraryLoaded<T> copyWith({
+  MediaState<T> copyWith({
     MediaPlaylist<T>? playlist,
     PaletteGenerator? colorPalette,
     ImageProvider? image,
     bool? showTitleInAppBar,
-    PlayableMedia? media,
   }) {
-    return LibraryLoaded<T>(
+    return MediaState<T>(
       playlist ?? this.playlist,
       colorPalette ?? this.colorPalette,
       image ?? this.image,
       showTitleInAppBar: showTitleInAppBar ?? this.showTitleInAppBar,
-      media: media ?? this.media,
     );
   }
 
@@ -109,7 +90,7 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
     return playlist.copyWith(mediaItems: sortedMediaItems(sortBy));
   }
 
-  LibraryLoaded<T> toggleAppbarTitle([bool? expanded]) {
+  MediaState<T> toggleAppbarTitle([bool? expanded]) {
     return copyWith(showTitleInAppBar: expanded ?? !showTitleInAppBar);
   }
 }

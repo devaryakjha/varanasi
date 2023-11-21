@@ -20,7 +20,7 @@ import 'package:varanasi_mobile_app/utils/logger.dart';
 part 'library_state.dart';
 
 class LibraryCubit extends Cubit<LibraryState> {
-  LibraryCubit() : super(const LibraryInitial());
+  LibraryCubit() : super(const LibraryState());
 
   static LibraryCubit of(BuildContext context) => context.read<LibraryCubit>();
 
