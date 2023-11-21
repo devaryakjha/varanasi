@@ -145,6 +145,10 @@ final class AllSearchResult extends SearchResult {
 
     return mediaPlayList;
   }
+
+  List<PlayableMedia> combineMediaItems() {
+    return toMediaPlaylist().expand((element) => element.mediaItems!).toList();
+  }
 }
 
 sealed class PaginatedResult<T extends PlayableMedia> extends SearchResult {

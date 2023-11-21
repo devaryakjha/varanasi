@@ -24,6 +24,8 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
   final Color? itemSelectedColor;
   final PlayableMediaType? mediaType;
   final bool loading;
+  final ScrollPhysics? physics;
+  final bool shrinkWrap;
 
   /// Creates a [MediaListView] widget with a [ListView].
   const MediaListView(
@@ -36,6 +38,8 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
     this.itemSelectedColor,
     this.mediaType,
     this.loading = false,
+    this.physics,
+    this.shrinkWrap = false,
   })  : _type = _MediaListType.list,
         itemBuilder = null;
 
@@ -49,6 +53,8 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
     this.itemSelectedColor,
     this.mediaType,
     this.loading = false,
+    this.physics,
+    this.shrinkWrap = false,
   })  : _type = _MediaListType.sliver,
         itemBuilder = null;
 
@@ -64,6 +70,8 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
     bool needSliver = false,
     this.mediaType,
     this.loading = false,
+    this.physics,
+    this.shrinkWrap = false,
   }) : _type = needSliver ? _MediaListType.sliver : _MediaListType.list;
 
   MediaListViewBuilder<Media> get _itemBuilder =>
@@ -98,6 +106,8 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
       itemSelectedColor: itemSelectedColor,
       mediaType: mediaType,
       loading: loading,
+      physics: physics,
+      shrinkWrap: shrinkWrap,
     );
   }
 }
@@ -113,6 +123,8 @@ class _MediaSliverListView<Media extends PlayableMedia>
     super.itemSelectedColor,
     required super.mediaType,
     super.loading = false,
+    super.physics,
+    super.shrinkWrap,
   });
 
   @override
@@ -143,11 +155,15 @@ class _MediaListView<Media extends PlayableMedia> extends MediaListView<Media> {
     super.itemSelectedColor,
     required super.mediaType,
     super.loading = false,
+    super.physics,
+    super.shrinkWrap,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      shrinkWrap: shrinkWrap,
+      physics: physics,
       itemCount: itemCount,
       itemBuilder: (context, index) {
         if (index == mediaItems.length) {
