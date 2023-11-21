@@ -147,7 +147,49 @@ final class AllSearchResult extends SearchResult {
   }
 
   List<PlayableMedia> combineMediaItems() {
-    return toMediaPlaylist().expand((element) => element.mediaItems!).toList();
+    final positions = [
+      if (songs != null) songs!,
+      if (albums != null) albums!,
+    ]..sort();
+    final mediaPlayList = positions
+        .map((e) {
+          if (e is TopQuery) {
+            return MediaPlaylist(
+              mediaItems: e.results,
+              title: 'Top Queries',
+              url: null,
+            );
+          } else if (e is Songs) {
+            return MediaPlaylist(
+              mediaItems: e.results,
+              title: 'Songs',
+              url: null,
+            );
+          } else if (e is Albums) {
+            return MediaPlaylist(
+              mediaItems: e.results,
+              title: 'Albums',
+              url: null,
+            );
+          } else if (e is Artists) {
+            return MediaPlaylist(
+              mediaItems: e.results,
+              title: 'Artists',
+              url: null,
+            );
+          } else if (e is Playlists) {
+            return MediaPlaylist(
+              mediaItems: e.results,
+              title: 'Playlists',
+              url: null,
+            );
+          } else {
+            throw Exception('Unknown type');
+          }
+        })
+        .where((item) => item.mediaItems?.isNotEmpty ?? false)
+        .toList();
+    return mediaPlayList.expand((element) => element.mediaItems!).toList();
   }
 }
 
