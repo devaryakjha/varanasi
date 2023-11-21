@@ -7,7 +7,6 @@ import 'package:varanasi_mobile_app/features/user-library/cubit/user_library_cub
 import 'package:varanasi_mobile_app/models/image.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/utils/configs.dart';
-import 'package:varanasi_mobile_app/utils/logger.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
 
 class AddPlaylistButton extends StatelessWidget {
@@ -26,7 +25,9 @@ class AddPlaylistButton extends StatelessWidget {
         final name =
             await context.pushNamed<String?>(AppRoutes.createLibrary.name);
         if (context.mounted && name != null && name.isNotEmpty) {
-          context.read<UserLibraryCubit>().addToLibrary(
+          context
+              .read<UserLibraryCubit>()
+              .addToLibrary(
                 MediaPlaylist(
                   id: nanoid(),
                   url: '',
@@ -35,11 +36,13 @@ class AddPlaylistButton extends StatelessWidget {
                   description:
                       userName == null ? 'Playlist' : 'Playlist • $userName',
                   images: [Image.fromString(appConfig.placeholderImageLink)],
-                  type: 'custom_playlist',
+                  type: MediaPlaylistType.customPlaylist.type,
                 ),
-              );
+              )
+              .then((value) {
+            context.read<SessionCubit>().incrementCustomPlaylistIndex();
+          });
         }
-        Logger.instance.d('name: $name');
       },
       icon: const Icon(Icons.add_rounded),
     );

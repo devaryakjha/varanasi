@@ -152,7 +152,7 @@ final routerConfig = GoRouter(
       path: AppRoutes.createLibrary.path,
       pageBuilder: (_, state) => CupertinoSheetPage<void>(
         key: state.pageKey,
-        child: const DefaultSheetController(child: CreatePlaylistPage()),
+        child: const CreatePlaylistPage(),
       ),
     ),
     GoRoute(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:varanasi_mobile_app/features/session/cubit/session_cubit.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/widgets/input_field.dart';
 
@@ -16,12 +18,14 @@ class _CreatePlaylistPageState extends State<CreatePlaylistPage> {
   @override
   void initState() {
     super.initState();
-    const text = 'My playlist #1';
+    final state = context.read<SessionCubit>().state;
+    final index =
+        state is Authenticated ? state.userData.customPlaylistIndex : 1;
+    final text = 'My playlist #${index + 1}';
 
     _controller = TextEditingController()
       ..text = text
-      ..selection =
-          const TextSelection(baseOffset: 0, extentOffset: text.length);
+      ..selection = TextSelection(baseOffset: 0, extentOffset: text.length);
   }
 
   @override

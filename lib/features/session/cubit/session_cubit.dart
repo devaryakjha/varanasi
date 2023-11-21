@@ -22,6 +22,8 @@ class SessionCubit extends AppCubit<SessionState> {
 
   final _auth = FirebaseAuth.instance;
 
+  StreamSubscription? _userListener;
+
   @override
   FutureOr<void> init() {
     _auth.userChanges().map((user) {
@@ -29,9 +31,22 @@ class SessionCubit extends AppCubit<SessionState> {
     }).listen((state) {
       if (state is Authenticated) {
         FirestoreService.init();
+        _userListener = FirestoreService.userDocument
+            ?.collection("preferences")
+            .doc("preferences")
+            .snapshots()
+            .listen((event) {
+          final preferences = event.data();
+          emit(state.copyWith(
+            userData: preferences == null
+                ? const CustomUserData()
+                : CustomUserData.fromJson(preferences),
+          ));
+        });
         appContext.read<UserLibraryCubit>().setupListeners();
       } else {
         FirestoreService.dispose();
+        _userListener?.cancel();
         appContext.read<UserLibraryCubit>().disposeListeners();
       }
       emit(state);
@@ -134,5 +149,30 @@ class SessionCubit extends AppCubit<SessionState> {
       (_) => 'An undefined Error happened.'
     };
     AppSnackbar.show(message);
+  }
+
+  void incrementCustomPlaylistIndex() {
+    final state = this.state;
+    if (state is Authenticated) {
+      FirestoreService.userDocument
+          ?.collection("preferences")
+          .doc("preferences")
+          .get()
+          .then((value) {
+        if (value.exists) {
+          FirestoreService.userDocument
+              ?.collection("preferences")
+              .doc("preferences")
+              .update({
+            "customPlaylistIndex": state.userData.customPlaylistIndex + 1,
+          });
+        } else {
+          FirestoreService.userDocument
+              ?.collection("preferences")
+              .doc("preferences")
+              .set(state.userData.toJson());
+        }
+      });
+    }
   }
 }
