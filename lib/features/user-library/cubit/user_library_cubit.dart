@@ -2,11 +2,15 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
 import 'package:varanasi_mobile_app/features/user-library/data/user_library_repository.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
+import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/app_cubit.dart';
 import 'package:varanasi_mobile_app/utils/app_snackbar.dart';
+import 'package:varanasi_mobile_app/utils/helpers/get_app_context.dart';
 import 'package:varanasi_mobile_app/utils/services/new_releases_service.dart';
 import 'package:varanasi_mobile_app/utils/services/recent_media_service.dart';
 
@@ -56,18 +60,32 @@ class UserLibraryCubit extends AppCubit<UserLibraryState> {
 
   Future<void> appendAllItemToLibrary(
       MediaPlaylist playlist, List<PlayableMedia> item) async {
-    _repository.appendAllItemToLibrary(item, playlist.id);
+    final List<Future<Song?>> futures = item.map((e) async {
+      if (e is Song) return e;
+      return appContext.read<MediaPlayerCubit>().fetchSong(e);
+    }).toList();
+    final songs =
+        (await Future.wait(futures)).whereNotNull().toList(growable: false);
+    _repository.appendAllItemToLibrary(songs, playlist.id);
     AppSnackbar.show("Added ${item.length} items to ${playlist.title}");
   }
 
   Future<void> appendItemToLibrary(
       MediaPlaylist playlist, PlayableMedia item) async {
-    _repository.appendItemToLibrary(item, playlist.id);
-    AppSnackbar.show("Added ${item.itemTitle} to ${playlist.title}");
+    final song = item is Song
+        ? item
+        : await appContext.read<MediaPlayerCubit>().fetchSong(item);
+    if (song == null) return;
+    _repository.appendItemToLibrary(song, playlist.id);
+    AppSnackbar.show("Added ${song.itemTitle} to ${playlist.title}");
   }
 
   Future<void> removeItemFromLibrary(
       MediaPlaylist playlist, PlayableMedia item) async {
+    final song = item is Song
+        ? item
+        : await appContext.read<MediaPlayerCubit>().fetchSong(item);
+    if (song == null) return;
     _repository.removeItemFromLibrary(item, playlist.id);
     AppSnackbar.show("Removed ${item.itemTitle} from ${playlist.title}");
   }

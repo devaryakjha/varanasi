@@ -97,15 +97,18 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
 
   Future<void> playFromSong(PlayableMedia media) async {
     assert(media.itemType == PlayableMediaType.song, 'Media must be a song');
+    final song = (await fetchSong(media))!;
+    cache(media.cacheKey, song);
+    await playFromMediaPlaylist(song.toMediaPlaylist());
+  }
 
+  Future<Song?> fetchSong(PlayableMedia media) async {
     final cached = maybeGetCached<Song>(media.cacheKey);
+    return cached ?? await fetchSongFromNetwork(media);
+  }
 
-    if (cached != null) {
-      await playFromMediaPlaylist(cached.toMediaPlaylist());
-      return;
-    }
-
-    final response = await fetchUri(
+  Future<Song?> fetchSongFromNetwork(media) async {
+    return (await fetchUri(
       media.moreInfoUrl,
       options: CommonOptions(
         transformer: (response) {
@@ -123,10 +126,8 @@ class MediaPlayerCubit extends AppCubit<MediaPlayerState>
           return song;
         },
       ),
-    );
-    final song = response.$2!;
-    cache(media.cacheKey, song);
-    await playFromMediaPlaylist(song.toMediaPlaylist());
+    ))
+        .$2;
   }
 
   Future<void> play() async {

@@ -178,7 +178,10 @@ final class AllSearchResult extends SearchResult {
         })
         .where((item) => item.mediaItems?.isNotEmpty ?? false)
         .toList();
-    return mediaPlayList.expand((element) => element.mediaItems!).toList();
+    return mediaPlayList
+        .expand((element) => element.mediaItems!)
+        // .where((item) => item is Song || item is Album)
+        .toList();
   }
 }
 

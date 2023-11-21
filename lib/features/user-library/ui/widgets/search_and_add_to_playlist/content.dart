@@ -5,11 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
 import 'package:varanasi_mobile_app/features/search/data/search_result/data.dart';
-import 'package:varanasi_mobile_app/features/search/data/search_result/result.dart';
 import 'package:varanasi_mobile_app/features/user-library/cubit/user_library_cubit.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
-import 'package:varanasi_mobile_app/utils/logger.dart';
 import 'package:varanasi_mobile_app/widgets/media_list.dart';
 
 import 'search_and_add_to_playlist.dart';
@@ -132,13 +130,10 @@ class _ContentState extends State<Content> {
                               .any((item) => item.itemId == media.itemId);
                           return IconButton(
                             onPressed: () {
-                              Logger.instance.d(media.runtimeType);
-                              if (media is Result) {
-                                if (isAdded) {
-                                  removeItemFromLibrary(media);
-                                } else {
-                                  appendItemToLibrary(media);
-                                }
+                              if (isAdded) {
+                                removeItemFromLibrary(media);
+                              } else {
+                                appendItemToLibrary(media);
                               }
                             },
                             icon: isAdded
