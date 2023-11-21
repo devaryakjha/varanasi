@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/cubits/download/download_cubit.dart';
 import 'package:varanasi_mobile_app/features/user-library/cubit/user_library_cubit.dart';
 import 'package:varanasi_mobile_app/features/user-library/ui/widgets/add_playlist_button.dart';
-import 'package:varanasi_mobile_app/flavors.dart';
 import 'package:varanasi_mobile_app/gen/assets.gen.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
@@ -44,7 +43,7 @@ class UserLibraryPage extends HookWidget {
           ],
         ),
         centerTitle: false,
-        actions: F.appFlavor.isProd ? null : const [AddPlaylistButton()],
+        actions: const [AddPlaylistButton()],
         elevation: 10,
       ),
       body: BlocBuilder<UserLibraryCubit, UserLibraryState>(
