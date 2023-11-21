@@ -34,6 +34,7 @@ class Result extends PlayableMedia with EquatableMixin {
     return _$ResultFromJson(json);
   }
 
+  @override
   Map<String, dynamic> toJson() => _$ResultToJson(this);
 
   Result copyWith({

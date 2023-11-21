@@ -173,7 +173,9 @@ final routerConfig = GoRouter(
           child: BlocProvider(
             create: (context) => SearchCubit()..init(),
             child: SearchAndAddToPlaylist(
-                state.pathParameters['id']!, SearchFilter.all),
+              state.pathParameters['id']!,
+              SearchFilter.all,
+            ),
           ),
         );
       },

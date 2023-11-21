@@ -28,6 +28,7 @@ class TopSearch extends PlayableMedia with EquatableMixin {
   factory TopSearch.fromJson(Map<String, dynamic> json) =>
       _$TopSearchFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$TopSearchToJson(this);
 
   TopSearch copyWith({

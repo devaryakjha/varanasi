@@ -55,7 +55,7 @@ class LibraryCubit extends Cubit<LibraryState> {
             emit(
               state +
                   MediaLoadedState(
-                    playlist.id,
+                    newPlaylist.id,
                     newPlaylist,
                     colorPalette!,
                     image,

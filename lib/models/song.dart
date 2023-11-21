@@ -79,6 +79,7 @@ class Song extends PlayableMedia {
 
   factory Song.fromJson(Map<String, dynamic> json) => _$SongFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$SongToJson(this);
 
   Song copyWith({

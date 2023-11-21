@@ -159,4 +159,6 @@ abstract class PlayableMedia extends Equatable {
       type: itemType.name,
     );
   }
+
+  Map<String, dynamic> toJson();
 }

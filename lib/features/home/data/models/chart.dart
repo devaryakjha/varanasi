@@ -42,6 +42,7 @@ class Chart extends PlayableMedia {
 
   factory Chart.fromJson(Map<String, dynamic> json) => _$ChartFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$ChartToJson(this);
 
   Chart copyWith({

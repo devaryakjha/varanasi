@@ -4,7 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:varanasi_mobile_app/features/user-library/data/user_library_repository.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
-import 'package:varanasi_mobile_app/models/song.dart';
+import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/app_cubit.dart';
 import 'package:varanasi_mobile_app/utils/app_snackbar.dart';
 import 'package:varanasi_mobile_app/utils/services/new_releases_service.dart';
@@ -34,12 +34,12 @@ class UserLibraryCubit extends AppCubit<UserLibraryState> {
     _repository.dispose();
   }
 
-  Future<void> favoriteSong(Song song) async {
+  Future<void> favoriteSong(PlayableMedia song) async {
     await _repository.favoriteSong(song);
     AppSnackbar.show("Added to favorites");
   }
 
-  Future<void> unfavoriteSong(Song song) async {
+  Future<void> unfavoriteSong(PlayableMedia song) async {
     await _repository.unfavoriteSong(song);
     AppSnackbar.show("Removed from favorites");
   }
@@ -55,19 +55,21 @@ class UserLibraryCubit extends AppCubit<UserLibraryState> {
   }
 
   Future<void> appendAllItemToLibrary(
-      MediaPlaylist playlist, List<Song> item) async {
+      MediaPlaylist playlist, List<PlayableMedia> item) async {
     _repository.appendAllItemToLibrary(item, playlist.id);
     AppSnackbar.show("Added ${item.length} items to ${playlist.title}");
   }
 
-  Future<void> appendItemToLibrary(MediaPlaylist playlist, Song item) async {
+  Future<void> appendItemToLibrary(
+      MediaPlaylist playlist, PlayableMedia item) async {
     _repository.appendItemToLibrary(item, playlist.id);
-    AppSnackbar.show("Added ${item.name} to ${playlist.title}");
+    AppSnackbar.show("Added ${item.itemTitle} to ${playlist.title}");
   }
 
-  Future<void> removeItemFromLibrary(MediaPlaylist playlist, Song item) async {
+  Future<void> removeItemFromLibrary(
+      MediaPlaylist playlist, PlayableMedia item) async {
     _repository.removeItemFromLibrary(item, playlist.id);
-    AppSnackbar.show("Removed ${item.name} from ${playlist.title}");
+    AppSnackbar.show("Removed ${item.itemTitle} from ${playlist.title}");
   }
 
   Future<void> removeFromLibrary(MediaPlaylist playlist) async {
