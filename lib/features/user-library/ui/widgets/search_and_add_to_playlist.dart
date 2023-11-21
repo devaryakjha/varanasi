@@ -46,12 +46,6 @@ class _ContentState extends State<Content> {
   }
 
   @override
-  void dispose() {
-    context.read<SearchCubit>().updateFilter(SearchFilter.all);
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (didPop) {
@@ -61,11 +55,12 @@ class _ContentState extends State<Content> {
       },
       child: Builder(
         builder: (context) {
-          final (searchResults, filter, updateFilter) = context.select(
+          final (searchResults, filter, updateFilter, query) = context.select(
             (SearchCubit cubit) => (
               cubit.state.searchResults,
               cubit.state.filter,
-              cubit.updateFilter
+              cubit.updateFilter,
+              cubit.state.query,
             ),
           );
           final emptyResults = searchResults == null;
@@ -85,7 +80,10 @@ class _ContentState extends State<Content> {
               leading: filter.isAll
                   ? CloseButton(onPressed: () => context.pop())
                   : const BackButton(),
-              title: SearchTitle(controller: _controller),
+              title: switch (filter) {
+                SearchFilter.all => SearchTitle(controller: _controller),
+                _ => Text("'$query' in ${filter.filter}"),
+              },
             ),
             body: Visibility(
               visible: !emptyResults,
