@@ -56,7 +56,11 @@ class MediaCard extends StatelessWidget {
         if (item.itemType.isSong) {
           context.read<MediaPlayerCubit>().playFromSong(item);
         } else {
-          context.push(AppRoutes.library.path, extra: item);
+          context.pushNamed(
+            AppRoutes.library.name,
+            extra: item,
+            pathParameters: {'id': item.itemId},
+          );
         }
       },
       child: Padding(

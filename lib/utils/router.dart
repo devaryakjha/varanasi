@@ -22,6 +22,7 @@ import 'package:varanasi_mobile_app/features/user-library/ui/widgets/add_to_play
 import 'package:varanasi_mobile_app/features/user-library/ui/widgets/create_playlist.dart';
 import 'package:varanasi_mobile_app/features/user-library/ui/widgets/search_and_add_to_playlist/search_and_add_to_playlist.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
+import 'package:varanasi_mobile_app/utils/logger.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
 import 'package:varanasi_mobile_app/widgets/page_with_navbar.dart';
 import 'package:varanasi_mobile_app/widgets/transitions/fade_transition_page.dart';
@@ -88,29 +89,6 @@ final routerConfig = GoRouter(
                 );
               },
             ),
-            GoRoute(
-              name: AppRoutes.library.name,
-              path: AppRoutes.library.path,
-              pageBuilder: (context, state) {
-                return _pageWithBottomSheet(LibraryPage(
-                  source: state.extra,
-                  key: state.pageKey,
-                ));
-              },
-              routes: [
-                GoRoute(
-                  name: AppRoutes.librarySearch.name,
-                  path: AppRoutes.librarySearch.path,
-                  pageBuilder: (context, state) {
-                    final media = state.extra! as MediaPlaylist;
-                    return FadeTransitionPage(
-                      key: state.pageKey,
-                      child: LibrarySearchPage(playlist: media),
-                    );
-                  },
-                ),
-              ],
-            ),
           ],
         ),
         StatefulShellBranch(
@@ -145,6 +123,30 @@ final routerConfig = GoRouter(
       ],
       pageBuilder: (_, __, shell) =>
           _pageWithBottomSheet(PageWithNavbar(child: shell)),
+    ),
+    GoRoute(
+      name: AppRoutes.library.name,
+      path: AppRoutes.library.path,
+      pageBuilder: (context, state) {
+        Logger.instance.d(state.pathParameters);
+        return _pageWithBottomSheet(
+          LibraryPage(source: state.extra),
+          state.pageKey,
+        );
+      },
+      routes: [
+        GoRoute(
+          name: AppRoutes.librarySearch.name,
+          path: AppRoutes.librarySearch.path,
+          pageBuilder: (context, state) {
+            final media = state.extra! as MediaPlaylist;
+            return FadeTransitionPage(
+              key: state.pageKey,
+              child: LibrarySearchPage(playlist: media),
+            );
+          },
+        ),
+      ],
     ),
     GoRoute(
       parentNavigatorKey: rootNavigatorKey,

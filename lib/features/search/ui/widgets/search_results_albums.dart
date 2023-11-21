@@ -21,7 +21,11 @@ class SearchResultsAlbums extends SearchResults<AlbumSearchResult> {
       isPlaying: false,
       isItemPlaying: (media) => false,
       onItemTap: (index, media) {
-        context.push(AppRoutes.library.path, extra: media);
+        context.pushNamed(
+          AppRoutes.library.name,
+          extra: media,
+          pathParameters: {'id': media.itemId},
+        );
       },
       loading: isFetchingMore,
     );

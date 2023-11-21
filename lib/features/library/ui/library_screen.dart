@@ -4,6 +4,7 @@ import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/models/playable_item_impl.dart';
+import 'package:varanasi_mobile_app/utils/logger.dart';
 
 import 'library_widgets/library_loader.dart';
 import 'library_widgets/page.dart';
@@ -42,6 +43,18 @@ class _LibraryPageState extends State<LibraryPage> {
         }
       }
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Logger.instance.d('LibraryPage didChangeDependencies');
+  }
+
+  @override
+  void didUpdateWidget(covariant LibraryPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    Logger.instance.d('LibraryPage didUpdateWidget');
   }
 
   @override
