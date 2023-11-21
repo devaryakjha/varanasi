@@ -179,14 +179,18 @@ final routerConfig = GoRouter(
       },
       routes: [
         GoRoute(
+          parentNavigatorKey: rootNavigatorKey,
           name: AppRoutes.searchAndAddToLibraryWithFilter.name,
           path: AppRoutes.searchAndAddToLibraryWithFilter.path,
-          builder: (_, state) {
-            return SearchAndAddToPlaylist(
-              SearchFilter.fromString(state.pathParameters["filter"]!),
-              key: state.pageKey,
-            );
-          },
+          pageBuilder: (_, state) => _pageWithBottomSheet(
+              BlocProvider(
+                create: (context) => SearchCubit()..init(),
+                child: SearchAndAddToPlaylist(
+                  SearchFilter.fromString(state.pathParameters["filter"]!),
+                  key: state.pageKey,
+                ),
+              ),
+              state.pageKey),
         ),
       ],
     ),
