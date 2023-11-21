@@ -157,6 +157,7 @@ class _LibraryContentState extends State<LibraryContent> {
                   ),
                   if (state.playlist.isCustomPlaylist)
                     AddToPlaylist(
+                      widget.id,
                       backgroundColor: backgroundColor,
                       foregroundColor: foregroundColor,
                       isEmpty: sortedMediaItems.isEmpty,

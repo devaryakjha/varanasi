@@ -104,8 +104,10 @@ class _AddToPlaylistPageState extends State<AddToPlaylistPage> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: () =>
-                  context.pushNamed(AppRoutes.searchAndAddToLibrary.name),
+              onPressed: () => context.pushNamed(
+                AppRoutes.searchAndAddToLibrary.name,
+                pathParameters: {"id": widget.id},
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
