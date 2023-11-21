@@ -880,15 +880,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
-  modal_bottom_sheet:
-    dependency: "direct main"
-    description:
-      path: modal_bottom_sheet
-      ref: main
-      resolved-ref: "34da11585ffb331cc98447af34bd3eacd0b87097"
-      url: "git@github.com:devaryakjha/sheet.git"
-    source: git
-    version: "3.0.1"
   nanoid:
     dependency: "direct main"
     description:
@@ -1110,10 +1101,10 @@ packages:
     description:
       path: sheet
       ref: main
-      resolved-ref: "40803fdc0435af077aaf08484025cd6e9f2ce59d"
-      url: "git@github.com:devaryakjha/sheet.git"
+      resolved-ref: "34da11585ffb331cc98447af34bd3eacd0b87097"
+      url: "https://github.com/devaryakjha/sheet.git"
     source: git
-    version: "1.0.0-pre"
+    version: "1.1.0"
   shelf:
     dependency: transitive
     description:

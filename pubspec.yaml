@@ -78,14 +78,9 @@ dependencies:
   firebase_crashlytics: ^3.4.4
   sheet:
     git:
-      url: git@github.com:devaryakjha/sheet.git
+      url: https://github.com/devaryakjha/sheet.git
       ref: main
       path: sheet
-  modal_bottom_sheet:
-    git:
-      url: git@github.com:devaryakjha/sheet.git
-      ref: main
-      path: modal_bottom_sheet
   nanoid: ^1.0.0
 
 dev_dependencies:
