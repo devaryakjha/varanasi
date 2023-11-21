@@ -12,7 +12,7 @@ class FindInPlyalist extends StatelessWidget {
     required this.state,
   });
 
-  final LibraryLoaded state;
+  final MediaLoadedState state;
 
   @override
   Widget build(BuildContext context) {

@@ -14,7 +14,8 @@ import 'package:varanasi_mobile_app/widgets/media_list.dart';
 import 'search_and_add_to_playlist.dart';
 
 class Content extends StatefulWidget {
-  const Content({super.key});
+  final String id;
+  const Content(this.id, {super.key});
 
   @override
   State<Content> createState() => _ContentState();
@@ -39,8 +40,9 @@ class _ContentState extends State<Content> {
       },
       child: Builder(
         builder: (context) {
-          final state = context.select((LibraryCubit cubit) => cubit.state);
-          if (state is! LibraryLoaded) {
+          final state =
+              context.select((LibraryCubit cubit) => cubit.state[widget.id]);
+          if (state is! MediaLoadedState) {
             return const Center(child: CircularProgressIndicator());
           }
           final selectedPlaylist = state.playlist;
@@ -110,7 +112,7 @@ class _ContentState extends State<Content> {
                           if (media.itemType.isAlbum) {
                             Navigator.of(context).push(MaterialPageRoute<void>(
                               builder: (context) => SearchAndAddToPlaylist(
-                                  SearchFilter.albums,
+                                  widget.id, SearchFilter.albums,
                                   media: media),
                             ));
                           }
@@ -155,7 +157,8 @@ class _ContentState extends State<Content> {
                               updateFilter(e);
                               Navigator.of(context)
                                   .push(MaterialPageRoute<void>(
-                                builder: (context) => SearchAndAddToPlaylist(e),
+                                builder: (context) =>
+                                    SearchAndAddToPlaylist(widget.id, e),
                               ));
                             },
                             title: Text(

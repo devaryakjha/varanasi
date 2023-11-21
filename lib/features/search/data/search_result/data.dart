@@ -108,30 +108,35 @@ final class AllSearchResult extends SearchResult {
         .map((e) {
           if (e is TopQuery) {
             return MediaPlaylist(
+              id: 'topQueries',
               mediaItems: e.results,
               title: 'Top Queries',
               url: null,
             );
           } else if (e is Songs) {
             return MediaPlaylist(
+              id: 'songs',
               mediaItems: e.results,
               title: 'Songs',
               url: null,
             );
           } else if (e is Albums) {
             return MediaPlaylist(
+              id: 'albums',
               mediaItems: e.results,
               title: 'Albums',
               url: null,
             );
           } else if (e is Artists) {
             return MediaPlaylist(
+              id: 'artists',
               mediaItems: e.results,
               title: 'Artists',
               url: null,
             );
           } else if (e is Playlists) {
             return MediaPlaylist(
+              id: 'playlists',
               mediaItems: e.results,
               title: 'Playlists',
               url: null,
@@ -153,34 +158,18 @@ final class AllSearchResult extends SearchResult {
     ]..sort();
     final mediaPlayList = positions
         .map((e) {
-          if (e is TopQuery) {
+          if (e is Songs) {
             return MediaPlaylist(
-              mediaItems: e.results,
-              title: 'Top Queries',
-              url: null,
-            );
-          } else if (e is Songs) {
-            return MediaPlaylist(
+              id: 'songs',
               mediaItems: e.results,
               title: 'Songs',
               url: null,
             );
           } else if (e is Albums) {
             return MediaPlaylist(
+              id: 'albums',
               mediaItems: e.results,
               title: 'Albums',
-              url: null,
-            );
-          } else if (e is Artists) {
-            return MediaPlaylist(
-              mediaItems: e.results,
-              title: 'Artists',
-              url: null,
-            );
-          } else if (e is Playlists) {
-            return MediaPlaylist(
-              mediaItems: e.results,
-              title: 'Playlists',
               url: null,
             );
           } else {

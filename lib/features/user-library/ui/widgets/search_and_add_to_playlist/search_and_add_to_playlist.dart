@@ -6,9 +6,10 @@ import 'content.dart';
 import 'library_detail_page.dart';
 
 class SearchAndAddToPlaylist extends StatelessWidget {
+  final String id;
   final SearchFilter filter;
   final PlayableMedia? media;
-  const SearchAndAddToPlaylist(this.filter, {super.key, this.media});
+  const SearchAndAddToPlaylist(this.id, this.filter, {super.key, this.media});
 
   @override
   Widget build(BuildContext context) {
@@ -17,15 +18,15 @@ class SearchAndAddToPlaylist extends StatelessWidget {
         child: Navigator(
           onGenerateRoute: (settings) {
             return MaterialPageRoute<void>(
-              builder: (context) => const Content(),
+              builder: (context) => Content(id),
             );
           },
         ),
       );
     }
     if (media == null || !(media?.itemType.isAlbum ?? false)) {
-      return const Content();
+      return Content(id);
     }
-    return LibraryDetailPage(media!);
+    return LibraryDetailPage(id, media!);
   }
 }

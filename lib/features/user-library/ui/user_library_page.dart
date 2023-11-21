@@ -67,7 +67,7 @@ class UserLibraryPage extends HookWidget {
                   context.pushNamed(
                     AppRoutes.library.name,
                     extra: item,
-                    pathParameters: {'id': item.id!},
+                    pathParameters: {'id': item.id},
                   );
                 },
                 leading: Visibility(

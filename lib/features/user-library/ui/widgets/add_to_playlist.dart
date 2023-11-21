@@ -14,7 +14,8 @@ import 'package:varanasi_mobile_app/utils/routes.dart';
 import 'package:varanasi_mobile_app/widgets/media_tile.dart';
 
 class AddToPlaylistPage extends StatefulWidget {
-  const AddToPlaylistPage({super.key});
+  final String id;
+  const AddToPlaylistPage(this.id, {super.key});
 
   @override
   State<AddToPlaylistPage> createState() => _AddToPlaylistPageState();
@@ -45,8 +46,18 @@ class _AddToPlaylistPageState extends State<AddToPlaylistPage> {
   @override
   Widget build(BuildContext context) {
     final selectedPlaylist = context.select(
-      (LibraryCubit loaded) => (loaded.state as LibraryLoaded).playlist,
+      (LibraryCubit cubit) {
+        final playlist = cubit.state[widget.id];
+        if (playlist is MediaLoadedState) {
+          return playlist.playlist;
+        }
+        return null;
+      },
     );
+    if (selectedPlaylist == null) {
+      return const SizedBox();
+    }
+
     final (
       mediaItems,
       appendItemToLibrary,

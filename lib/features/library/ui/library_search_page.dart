@@ -18,7 +18,7 @@ class LibrarySearchPage extends HookWidget {
 
   List<PlayableMedia> get media => playlist.mediaItems ?? [];
 
-  String get playlistId => playlist.id!;
+  String get playlistId => playlist.id;
 
   @override
   Widget build(BuildContext context) {

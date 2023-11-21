@@ -8,8 +8,9 @@ import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/widgets/media_list.dart';
 
 class LibraryDetailPage extends StatelessWidget {
+  final String id;
   final PlayableMedia media;
-  const LibraryDetailPage(this.media, {super.key});
+  const LibraryDetailPage(this.id, this.media, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +26,8 @@ class LibraryDetailPage extends StatelessWidget {
           }
 
           final mediaItems = snapshot.data?.mediaItems ?? [];
-          final state = context.select((LibraryCubit cubit) => cubit.state);
-          if (state is! LibraryLoaded) {
+          final state = context.select((LibraryCubit cubit) => cubit.state[id]);
+          if (state is! MediaLoadedState) {
             return const Center(child: CircularProgressIndicator());
           }
           final selectedPlaylist = state.playlist;

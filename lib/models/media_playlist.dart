@@ -54,7 +54,7 @@ enum MediaPlaylistType {
 class MediaPlaylist<T extends PlayableMedia> extends Equatable
     implements Comparable<MediaPlaylist> {
   @HiveField(0)
-  final String? id;
+  final String id;
   @HiveField(1)
   final String? title;
   @HiveField(2)
@@ -65,12 +65,12 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable
   final List<Image> images;
   @HiveField(5)
   final String? url;
-  @HiveField(6)
+  @HiveField(6, defaultValue: '')
   final String? type;
 
   /// Default constructor for [MediaPlaylist].
   MediaPlaylist({
-    this.id,
+    required this.id,
     this.title,
     this.description,
     List<T>? mediaItems,
@@ -82,7 +82,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable
             mediaItems?.where((element) => !element.itemType.isArtist).toList();
 
   const MediaPlaylist.empty()
-      : id = null,
+      : id = "",
         title = null,
         description = null,
         mediaItems = null,
@@ -101,7 +101,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable
         title: "Today's biggest hits",
         mediaItems: mediaItems,
         description: description,
-        id: id,
+        id: id ?? 'popular_today',
         images: images ?? const [],
         url: null,
       );
@@ -117,7 +117,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable
         title: 'Top Albums',
         mediaItems: mediaItems,
         description: description,
-        id: id,
+        id: id ?? 'albums',
         images: images ?? const [],
         url: null,
       );
@@ -133,7 +133,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable
         title: 'Recommended for today',
         mediaItems: mediaItems,
         description: description,
-        id: id,
+        id: id ?? 'playlists',
         images: images ?? const [],
         url: null,
       );

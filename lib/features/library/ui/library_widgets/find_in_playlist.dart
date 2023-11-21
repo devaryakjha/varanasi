@@ -9,7 +9,7 @@ import 'package:varanasi_mobile_app/utils/routes.dart';
 class FindInPlaylist extends StatelessWidget {
   const FindInPlaylist({super.key, required this.state});
 
-  final LibraryLoaded state;
+  final MediaLoadedState state;
 
   @override
   Widget build(BuildContext context) {

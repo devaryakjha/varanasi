@@ -70,7 +70,7 @@ class PlayableMediaImpl extends PlayableMedia {
 
   factory PlayableMediaImpl.fromMediaPlaylist(MediaPlaylist mediaPlaylist) {
     return PlayableMediaImpl(
-      mediaPlaylist.id!,
+      mediaPlaylist.id,
       mediaPlaylist.title!,
       mediaPlaylist.description!,
       mediaPlaylist.url ?? '',
