@@ -2,9 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
 import 'package:varanasi_mobile_app/features/search/data/search_result/data.dart';
+import 'package:varanasi_mobile_app/features/user-library/cubit/user_library_cubit.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
+import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/widgets/media_list.dart';
 
@@ -55,6 +58,16 @@ class _ContentState extends State<Content> {
       },
       child: Builder(
         builder: (context) {
+          final selectedPlaylist = context.select(
+            (LibraryCubit loaded) => (loaded.state as LibraryLoaded).playlist,
+          );
+          final (appendItemToLibrary, removeItemFromLibrary) =
+              context.select((UserLibraryCubit cubit) => (
+                    (Song item) =>
+                        cubit.appendItemToLibrary(selectedPlaylist, item),
+                    (Song item) =>
+                        cubit.removeItemFromLibrary(selectedPlaylist, item),
+                  ));
           final (
             searchResults,
             filter,
@@ -112,6 +125,25 @@ class _ContentState extends State<Content> {
                         physics: const NeverScrollableScrollPhysics(),
                         onItemTap: (index, media) {},
                         loading: isFetchingMore,
+                        trailing: (media) {
+                          final isAdded = (selectedPlaylist.mediaItems ?? [])
+                              .any((item) => item.itemId == media.itemId);
+                          return IconButton(
+                            onPressed: () {
+                              if (media is Song) {
+                                if (isAdded) {
+                                  removeItemFromLibrary(media);
+                                } else {
+                                  appendItemToLibrary(media);
+                                }
+                              }
+                            },
+                            icon: isAdded
+                                ? const Icon(Icons.check_circle_rounded)
+                                : const Icon(Icons.add_circle_outline_rounded),
+                            iconSize: 30,
+                          );
+                        },
                       ),
                       if (filter.isAll) ...[
                         const Divider(),

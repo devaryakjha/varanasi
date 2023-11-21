@@ -26,6 +26,7 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
   final bool loading;
   final ScrollPhysics? physics;
   final bool shrinkWrap;
+  final Widget Function(Media)? trailing;
 
   /// Creates a [MediaListView] widget with a [ListView].
   const MediaListView(
@@ -40,6 +41,7 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
     this.loading = false,
     this.physics,
     this.shrinkWrap = false,
+    this.trailing,
   })  : _type = _MediaListType.list,
         itemBuilder = null;
 
@@ -55,6 +57,7 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
     this.loading = false,
     this.physics,
     this.shrinkWrap = false,
+    this.trailing,
   })  : _type = _MediaListType.sliver,
         itemBuilder = null;
 
@@ -72,6 +75,7 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
     this.loading = false,
     this.physics,
     this.shrinkWrap = false,
+    this.trailing,
   }) : _type = needSliver ? _MediaListType.sliver : _MediaListType.list;
 
   MediaListViewBuilder<Media> get _itemBuilder =>
@@ -87,6 +91,7 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
             selectedColor: itemSelectedColor,
             parentMediaType: mediaType ?? PlayableMediaType.song,
             key: ValueKey(media.heroTag),
+            trailing: trailing?.call(media),
           );
 
   int get itemCount => loading ? mediaItems.length + 1 : mediaItems.length;
@@ -108,6 +113,7 @@ class MediaListView<Media extends PlayableMedia> extends StatelessWidget {
       loading: loading,
       physics: physics,
       shrinkWrap: shrinkWrap,
+      trailing: trailing,
     );
   }
 }
@@ -125,6 +131,7 @@ class _MediaSliverListView<Media extends PlayableMedia>
     super.loading = false,
     super.physics,
     super.shrinkWrap,
+    super.trailing,
   });
 
   @override
@@ -157,6 +164,7 @@ class _MediaListView<Media extends PlayableMedia> extends MediaListView<Media> {
     super.loading = false,
     super.physics,
     super.shrinkWrap,
+    super.trailing,
   });
 
   @override
