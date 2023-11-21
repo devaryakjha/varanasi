@@ -57,14 +57,17 @@ class UserLibraryCubit extends AppCubit<UserLibraryState> {
   Future<void> appendAllItemToLibrary(
       MediaPlaylist playlist, List<Song> item) async {
     _repository.appendAllItemToLibrary(item, playlist.id!);
+    AppSnackbar.show("Added ${item.length} items to ${playlist.title}");
   }
 
   Future<void> appendItemToLibrary(MediaPlaylist playlist, Song item) async {
     _repository.appendItemToLibrary(item, playlist.id!);
+    AppSnackbar.show("Added ${item.name} to ${playlist.title}");
   }
 
   Future<void> removeItemFromLibrary(MediaPlaylist playlist, Song item) async {
     _repository.removeItemFromLibrary(item, playlist.id!);
+    AppSnackbar.show("Removed ${item.name} from ${playlist.title}");
   }
 
   Future<void> removeFromLibrary(MediaPlaylist playlist) async {
