@@ -55,12 +55,21 @@ class _ContentState extends State<Content> {
       },
       child: Builder(
         builder: (context) {
-          final (searchResults, filter, updateFilter, query) = context.select(
+          final (
+            searchResults,
+            filter,
+            updateFilter,
+            query,
+            handleScrollUpdate,
+            isFetchingMore
+          ) = context.select(
             (SearchCubit cubit) => (
               cubit.state.searchResults,
               cubit.state.filter,
               cubit.updateFilter,
               cubit.state.query,
+              cubit.handleScrollUpdate,
+              cubit.state.isFetchingMore,
             ),
           );
           final emptyResults = searchResults == null;
@@ -73,62 +82,67 @@ class _ContentState extends State<Content> {
               songSearchResult.results ?? [],
             _ => [],
           };
-          return Scaffold(
-            backgroundColor: Colors.black,
-            appBar: AppBar(
-              titleSpacing: 0,
-              leading: filter.isAll
-                  ? CloseButton(onPressed: () => context.pop())
-                  : const BackButton(),
-              title: switch (filter) {
-                SearchFilter.all => SearchTitle(controller: _controller),
-                _ => Text("'$query' in ${filter.filter}"),
-              },
-            ),
-            body: Visibility(
-              visible: !emptyResults,
-              replacement: const EmptySearchResults(),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(height: 24),
-                    MediaListView(
-                      mediaItems,
-                      shrinkWrap: true,
-                      isPlaying: false,
-                      isItemPlaying: (ite) => false,
-                      physics: const NeverScrollableScrollPhysics(),
-                      onItemTap: (index, media) {},
-                    ),
-                    if (filter.isAll) ...[
-                      const Divider(),
-                      ...[SearchFilter.songs, SearchFilter.albums].map(
-                        (e) => ListTile(
-                          dense: true,
-                          visualDensity: VisualDensity.compact,
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: 24),
-                          onTap: () {
-                            updateFilter(e);
-                            Navigator.of(context).push(MaterialPageRoute<void>(
-                              builder: (context) => SearchAndAddToPlaylist(e),
-                            ));
-                          },
-                          title: Text(
-                            'See all ${e.name}',
-                            style: context.textTheme.bodyLarge,
-                          ),
-                          trailing: const Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 20,
-                            color: Colors.white,
+          return NotificationListener(
+            onNotification: handleScrollUpdate,
+            child: Scaffold(
+              backgroundColor: Colors.black,
+              appBar: AppBar(
+                titleSpacing: 0,
+                leading: filter.isAll
+                    ? CloseButton(onPressed: () => context.pop())
+                    : const BackButton(),
+                title: switch (filter) {
+                  SearchFilter.all => SearchTitle(controller: _controller),
+                  _ => Text("'$query' in ${filter.filter}"),
+                },
+              ),
+              body: Visibility(
+                visible: !emptyResults,
+                replacement: const EmptySearchResults(),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(height: 24),
+                      MediaListView(
+                        mediaItems,
+                        shrinkWrap: true,
+                        isPlaying: false,
+                        isItemPlaying: (ite) => false,
+                        physics: const NeverScrollableScrollPhysics(),
+                        onItemTap: (index, media) {},
+                        loading: isFetchingMore,
+                      ),
+                      if (filter.isAll) ...[
+                        const Divider(),
+                        ...[SearchFilter.songs, SearchFilter.albums].map(
+                          (e) => ListTile(
+                            dense: true,
+                            visualDensity: VisualDensity.compact,
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 24),
+                            onTap: () {
+                              updateFilter(e);
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute<void>(
+                                builder: (context) => SearchAndAddToPlaylist(e),
+                              ));
+                            },
+                            title: Text(
+                              'See all ${e.name}',
+                              style: context.textTheme.bodyLarge,
+                            ),
+                            trailing: const Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              size: 20,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 36),
+                        const SizedBox(height: 36),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
               ),
             ),
