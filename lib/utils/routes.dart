@@ -21,6 +21,8 @@ class AppRoutes {
       (name: 'create-library', path: '/create-library');
   static const Route addToLibrary =
       (name: 'add-to-library', path: '/add-to-library');
+  static const Route searchAndAddToLibrary =
+      (name: 'search-add-to-library', path: '/search-add-to-library');
 
   // settings specific routes
   static const Route settings = (name: 'settings', path: '/settings');

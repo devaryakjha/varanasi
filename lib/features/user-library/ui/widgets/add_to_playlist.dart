@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/features/user-library/cubit/user_library_cubit.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/app_snackbar.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
+import 'package:varanasi_mobile_app/utils/routes.dart';
 import 'package:varanasi_mobile_app/widgets/media_tile.dart';
 
 class AddToPlaylistPage extends StatefulWidget {
@@ -91,7 +93,8 @@ class _AddToPlaylistPageState extends State<AddToPlaylistPage> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () =>
+                  context.pushNamed(AppRoutes.searchAndAddToLibrary.name),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

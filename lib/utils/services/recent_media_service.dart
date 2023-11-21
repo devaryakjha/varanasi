@@ -19,9 +19,7 @@ class RecentMediaService {
         .pipe(_recentMediaSubject);
   }
 
-  static disposeListeners() {
-    _recentMediaSubject.add([]);
-  }
+  static disposeListeners() {}
 
   static final BehaviorSubject<List<MediaPlaylist>> _recentMediaSubject =
       BehaviorSubject<List<MediaPlaylist>>.seeded([]);

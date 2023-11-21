@@ -46,8 +46,8 @@ class _LibraryPageState extends State<LibraryPage> {
 
   @override
   void dispose() {
-    super.dispose();
     context.read<LibraryCubit>().closeListeners();
+    super.dispose();
   }
 
   @override
