@@ -4,9 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sheet/route.dart';
+import 'package:sheet/sheet.dart';
 import 'package:varanasi_mobile_app/features/home/bloc/home_bloc.dart';
 import 'package:varanasi_mobile_app/features/home/ui/home_screen.dart';
-import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_screen.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_search_page.dart';
 import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
@@ -17,9 +18,10 @@ import 'package:varanasi_mobile_app/features/session/ui/login_page.dart';
 import 'package:varanasi_mobile_app/features/session/ui/signup_page.dart';
 import 'package:varanasi_mobile_app/features/settings/ui/settings_page.dart';
 import 'package:varanasi_mobile_app/features/user-library/ui/user_library_page.dart';
+import 'package:varanasi_mobile_app/features/user-library/ui/widgets/add_to_playlist.dart';
+import 'package:varanasi_mobile_app/features/user-library/ui/widgets/create_playlist.dart';
+import 'package:varanasi_mobile_app/features/user-library/ui/widgets/search_and_add_to_playlist/search_and_add_to_playlist.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
-import 'package:varanasi_mobile_app/models/playable_item.dart';
-import 'package:varanasi_mobile_app/models/playable_item_impl.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
 import 'package:varanasi_mobile_app/widgets/page_with_navbar.dart';
 import 'package:varanasi_mobile_app/widgets/transitions/fade_transition_page.dart';
@@ -44,6 +46,9 @@ class StreamListener<T> extends ChangeNotifier {
     super.dispose();
   }
 }
+
+Page _pageWithBottomSheet(Widget child, [LocalKey? key]) =>
+    MaterialExtendedPage(child: child, key: key);
 
 final routerConfig = GoRouter(
   initialLocation: AppRoutes.authentication.path,
@@ -86,31 +91,11 @@ final routerConfig = GoRouter(
             GoRoute(
               name: AppRoutes.library.name,
               path: AppRoutes.library.path,
-              builder: (context, state) {
-                final extra = state.extra!;
-                final isMedia = extra is PlayableMedia;
-                final isMediaPlaylist = extra is MediaPlaylist;
-                if (isMedia) {
-                  context.read<LibraryCubit>().fetchLibrary(extra);
-                } else {
-                  if (isMediaPlaylist) {
-                    if (extra.isDownload) {
-                      context.read<LibraryCubit>().loadUserLibrary(extra);
-                    } else {
-                      final items = extra.mediaItems ?? [];
-                      if (items.isEmpty) {
-                        context.read<LibraryCubit>().fetchLibrary(
-                            PlayableMediaImpl.fromMediaPlaylist(extra));
-                      } else {
-                        context.read<LibraryCubit>().loadUserLibrary(extra);
-                      }
-                    }
-                  }
-                }
-                return LibraryPage(
-                  source: isMedia ? extra : null,
+              pageBuilder: (context, state) {
+                return _pageWithBottomSheet(LibraryPage(
+                  source: state.extra,
                   key: state.pageKey,
-                );
+                ));
               },
               routes: [
                 GoRoute(
@@ -134,11 +119,13 @@ final routerConfig = GoRouter(
             GoRoute(
               name: AppRoutes.search.name,
               path: AppRoutes.search.path,
-              builder: (context, state) => BlocProvider(
-                lazy: true,
-                create: (context) => SearchCubit()..init(),
-                child: SearchPage(key: state.pageKey),
-              ),
+              pageBuilder: (_, state) => _pageWithBottomSheet(
+                  BlocProvider(
+                    lazy: true,
+                    create: (context) => SearchCubit()..init(),
+                    child: const SearchPage(),
+                  ),
+                  state.pageKey),
             ),
           ],
         ),
@@ -148,36 +135,90 @@ final routerConfig = GoRouter(
             GoRoute(
               name: AppRoutes.userlibrary.name,
               path: AppRoutes.userlibrary.path,
-              builder: (context, state) => UserLibraryPage(key: state.pageKey),
+              pageBuilder: (_, state) => _pageWithBottomSheet(
+                const UserLibraryPage(),
+                state.pageKey,
+              ),
             ),
           ],
         ),
       ],
-      builder: (context, state, navigationShell) {
-        return PageWithNavbar(child: navigationShell);
+      pageBuilder: (_, __, shell) =>
+          _pageWithBottomSheet(PageWithNavbar(child: shell)),
+    ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
+      name: AppRoutes.createLibrary.name,
+      path: AppRoutes.createLibrary.path,
+      pageBuilder: (_, state) => CupertinoSheetPage<void>(
+        key: state.pageKey,
+        child: const CreatePlaylistPage(),
+      ),
+    ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
+      name: AppRoutes.addToLibrary.name,
+      path: AppRoutes.addToLibrary.path,
+      pageBuilder: (_, state) => CupertinoSheetPage<void>(
+        key: state.pageKey,
+        child: const DefaultSheetController(child: AddToPlaylistPage()),
+      ),
+    ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
+      name: AppRoutes.searchAndAddToLibrary.name,
+      path: AppRoutes.searchAndAddToLibrary.path,
+      pageBuilder: (_, state) {
+        return CupertinoSheetPage<void>(
+          key: state.pageKey,
+          child: BlocProvider(
+            create: (context) => SearchCubit()..init(),
+            child: const SearchAndAddToPlaylist(SearchFilter.all),
+          ),
+        );
       },
+      routes: [
+        GoRoute(
+          parentNavigatorKey: rootNavigatorKey,
+          name: AppRoutes.searchAndAddToLibraryWithFilter.name,
+          path: AppRoutes.searchAndAddToLibraryWithFilter.path,
+          pageBuilder: (_, state) => _pageWithBottomSheet(
+              BlocProvider(
+                create: (context) => SearchCubit()..init(),
+                child: SearchAndAddToPlaylist(
+                  SearchFilter.fromString(state.pathParameters["filter"]!),
+                  key: state.pageKey,
+                ),
+              ),
+              state.pageKey),
+        ),
+      ],
     ),
     GoRoute(
       parentNavigatorKey: rootNavigatorKey,
       name: AppRoutes.settings.name,
       path: AppRoutes.settings.path,
-      builder: (context, state) => SettingsPage(key: state.pageKey),
+      pageBuilder: (_, state) =>
+          _pageWithBottomSheet(const SettingsPage(), state.pageKey),
     ),
     GoRoute(
       parentNavigatorKey: rootNavigatorKey,
       name: AppRoutes.authentication.name,
       path: AppRoutes.authentication.path,
-      builder: (context, state) => AuthPage(key: state.pageKey),
+      pageBuilder: (_, state) =>
+          _pageWithBottomSheet(const AuthPage(), state.pageKey),
       routes: [
         GoRoute(
           name: AppRoutes.login.name,
           path: AppRoutes.login.path,
-          builder: (context, state) => LoginPage(key: state.pageKey),
+          pageBuilder: (_, state) =>
+              _pageWithBottomSheet(const LoginPage(), state.pageKey),
         ),
         GoRoute(
           path: AppRoutes.signup.path,
           name: AppRoutes.signup.name,
-          builder: (context, state) => SignupPage(key: state.pageKey),
+          pageBuilder: (_, state) =>
+              _pageWithBottomSheet(const SignupPage(), state.pageKey),
         )
       ],
     ),

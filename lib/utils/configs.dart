@@ -71,6 +71,7 @@ class Endpoint {
   final Playlists? playlists;
   final Artists? artists;
   final String? lyrics;
+  final String newReleases;
 
   const Endpoint({
     required this.modules,
@@ -80,6 +81,7 @@ class Endpoint {
     this.playlists,
     this.artists,
     this.lyrics,
+    required this.newReleases,
   });
 }
 
@@ -114,11 +116,11 @@ class Config extends Equatable {
 
 Config get appConfig {
   const server = kReleaseMode
-      ? Server('https://saavn.aryak.dev')
-      : Server('http://localhost:3000');
-  return const Config(
+      ? Server('https://aryak.dev/api/varanasi')
+      : Server('https://varanasi-backend-297lplmib-devaryakjha.vercel.app');
+  return Config(
     env: kReleaseMode ? 'production' : 'development',
-    endpoint: Endpoint(
+    endpoint: const Endpoint(
       modules: '/modules',
       playlists: Playlists(id: 'playlists'),
       albums: Albums(id: 'albums', link: 'albums'),
@@ -131,8 +133,9 @@ Config get appConfig {
         artists: '/search/artists',
         topSearches: '/search/top-searches',
       ),
+      newReleases: 'new-releases',
     ),
     server: server,
-    placeholderImageLink: 'http://192.168.31.130:3000/audio.jpg',
+    placeholderImageLink: '${server.baseUrl}audio.jpg',
   );
 }

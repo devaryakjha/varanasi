@@ -21,6 +21,13 @@ enum SearchFilter {
   bool get isAll => this == SearchFilter.all;
   bool get isSongs => this == SearchFilter.songs;
   bool get isAlbums => this == SearchFilter.albums;
+
+  static SearchFilter fromString(String filter) {
+    return SearchFilter.values.firstWhere(
+      (e) => e.name == filter.toLowerCase(),
+      orElse: () => SearchFilter.all,
+    );
+  }
 }
 
 enum ScrollPosition {

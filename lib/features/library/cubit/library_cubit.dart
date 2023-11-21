@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,6 +8,7 @@ import 'package:palette_generator/palette_generator.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/cubits/download/download_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/data/library_repository.dart';
+import 'package:varanasi_mobile_app/features/user-library/data/user_library_repository.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/models/sort_type.dart';
@@ -19,6 +23,8 @@ class LibraryCubit extends Cubit<LibraryState> {
   LibraryCubit() : super(const LibraryInitial());
 
   static LibraryCubit of(BuildContext context) => context.read<LibraryCubit>();
+
+  StreamSubscription? _subscription;
 
   Future<void> loadUserLibrary(MediaPlaylist playlist) async {
     try {
@@ -36,6 +42,18 @@ class LibraryCubit extends Cubit<LibraryState> {
       if (playlist.isDownload) {
         final newPlaylist = appContext.read<DownloadCubit>().toUserLibrary();
         emit(LibraryLoaded(newPlaylist, colorPalette!, image));
+      } else if (playlist.isCustomPlaylist) {
+        _subscription =
+            UserLibraryRepository.instance.librariesStream.where((event) {
+          final isSame = event.any((element) => element.id == playlist.id);
+          return isSame;
+        }).listen((event) {
+          final newPlaylist =
+              event.firstWhereOrNull((element) => element.id == playlist.id);
+          if (newPlaylist != null) {
+            emit(LibraryLoaded(newPlaylist, colorPalette!, image));
+          }
+        });
       } else {
         emit(LibraryLoaded(playlist, colorPalette!, image));
       }
@@ -69,4 +87,6 @@ class LibraryCubit extends Cubit<LibraryState> {
       emit((state as LibraryLoaded).toggleAppbarTitle(expanded));
     }
   }
+
+  void closeListeners() => _subscription?.cancel();
 }

@@ -7,9 +7,10 @@ import 'package:varanasi_mobile_app/models/image.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/logger.dart';
+import 'package:varanasi_mobile_app/utils/mixins/repository_protocol.dart';
 import 'package:varanasi_mobile_app/utils/services/firestore_service.dart';
 
-class UserLibraryRepository {
+class UserLibraryRepository with DataProviderProtocol {
   UserLibraryRepository._();
 
   static final instance = UserLibraryRepository._();
@@ -19,7 +20,7 @@ class UserLibraryRepository {
   CollectionReference<Map<String, dynamic>> get _baseCollection =>
       FirestoreService.getUserDocument().collection('user-library');
 
-  BehaviorSubject<List<MediaPlaylist>> librariesStream =
+  final BehaviorSubject<List<MediaPlaylist>> librariesStream =
       BehaviorSubject.seeded([]);
 
   List<MediaPlaylist> get libraries => librariesStream.value;
@@ -29,28 +30,12 @@ class UserLibraryRepository {
   StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? _subscription;
 
   void setupListeners() {
-    _subscription = FirestoreService.getUserDocument()
+    FirestoreService.getUserDocument()
         .collection('user-library')
         .snapshots()
-        .listen((event) {
-      for (var element in event.docChanges) {
-        final library = MediaPlaylist.fromFirestore(element.doc);
-        if (element.type == DocumentChangeType.added) {
-          librariesStream.value = [...librariesStream.value, library];
-        } else if (element.type == DocumentChangeType.modified) {
-          librariesStream.value = [
-            ...librariesStream.value
-                .where((element) => element.id != library.id),
-            library
-          ];
-        } else if (element.type == DocumentChangeType.removed) {
-          librariesStream.value = [
-            ...librariesStream.value
-                .where((element) => element.id != library.id),
-          ];
-        }
-      }
-    });
+        .map((event) =>
+            event.docs.map(MediaPlaylist.fromFirestore).toList()..sort())
+        .pipe(librariesStream);
   }
 
   void dispose() {
@@ -66,6 +51,25 @@ class UserLibraryRepository {
 
   Future<void> updateLibrary(MediaPlaylist library) async {
     await _baseCollection.doc(library.id).update(library.toFirestorePayload());
+  }
+
+  Future<void> appendAllItemToLibrary(
+      List<Song> item, String playlistId) async {
+    await _baseCollection.doc(playlistId).update({
+      'mediaItems': FieldValue.arrayUnion(item.map((e) => e.toJson()).toList()),
+    });
+  }
+
+  Future<void> appendItemToLibrary(Song item, String playlistId) async {
+    await _baseCollection.doc(playlistId).update({
+      'mediaItems': FieldValue.arrayUnion([item.toJson()]),
+    });
+  }
+
+  Future<void> removeItemFromLibrary(Song item, String playlistId) async {
+    await _baseCollection.doc(playlistId).update({
+      'mediaItems': FieldValue.arrayRemove([item.toJson()]),
+    });
   }
 
   Future<void> deleteLibrary(MediaPlaylist library) async {

@@ -11,9 +11,8 @@ mixin CacheableService {
   Future<Box?> initcache() async {
     try {
       if (initialised) return null;
-      final box = await Hive.openBox(cacheBoxName);
       initialised = true;
-      return box;
+      return await Hive.openBox(cacheBoxName);
     } catch (e) {
       initialised = false;
       rethrow;

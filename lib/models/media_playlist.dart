@@ -15,7 +15,8 @@ enum MediaPlaylistType {
   favorite('favorite'),
   album('album'),
   playlist('playlist'),
-  download('download');
+  download('download'),
+  customPlaylist('custom_playlist');
   // TODO: Add Artist
 
   final String type;
@@ -27,6 +28,7 @@ enum MediaPlaylistType {
   bool get isAlbum => this == MediaPlaylistType.album;
   bool get isPlaylist => this == MediaPlaylistType.playlist;
   bool get isDownload => this == MediaPlaylistType.download;
+  bool get isCustomPlaylist => this == MediaPlaylistType.customPlaylist;
 
   static MediaPlaylistType fromString(String? type) {
     switch (type) {
@@ -40,6 +42,8 @@ enum MediaPlaylistType {
         return MediaPlaylistType.download;
       case 'song':
         return MediaPlaylistType.song;
+      case 'custom_playlist':
+        return MediaPlaylistType.customPlaylist;
       default:
         return MediaPlaylistType.playlist;
     }
@@ -138,7 +142,15 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable
       (mediaItems ?? []).map((e) => e.toMediaItem()).toList();
 
   @override
-  List<Object?> get props => [id, title, description, mediaItems, images];
+  List<Object?> get props => [
+        id,
+        title,
+        description,
+        mediaItems,
+        images,
+        url,
+        type,
+      ];
 
   MediaPlaylist<T> copyWith({
     String? id,
@@ -167,6 +179,7 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable
   bool get isPlaylist => mediaPlaylistType.isPlaylist;
   bool get isDownload => mediaPlaylistType.isDownload;
   bool get isSong => mediaPlaylistType.isSong;
+  bool get isCustomPlaylist => mediaPlaylistType.isCustomPlaylist;
 
   bool get isNotEmpty => mediaItems?.isNotEmpty ?? false;
 
@@ -191,9 +204,10 @@ class MediaPlaylist<T extends PlayableMedia> extends Equatable
       (element) => element.type == data['type'],
       orElse: () => MediaPlaylistType.favorite,
     );
-    final List<T>? items = type.isFavorite
-        ? List<T>.from(data['mediaItems'].map((d) => Song.fromJson(d)))
-        : null;
+    final List<T>? items =
+        type.isFavorite || type.isSong || type.isCustomPlaylist
+            ? List<T>.from(data['mediaItems'].map((d) => Song.fromJson(d)))
+            : null;
     return MediaPlaylist(
       id: data['id'],
       title: data['title'],

@@ -82,7 +82,7 @@ class UserLibraryPage extends HookWidget {
                 title: SizedBox(
                   height: 24,
                   child: AnimatedText(
-                    item.title ?? '',
+                    (item.title ?? '').sanitize,
                     maxLines: 1,
                     minFontSize: 14,
                   ),

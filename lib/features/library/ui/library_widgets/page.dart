@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Typography;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -6,6 +5,7 @@ import 'package:sliver_tools/sliver_tools.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
 import 'package:varanasi_mobile_app/features/library/cubit/library_cubit.dart';
+import 'package:varanasi_mobile_app/features/library/ui/library_widgets/add_to_playlist.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_widgets/library_app_bar.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
@@ -97,6 +97,10 @@ class _LibraryContentState extends State<LibraryContent> {
     final isThisPlaylistPlaying =
         currentPlaylist == state.playlist.id && isPlaying;
 
+    final backgroundColor = state.colorPalette.vibrantColor?.color;
+    final foregroundColor =
+        state.colorPalette.vibrantColor?.bodyTextColor.withOpacity(1);
+
     return Scaffold(
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
@@ -126,68 +130,78 @@ class _LibraryContentState extends State<LibraryContent> {
                             ),
                           ),
                           Text(state.subtitle),
-                          Row(
-                            key: titleKey,
-                            children: [
-                              AddToLibrary(state.playlist),
-                              DisableChild(
-                                disabled:
-                                    !kDebugMode && state.playlist.isDownload,
-                                child:
-                                    DownloadPlaylist(playlist: state.playlist),
-                              ),
-                              const Spacer(),
-                              const ShuffleModeToggle(iconSize: 24),
-                            ],
-                          ),
+                          if (sortedMediaItems.isNotEmpty)
+                            Row(
+                              key: titleKey,
+                              children: [
+                                AddToLibrary(state.playlist),
+                                DisableChild(
+                                  disabled: state.playlist.isDownload,
+                                  child: DownloadPlaylist(
+                                      playlist: state.playlist),
+                                ),
+                                const Spacer(),
+                                const ShuffleModeToggle(iconSize: 24),
+                              ],
+                            ),
                         ],
                       ),
                     ),
                   ),
-                  MediaListView.sliver(
-                    sortedMediaItems,
-                    mediaType: widget.source?.itemType,
-                    isPlaying: isThisPlaylistPlaying,
-                    isItemPlaying: (media) {
-                      return media.toMediaItem() == currentMediaItem;
-                    },
-                    onItemTap: (index, mediaItem) {
-                      if (isPlaylistSelected) {
-                        context.readMediaPlayerCubit.skipToMediaItem(mediaItem);
-                      } else {
-                        context.readMediaPlayerCubit.playFromMediaPlaylist(
-                          state.playlist.copyWith(mediaItems: sortedMediaItems),
-                          initialMedia: mediaItem,
-                        );
-                      }
-                    },
-                    itemSelectedColor: state
-                        .colorPalette.lightVibrantColor?.color
-                        .withOpacity(1),
+                  if (state.playlist.isCustomPlaylist)
+                    AddToPlaylist(
+                      backgroundColor: backgroundColor,
+                      foregroundColor: foregroundColor,
+                      isEmpty: sortedMediaItems.isEmpty,
+                    ),
+                  Visibility(
+                    visible: sortedMediaItems.isNotEmpty,
+                    child: MediaListView.sliver(
+                      sortedMediaItems,
+                      mediaType: widget.source?.itemType,
+                      isPlaying: isThisPlaylistPlaying,
+                      isItemPlaying: (media) {
+                        return media.toMediaItem() == currentMediaItem;
+                      },
+                      onItemTap: (index, mediaItem) {
+                        if (isPlaylistSelected) {
+                          context.readMediaPlayerCubit
+                              .skipToMediaItem(mediaItem);
+                        } else {
+                          context.readMediaPlayerCubit.playFromMediaPlaylist(
+                            state.playlist
+                                .copyWith(mediaItems: sortedMediaItems),
+                            initialMedia: mediaItem,
+                          );
+                        }
+                      },
+                      itemSelectedColor: state
+                          .colorPalette.lightVibrantColor?.color
+                          .withOpacity(1),
+                    ),
                   ),
                 ],
               ),
-              SliverPositioned(
-                top: top,
-                right: right,
-                child: PlayPauseMediaButton(
-                  backgroundColor: state.colorPalette.vibrantColor?.color,
-                  foregroundColor: state
-                      .colorPalette.vibrantColor?.bodyTextColor
-                      .withOpacity(1),
-                  onPressed: () {
-                    if (isThisPlaylistPlaying) {
-                      context.readMediaPlayerCubit.pause();
-                      return;
-                    }
-                    context.readMediaPlayerCubit.playFromMediaPlaylist(
-                      state.playlist.copyWith(mediaItems: sortedMediaItems),
-                    );
-                  },
-                  isPlaying: isThisPlaylistPlaying,
-                  size: 36,
-                ),
-              )
+              if (sortedMediaItems.isNotEmpty)
+                SliverPositioned(
+                  top: top,
+                  right: right,
+                  child: PlayPauseMediaButton(
+                    backgroundColor: backgroundColor,
+                    foregroundColor: foregroundColor,
+                    onPressed: () {
+                      if (isThisPlaylistPlaying) {
+                        context.readMediaPlayerCubit.pause();
+                        return;
+                      }
+                      context.readMediaPlayerCubit.playFromMediaPlaylist(
+                        state.playlist.copyWith(mediaItems: sortedMediaItems),
+                      );
+                    },
+                    isPlaying: isThisPlaylistPlaying,
+                    size: 36,
+                  ),
+                )
             ],
           ),
         ],
