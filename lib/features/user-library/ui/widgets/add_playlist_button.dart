@@ -10,9 +10,7 @@ import 'package:varanasi_mobile_app/utils/configs.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
 
 class AddPlaylistButton extends StatelessWidget {
-  const AddPlaylistButton({
-    super.key,
-  });
+  const AddPlaylistButton({super.key});
 
   @override
   Widget build(BuildContext context) {

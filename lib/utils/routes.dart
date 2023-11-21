@@ -19,7 +19,7 @@ class AppRoutes {
   // user specific routes
   static const Route userlibrary = (name: 'library', path: '/library');
   static const Route createLibrary =
-      (name: 'create-library', path: '/create-library/:id');
+      (name: 'create-library', path: '/create-library');
   static const Route addToLibrary =
       (name: 'add-to-library', path: '/add-to-library/:id');
   static const Route searchAndAddToLibrary =
