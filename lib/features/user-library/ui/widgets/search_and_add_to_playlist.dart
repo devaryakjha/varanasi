@@ -70,11 +70,11 @@ class _ContentState extends State<Content> {
           );
           final emptyResults = searchResults == null;
           final List<PlayableMedia> mediaItems = switch (searchResults) {
-            (AllSearchResult allSearchResult) =>
+            (AllSearchResult allSearchResult) when filter.isAll =>
               allSearchResult.combineMediaItems(),
-            (SongSearchResult songSearchResult) =>
+            (SongSearchResult songSearchResult) when filter.isSongs =>
               songSearchResult.results ?? [],
-            (AlbumSearchResult songSearchResult) =>
+            (AlbumSearchResult songSearchResult) when filter.isAlbums =>
               songSearchResult.results ?? [],
             _ => [],
           };
