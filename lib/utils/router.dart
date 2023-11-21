@@ -160,7 +160,10 @@ final routerConfig = GoRouter(
       path: AppRoutes.addToLibrary.path,
       pageBuilder: (_, state) => CupertinoSheetPage<void>(
         key: state.pageKey,
-        child: AddToPlaylistPage(state.pathParameters['id']!),
+        child: AddToPlaylistPage(
+          state.pathParameters['id']!,
+          name: state.extra as String,
+        ),
       ),
     ),
     GoRoute(

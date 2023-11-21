@@ -7,12 +7,14 @@ class AddToPlaylist extends StatelessWidget {
   const AddToPlaylist(
     this.id, {
     super.key,
+    required this.name,
     required this.backgroundColor,
     required this.foregroundColor,
     this.isEmpty = true,
   });
 
   final String id;
+  final String name;
   final Color? backgroundColor;
   final Color? foregroundColor;
   final bool isEmpty;
@@ -38,6 +40,7 @@ class AddToPlaylist extends StatelessWidget {
             onPressed: () => context.pushNamed(
               AppRoutes.addToLibrary.name,
               pathParameters: {'id': id},
+              extra: name,
             ),
             child: Text(
               'Add to this playlist',
@@ -55,6 +58,7 @@ class AddToPlaylist extends StatelessWidget {
       onTap: () => context.pushNamed(
         AppRoutes.addToLibrary.name,
         pathParameters: {'id': id},
+        extra: name,
       ),
       leading: Container(
         height: 56,

@@ -4,6 +4,9 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:varanasi_mobile_app/cubits/player/player_cubit.dart';
+import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
+import 'package:varanasi_mobile_app/features/search/data/search_repository.dart';
+import 'package:varanasi_mobile_app/features/search/data/search_result/data.dart';
 import 'package:varanasi_mobile_app/features/user-library/data/user_library_repository.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
@@ -95,9 +98,27 @@ class UserLibraryCubit extends AppCubit<UserLibraryState> {
     AppSnackbar.show("Removed from library");
   }
 
-  Future<List<MediaPlaylist>> generateAddToPlaylistSuggestions() async {
-    await NewReleasesService.instance.nestedFetchNewsReleases();
+  Future<List<MediaPlaylist>> generateAddToPlaylistSuggestions(
+      [String query = ""]) async {
     final List<MediaPlaylist> currentlibraries = [];
+    await NewReleasesService.instance.nestedFetchNewsReleases();
+    if (query.isNotEmpty) {
+      final suggestionOnName = await SearchRepository.instance
+          .triggerSearch(query, SearchFilter.songs);
+      if (suggestionOnName is SongSearchResult) {
+        currentlibraries.add(
+          MediaPlaylist(
+            id: 'suggestions_on_name_$query',
+            mediaItems: suggestionOnName.results,
+            title: 'Suggestions based on name',
+            description: 'Suggestions based on name',
+            url: null,
+            images: const [],
+          ),
+        );
+      }
+    }
+
     final newReleases = NewReleasesService.instance.newReleases;
     if (newReleases.isNotEmpty) {
       currentlibraries.addAll(newReleases);

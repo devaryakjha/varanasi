@@ -20,10 +20,11 @@ class UserLibraryRepository with DataProviderProtocol {
   CollectionReference<Map<String, dynamic>> get _baseCollection =>
       FirestoreService.getUserDocument().collection('user-library');
 
-  final BehaviorSubject<List<MediaPlaylist>> librariesStream =
+  final BehaviorSubject<List<MediaPlaylist>> _librariesStream =
       BehaviorSubject.seeded([]);
 
-  List<MediaPlaylist> get libraries => librariesStream.value;
+  Stream<List<MediaPlaylist>> get librariesStream => _librariesStream.stream;
+  List<MediaPlaylist> get libraries => _librariesStream.value;
 
   Future<void> init() async {}
 
@@ -35,12 +36,11 @@ class UserLibraryRepository with DataProviderProtocol {
         .snapshots()
         .map((event) =>
             event.docs.map(MediaPlaylist.fromFirestore).toList()..sort())
-        .pipe(librariesStream);
+        .pipe(_librariesStream);
   }
 
   void dispose() {
     _subscription?.cancel();
-    librariesStream.add([]);
   }
 
   bool libraryExists(String id) => libraries.any((element) => element.id == id);
