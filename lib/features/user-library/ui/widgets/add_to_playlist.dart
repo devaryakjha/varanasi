@@ -11,10 +11,13 @@ import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/app_snackbar.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
+import 'package:varanasi_mobile_app/widgets/animated_overflow_text.dart';
 import 'package:varanasi_mobile_app/widgets/media_tile.dart';
 
 class AddToPlaylistPage extends StatefulWidget {
-  const AddToPlaylistPage({super.key});
+  final String id;
+  final String name;
+  const AddToPlaylistPage(this.id, {super.key, required this.name});
 
   @override
   State<AddToPlaylistPage> createState() => _AddToPlaylistPageState();
@@ -30,7 +33,7 @@ class _AddToPlaylistPageState extends State<AddToPlaylistPage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       context
           .read<UserLibraryCubit>()
-          .generateAddToPlaylistSuggestions()
+          .generateAddToPlaylistSuggestions(widget.name)
           .then((value) {
         _playlists = value;
         setState(() {});
@@ -45,8 +48,18 @@ class _AddToPlaylistPageState extends State<AddToPlaylistPage> {
   @override
   Widget build(BuildContext context) {
     final selectedPlaylist = context.select(
-      (LibraryCubit loaded) => (loaded.state as LibraryLoaded).playlist,
+      (LibraryCubit cubit) {
+        final playlist = cubit.state[widget.id];
+        if (playlist is MediaLoadedState) {
+          return playlist.playlist;
+        }
+        return null;
+      },
     );
+    if (selectedPlaylist == null) {
+      return const SizedBox();
+    }
+
     final (
       mediaItems,
       appendItemToLibrary,
@@ -93,8 +106,10 @@ class _AddToPlaylistPageState extends State<AddToPlaylistPage> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: () =>
-                  context.pushNamed(AppRoutes.searchAndAddToLibrary.name),
+              onPressed: () => context.pushNamed(
+                AppRoutes.searchAndAddToLibrary.name,
+                pathParameters: {"id": widget.id},
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -142,19 +157,23 @@ class _AddToPlaylistPageState extends State<AddToPlaylistPage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Expanded(
-                                  child: Text(
-                                    playlist.title?.sanitize ?? '',
-                                    style:
-                                        context.textTheme.titleMedium?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 1,
+                                  child: SizedBox(
+                                    height: 30,
+                                    child: AnimatedText(
+                                      playlist.title?.sanitize ?? '',
+                                      style: context.textTheme.titleMedium
+                                          ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 1,
+                                      ),
+                                      maxLines: 1,
+                                      minFontSize: 16,
                                     ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                                 const SizedBox(width: 8),
                                 SizedBox(
+                                  width: 100,
                                   height: 30,
                                   child: OutlinedButton(
                                     style: OutlinedButton.styleFrom(

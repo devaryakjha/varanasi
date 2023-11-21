@@ -22,7 +22,11 @@ class TrendingItem extends StatelessWidget {
           PlayableMediaType.song => () {
               context.readMediaPlayerCubit.playFromSong(media);
             },
-          _ => () => context.push(AppRoutes.library.path, extra: media),
+          _ => () => context.pushNamed(
+                AppRoutes.library.name,
+                extra: media,
+                pathParameters: {'id': media.itemId},
+              ),
         },
         child: Container(
           height: 56,

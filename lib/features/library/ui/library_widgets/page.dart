@@ -17,12 +17,15 @@ import 'package:varanasi_mobile_app/widgets/play_pause_button.dart';
 import 'package:varanasi_mobile_app/widgets/player/full_screen_player/shuffle_mode_toggle.dart';
 
 class LibraryContent extends StatefulHookWidget {
+  final String id;
+
   /// The source of the library content
   final PlayableMedia? source;
 
   const LibraryContent({
     super.key,
     required this.source,
+    required this.id,
   });
 
   @override
@@ -52,7 +55,7 @@ class _LibraryContentState extends State<LibraryContent> {
         top = kTop.clamp(minimumValueForFab, 10000);
       });
       LibraryCubit.of(context)
-          .toggleAppbarTitle(top <= minimumValueForFab + 16);
+          .toggleAppbarTitle(widget.id, top <= minimumValueForFab + 16);
     }
   }
 
@@ -80,7 +83,11 @@ class _LibraryContentState extends State<LibraryContent> {
 
     final sortBy = context.select((ConfigCubit cubit) => cubit.sortType);
     final state =
-        context.select((LibraryCubit cubit) => cubit.state as LibraryLoaded);
+        context.select((LibraryCubit cubit) => cubit.state[widget.id]);
+    if (state == null || state is! MediaLoadedState) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     final sortedMediaItems = state.sortedMediaItems(sortBy);
 
     final (currentPlaylist, currentMediaItem, isPlaying) =
@@ -150,6 +157,8 @@ class _LibraryContentState extends State<LibraryContent> {
                   ),
                   if (state.playlist.isCustomPlaylist)
                     AddToPlaylist(
+                      widget.id,
+                      name: state.playlist.title ?? '',
                       backgroundColor: backgroundColor,
                       foregroundColor: foregroundColor,
                       isEmpty: sortedMediaItems.isEmpty,

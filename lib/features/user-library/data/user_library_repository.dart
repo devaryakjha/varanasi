@@ -5,7 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:varanasi_mobile_app/models/image.dart';
 import 'package:varanasi_mobile_app/models/media_playlist.dart';
-import 'package:varanasi_mobile_app/models/song.dart';
+import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/logger.dart';
 import 'package:varanasi_mobile_app/utils/mixins/repository_protocol.dart';
 import 'package:varanasi_mobile_app/utils/services/firestore_service.dart';
@@ -20,10 +20,11 @@ class UserLibraryRepository with DataProviderProtocol {
   CollectionReference<Map<String, dynamic>> get _baseCollection =>
       FirestoreService.getUserDocument().collection('user-library');
 
-  final BehaviorSubject<List<MediaPlaylist>> librariesStream =
+  final BehaviorSubject<List<MediaPlaylist>> _librariesStream =
       BehaviorSubject.seeded([]);
 
-  List<MediaPlaylist> get libraries => librariesStream.value;
+  Stream<List<MediaPlaylist>> get librariesStream => _librariesStream.stream;
+  List<MediaPlaylist> get libraries => _librariesStream.value;
 
   Future<void> init() async {}
 
@@ -35,12 +36,11 @@ class UserLibraryRepository with DataProviderProtocol {
         .snapshots()
         .map((event) =>
             event.docs.map(MediaPlaylist.fromFirestore).toList()..sort())
-        .pipe(librariesStream);
+        .pipe(_librariesStream);
   }
 
   void dispose() {
     _subscription?.cancel();
-    librariesStream.add([]);
   }
 
   bool libraryExists(String id) => libraries.any((element) => element.id == id);
@@ -54,19 +54,21 @@ class UserLibraryRepository with DataProviderProtocol {
   }
 
   Future<void> appendAllItemToLibrary(
-      List<Song> item, String playlistId) async {
+      List<PlayableMedia> item, String playlistId) async {
     await _baseCollection.doc(playlistId).update({
       'mediaItems': FieldValue.arrayUnion(item.map((e) => e.toJson()).toList()),
     });
   }
 
-  Future<void> appendItemToLibrary(Song item, String playlistId) async {
+  Future<void> appendItemToLibrary(
+      PlayableMedia item, String playlistId) async {
     await _baseCollection.doc(playlistId).update({
       'mediaItems': FieldValue.arrayUnion([item.toJson()]),
     });
   }
 
-  Future<void> removeItemFromLibrary(Song item, String playlistId) async {
+  Future<void> removeItemFromLibrary(
+      PlayableMedia item, String playlistId) async {
     await _baseCollection.doc(playlistId).update({
       'mediaItems': FieldValue.arrayRemove([item.toJson()]),
     });
@@ -87,7 +89,7 @@ class UserLibraryRepository with DataProviderProtocol {
         url: null,
       );
 
-  Future<void> favoriteSong(Song song) async {
+  Future<void> favoriteSong(PlayableMedia song) async {
     try {
       final hasFavoriteSongs = libraries.any((element) => element.isFavorite);
       if (!hasFavoriteSongs) {
@@ -102,7 +104,7 @@ class UserLibraryRepository with DataProviderProtocol {
     }
   }
 
-  Future<void> unfavoriteSong(Song song) async {
+  Future<void> unfavoriteSong(PlayableMedia song) async {
     // remove song from favoriteSongs directly in firestore
     await _baseCollection.doc(favouriteSongs.id).update({
       'mediaItems': FieldValue.arrayRemove([song.toJson()]),

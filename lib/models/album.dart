@@ -60,6 +60,7 @@ class Album extends PlayableMedia {
 
   factory Album.fromJson(Map<String, dynamic> json) => _$AlbumFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$AlbumToJson(this);
 
   Album copyWith({

@@ -66,6 +66,7 @@ class TrendingSearchesCarousel extends StatelessWidget {
     return SliverToBoxAdapter(
       child: MediaCarousel(
         playlist: MediaPlaylist(
+          id: 'trending_searches',
           mediaItems: trendingSearches,
           title: 'Trending Searches',
           url: null,

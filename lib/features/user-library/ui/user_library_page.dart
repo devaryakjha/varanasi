@@ -64,7 +64,11 @@ class UserLibraryPage extends HookWidget {
               final item = library[index];
               return ListTile(
                 onTap: () {
-                  context.push(AppRoutes.library.path, extra: item);
+                  context.pushNamed(
+                    AppRoutes.library.name,
+                    extra: item,
+                    pathParameters: {'id': item.id},
+                  );
                 },
                 leading: Visibility(
                   replacement: const DownloadsIcon(),

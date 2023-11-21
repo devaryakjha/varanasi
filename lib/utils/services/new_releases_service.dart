@@ -60,7 +60,7 @@ class NewReleasesService with DataProviderProtocol {
     final item = newRelease;
     final allSongs = item?.copyWith(
       id: "new-releases-songs",
-      title: "Suggested Songs",
+      title: "New releases (Songs)",
       description: "New releases (Songs)",
       mediaItems: (item.mediaItems ?? []).whereType<Song>().toList(),
     );

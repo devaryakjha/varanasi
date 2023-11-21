@@ -150,7 +150,11 @@ class _RecentlyPlayedState extends State<RecentlyPlayed> {
                     .read<MediaPlayerCubit>()
                     .playFromSong(PlayableMediaImpl.fromMediaPlaylist(item));
               } else {
-                context.push(AppRoutes.library.path, extra: item);
+                context.pushNamed(
+                  AppRoutes.library.name,
+                  extra: item,
+                  pathParameters: {'id': item.id},
+                );
               }
             },
           ),

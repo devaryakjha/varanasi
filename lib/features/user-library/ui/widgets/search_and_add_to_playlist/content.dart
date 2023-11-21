@@ -7,14 +7,14 @@ import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
 import 'package:varanasi_mobile_app/features/search/data/search_result/data.dart';
 import 'package:varanasi_mobile_app/features/user-library/cubit/user_library_cubit.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
-import 'package:varanasi_mobile_app/models/song.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/widgets/media_list.dart';
 
 import 'search_and_add_to_playlist.dart';
 
 class Content extends StatefulWidget {
-  const Content({super.key});
+  final String id;
+  const Content(this.id, {super.key});
 
   @override
   State<Content> createState() => _ContentState();
@@ -39,18 +39,20 @@ class _ContentState extends State<Content> {
       },
       child: Builder(
         builder: (context) {
-          final state = context.select((LibraryCubit cubit) => cubit.state);
-          if (state is! LibraryLoaded) {
+          final state =
+              context.select((LibraryCubit cubit) => cubit.state[widget.id]);
+          if (state is! MediaLoadedState) {
             return const Center(child: CircularProgressIndicator());
           }
           final selectedPlaylist = state.playlist;
-          final (appendItemToLibrary, removeItemFromLibrary) =
-              context.select((UserLibraryCubit cubit) => (
-                    (Song item) =>
-                        cubit.appendItemToLibrary(selectedPlaylist, item),
-                    (Song item) =>
-                        cubit.removeItemFromLibrary(selectedPlaylist, item),
-                  ));
+          final (appendItemToLibrary, removeItemFromLibrary) = context.select(
+            (UserLibraryCubit cubit) => (
+              (PlayableMedia item) =>
+                  cubit.appendItemToLibrary(selectedPlaylist, item),
+              (PlayableMedia item) =>
+                  cubit.removeItemFromLibrary(selectedPlaylist, item),
+            ),
+          );
           final (
             searchResults,
             filter,
@@ -110,14 +112,14 @@ class _ContentState extends State<Content> {
                           if (media.itemType.isAlbum) {
                             Navigator.of(context).push(MaterialPageRoute<void>(
                               builder: (context) => SearchAndAddToPlaylist(
-                                  SearchFilter.albums,
+                                  widget.id, SearchFilter.albums,
                                   media: media),
                             ));
                           }
                         },
                         loading: isFetchingMore,
                         trailing: (media) {
-                          if (media.itemType.isAlbum) {
+                          if (!media.itemType.isSong) {
                             return const Icon(
                               Icons.arrow_forward_ios_rounded,
                               size: 20,
@@ -128,12 +130,10 @@ class _ContentState extends State<Content> {
                               .any((item) => item.itemId == media.itemId);
                           return IconButton(
                             onPressed: () {
-                              if (media is Song) {
-                                if (isAdded) {
-                                  removeItemFromLibrary(media);
-                                } else {
-                                  appendItemToLibrary(media);
-                                }
+                              if (isAdded) {
+                                removeItemFromLibrary(media);
+                              } else {
+                                appendItemToLibrary(media);
                               }
                             },
                             icon: isAdded
@@ -155,7 +155,8 @@ class _ContentState extends State<Content> {
                               updateFilter(e);
                               Navigator.of(context)
                                   .push(MaterialPageRoute<void>(
-                                builder: (context) => SearchAndAddToPlaylist(e),
+                                builder: (context) =>
+                                    SearchAndAddToPlaylist(widget.id, e),
                               ));
                             },
                             title: Text(

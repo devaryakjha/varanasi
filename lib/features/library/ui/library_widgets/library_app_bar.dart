@@ -13,7 +13,7 @@ class LibraryAppBar extends StatelessWidget {
     required this.padding,
   });
 
-  final LibraryLoaded<PlayableMedia> state;
+  final MediaLoadedState<PlayableMedia> state;
   final EdgeInsets padding;
 
   bool get isFromUserLibrary =>

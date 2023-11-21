@@ -20,7 +20,7 @@ import 'package:varanasi_mobile_app/utils/logger.dart';
 part 'library_state.dart';
 
 class LibraryCubit extends Cubit<LibraryState> {
-  LibraryCubit() : super(const LibraryInitial());
+  LibraryCubit() : super(const LibraryState());
 
   static LibraryCubit of(BuildContext context) => context.read<LibraryCubit>();
 
@@ -28,7 +28,7 @@ class LibraryCubit extends Cubit<LibraryState> {
 
   Future<void> loadUserLibrary(MediaPlaylist playlist) async {
     try {
-      emit(const LibraryLoading());
+      emit(state + MediaLoadingState(playlist.id));
       String link = playlist.images.last.link!;
       if (!appContext.mounted) return;
       final configCubit = appContext.read<ConfigCubit>();
@@ -41,7 +41,8 @@ class LibraryCubit extends Cubit<LibraryState> {
       if (!appContext.mounted) return;
       if (playlist.isDownload) {
         final newPlaylist = appContext.read<DownloadCubit>().toUserLibrary();
-        emit(LibraryLoaded(newPlaylist, colorPalette!, image));
+        emit(state +
+            MediaLoadedState(playlist.id, newPlaylist, colorPalette!, image));
       } else if (playlist.isCustomPlaylist) {
         _subscription =
             UserLibraryRepository.instance.librariesStream.where((event) {
@@ -51,11 +52,21 @@ class LibraryCubit extends Cubit<LibraryState> {
           final newPlaylist =
               event.firstWhereOrNull((element) => element.id == playlist.id);
           if (newPlaylist != null) {
-            emit(LibraryLoaded(newPlaylist, colorPalette!, image));
+            emit(
+              state +
+                  MediaLoadedState(
+                    newPlaylist.id,
+                    newPlaylist,
+                    colorPalette!,
+                    image,
+                  ),
+            );
           }
         });
       } else {
-        emit(LibraryLoaded(playlist, colorPalette!, image));
+        emit(
+          state + MediaLoadedState(playlist.id, playlist, colorPalette!, image),
+        );
       }
     } catch (e, s) {
       Logger.instance.e(e);
@@ -65,7 +76,7 @@ class LibraryCubit extends Cubit<LibraryState> {
 
   Future<void> fetchLibrary(PlayableMedia media) async {
     try {
-      emit(const LibraryLoading());
+      emit(state + MediaLoadingState(media.itemId));
       final playlist = await LibraryRepository.instance.fetchLibrary(media);
       String link = playlist.images.last.link!;
       if (link == appConfig.placeholderImageLink) {
@@ -75,16 +86,17 @@ class LibraryCubit extends Cubit<LibraryState> {
       final configCubit = appContext.read<ConfigCubit>();
       final colorPalette = await configCubit.generatePalleteGenerator(link);
       final image = configCubit.getProvider(link);
-      emit(LibraryLoaded(playlist, colorPalette!, image, media: media));
+      emit(state +
+          MediaLoadedState(playlist.id, playlist, colorPalette!, image));
     } on Exception catch (e, s) {
       LibraryRepository.instance.deleteCache(media.cacheKey);
       emit(LibraryError(e, stackTrace: s));
     }
   }
 
-  void toggleAppbarTitle([bool? expanded]) {
-    if (state is LibraryLoaded) {
-      emit((state as LibraryLoaded).toggleAppbarTitle(expanded));
+  void toggleAppbarTitle(String id, [bool? expanded]) {
+    if (state[id] != null) {
+      emit(state + (state[id] as MediaLoadedState).toggleAppbarTitle(expanded));
     }
   }
 

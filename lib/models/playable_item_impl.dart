@@ -70,12 +70,24 @@ class PlayableMediaImpl extends PlayableMedia {
 
   factory PlayableMediaImpl.fromMediaPlaylist(MediaPlaylist mediaPlaylist) {
     return PlayableMediaImpl(
-      mediaPlaylist.id!,
+      mediaPlaylist.id,
       mediaPlaylist.title!,
       mediaPlaylist.description!,
       mediaPlaylist.url ?? '',
       mediaPlaylist.type!,
       mediaPlaylist.images.lastOrNull?.link,
     );
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'itemId': _itemId,
+      'itemTitle': _itemTitle,
+      'itemSubtitle': _itemSubtitle,
+      'itemUrl': _itemUrl,
+      'itemType': _itemType,
+      'artworkUrl': _artworkUrl,
+    };
   }
 }

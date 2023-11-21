@@ -153,13 +153,13 @@ class DownloadCubit extends AppCubit<DownloadState> {
     for (final song in filteredsong) {
       _songMap[song.itemId] = song;
     }
-    emit(loadedState.updateProgress(MapEntry(playlist.id!, 0)));
+    emit(loadedState.updateProgress(MapEntry(playlist.id, 0)));
     await _downloader.downloadBatch(
       tasks,
       batchProgressCallback: (succeeded, failed) {
         final percentComplete = (succeeded + failed) / tasks.length;
-        emit(loadedState
-            .updateProgress(MapEntry(playlist.id!, percentComplete)));
+        emit(
+            loadedState.updateProgress(MapEntry(playlist.id, percentComplete)));
         _logger.i('Batch progress: $succeeded, $failed');
       },
       taskStatusCallback: _handleTaskStatusUpdate,

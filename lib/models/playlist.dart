@@ -53,6 +53,7 @@ class Playlist extends PlayableMedia {
     return _$PlaylistFromJson(json);
   }
 
+  @override
   Map<String, dynamic> toJson() => _$PlaylistToJson(this);
 
   Playlist copyWith({

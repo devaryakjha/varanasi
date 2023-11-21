@@ -16,7 +16,7 @@ final class CustomUserData extends Equatable {
   final int customPlaylistIndex;
 
   const CustomUserData({
-    this.customPlaylistIndex = 1,
+    this.customPlaylistIndex = 0,
   });
 
   CustomUserData copyWith({

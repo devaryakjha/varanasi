@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sheet/route.dart';
-import 'package:sheet/sheet.dart';
 import 'package:varanasi_mobile_app/features/home/bloc/home_bloc.dart';
 import 'package:varanasi_mobile_app/features/home/ui/home_screen.dart';
 import 'package:varanasi_mobile_app/features/library/ui/library_screen.dart';
@@ -88,29 +87,6 @@ final routerConfig = GoRouter(
                 );
               },
             ),
-            GoRoute(
-              name: AppRoutes.library.name,
-              path: AppRoutes.library.path,
-              pageBuilder: (context, state) {
-                return _pageWithBottomSheet(LibraryPage(
-                  source: state.extra,
-                  key: state.pageKey,
-                ));
-              },
-              routes: [
-                GoRoute(
-                  name: AppRoutes.librarySearch.name,
-                  path: AppRoutes.librarySearch.path,
-                  pageBuilder: (context, state) {
-                    final media = state.extra! as MediaPlaylist;
-                    return FadeTransitionPage(
-                      key: state.pageKey,
-                      child: LibrarySearchPage(playlist: media),
-                    );
-                  },
-                ),
-              ],
-            ),
           ],
         ),
         StatefulShellBranch(
@@ -147,6 +123,29 @@ final routerConfig = GoRouter(
           _pageWithBottomSheet(PageWithNavbar(child: shell)),
     ),
     GoRoute(
+      name: AppRoutes.library.name,
+      path: AppRoutes.library.path,
+      pageBuilder: (context, state) {
+        return _pageWithBottomSheet(
+          LibraryPage(state.pathParameters['id']!, source: state.extra),
+          state.pageKey,
+        );
+      },
+      routes: [
+        GoRoute(
+          name: AppRoutes.librarySearch.name,
+          path: AppRoutes.librarySearch.path,
+          pageBuilder: (context, state) {
+            final media = state.extra! as MediaPlaylist;
+            return FadeTransitionPage(
+              key: state.pageKey,
+              child: LibrarySearchPage(playlist: media),
+            );
+          },
+        ),
+      ],
+    ),
+    GoRoute(
       parentNavigatorKey: rootNavigatorKey,
       name: AppRoutes.createLibrary.name,
       path: AppRoutes.createLibrary.path,
@@ -161,7 +160,10 @@ final routerConfig = GoRouter(
       path: AppRoutes.addToLibrary.path,
       pageBuilder: (_, state) => CupertinoSheetPage<void>(
         key: state.pageKey,
-        child: const DefaultSheetController(child: AddToPlaylistPage()),
+        child: AddToPlaylistPage(
+          state.pathParameters['id']!,
+          name: state.extra as String,
+        ),
       ),
     ),
     GoRoute(
@@ -173,26 +175,13 @@ final routerConfig = GoRouter(
           key: state.pageKey,
           child: BlocProvider(
             create: (context) => SearchCubit()..init(),
-            child: const SearchAndAddToPlaylist(SearchFilter.all),
+            child: SearchAndAddToPlaylist(
+              state.pathParameters['id']!,
+              SearchFilter.all,
+            ),
           ),
         );
       },
-      routes: [
-        GoRoute(
-          parentNavigatorKey: rootNavigatorKey,
-          name: AppRoutes.searchAndAddToLibraryWithFilter.name,
-          path: AppRoutes.searchAndAddToLibraryWithFilter.path,
-          pageBuilder: (_, state) => _pageWithBottomSheet(
-              BlocProvider(
-                create: (context) => SearchCubit()..init(),
-                child: SearchAndAddToPlaylist(
-                  SearchFilter.fromString(state.pathParameters["filter"]!),
-                  key: state.pageKey,
-                ),
-              ),
-              state.pageKey),
-        ),
-      ],
     ),
     GoRoute(
       parentNavigatorKey: rootNavigatorKey,

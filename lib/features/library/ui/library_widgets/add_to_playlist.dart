@@ -4,13 +4,17 @@ import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/utils/routes.dart';
 
 class AddToPlaylist extends StatelessWidget {
-  const AddToPlaylist({
+  const AddToPlaylist(
+    this.id, {
     super.key,
+    required this.name,
     required this.backgroundColor,
     required this.foregroundColor,
     this.isEmpty = true,
   });
 
+  final String id;
+  final String name;
   final Color? backgroundColor;
   final Color? foregroundColor;
   final bool isEmpty;
@@ -33,7 +37,11 @@ class AddToPlaylist extends StatelessWidget {
             style: FilledButton.styleFrom(
               backgroundColor: backgroundColor,
             ),
-            onPressed: () => context.pushNamed(AppRoutes.addToLibrary.name),
+            onPressed: () => context.pushNamed(
+              AppRoutes.addToLibrary.name,
+              pathParameters: {'id': id},
+              extra: name,
+            ),
             child: Text(
               'Add to this playlist',
               style: context.textTheme.bodyMedium?.copyWith(
@@ -47,7 +55,11 @@ class AddToPlaylist extends StatelessWidget {
       );
     }
     return ListTile(
-      onTap: () => context.pushNamed(AppRoutes.addToLibrary.name),
+      onTap: () => context.pushNamed(
+        AppRoutes.addToLibrary.name,
+        pathParameters: {'id': id},
+        extra: name,
+      ),
       leading: Container(
         height: 56,
         width: 56,

@@ -1,59 +1,82 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'library_cubit.dart';
 
-abstract class LibraryState extends Equatable {
-  const LibraryState();
+class LibraryState extends Equatable {
+  final Map<String, MediaState> data;
+
+  const LibraryState({
+    this.data = const {},
+  });
+
+  MediaState? operator [](String key) => data[key];
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [data];
+
+  LibraryState copyWith({
+    Map<String, MediaState>? data,
+  }) {
+    return LibraryState(
+      data: data ?? this.data,
+    );
+  }
+
+  LibraryState operator +(MediaState other) {
+    return copyWith(data: Map.from(data)..addAll({other.id: other}));
+  }
 }
 
-class LibraryInitial extends LibraryState {
-  const LibraryInitial();
+sealed class MediaState extends Equatable {
+  final String id;
+  const MediaState(this.id);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [id];
+
+  bool get isLoading => this is MediaLoadingState;
+  bool get isError => this is MediaErrorState;
+  bool get isLoaded => this is MediaLoadedState;
 }
 
-class LibraryLoading extends LibraryState {
-  const LibraryLoading();
+class MediaLoadingState extends MediaState {
+  const MediaLoadingState(super.id);
+}
+
+class MediaErrorState extends MediaState {
+  final dynamic error;
+  final StackTrace? stackTrace;
+
+  const MediaErrorState(
+    super.id,
+    this.error, {
+    this.stackTrace,
+  });
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [...super.props, error, stackTrace];
 }
 
-class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
+class MediaLoadedState<T extends PlayableMedia> extends MediaState {
   final MediaPlaylist<T> playlist;
   final PaletteGenerator colorPalette;
   final ImageProvider image;
   final bool showTitleInAppBar;
-  final PlayableMedia? media;
 
-  const LibraryLoaded(
+  const MediaLoadedState(
+    super.id,
     this.playlist,
     this.colorPalette,
     this.image, {
     this.showTitleInAppBar = false,
-    this.media,
   });
 
   @override
-  List<Object?> get props => [
-        playlist,
-        colorPalette,
-        image,
-        showTitleInAppBar,
-        media,
-      ];
+  List<Object?> get props =>
+      [playlist, colorPalette, image, showTitleInAppBar, id];
 
   PaletteColor? get baseColor =>
       colorPalette.dominantColor ?? colorPalette.vibrantColor;
 
-  /// - create a list of color which will be used as gradient color
-  /// - for the background of the playlist card's thumbnail
-  /// - there should be exactly 3 colors in the list
-  /// - the first two colors are the muted and vibrant color from the image
-  /// - the last color has to be black to blend with the rest of the screen
   List<Color> get gradientColors {
     return [
       baseColor?.color ?? Colors.white,
@@ -78,19 +101,18 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
 
   bool get needSearchBar => length > 10;
 
-  LibraryLoaded<T> copyWith({
+  MediaLoadedState<T> copyWith({
     MediaPlaylist<T>? playlist,
     PaletteGenerator? colorPalette,
     ImageProvider? image,
     bool? showTitleInAppBar,
-    PlayableMedia? media,
   }) {
-    return LibraryLoaded<T>(
+    return MediaLoadedState<T>(
+      id,
       playlist ?? this.playlist,
       colorPalette ?? this.colorPalette,
       image ?? this.image,
       showTitleInAppBar: showTitleInAppBar ?? this.showTitleInAppBar,
-      media: media ?? this.media,
     );
   }
 
@@ -109,7 +131,7 @@ class LibraryLoaded<T extends PlayableMedia> extends LibraryState {
     return playlist.copyWith(mediaItems: sortedMediaItems(sortBy));
   }
 
-  LibraryLoaded<T> toggleAppbarTitle([bool? expanded]) {
+  MediaLoadedState<T> toggleAppbarTitle([bool? expanded]) {
     return copyWith(showTitleInAppBar: expanded ?? !showTitleInAppBar);
   }
 }
