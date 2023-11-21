@@ -11,3 +11,5 @@ final searchNavigatorKey = GlobalKey<NavigatorState>();
 
 /// This is the key for the shell navigator for the user librarys page.
 final userLibraryNavigatorKey = GlobalKey<NavigatorState>();
+
+final searchAndAddToPlaylistNavigatorKey = GlobalKey<NavigatorState>();

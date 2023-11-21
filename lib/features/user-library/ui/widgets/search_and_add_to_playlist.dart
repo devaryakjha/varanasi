@@ -1,14 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/features/search/cubit/search_cubit.dart';
 import 'package:varanasi_mobile_app/features/search/data/search_result/data.dart';
 import 'package:varanasi_mobile_app/models/playable_item.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
+import 'package:varanasi_mobile_app/utils/routes.dart';
 import 'package:varanasi_mobile_app/widgets/media_list.dart';
 
 class SearchAndAddToPlaylist extends StatefulWidget {
-  const SearchAndAddToPlaylist({super.key});
+  final SearchFilter filter;
+  const SearchAndAddToPlaylist(this.filter, {super.key});
 
   @override
   State<SearchAndAddToPlaylist> createState() => _SearchAndAddToPlaylistState();
@@ -25,12 +28,8 @@ class _SearchAndAddToPlaylistState extends State<SearchAndAddToPlaylist> {
 
   @override
   Widget build(BuildContext context) {
-    final (searchResults, filter, updateFilter) = context.select(
-      (SearchCubit cubit) => (
-        cubit.state.searchResults,
-        cubit.state.filter,
-        (SearchFilter filter) => cubit.updateFilter(filter)
-      ),
+    final (searchResults, filter) = context.select(
+      (SearchCubit cubit) => (cubit.state.searchResults, cubit.state.filter),
     );
     final emptyResults = searchResults == null;
     final List<PlayableMedia> mediaItems = switch (searchResults) {
@@ -68,7 +67,12 @@ class _SearchAndAddToPlaylistState extends State<SearchAndAddToPlaylist> {
                     dense: true,
                     visualDensity: VisualDensity.compact,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 24),
-                    onTap: () => updateFilter(e),
+                    onTap: () => context.pushNamed(
+                      AppRoutes.searchAndAddToLibraryWithFilter.name,
+                      pathParameters: {
+                        "filter": e.name,
+                      },
+                    ),
                     title: Text(
                       'See all ${e.name}',
                       style: context.textTheme.bodyLarge,

@@ -168,14 +168,27 @@ final routerConfig = GoRouter(
       parentNavigatorKey: rootNavigatorKey,
       name: AppRoutes.searchAndAddToLibrary.name,
       path: AppRoutes.searchAndAddToLibrary.path,
-      pageBuilder: (_, state) => CupertinoSheetPage<void>(
-        key: state.pageKey,
-        child: BlocProvider(
-          lazy: true,
-          create: (context) => SearchCubit()..init(),
-          child: const SearchAndAddToPlaylist(),
+      pageBuilder: (_, state) {
+        return CupertinoSheetPage<void>(
+          key: state.pageKey,
+          child: BlocProvider(
+            create: (context) => SearchCubit()..init(),
+            child: const SearchAndAddToPlaylist(SearchFilter.all),
+          ),
+        );
+      },
+      routes: [
+        GoRoute(
+          name: AppRoutes.searchAndAddToLibraryWithFilter.name,
+          path: AppRoutes.searchAndAddToLibraryWithFilter.path,
+          builder: (_, state) {
+            return SearchAndAddToPlaylist(
+              SearchFilter.fromString(state.pathParameters["filter"]!),
+              key: state.pageKey,
+            );
+          },
         ),
-      ),
+      ],
     ),
     GoRoute(
       parentNavigatorKey: rootNavigatorKey,
