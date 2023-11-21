@@ -45,12 +45,18 @@ class _AddToPlaylistPageState extends State<AddToPlaylistPage> {
     final selectedPlaylist = context.select(
       (LibraryCubit loaded) => (loaded.state as LibraryLoaded).playlist,
     );
-    final (mediaItems, appendItemToLibrary, removeItemFromLibrary) =
-        context.select((UserLibraryCubit cubit) {
+    final (
+      mediaItems,
+      appendItemToLibrary,
+      removeItemFromLibrary,
+      appendAllItemToLibrary
+    ) = context.select((UserLibraryCubit cubit) {
       return (
         cubit.findPlaylist(selectedPlaylist).mediaItems ?? [],
         (Song item) => cubit.appendItemToLibrary(selectedPlaylist, item),
         (Song item) => cubit.removeItemFromLibrary(selectedPlaylist, item),
+        (List<Song> item) =>
+            cubit.appendAllItemToLibrary(selectedPlaylist, item),
       );
     });
     final textTheme = context.textTheme;
@@ -111,6 +117,8 @@ class _AddToPlaylistPageState extends State<AddToPlaylistPage> {
                 ),
                 itemBuilder: (context, index, realIndex) {
                   final playlist = _playlists[index];
+                  final allAdded = (playlist.mediaItems ?? [])
+                      .every((el) => mediaItems.contains(el));
                   return SizedBox(
                     width: context.width,
                     child: Card(
@@ -127,12 +135,45 @@ class _AddToPlaylistPageState extends State<AddToPlaylistPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              playlist.title!.sanitize,
-                              style: context.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1,
-                              ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    playlist.title?.sanitize ?? '',
+                                    style:
+                                        context.textTheme.titleMedium?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                SizedBox(
+                                  height: 30,
+                                  child: OutlinedButton(
+                                    style: OutlinedButton.styleFrom(
+                                      fixedSize: const Size(100, 24),
+                                    ),
+                                    onPressed: allAdded
+                                        ? null
+                                        : () {
+                                            final allItems =
+                                                playlist.mediaItems ?? [];
+                                            final notAddedItems = allItems
+                                                .where((el) =>
+                                                    !mediaItems.contains(el))
+                                                .whereType<Song>()
+                                                .toList(growable: false);
+                                            appendAllItemToLibrary(
+                                                notAddedItems);
+                                          },
+                                    child: const Text('Add All'),
+                                  ),
+                                )
+                              ],
                             ),
                             const SizedBox(height: 16),
                             Expanded(

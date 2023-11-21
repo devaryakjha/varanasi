@@ -53,6 +53,13 @@ class UserLibraryRepository with DataProviderProtocol {
     await _baseCollection.doc(library.id).update(library.toFirestorePayload());
   }
 
+  Future<void> appendAllItemToLibrary(
+      List<Song> item, String playlistId) async {
+    await _baseCollection.doc(playlistId).update({
+      'mediaItems': FieldValue.arrayUnion(item.map((e) => e.toJson()).toList()),
+    });
+  }
+
   Future<void> appendItemToLibrary(Song item, String playlistId) async {
     await _baseCollection.doc(playlistId).update({
       'mediaItems': FieldValue.arrayUnion([item.toJson()]),
