@@ -129,9 +129,10 @@ class SessionCubit extends AppCubit<SessionState> {
       );
       final ucredential = await user?.linkWithCredential(credential);
       if (ucredential?.user != null) {
-        await ucredential?.user?.updateDisplayName(name);
-        emit(Authenticated(user: ucredential!.user!));
-        // AppSnackbar.show("Account linked successfully.");
+        if (name != null) {
+          unawaited(ucredential?.user?.updateDisplayName(name));
+        }
+        emit((state as Authenticated).copyWith(user: ucredential!.user!));
       }
       return true;
     } on FirebaseAuthException catch (e) {
