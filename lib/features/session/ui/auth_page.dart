@@ -12,6 +12,8 @@ class AuthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isGuest = context.select((SessionCubit cubit) =>
+        cubit.state is Authenticated && (cubit.state as Authenticated).isGuest);
     return Scaffold(
       body: SafeArea(
         child: Align(
@@ -56,10 +58,16 @@ class AuthPage extends StatelessWidget {
                   child: _buildText(context, "Log in"),
                 ),
                 const Spacer(),
-                TextButton(
-                  onPressed: () =>
-                      context.read<SessionCubit>().signInAnonymously(),
-                  child: _buildText(context, "Continue as guest", true),
+                Visibility(
+                  visible: !isGuest,
+                  child: TextButton(
+                    onPressed: () async {
+                      await context.read<SessionCubit>().signInAnonymously();
+                      if (!context.mounted) return;
+                      context.goNamed(AppRoutes.home.name);
+                    },
+                    child: _buildText(context, "Continue as guest", true),
+                  ),
                 )
               ],
             ),
