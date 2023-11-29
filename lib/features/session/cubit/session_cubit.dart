@@ -65,9 +65,11 @@ class SessionCubit extends AppCubit<SessionState> {
       final userCredential = await _auth.signInWithCredential(credential);
       _logger.d(userCredential.user?.toString());
     } on FirebaseAuthException catch (e) {
+      emit(UnAuthenticated());
       _handleException(e);
     } catch (e) {
       await _googleSignIn.signOut();
+      emit(UnAuthenticated());
       _logger.d(e.toString());
     }
   }
@@ -106,10 +108,38 @@ class SessionCubit extends AppCubit<SessionState> {
       );
       _logger.d(userCredential.user?.toString());
     } on FirebaseAuthException catch (e) {
+      emit(UnAuthenticated());
+      _handleException(e);
+    } catch (e) {
+      emit(UnAuthenticated());
+      _logger.d(e.toString());
+    }
+  }
+
+  Future<bool> linkEmailPassword({
+    required String email,
+    required String password,
+    String? name,
+  }) async {
+    try {
+      final user = _auth.currentUser;
+      final credential = EmailAuthProvider.credential(
+        email: email,
+        password: password,
+      );
+      final ucredential = await user?.linkWithCredential(credential);
+      if (ucredential?.user != null) {
+        await ucredential?.user?.updateDisplayName(name);
+        emit(Authenticated(user: ucredential!.user!));
+        // AppSnackbar.show("Account linked successfully.");
+      }
+      return true;
+    } on FirebaseAuthException catch (e) {
       _handleException(e);
     } catch (e) {
       _logger.d(e.toString());
     }
+    return false;
   }
 
   Future<void> signUpWithEmailAndPassword({
@@ -126,8 +156,10 @@ class SessionCubit extends AppCubit<SessionState> {
       await userCredential.user?.updateDisplayName(name);
       _logger.d(userCredential.user?.toString());
     } on FirebaseAuthException catch (e) {
+      emit(UnAuthenticated());
       _handleException(e);
     } catch (e) {
+      emit(UnAuthenticated());
       _logger.d(e.toString());
     }
   }

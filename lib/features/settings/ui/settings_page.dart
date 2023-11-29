@@ -3,6 +3,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/features/session/cubit/session_cubit.dart';
@@ -13,6 +14,7 @@ import 'package:varanasi_mobile_app/models/download_url.dart';
 import 'package:varanasi_mobile_app/utils/clear_cache.dart';
 import 'package:varanasi_mobile_app/utils/dialogs/app_dialog.dart';
 import 'package:varanasi_mobile_app/utils/extensions/flex_scheme.dart';
+import 'package:varanasi_mobile_app/utils/routes.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -52,6 +54,16 @@ class _SettingsPageState extends State<SettingsPage> {
             visible: isGuest,
             title: const Text("Account"),
             tiles: [
+              SettingsTile(
+                title: const Text("Link Email account"),
+                leading: const Icon(Icons.email_outlined),
+                onPressed: (context) {
+                  context.pushNamed(
+                    AppRoutes.login.name,
+                    queryParameters: {"forceLogin": "true"},
+                  );
+                },
+              ),
               SettingsTile(
                 title: const Text("Link Google account"),
                 leading: Assets.icon.google.svg(width: 24, height: 24),
