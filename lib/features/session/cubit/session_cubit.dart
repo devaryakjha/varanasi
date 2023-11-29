@@ -110,6 +110,18 @@ class SessionCubit extends AppCubit<SessionState> {
     }
   }
 
+  Future<void> signInAnonymously() async {
+    emit(Authenticating());
+    try {
+      final userCredential = await _auth.signInAnonymously();
+      _logger.d(userCredential.user?.toString());
+    } on FirebaseAuthException catch (e) {
+      _handleException(e);
+    } catch (e) {
+      _logger.d(e.toString());
+    }
+  }
+
   Future<void> updateName(String name) async {
     try {
       final user = _auth.currentUser;
