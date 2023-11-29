@@ -92,3 +92,28 @@ non-commercial purposes and in compliance with all applicable laws and regulatio
 | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
 | [<img src="https://github.com/maxrave-dev/SimpMusic/assets/113747128/97f0f21d-17b9-42e4-9487-6e9391ac126b" height="40">]() | [**Buy Me A Coffee**](https://www.buymeacoffee.com/devaryakjha) |
 | [<img src="https://storage.ko-fi.com/cdn/brandasset/logo_white_stroke.png" height="40">]()                                 | [**Ko-fi**](https://ko-fi.com/devaryakjha)                      |
+
+
+---
+
+## 🚀 About Me
+
+Hello there! 👋
+
+I'm a 23-year-old frontend software developer based in Mumbai, India. Currently, I work at Tifin, a fintech startup based in the United States, where I contribute to building innovative and user-friendly software solutions.
+
+Outside of work, I have a passion for exploring the magical world of Harry Potter and consider myself a devoted Potterhead. In my free time, you'll often find me engrossed in watching anime series or diving into captivating sci-fi movies and TV shows. I thoroughly enjoy indulging in these forms of entertainment, which not only entertain but also inspire me creatively.
+
+Through my GitHub projects, I aim to showcase my skills and expertise as a frontend developer. I strive to create well-designed, efficient, and user-centric applications that make a positive impact. I believe in continuous learning and constantly honing my craft to stay up to date with the latest trends and technologies.
+
+Thank you for visiting my GitHub profile. Feel free to explore my projects and don't hesitate to reach out if you have any questions or collaborations in mind. Let's connect and build amazing things together!
+
+Happy coding! ✨
+
+## Authors
+
+- [@devaryakjha](https://github.com/devaryakjha)
+
+## 🔗 Socials
+
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/devaryakjha/)
