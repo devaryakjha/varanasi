@@ -12,6 +12,8 @@ class AuthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isGuest = context.select((SessionCubit cubit) =>
+        cubit.state is Authenticated && (cubit.state as Authenticated).isGuest);
     return Scaffold(
       body: SafeArea(
         child: Align(
@@ -22,6 +24,7 @@ class AuthPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                const Spacer(),
                 Assets.icon.appIconMonotone.svg(
                   placeholderBuilder: (ctx) =>
                       const SizedBox(width: 48, height: 48),
@@ -53,6 +56,18 @@ class AuthPage extends StatelessWidget {
                 TextButton(
                   onPressed: () => context.pushNamed(AppRoutes.login.name),
                   child: _buildText(context, "Log in"),
+                ),
+                const Spacer(),
+                Visibility(
+                  visible: !isGuest,
+                  child: TextButton(
+                    onPressed: () async {
+                      await context.read<SessionCubit>().signInAnonymously();
+                      if (!context.mounted) return;
+                      context.goNamed(AppRoutes.home.name);
+                    },
+                    child: _buildText(context, "Continue as guest", true),
+                  ),
                 )
               ],
             ),
@@ -68,10 +83,20 @@ class AuthPage extends StatelessWidget {
     );
   }
 
-  Text _buildText(BuildContext context, String text) {
+  Text _buildText(BuildContext context, String text,
+      [bool isUnderlined = false]) {
+    var style =
+        context.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold);
+    if (isUnderlined) {
+      style = style?.copyWith(
+        decoration: TextDecoration.underline,
+        decorationColor: Colors.white,
+        decorationThickness: 2,
+      );
+    }
     return Text(
       text,
-      style: context.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
+      style: style,
     );
   }
 }

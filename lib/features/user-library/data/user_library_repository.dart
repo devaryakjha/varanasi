@@ -28,15 +28,17 @@ class UserLibraryRepository with DataProviderProtocol {
 
   Future<void> init() async {}
 
-  StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? _subscription;
+  StreamSubscription? _subscription;
 
   void setupListeners() {
-    FirestoreService.getUserDocument()
+    _subscription = FirestoreService.getUserDocument()
         .collection('user-library')
         .snapshots()
         .map((event) =>
             event.docs.map(MediaPlaylist.fromFirestore).toList()..sort())
-        .pipe(_librariesStream);
+        .listen((event) {
+      _librariesStream.add(event);
+    });
   }
 
   void dispose() {

@@ -64,4 +64,6 @@ final class Authenticated extends SessionState {
       userData: userData ?? this.userData,
     );
   }
+
+  bool get isGuest => user.isAnonymous;
 }

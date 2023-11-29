@@ -55,6 +55,7 @@ final routerConfig = GoRouter(
   refreshListenable: StreamListener(FirebaseAuth.instance.userChanges()),
   redirect: (context, state) {
     final session = context.read<SessionCubit>().state;
+    final forceLogin = state.uri.queryParameters['forceLogin'] == 'true';
     final allowedLoggedOutRoutes = [
       AppRoutes.authentication.name,
       AppRoutes.login.name,
@@ -63,7 +64,7 @@ final routerConfig = GoRouter(
     final isInsideAuth = allowedLoggedOutRoutes.contains(state.matchedLocation);
     return switch (session) {
       (UnAuthenticated _) when !isInsideAuth => AppRoutes.authentication.path,
-      (Authenticated _) when isInsideAuth => AppRoutes.home.path,
+      (Authenticated _) when isInsideAuth && !forceLogin => AppRoutes.home.path,
       _ => null,
     };
   },
@@ -198,12 +199,14 @@ final routerConfig = GoRouter(
           _pageWithBottomSheet(const AuthPage(), state.pageKey),
       routes: [
         GoRoute(
+          parentNavigatorKey: rootNavigatorKey,
           name: AppRoutes.login.name,
           path: AppRoutes.login.path,
           pageBuilder: (_, state) =>
               _pageWithBottomSheet(const LoginPage(), state.pageKey),
         ),
         GoRoute(
+          parentNavigatorKey: rootNavigatorKey,
           path: AppRoutes.signup.path,
           name: AppRoutes.signup.name,
           pageBuilder: (_, state) =>
