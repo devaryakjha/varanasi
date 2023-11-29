@@ -22,6 +22,7 @@ A complete music player built with Flutter.
 - Choose streaming/download quality for songs from settings
 - Beautifully designed player screen inspired by Spotify
 - sync your favorites and playlists across devices
+- No ads, no tracking, no data collection
 
 ## Screenshots
 
