@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/features/session/cubit/session_cubit.dart';
+import 'package:varanasi_mobile_app/utils/app_snackbar.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/widgets/input_field.dart';
 
@@ -161,18 +163,34 @@ class LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authenticating = context.select((SessionCubit cubit) =>
-        cubit.state is Authenticating || cubit.state is Authenticated);
+    final isGuestUser = context.select((SessionCubit cubit) =>
+        cubit.state is Authenticated && (cubit.state as Authenticated).isGuest);
+    final authenticating = context.select((SessionCubit cubit) {
+      return cubit.state is Authenticating;
+    });
     return Align(
       alignment: Alignment.center,
       child: FilledButton.tonal(
         onPressed: isFormValid && !authenticating
-            ? () {
-                context.read<SessionCubit>().signUpWithEmailAndPassword(
-                      email: emailController.text,
-                      password: passwordController.text,
-                      name: nameController.text,
-                    );
+            ? () async {
+                if (isGuestUser) {
+                  final connected =
+                      await context.read<SessionCubit>().linkEmailPassword(
+                            email: emailController.text,
+                            password: passwordController.text,
+                            name: nameController.text,
+                          );
+                  if (connected && context.mounted && context.canPop()) {
+                    context.pop();
+                  }
+                  AppSnackbar.show("Account linked successfully.");
+                } else {
+                  context.read<SessionCubit>().signUpWithEmailAndPassword(
+                        email: emailController.text,
+                        password: passwordController.text,
+                        name: nameController.text,
+                      );
+                }
               }
             : null,
         style: FilledButton.styleFrom(
@@ -193,9 +211,9 @@ class LoginButton extends StatelessWidget {
             height: 24,
             child: CircularProgressIndicator(),
           ),
-          child: const Text(
-            'Create Account',
-            style: TextStyle(fontWeight: FontWeight.bold),
+          child: Text(
+            isGuestUser ? 'Link your account' : 'Create Account',
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
       ),

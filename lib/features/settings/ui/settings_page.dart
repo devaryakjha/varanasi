@@ -59,7 +59,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 leading: const Icon(Icons.email_outlined),
                 onPressed: (context) {
                   context.pushNamed(
-                    AppRoutes.login.name,
+                    AppRoutes.signup.name,
                     queryParameters: {"forceLogin": "true"},
                   );
                 },
@@ -119,16 +119,17 @@ class _SettingsPageState extends State<SettingsPage> {
                 title: const Text("Email"),
                 value: Text(user?.email ?? ""),
               ),
-              SettingsTile(
-                leading: const Icon(Icons.image_outlined),
-                title: const Text("Avatar"),
-                trailing: CircleAvatar(
-                  radius: 14,
-                  backgroundImage: user?.photoURL == null
-                      ? null
-                      : NetworkImage(user?.photoURL ?? ""),
+              if (user?.photoURL != null)
+                SettingsTile(
+                  leading: const Icon(Icons.image_outlined),
+                  title: const Text("Avatar"),
+                  trailing: CircleAvatar(
+                    radius: 14,
+                    backgroundImage: user?.photoURL == null
+                        ? null
+                        : NetworkImage(user?.photoURL ?? ""),
+                  ),
                 ),
-              ),
               SettingsTile(
                 title: const Text("Sign out"),
                 leading: const Icon(Icons.logout_outlined),
