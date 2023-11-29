@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:varanasi_mobile_app/features/session/cubit/session_cubit.dart';
+import 'package:varanasi_mobile_app/utils/app_snackbar.dart';
 import 'package:varanasi_mobile_app/utils/extensions/extensions.dart';
 import 'package:varanasi_mobile_app/widgets/input_field.dart';
 
@@ -159,6 +160,7 @@ class LoginButton extends StatelessWidget {
                   if (connected && context.mounted && context.canPop()) {
                     context.pop();
                   }
+                  AppSnackbar.show("Account linked successfully.");
                 } else {
                   context.read<SessionCubit>().signInWithEmailAndPassword(
                         email: _emailController.text,
