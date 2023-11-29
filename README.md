@@ -1,32 +1,32 @@
-# Project Varanasi
+# Varanasi
 
-🛠️ Currently in development, music streaming application built with Flutter for iOS and Android. The app is designed to have all the basic functionalities of a music app, with a UI heavily inspired by the Spotify mobile app.
+<img src="https://raw.githubusercontent.com/devaryakjha/varanasi_mobile_app/main/android/app/src/production/res/mipmap-hdpi/ic_launcher_foreground.png" height="72">
 
-### Key Features:
+A complete music player built with Flutter.
 
-- **Mini Media Player:** Experience seamless music playback with an unobtrusive mini media player that stays with you as you explore the app.
+[![Latest release](https://img.shields.io/github/v/release/devaryakjha/varanasi_mobile_app)](https://github.com/devaryakjha/varanasi_mobile_app/releases) [![Downloads](https://img.shields.io/github/downloads/devaryakjha/varanasi_mobile_app/total)](https://github.com/devaryakjha/varanasi_mobile_app/releases) [![Codemagic build status](https://api.codemagic.io/apps/6509a228bb0e90d7e29f3872/6509a228bb0e90d7e29f3871/status_badge.svg)](https://codemagic.io/apps/6509a228bb0e90d7e29f3872/6509a228bb0e90d7e29f3871/latest_build) [![License](https://img.shields.io/github/license/devaryakjha/varanasi_mobile_app)]()
 
-- **Dynamic Gradient Backgrounds:** Immerse yourself in the musical journey with background gradients dynamically generated based on the thumbnail of the currently playing track. Every song becomes a visual masterpiece.
+> ⚠️ **Warning**
+>
+> This application is currently in its beta phase, which means it may contain bugs that could potentially cause crashes. If you encounter any issues, we encourage you to report them by creating an issue or reaching out to us via email.
 
-- **Swipe to Full-Screen Player:** Elevate your music experience with a simple swipe. Transition effortlessly from the mini player to a full-screen player, giving you total control over your listening experience.
+## Features
 
-- **And More...** Stay tuned for additional exciting features to enhance your music streaming adventure!
+- Explore latest releases, trending songs, albums, and playlists
+- Search for your favorite songs, albums, and playlists
+- View your recently played items right on the home screen
+- Create your own playlists and add songs to them
+- View your favorites in a dedicated section
+- Caching of songs for faster playback
+- Download songs for offline playback
+- Choose streaming/download quality for songs from settings
+- Beautifully designed player screen inspired by Spotify
+- sync your favorites and playlists across devices
 
-## Screenshots
+## Screenshot
 
-![App Screenshot](https://github.com/devaryakjha/varanasi_mobile_app/assets/99560530/fe3b7066-1b7b-4f27-98e0-a136a8d0c84b)
-
-## Follow this commit message pattern as below
-
-- 🐛 Bug fix
-- ✨ New feature
-- ♻️ Refactoring
-- 💄 UI/UX changes
-- 🚨 Fixing security issues
-- 📝 Documentation changes
-- 🚧 Work in progress
-- ✅ Adding tests
-- 📦 Updating dependencies
-- 🎨 Improving code structure/formatting
-- 🎉 Initial commit
-- 👷 Build changes
+<p float="left">  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/1.PNG" width="200" />  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/2.PNG" width="200" />  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/3.PNG" width="200" />  
+</p>
