@@ -1,5 +1,6 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:varanasi_mobile_app/utils/helpers/get_app_context.dart';
 
 class AppSnackbar {
@@ -22,9 +23,11 @@ class AppSnackbar {
   ///
   /// If [context] is not provided, [appContext] is used.
   static void show(String message, [BuildContext? context]) {
-    dismiss();
-    context ??= appContext;
-    _createFlushBar(message).show(context);
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      dismiss();
+      context ??= appContext;
+      _createFlushBar(message).show(context!);
+    });
   }
 
   /// Dismisses the [Flushbar] if it is visible.
