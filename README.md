@@ -25,9 +25,9 @@ A complete music player built with Flutter.
 
 ## Screenshots
 
-<img src="https://github.com/devaryakjha/varanasi_mobile_app/blob27-improve-documentation/assets/screenshots/2.PNG" width="200" />  
-<img src="https://github.com/devaryakjha/varanasi_mobile_app/blob27-improve-documentation/assets/screenshots/5.PNG" width="200" />  
-<img src="https://github.com/devaryakjha/varanasi_mobile_app/blob27-improve-documentation/assets/screenshots/9.PNG" width="200" />
+<img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/2.PNG" width="200" />  
+<img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/5.PNG" width="200" />  
+<img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/9.PNG" width="200" />
 <details>
     <summary>More</summary>
     <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/1.PNG" width="200" />
