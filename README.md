@@ -23,10 +23,28 @@ A complete music player built with Flutter.
 - Beautifully designed player screen inspired by Spotify
 - sync your favorites and playlists across devices
 
-## Screenshot
+## Screenshots
 
 <p float="left">  
     <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/1.PNG" width="200" />  
     <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/2.PNG" width="200" />  
     <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/3.PNG" width="200" />  
+</p>
+
+<p float="left">  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/4.PNG" width="200" />  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/5.PNG" width="200" />  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/6.PNG" width="200" />  
+</p>
+
+<p float="left">  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/7.PNG" width="200" />  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/8.PNG" width="200" />  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/9.PNG" width="200" />  
+</p>
+
+<p float="left">  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/10.PNG" width="200" />  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/11.PNG" width="200" />  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/12.PNG" width="200" />  
 </p>
