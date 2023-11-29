@@ -7,6 +7,7 @@ import 'package:settings_ui/settings_ui.dart';
 import 'package:varanasi_mobile_app/cubits/config/config_cubit.dart';
 import 'package:varanasi_mobile_app/features/session/cubit/session_cubit.dart';
 import 'package:varanasi_mobile_app/flavors.dart';
+import 'package:varanasi_mobile_app/gen/assets.gen.dart';
 import 'package:varanasi_mobile_app/models/app_config.dart';
 import 'package:varanasi_mobile_app/models/download_url.dart';
 import 'package:varanasi_mobile_app/utils/clear_cache.dart';
@@ -37,17 +38,45 @@ class _SettingsPageState extends State<SettingsPage> {
     final packageInfo = context.select(
       (ConfigCubit cubit) => cubit.configLoadedState.packageInfo,
     );
-    final user = context.select(
+    final (user, isGuest) = context.select(
       (SessionCubit cubit) => switch (cubit.state) {
-        (Authenticated state) => state.user,
-        (_) => null,
+        (Authenticated state) => (state.user, state.isGuest),
+        (_) => (null, false),
       },
     );
     return Scaffold(
       appBar: AppBar(title: const Text("Settings"), centerTitle: true),
       body: SettingsList(
         sections: [
-          SettingsSection(
+          _VisibileWhenSection(
+            visible: isGuest,
+            title: const Text("Account"),
+            tiles: [
+              SettingsTile(
+                title: const Text("Link Google account"),
+                leading: Assets.icon.google.svg(width: 24, height: 24),
+                onPressed: (context) =>
+                    context.read<SessionCubit>().linkGoogleAccount(),
+              ),
+              SettingsTile(
+                title: const Text("Sign out"),
+                leading: const Icon(Icons.logout_outlined),
+                description: const Text("Signed in as Guest"),
+                onPressed: (context) {
+                  AppDialog.showAlertDialog(
+                    context: context,
+                    title: "Sign out",
+                    message: "Are you sure you want to sign out?",
+                    onConfirm: () {
+                      context.read<SessionCubit>().signOut();
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
+          _VisibileWhenSection(
+            visible: !isGuest,
             title: const Text("Account"),
             tiles: [
               SettingsTile(
@@ -169,11 +198,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   );
                 },
               ),
-              // SettingsTile.navigation(
-              //   title: const Text("Clear Recently Played"),
-              //   leading: const Icon(Icons.delete_forever_outlined),
-              //   onPressed: (_) => RecentMediaService.clearRecentMedia(),
-              // ),
             ],
           ),
           _VisibileWhenSection(
