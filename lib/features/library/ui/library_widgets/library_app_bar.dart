@@ -31,8 +31,8 @@ class LibraryAppBar extends StatelessWidget {
       collapsedHeight: kToolbarHeight,
       flexibleSpace: LayoutBuilder(builder: (context, constraints) {
         final imageHeight = constraints.maxHeight * 0.5;
-
         return AnimatedContainer(
+          width: constraints.maxWidth,
           duration: kThemeAnimationDuration,
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -44,6 +44,8 @@ class LibraryAppBar extends StatelessWidget {
           ),
           child: FlexibleSpaceBar(
             centerTitle: true,
+            titlePadding:
+                const EdgeInsetsDirectional.only(start: 0, bottom: 16),
             title: AnimatedCrossFade(
               crossFadeState: state.showTitleInAppBar
                   ? CrossFadeState.showSecond
