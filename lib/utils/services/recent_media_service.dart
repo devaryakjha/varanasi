@@ -11,15 +11,19 @@ class RecentMediaService {
 
   static bool initialized = false;
 
+  static StreamSubscription? _subscription;
+
   static setupListeners() {
-    FirestoreService.getUserDocument()
+    _subscription = FirestoreService.getUserDocument()
         .collection('recent_media')
         .snapshots()
         .map((s) => s.docs.map(MediaPlaylist.fromFirestore).toList())
-        .pipe(_recentMediaSubject);
+        .listen((event) => _recentMediaSubject.add(event));
   }
 
-  static disposeListeners() {}
+  static disposeListeners() {
+    _subscription?.cancel();
+  }
 
   static final BehaviorSubject<List<MediaPlaylist>> _recentMediaSubject =
       BehaviorSubject<List<MediaPlaylist>>.seeded([]);
