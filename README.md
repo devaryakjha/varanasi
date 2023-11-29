@@ -25,9 +25,11 @@ A complete music player built with Flutter.
 
 ## Screenshots
 
-<img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/2.PNG" width="200" />  
-<img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/5.PNG" width="200" />  
-<img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/9.PNG" width="200" />
+<p float="left">
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/2.PNG" width="200" />  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/5.PNG" width="200" />  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/14.PNG" width="200" />
+</p>
 <details>
     <summary>More</summary>
     <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/1.PNG" width="200" />
@@ -36,9 +38,9 @@ A complete music player built with Flutter.
     <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/6.PNG" width="200" />  
     <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/7.PNG" width="200" />  
     <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/8.PNG" width="200" />   
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/9.PNG" width="200" />   
     <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/10.PNG" width="200" />  
     <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/11.PNG" width="200" />  
     <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/12.PNG" width="200" />  
     <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/13.PNG" width="200" />  
-    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/27-improve-documentation/assets/screenshots/14.PNG" width="200" />  
 </details>
