@@ -66,7 +66,7 @@
 ---
 
   <h3 align="center">Download :floppy_disk:</h3>
-     <p align="center" style="align-items:center"><a href="https://github.com/gokadzev/Musify/releases" rel="GitHub Releases"><img width="250" src="https://github.com/gokadzev/Musify/raw/master/repository_files/get-it-on-github.png"></a>
+     <p align="center" style="align-items:center"><a href="https://github.com/devaryakjha/varanasi_mobile_app/releases" rel="GitHub Releases"><img width="250" src="https://github.com/gokadzev/Musify/raw/master/repository_files/get-it-on-github.png"></a>
 </p>
 
 ---
@@ -88,8 +88,7 @@ non-commercial purposes and in compliance with all applicable laws and regulatio
 
 <h3 align="center">Do you like the project? Sponsor it! :heartpulse:	</h3>
 
-<div align="center">
-  <a href="https://ko-fi.com/devaryakjha">
-    <img width="32%" src="https://storage.ko-fi.com/cdn/brandasset/logo_white_stroke.png" alt="ko-fi">
-  </a>
-</div>
+| [<img src="https://upload.wikimedia.org/wikipedia/commons/archive/b/b5/20230314142950%21PayPal.svg" height="40">]()        | [Paypal](https://paypal.me/devaryakjha)                         |
+| -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| [<img src="https://github.com/maxrave-dev/SimpMusic/assets/113747128/97f0f21d-17b9-42e4-9487-6e9391ac126b" height="40">]() | [**Buy Me A Coffee**](https://www.buymeacoffee.com/devaryakjha) |
+| [<img src="https://storage.ko-fi.com/cdn/brandasset/logo_white_stroke.png" height="40">]()                                 | [**Ko-fi**](https://ko-fi.com/devaryakjha)                      |
