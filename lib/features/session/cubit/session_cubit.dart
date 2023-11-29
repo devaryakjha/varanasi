@@ -72,6 +72,28 @@ class SessionCubit extends AppCubit<SessionState> {
     }
   }
 
+  Future<void> linkGoogleAccount() async {
+    final prevState = state;
+    try {
+      final account = await _googleSignIn.signIn();
+      final authentication = await account?.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: authentication?.accessToken,
+        idToken: authentication?.idToken,
+      );
+      final user = _auth.currentUser;
+      await user?.linkWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      emit(prevState);
+      await _googleSignIn.signOut();
+      _handleException(e);
+    } catch (e) {
+      emit(prevState);
+      await _googleSignIn.signOut();
+      _logger.d(e.toString());
+    }
+  }
+
   Future<void> signInWithEmailAndPassword({
     required String email,
     required String password,
@@ -158,6 +180,8 @@ class SessionCubit extends AppCubit<SessionState> {
       'operation-not-allowed' =>
         'Indicates that Email & Password accounts are not enabled.',
       'weak-password' => 'The password must be 6 characters long or more.',
+      'credential-already-in-use' =>
+        'This credential is already associated with a different user account.',
       (_) => 'An undefined Error happened.'
     };
     AppSnackbar.show(message);
