@@ -22,6 +22,7 @@ class AuthPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                const Spacer(),
                 Assets.icon.appIconMonotone.svg(
                   placeholderBuilder: (ctx) =>
                       const SizedBox(width: 48, height: 48),
@@ -53,6 +54,12 @@ class AuthPage extends StatelessWidget {
                 TextButton(
                   onPressed: () => context.pushNamed(AppRoutes.login.name),
                   child: _buildText(context, "Log in"),
+                ),
+                const Spacer(),
+                TextButton(
+                  onPressed: () =>
+                      context.read<SessionCubit>().signInAnonymously(),
+                  child: _buildText(context, "Continue as guest", true),
                 )
               ],
             ),
@@ -68,10 +75,20 @@ class AuthPage extends StatelessWidget {
     );
   }
 
-  Text _buildText(BuildContext context, String text) {
+  Text _buildText(BuildContext context, String text,
+      [bool isUnderlined = false]) {
+    var style =
+        context.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold);
+    if (isUnderlined) {
+      style = style?.copyWith(
+        decoration: TextDecoration.underline,
+        decorationColor: Colors.white,
+        decorationThickness: 2,
+      );
+    }
     return Text(
       text,
-      style: context.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
+      style: style,
     );
   }
 }
