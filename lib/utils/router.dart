@@ -197,20 +197,20 @@ final routerConfig = GoRouter(
       path: AppRoutes.authentication.path,
       pageBuilder: (_, state) =>
           _pageWithBottomSheet(const AuthPage(), state.pageKey),
-      routes: [
-        GoRoute(
-          name: AppRoutes.login.name,
-          path: AppRoutes.login.path,
-          pageBuilder: (_, state) =>
-              _pageWithBottomSheet(const LoginPage(), state.pageKey),
-        ),
-        GoRoute(
-          path: AppRoutes.signup.path,
-          name: AppRoutes.signup.name,
-          pageBuilder: (_, state) =>
-              _pageWithBottomSheet(const SignupPage(), state.pageKey),
-        )
-      ],
     ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
+      name: AppRoutes.login.name,
+      path: AppRoutes.login.path,
+      pageBuilder: (_, state) =>
+          _pageWithBottomSheet(const LoginPage(), state.pageKey),
+    ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
+      path: AppRoutes.signup.path,
+      name: AppRoutes.signup.name,
+      pageBuilder: (_, state) =>
+          _pageWithBottomSheet(const SignupPage(), state.pageKey),
+    )
   ],
 );
