@@ -26,7 +26,7 @@ fi
 if [ "$flavor" == "main" ]; then 
     package_name="$package_base"
 else
-    if [ "$flavor" != "staging" ]; then 
+    if [ "$flavor" == "staging" ]; then 
         append=".stg"
     else
         append=".dev"

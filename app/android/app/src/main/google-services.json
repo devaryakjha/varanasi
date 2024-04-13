@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "634994157783",
+    "project_id": "varanasi-prod",
+    "storage_bucket": "varanasi-prod.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:634994157783:android:e2b2d45ee3adfe85872892",
+        "android_client_info": {
+          "package_name": "dev.aryak.varanasi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn2R-MDMwGt0S9JrcQPm3NPp7i30HvE0M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:634994157783:android:208d0bde350883c5872892",
+        "android_client_info": {
+          "package_name": "dev.aryak.varanasi.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn2R-MDMwGt0S9JrcQPm3NPp7i30HvE0M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:634994157783:android:69cf71a12c33116b872892",
+        "android_client_info": {
+          "package_name": "dev.aryak.varanasi.stg"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn2R-MDMwGt0S9JrcQPm3NPp7i30HvE0M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
