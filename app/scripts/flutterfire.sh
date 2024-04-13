@@ -35,7 +35,7 @@ else
 fi
 
 flutterfire config \
-  --platforms=android,ios \
+  --platforms=ios \
   --out=$out \
   --ios-bundle-id=$package_name \
   --ios-out=ios/config/$flavor/GoogleService-Info.plist \
