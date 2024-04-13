@@ -15,14 +15,15 @@ if [ "$flavor" != "staging" ] && [ "$flavor" != "development" ] && [ "$flavor" !
 fi
 
 package_base="dev.aryak.varanasi"
+out_base="lib/core/firebase"
 
-if [ "$flavor" != "main" ]; then 
-    out="lib/firebase_options.dart"
+if [ "$flavor" == "main" ]; then 
+    out="$out_base/firebase_options.dart"
 else 
-    out="lib/firebase_options_$flavor.dart"
+    out="$out_base/firebase_options_$flavor.dart"
 fi
 
-if [ "$flavor" != "main" ]; then 
+if [ "$flavor" == "main" ]; then 
     package_name="$package_base"
 else
     if [ "$flavor" != "staging" ]; then 
@@ -30,7 +31,7 @@ else
     else
         append=".dev"
     fi
-    package_name="$package_base.$append"
+    package_name="$package_base$append"
 fi
 
 flutterfire config \
