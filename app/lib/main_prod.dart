@@ -1,5 +1,5 @@
 import 'package:varanasi/app.dart';
-import 'package:varanasi/core/bootstrap.dart';
+import 'package:varanasi/core/core.dart' show bootstrap;
 import 'package:varanasi/core/firebase/firebase_options.dart';
 import 'package:varanasi/flavors.dart';
 
