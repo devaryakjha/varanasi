@@ -1,7 +1,15 @@
 {
     "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
+    "appName": "{flavor, select, dev {Varanasi Dev} staging {Varanasi Staging} other {Varanasi}}",
+    "@appName": {
+        "description": "The name of the application",
+        "type": "text",
+        "placeholders": {
+            "flavor": {
+                "type": "String",
+                "example": "Dev",
+                "description": "The flavor of the application"
+            }
+        }
     }
 }

@@ -8,13 +8,19 @@ class VaranasiApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: F.title,
+      onGenerateTitle: (context) {
+        return context.l10n.appName(F.name);
+      },
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text(F.title),
-        ),
+      home: Builder(
+        builder: (context) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(context.l10n.appName(F.name)),
+            ),
+          );
+        },
       ),
     );
   }
