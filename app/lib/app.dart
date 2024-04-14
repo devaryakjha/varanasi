@@ -13,9 +13,9 @@ class VaranasiApp extends StatelessWidget {
     return AppInjector(
       builder: (context) {
         return BlocBuilder<ThemeCubit, ThemeMode>(
-          builder: (context, mode) {
+          builder: (context, themeMode) {
             return MaterialApp(
-              themeMode: mode,
+              themeMode: themeMode,
               theme: createLightTheme(),
               darkTheme: createDarkTheme(),
               debugShowCheckedModeBanner: false,

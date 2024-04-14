@@ -7,11 +7,14 @@ typedef ThemeModeWidgetBuilder = Widget Function(
   ThemeMode themeMode,
 );
 
+/// {@template theme_toggle}
 /// A widget that toggles the theme.
 ///
 /// This widget is a convenience wrapper around a [IconButton] that toggles the
 /// theme when pressed. It is intended to be used in the [AppBar] of the app.
+/// {@endtemplate}
 class ThemeToggle extends StatelessWidget {
+  /// {@macro theme_toggle}
   const ThemeToggle({
     super.key,
     this.builder,
