@@ -56,5 +56,5 @@ TextTheme buildTextTheme(BuildContext context, {bool isDarkTheme = false}) {
         bodyColor: color,
         decorationColor: color,
       );
-  return GoogleFonts.mulishTextTheme(base);
+  return GoogleFonts.nunitoSansTextTheme(base);
 }
