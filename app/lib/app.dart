@@ -1,3 +1,4 @@
+import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:ui/ui.dart';
 import 'package:varanasi/core/l10n/l10n.dart';
@@ -22,7 +23,13 @@ class VaranasiApp extends StatelessWidget {
           supportedLocales: AppLocalizations.supportedLocales,
           home: Builder(
             builder: (context) {
-              return const Scaffold();
+              return Scaffold(
+                floatingActionButton: FloatingActionButton(
+                  onPressed: () {
+                    logInfo('Floating action button pressed');
+                  },
+                ),
+              );
             },
           ),
         );

@@ -1,28 +1,42 @@
+import 'dart:developer';
+
 import 'package:logging/logging.dart';
 
-late final Logger logger;
+late final Logger _logger;
 
 /// Initializes the logger with the given [appName].
 Logger initLogger(String appName) {
-  return logger = Logger(appName);
+  _logger = Logger(appName);
+  _logger.onRecord.listen((record) {
+    log(
+      record.message,
+      time: record.time,
+      zone: record.zone,
+      stackTrace: record.stackTrace,
+      error: record.error,
+      name: record.loggerName,
+      level: record.level.value,
+    );
+  });
+  return _logger;
 }
 
 /// Logs an info message.
 void logInfo(String message) {
-  logger.info(message);
+  _logger.info(message);
 }
 
 /// Logs a warning message.
 void logWarning(String message) {
-  logger.warning(message);
+  _logger.warning(message);
 }
 
 /// Logs an error message.
 void logError(String message, Object? error, StackTrace? stackTrace) {
-  logger.severe(message, error, stackTrace);
+  _logger.severe(message, error, stackTrace);
 }
 
 /// Logs a debug message.
 void logDebug(String message) {
-  logger.finest(message);
+  _logger.finest(message);
 }

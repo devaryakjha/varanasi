@@ -35,7 +35,7 @@ Future<void> bootstrap(
   FirebaseOptions options,
 ) async {
   /// Initialize the logger.
-  initLogger(F.name);
+  initLogger('Varanasi ${F.name}');
 
   // Log Flutter errors to the console.
   FlutterError.onError = (details) {
