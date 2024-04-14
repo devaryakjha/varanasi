@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "dev",
+            "name": "Dev",
             "request": "launch",
             "type": "dart",
             "program": "lib/main_dev.dart",
@@ -14,6 +14,70 @@
                 "dev",
                 "--target",
                 "lib/main_dev.dart"
+            ]
+        },
+        {
+            "name": "Dev (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "program": "lib/main_dev.dart",
+            "args": [
+                "--flavor",
+                "dev",
+                "--target",
+                "lib/main_dev.dart"
+            ]
+        },
+        {
+            "name": "Dev (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "program": "lib/main_dev.dart",
+            "args": [
+                "--flavor",
+                "dev",
+                "--target",
+                "lib/main_dev.dart"
+            ]
+        },
+        {
+            "name": "Staging",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_staging.dart",
+            "args": [
+                "--flavor",
+                "staging",
+                "--target",
+                "lib/main_staging.dart"
+            ]
+        },
+        {
+            "name": "Staging (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "program": "lib/main_staging.dart",
+            "args": [
+                "--flavor",
+                "staging",
+                "--target",
+                "lib/main_staging.dart"
+            ]
+        },
+        {
+            "name": "Staging (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "program": "lib/main_staging.dart",
+            "args": [
+                "--flavor",
+                "staging",
+                "--target",
+                "lib/main_staging.dart"
             ]
         },
         {
@@ -29,19 +93,6 @@
             ]
         },
         {
-            "name": "dev (profile mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile",
-            "program": "lib/main_dev.dart",
-            "args": [
-                "--flavor",
-                "dev",
-                "--target",
-                "lib/main_dev.dart"
-            ]
-        },
-        {
             "name": "Production (profile mode)",
             "request": "launch",
             "type": "dart",
@@ -52,19 +103,6 @@
                 "prod",
                 "--target",
                 "lib/main_prod.dart"
-            ]
-        },
-        {
-            "name": "dev (release mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release",
-            "program": "lib/main_dev.dart",
-            "args": [
-                "--flavor",
-                "dev",
-                "--target",
-                "lib/main_dev.dart"
             ]
         },
         {
