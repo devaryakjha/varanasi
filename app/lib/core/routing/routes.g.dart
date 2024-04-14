@@ -25,6 +25,36 @@ RouteBase get $dashboardRouteData => StatefulShellRouteData.$route(
             ),
           ],
         ),
+        StatefulShellBranchData.$branch(
+          restorationScopeId: SearchBranchData.$restorationScopeId,
+          routes: [
+            GoRouteData.$route(
+              path: '/search',
+              name: 'Search',
+              factory: $SearchRouteDataExtension._fromState,
+            ),
+          ],
+        ),
+        StatefulShellBranchData.$branch(
+          restorationScopeId: LibraryBranchData.$restorationScopeId,
+          routes: [
+            GoRouteData.$route(
+              path: '/library',
+              name: 'Library',
+              factory: $LibraryRouteDataExtension._fromState,
+            ),
+          ],
+        ),
+        StatefulShellBranchData.$branch(
+          restorationScopeId: AccountBranchData.$restorationScopeId,
+          routes: [
+            GoRouteData.$route(
+              path: '/account',
+              name: 'Account',
+              factory: $AccountRouteDataExtension._fromState,
+            ),
+          ],
+        ),
       ],
     );
 
@@ -39,6 +69,60 @@ extension $DiscoverRouteDataExtension on DiscoverRouteData {
 
   String get location => GoRouteData.$location(
         '/discover',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $SearchRouteDataExtension on SearchRouteData {
+  static SearchRouteData _fromState(GoRouterState state) =>
+      const SearchRouteData();
+
+  String get location => GoRouteData.$location(
+        '/search',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $LibraryRouteDataExtension on LibraryRouteData {
+  static LibraryRouteData _fromState(GoRouterState state) =>
+      const LibraryRouteData();
+
+  String get location => GoRouteData.$location(
+        '/library',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $AccountRouteDataExtension on AccountRouteData {
+  static AccountRouteData _fromState(GoRouterState state) =>
+      const AccountRouteData();
+
+  String get location => GoRouteData.$location(
+        '/account',
       );
 
   void go(BuildContext context) => context.go(location);

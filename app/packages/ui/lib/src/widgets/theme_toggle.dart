@@ -36,6 +36,7 @@ class ThemeToggle extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeMode = context.watch<ThemeCubit>().state;
     return IconButton(
+      tooltip: 'Toggle theme',
       onPressed: context.read<ThemeCubit>().toggle,
       icon: builder != null
           ? builder!(context, themeMode)
