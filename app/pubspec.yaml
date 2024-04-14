@@ -13,6 +13,9 @@ dependencies:
   flutter_bloc: ^8.1.5
   flutter_localizations:
     sdk: flutter
+  intl: ^0.18.1
+  ui:
+    path: ./packages/ui
 
 dev_dependencies:
   flutter_flavorizr: ^2.2.3

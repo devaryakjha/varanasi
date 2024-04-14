@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:varanasi/core/l10n/l10n.dart';
 import 'package:varanasi/flavors.dart';
 
 class VaranasiApp extends StatelessWidget {
@@ -8,23 +9,11 @@ class VaranasiApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: F.title,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: Scaffold(
         appBar: AppBar(
           title: Text(F.title),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'Flavor: ${F.name}',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-            ],
-          ),
         ),
       ),
     );
