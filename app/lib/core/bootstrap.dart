@@ -5,6 +5,7 @@ import 'package:common/common.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:varanasi/flavors.dart';
 
 class AppObserver extends BlocObserver {
   const AppObserver();
@@ -33,9 +34,12 @@ Future<void> bootstrap(
   FutureOr<Widget> Function() builder,
   FirebaseOptions options,
 ) async {
+  /// Initialize the logger.
+  initLogger(F.name);
+
   // Log Flutter errors to the console.
   FlutterError.onError = (details) {
-    log(details.exceptionAsString(), stackTrace: details.stack);
+    logError(details.exceptionAsString(), details.exception, details.stack);
   };
 
   // Ensure the WidgetsBinding is initialized before deferring the first frame.
