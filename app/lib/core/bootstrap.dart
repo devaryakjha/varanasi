@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:common/common.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,6 +46,9 @@ Future<void> bootstrap(
 
   // Initialize Firebase.
   await Firebase.initializeApp(options: options);
+
+  // Initialise storage.
+  await Storage.init();
 
   // Run the application.
   binding.allowFirstFrame();
