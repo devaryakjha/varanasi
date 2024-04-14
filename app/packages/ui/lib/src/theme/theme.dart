@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 export 'theme_cubit.dart';
 export 'theme_extension.dart';
@@ -39,12 +40,18 @@ NavigationBarThemeData _buildNavbarTheme(Color color) {
   );
 }
 
+TextTheme _buildTextTheme() {
+  return GoogleFonts.poppinsTextTheme();
+}
+
 ThemeData _createThemeData(ColorScheme colorScheme) {
   return ThemeData(
     colorScheme: colorScheme,
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.transparent,
       elevation: 0,
+      centerTitle: false,
     ),
+    textTheme: _buildTextTheme(),
   );
 }
