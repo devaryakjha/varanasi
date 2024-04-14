@@ -1,6 +1,7 @@
-import 'package:common/common.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui/ui.dart';
+import 'package:varanasi/core/di/app_injector.dart';
 import 'package:varanasi/core/l10n/l10n.dart';
 import 'package:varanasi/flavors.dart';
 
@@ -9,29 +10,31 @@ class VaranasiApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ThemeProvider(
-      builder: (context, theme, darkTheme, themeMode) {
-        return MaterialApp(
-          theme: theme,
-          darkTheme: darkTheme,
-          themeMode: themeMode,
-          debugShowCheckedModeBanner: false,
-          onGenerateTitle: (context) {
-            return context.l10n.appName(F.name);
-          },
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          home: Builder(
-            builder: (context) {
-              return Scaffold(
-                floatingActionButton: FloatingActionButton(
-                  onPressed: () {
-                    logInfo('Floating action button pressed');
-                  },
+    return AppInjector(
+      builder: (context) {
+        return BlocBuilder<ThemeCubit, ThemeMode>(
+          builder: (context, mode) {
+            return MaterialApp(
+              themeMode: mode,
+              theme: createLightTheme(),
+              darkTheme: createDarkTheme(),
+              debugShowCheckedModeBanner: false,
+              onGenerateTitle: (context) {
+                return context.l10n.appName(F.name);
+              },
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              home: Builder(
+                builder: (context) => Scaffold(
+                  appBar: AppBar(
+                    actions: const [
+                      ThemeToggle(),
+                    ],
+                  ),
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         );
       },
     );

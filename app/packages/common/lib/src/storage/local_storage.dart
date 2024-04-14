@@ -21,9 +21,13 @@ final class LocalStorage implements Storage {
   @override
   T? read<T>(String key, {T? defaultValue, StorageSerializer<T>? serializer}) {
     _ensureInitialized();
+    if (serializer == null) {
+      final value = _box.get(key, defaultValue: defaultValue);
+      return value as T?;
+    }
     final value = _box.get(key) as String?;
     if (value == null) return defaultValue;
-    return serializer?.deserialize(value) ?? value as T;
+    return serializer.deserialize(value) ?? value as T;
   }
 
   @override
@@ -36,8 +40,9 @@ final class LocalStorage implements Storage {
     yield read(key, defaultValue: initialData, serializer: serializer);
     yield* _box.watch(key: key).where((event) => !event.deleted).map(
       (event) {
+        if (serializer == null) return event.value as T;
         final value = event.value as String;
-        return serializer?.deserialize(value) ?? event.value as T;
+        return serializer.deserialize(value) ?? event.value as T;
       },
     );
   }

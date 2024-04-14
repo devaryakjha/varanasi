@@ -5,6 +5,7 @@ import 'package:common/common.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:varanasi/core/utils/hydrated_bloc_init.dart';
 import 'package:varanasi/flavors.dart';
 
 class AppObserver extends BlocObserver {
@@ -53,8 +54,11 @@ Future<void> bootstrap(
 
   // Initialise storage.
   await Storage.init();
+  await initialiseHydratedBloc();
 
   // Run the application.
   binding.allowFirstFrame();
+
+  // Run the application.
   runApp(await builder());
 }

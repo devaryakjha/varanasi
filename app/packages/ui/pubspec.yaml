@@ -13,7 +13,9 @@ dependencies:
     path: ../common
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.5
   google_fonts: ^6.2.1
+  hydrated_bloc: ^9.1.5
 
 dev_dependencies:
   flutter_test:
