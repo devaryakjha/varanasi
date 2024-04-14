@@ -15,11 +15,9 @@ class F {
         return 'Varnasi Dev';
       case Flavor.staging:
         return 'Varnasi Staging';
+      case null:
       case Flavor.prod:
         return 'Varnasi';
-      default:
-        return 'title';
     }
   }
-
 }

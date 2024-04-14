@@ -5,21 +5,80 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "app",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "app (profile mode)",
+            "name": "Development",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "program": "lib/main_development.dart",
+            "args": [
+                "--flavor",
+                "development",
+                "--target",
+                "lib/main_development.dart"
+            ]
         },
         {
-            "name": "app (release mode)",
+            "name": "Production",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
-        }
+            "program": "lib/main_production.dart",
+            "args": [
+                "--flavor",
+                "production",
+                "--target",
+                "lib/main_production.dart"
+            ]
+        },
+        {
+            "name": "Development (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "program": "lib/main_development.dart",
+            "args": [
+                "--flavor",
+                "development",
+                "--target",
+                "lib/main_development.dart"
+            ]
+        },
+        {
+            "name": "Production (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "program": "lib/main_production.dart",
+            "args": [
+                "--flavor",
+                "production",
+                "--target",
+                "lib/main_production.dart"
+            ]
+        },
+        {
+            "name": "Development (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "program": "lib/main_development.dart",
+            "args": [
+                "--flavor",
+                "development",
+                "--target",
+                "lib/main_development.dart"
+            ]
+        },
+        {
+            "name": "Production (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "program": "lib/main_production.dart",
+            "args": [
+                "--flavor",
+                "production",
+                "--target",
+                "lib/main_production.dart"
+            ]
+        },
     ]
 }
