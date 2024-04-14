@@ -8,6 +8,7 @@ class VaranasiApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       onGenerateTitle: (context) {
         return context.l10n.appName(F.name);
       },
@@ -15,11 +16,7 @@ class VaranasiApp extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       home: Builder(
         builder: (context) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(context.l10n.appName(F.name)),
-            ),
-          );
+          return const Scaffold();
         },
       ),
     );
