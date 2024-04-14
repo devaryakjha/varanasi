@@ -1,29 +1,31 @@
+#!/bin/bash
+
 # Accept flavor as an argument
 flavor=$1
 
 # IF flavor is not provided, set default to prod
 if [ -z "$flavor" ]; then
-  echo "Flavor not provided, defaulting to main"
-  flavor="main"
+  echo "Flavor not provided, defaulting to prod"
+  flavor="prod"
 fi
 
 # If flavor is not one of [staging, dev, prod], exit
-if [ "$flavor" != "staging" ] && [ "$flavor" != "development" ] && [ "$flavor" != "main" ]; then
+if [ "$flavor" != "staging" ] && [ "$flavor" != "dev" ] && [ "$flavor" != "prod" ]; then
   echo "Invalid flavor"
-  echo "Valid flavors: [staging, development, main]"
+  echo "Valid flavors: [staging, dev, prod]"
   exit 1
 fi
 
 package_base="dev.aryak.varanasi"
 out_base="lib/core/firebase"
 
-if [ "$flavor" == "main" ]; then 
+if [ "$flavor" == "prod" ]; then 
     out="$out_base/firebase_options.dart"
 else 
     out="$out_base/firebase_options_$flavor.dart"
 fi
 
-if [ "$flavor" == "main" ]; then 
+if [ "$flavor" == "prod" ]; then 
     package_name="$package_base"
 else
     package_name="$package_base.$flavor"
