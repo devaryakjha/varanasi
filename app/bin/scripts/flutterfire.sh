@@ -26,12 +26,7 @@ fi
 if [ "$flavor" == "main" ]; then 
     package_name="$package_base"
 else
-    if [ "$flavor" == "staging" ]; then 
-        append=".stg"
-    else
-        append=".dev"
-    fi
-    package_name="$package_base$append"
+    package_name="$package_base.$flavor"
 fi
 
 flutterfire config \
