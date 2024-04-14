@@ -7,25 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0B1B3116A330BF7FCF1FBC99 /* stagingProfile.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 5F43E88BF4F85F64ADCDE102 /* stagingProfile.xcconfig */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		2180E8FC637C9FFDEF2DA57E /* prodLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6F8FD54E158ED3671C83F5D /* prodLaunchScreen.storyboard */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
-		34AD640DA93DF42C63FE1990 /* prodProfile.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 14EA276BA3EEE0534A9CD2A1 /* prodProfile.xcconfig */; };
 		3AE0F61B28BA5396D7ED59F0 /* stagingLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED4240F6D5E1F3B65E07D567 /* stagingLaunchScreen.storyboard */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		3E325E8C3447E7DC419C1648 /* devLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B512D4716AED41146238BD7 /* devLaunchScreen.storyboard */; };
-		3FB53D5C30ACE13ADBB829CC /* devDebug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 784B894D9F02732AC1256F67 /* devDebug.xcconfig */; };
-		4A29BD1FD42D82AA433A9EA6 /* prodDebug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A6DB0D8DE8EE447FD4D21E36 /* prodDebug.xcconfig */; };
-		4C585CBA4FFF916A60A2AECD /* prodRelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 809D4042F31030FEF17DAC1E /* prodRelease.xcconfig */; };
-		6C4E28AD5FD45D7DD7F79848 /* stagingDebug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 760A6C4DB28884DA8705C17E /* stagingDebug.xcconfig */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
-		75DCDB3A84508C3D367D08FF /* stagingRelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 75D5F1B33FFB7E5A6783436E /* stagingRelease.xcconfig */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
-		A00078DFFEFBD4E5D22B5ECF /* devRelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 805D1536B2DF5392945C350A /* devRelease.xcconfig */; };
-		B8B39DB90B5A9CE05B3E8793 /* devProfile.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3929FBD6C9B6EF80D7C47272 /* devProfile.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -252,15 +243,6 @@
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
-				3FB53D5C30ACE13ADBB829CC /* devDebug.xcconfig in Resources */,
-				B8B39DB90B5A9CE05B3E8793 /* devProfile.xcconfig in Resources */,
-				A00078DFFEFBD4E5D22B5ECF /* devRelease.xcconfig in Resources */,
-				6C4E28AD5FD45D7DD7F79848 /* stagingDebug.xcconfig in Resources */,
-				0B1B3116A330BF7FCF1FBC99 /* stagingProfile.xcconfig in Resources */,
-				75DCDB3A84508C3D367D08FF /* stagingRelease.xcconfig in Resources */,
-				4A29BD1FD42D82AA433A9EA6 /* prodDebug.xcconfig in Resources */,
-				34AD640DA93DF42C63FE1990 /* prodProfile.xcconfig in Resources */,
-				4C585CBA4FFF916A60A2AECD /* prodRelease.xcconfig in Resources */,
 				3E325E8C3447E7DC419C1648 /* devLaunchScreen.storyboard in Resources */,
 				3AE0F61B28BA5396D7ED59F0 /* stagingLaunchScreen.storyboard in Resources */,
 				2180E8FC637C9FFDEF2DA57E /* prodLaunchScreen.storyboard in Resources */,
@@ -377,6 +359,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -445,6 +428,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -568,6 +552,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -640,6 +625,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -715,6 +701,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -790,6 +777,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -860,6 +848,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -917,6 +906,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1018,6 +1008,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1088,6 +1079,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1160,6 +1152,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1204,6 +1197,132 @@
 			};
 			name = "Profile-dev";
 		};
+		E5EEDE082BCB95F300D30BEC /* Debug-dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = Runner;
+			};
+			name = "Debug-dev";
+		};
+		E5EEDE092BCB95F300D30BEC /* Profile-dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = Runner;
+			};
+			name = "Profile-dev";
+		};
+		E5EEDE0A2BCB95F300D30BEC /* Release-dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = Runner;
+			};
+			name = "Release-dev";
+		};
+		E5EEDE0B2BCB95F300D30BEC /* Debug-staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = Runner;
+			};
+			name = "Debug-staging";
+		};
+		E5EEDE0C2BCB95F300D30BEC /* Profile-staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = Runner;
+			};
+			name = "Profile-staging";
+		};
+		E5EEDE0D2BCB95F300D30BEC /* Release-staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = Runner;
+			};
+			name = "Release-staging";
+		};
+		E5EEDE0E2BCB95F300D30BEC /* Debug-prod */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = Runner;
+			};
+			name = "Debug-prod";
+		};
+		E5EEDE0F2BCB95F300D30BEC /* Profile-prod */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = Runner;
+			};
+			name = "Profile-prod";
+		};
+		E5EEDE102BCB95F300D30BEC /* Release-prod */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = Runner;
+			};
+			name = "Release-prod";
+		};
+		E5EEDE112BCB95F300D30BEC /* Debug-dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = RunnerTests;
+			};
+			name = "Debug-dev";
+		};
+		E5EEDE122BCB95F300D30BEC /* Profile-dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = RunnerTests;
+			};
+			name = "Profile-dev";
+		};
+		E5EEDE132BCB95F300D30BEC /* Release-dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = RunnerTests;
+			};
+			name = "Release-dev";
+		};
+		E5EEDE142BCB95F300D30BEC /* Debug-staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = RunnerTests;
+			};
+			name = "Debug-staging";
+		};
+		E5EEDE152BCB95F300D30BEC /* Profile-staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = RunnerTests;
+			};
+			name = "Profile-staging";
+		};
+		E5EEDE162BCB95F300D30BEC /* Release-staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = RunnerTests;
+			};
+			name = "Release-staging";
+		};
+		E5EEDE172BCB95F300D30BEC /* Debug-prod */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = RunnerTests;
+			};
+			name = "Debug-prod";
+		};
+		E5EEDE182BCB95F300D30BEC /* Profile-prod */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = RunnerTests;
+			};
+			name = "Profile-prod";
+		};
+		E5EEDE192BCB95F300D30BEC /* Release-prod */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = RunnerTests;
+			};
+			name = "Release-prod";
+		};
 		FC41B333067BE4990D2A1A3C /* Debug-dev */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 784B894D9F02732AC1256F67 /* devDebug.xcconfig */;
@@ -1230,6 +1349,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1288,6 +1408,15 @@
 				331C8088294A63A400263BE5 /* Debug */,
 				331C8089294A63A400263BE5 /* Release */,
 				331C808A294A63A400263BE5 /* Profile */,
+				E5EEDE112BCB95F300D30BEC /* Debug-dev */,
+				E5EEDE122BCB95F300D30BEC /* Profile-dev */,
+				E5EEDE132BCB95F300D30BEC /* Release-dev */,
+				E5EEDE142BCB95F300D30BEC /* Debug-staging */,
+				E5EEDE152BCB95F300D30BEC /* Profile-staging */,
+				E5EEDE162BCB95F300D30BEC /* Release-staging */,
+				E5EEDE172BCB95F300D30BEC /* Debug-prod */,
+				E5EEDE182BCB95F300D30BEC /* Profile-prod */,
+				E5EEDE192BCB95F300D30BEC /* Release-prod */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1317,6 +1446,15 @@
 				97C147061CF9000F007C117D /* Debug */,
 				97C147071CF9000F007C117D /* Release */,
 				249021D4217E4FDB00AE95B9 /* Profile */,
+				E5EEDE082BCB95F300D30BEC /* Debug-dev */,
+				E5EEDE092BCB95F300D30BEC /* Profile-dev */,
+				E5EEDE0A2BCB95F300D30BEC /* Release-dev */,
+				E5EEDE0B2BCB95F300D30BEC /* Debug-staging */,
+				E5EEDE0C2BCB95F300D30BEC /* Profile-staging */,
+				E5EEDE0D2BCB95F300D30BEC /* Release-staging */,
+				E5EEDE0E2BCB95F300D30BEC /* Debug-prod */,
+				E5EEDE0F2BCB95F300D30BEC /* Profile-prod */,
+				E5EEDE102BCB95F300D30BEC /* Release-prod */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
