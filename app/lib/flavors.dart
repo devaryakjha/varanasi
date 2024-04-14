@@ -15,8 +15,8 @@ class F {
         return 'Varnasi Dev';
       case Flavor.staging:
         return 'Varnasi Staging';
-      case null:
       case Flavor.prod:
+      case null:
         return 'Varnasi';
     }
   }

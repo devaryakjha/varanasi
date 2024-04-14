@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:varanasi/flavors.dart';
 
-class App extends StatelessWidget {
-  const App({super.key});
+class VaranasiApp extends StatelessWidget {
+  const VaranasiApp({super.key});
 
   @override
   Widget build(BuildContext context) {
