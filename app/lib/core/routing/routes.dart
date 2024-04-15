@@ -1,8 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:varanasi/app/features/account/presentation/pages/account_page.dart';
 import 'package:varanasi/app/features/features.dart';
-import 'package:varanasi/app/features/library/presentation/pages/library_page.dart';
 
 part 'routes.g.dart';
 
@@ -119,3 +117,15 @@ class AccountRouteData extends GoRouteData {
   }
 }
 // ======= Library =======
+
+@TypedGoRoute<SettingsRouteData>(
+  path: '/settings',
+  name: 'Settings',
+)
+class SettingsRouteData extends GoRouteData {
+  const SettingsRouteData();
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const SettingsPage();
+  }
+}

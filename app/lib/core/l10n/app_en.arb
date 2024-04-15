@@ -11,5 +11,22 @@
                 "description": "The flavor of the application"
             }
         }
+    },
+    "greeting": "Hello, {name}!",
+    "@greeting": {
+        "description": "A greeting message",
+        "type": "text",
+        "placeholders": {
+            "name": {
+                "type": "String",
+                "example": "World",
+                "description": "The name of the person to greet"
+            }
+        }
+    },
+    "greetingSubtitle": "Let's find some music for you.",
+    "@greetingSubtitle": {
+        "description": "A subtitle for the greeting message",
+        "type": "text"
     }
 }
