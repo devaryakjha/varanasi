@@ -1,0 +1,5 @@
+# air files
+/tmp
+*.log
+*.out
+*.err
