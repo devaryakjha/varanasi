@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -10,10 +11,17 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
 
 func initViper()  {
+	flag.Bool("debug", false, "Enable debug mode")
+
+	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
+	pflag.Parse()
+	viper.BindPFlags(pflag.CommandLine)
+
     viper.SetConfigFile("config.yaml")
 
     if err := viper.ReadInConfig(); err != nil {
@@ -36,13 +44,17 @@ func main() {
 	app.Use(logger.New())
 
     // add caching middleware
-    isDebug := viper.GetBool("DEBUG")
-    fmt.Println("DEBUG: ", isDebug)
+    isDebug := viper.GetBool("debug")
+    fmt.Println("debug: ", isDebug)
     if !isDebug {
         app.Use(cache.New(cache.Config{
             Expiration: 24 * time.Hour,
         }))
     }
+
+	app.Get("/", func(c *fiber.Ctx) error {
+    	return c.SendString("Hello, World!")
+    })
 
     // create http connection for this api
 	port := os.Getenv("PORT")
