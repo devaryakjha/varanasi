@@ -4,6 +4,7 @@ type MediaType string
 
 const (
 	Artist MediaType = "artist"
+	Playlist MediaType = "playlist"
 )
 
 type Media struct {

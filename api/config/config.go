@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"sync"
 )
 
@@ -16,7 +15,6 @@ func LoadApiConfig() {
 	lock.Lock()
 	defer lock.Unlock()
 	GetMap("api_config", &config);
-	fmt.Println("endpoint: ", config)
 }
 
 func GetApiConfig() *ApiConfig {

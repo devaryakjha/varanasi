@@ -1,6 +1,8 @@
 package services
 
 import (
+	"sync"
+
 	"aryak.dev/varanasi/api/app/repositories"
 	"aryak.dev/varanasi/api/models"
 	"aryak.dev/varanasi/api/utils"
@@ -9,14 +11,35 @@ import (
 
 func GetDiscoveryData() (models.DiscoveryModel, error) {
 	response := models.DiscoveryModel{}
-	var blocks []models.Block
-	data, err := repositories.GetTopArtistsData()
-	if err == nil {
-		blocks = append(blocks, models.Block{
-			Title: "Top Artists",
-			Children: transformTopArtistsData(data),
-		})
-	}
+	blocks := make([]models.Block, 2)
+	
+	wg := sync.WaitGroup{}
+
+	wg.Add(1)
+	go func() {
+		data, err := repositories.GetTopArtistsData()
+		if err == nil {
+			blocks[0] = models.Block{
+				Title: "Top Artists",
+				Children: transformTopArtistsData(data),
+			}
+		}
+		wg.Done()
+	}()
+
+	wg.Add(1)
+	go func() {
+		data2, err := repositories.GetTopPlaylistData()
+		if err == nil {
+			blocks[1] = models.Block{
+				Title: "Top Playlists",
+				Children: transformTopPlaylistData(data2),
+			}
+		}
+		wg.Done()
+	}()
+
+	wg.Wait()
 	response.Blocks = blocks
 	return response, nil
 }
@@ -31,6 +54,20 @@ func transformTopArtistsData(data *models.TopArtistRequest) []models.Media {
 			SubTitle: utils.CreateSubtitleFromFollowerCount(artist.FollowerCount),
 			Type: models.Artist,
 			Images: utils.CreateImage(artist.Image),
+		}
+	}
+	return media
+}
+
+func transformTopPlaylistData(data *models.TopPlaylistRequest) []models.Media {
+	media := make([]models.Media, data.Count)
+	for i, playlist := range data.Data {
+		media[i] = models.Media{
+			ID: playlist.ID,
+			Title: playlist.Title,
+			SubTitle: playlist.Subtitle,
+			Type: models.Playlist,
+			Images: utils.CreateImage(playlist.Image),
 		}
 	}
 	return media

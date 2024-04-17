@@ -13,3 +13,16 @@ func GetTopArtistsData() (*models.TopArtistRequest, error) {
 	}, nil, &requestData)
 	return &requestData, nil
 }
+
+func GetTopPlaylistData() (*models.TopPlaylistRequest, error) {
+	var additionalQueryParams = map[string]string{
+		"fetch_from_serialized_files": "true",
+		"p": "1",
+		"n": "50",
+	}
+	var requestData models.TopPlaylistRequest
+	library.GetApiService().Get(func(c config.ApiEndpoints) string {
+		return c.Discover.TopPlaylists
+	}, additionalQueryParams, &requestData)
+	return &requestData, nil
+}
