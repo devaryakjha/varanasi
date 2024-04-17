@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:varanasi/core/types.dart';
 
 typedef TransformResponse<T, R> = R Function(T data);
@@ -10,7 +11,13 @@ class ApiClient {
 
   static final Dio _dio =
       // TODO(Arya): make the base url configurable
-      Dio(BaseOptions(baseUrl: 'http://192.168.31.130:8080/v1'));
+      Dio(
+    BaseOptions(
+      baseUrl: kDebugMode
+          ? 'http://192.168.31.130:8080/v1'
+          : 'https://varanasi-backend.el.r.appspot.com/v1',
+    ),
+  );
 
   static Dio get dio => _dio;
 
