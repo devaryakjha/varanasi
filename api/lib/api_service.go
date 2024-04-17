@@ -1,4 +1,4 @@
-package services
+package library
 
 import (
 	"net/url"
@@ -47,8 +47,8 @@ func (s *apiService) getEndpoints() config.ApiEndpoints {
 func (s *apiService) Get(
 	pathResolver func(c config.ApiEndpoints) string,
 	query map[string]string,
-	v interface{},
-) (interface{}, error) {
+	v any,
+) (any, error) {
 	fulluri, _ := url.Parse(s.getBaseURL())
 
 	q := fulluri.Query()

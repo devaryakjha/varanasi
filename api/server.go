@@ -43,7 +43,7 @@ func main() {
     })
 
 	v1Router := app.Group("/v1")
-	routes.SetupRoutes(&v1Router)
+	routes.SetupRoutes(v1Router)
 
     // create http connection for this api
 	port := os.Getenv("PORT")
