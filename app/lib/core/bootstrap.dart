@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:common/common.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,19 +13,13 @@ class AppObserver extends BlocObserver {
   @override
   void onCreate(BlocBase<dynamic> bloc) {
     super.onCreate(bloc);
-    log('onCreate -- bloc: $bloc');
+    logInfo('onCreate -- bloc: $bloc');
   }
 
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
-    log('onChange -- bloc: $bloc, change: $change');
-  }
-
-  @override
-  void onClose(BlocBase<dynamic> bloc) {
-    super.onClose(bloc);
-    log('onClose -- bloc: $bloc');
+    logInfo('onChange -- bloc: $bloc, change: $change');
   }
 }
 

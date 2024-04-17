@@ -4,25 +4,25 @@ part of 'discover_cubit.dart';
 class DiscoverState extends Equatable {
   const DiscoverState({
     this.isLoading = false,
-    this.blocks = const [],
+    this.discoveryData = const DiscoveryData.empty(),
   });
 
   final bool isLoading;
-  final List<BlockModel> blocks;
+  final DiscoveryData discoveryData;
 
   @override
   List<Object> get props => [
         isLoading,
-        blocks,
+        discoveryData,
       ];
 
   DiscoverState copyWith({
     bool? isLoading,
-    List<BlockModel>? blocks,
+    DiscoveryData? discoveryData,
   }) {
     return DiscoverState(
       isLoading: isLoading ?? this.isLoading,
-      blocks: blocks ?? this.blocks,
+      discoveryData: discoveryData ?? this.discoveryData,
     );
   }
 }

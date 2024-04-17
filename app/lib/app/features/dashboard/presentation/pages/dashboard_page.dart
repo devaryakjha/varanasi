@@ -32,8 +32,10 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider.value(
-      value: _discoverRepository,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider.value(value: _discoverRepository),
+      ],
       child: Scaffold(
         body: SafeArea(
           child: widget.children[widget.navigationShell.currentIndex],

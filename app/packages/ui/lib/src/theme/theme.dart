@@ -110,6 +110,11 @@ ThemeData _createThemeData(ColorScheme colorScheme, TextTheme textTheme) {
       centerTitle: false,
       titleSpacing: 0,
     ),
+    listTileTheme: ListTileThemeData(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+    ),
     textTheme: textTheme,
   );
 }

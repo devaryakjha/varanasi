@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:varanasi/app/features/discover/domain/repositories/discover_repository.dart';
 import 'package:varanasi/app/features/discover/domain/use_cases/fetch_discover_data_use_case.dart';
+import 'package:varanasi/app/features/discover/domain/use_cases/listen_discover_data_use_case.dart';
 import 'package:varanasi/app/features/features.dart';
 
 part 'routes.g.dart';
@@ -69,11 +70,14 @@ class DiscoverRouteData extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return BlocProvider(
-      create: (context) => DiscoverCubit(
-        fetchDiscoverDataUseCase: FetchDiscoverDataUseCase(
-          context.read<DiscoverRepository>(),
-        ),
-      ),
+      lazy: false,
+      create: (context) {
+        final repo = context.read<DiscoverRepository>();
+        return DiscoverCubit(
+          fetchDiscoverDataUseCase: FetchDiscoverDataUseCase(repo),
+          listenDiscoverDataUseCase: ListenDiscoverDataUseCase(repo),
+        )..fetchDiscoverData();
+      },
       child: const DiscoverPage(),
     );
   }

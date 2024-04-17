@@ -10,6 +10,22 @@ class Block extends Equatable {
   final String title;
   final List<Media> children;
 
+  double get maxHeight {
+    return children.reduce(
+      (value, element) {
+        return value.height > element.height ? value : element;
+      },
+    ).height;
+  }
+
+  double get maxWidth {
+    return children.reduce(
+      (value, element) {
+        return value.width > element.width ? value : element;
+      },
+    ).width;
+  }
+
   @override
   List<Object?> get props => [title, children];
 }
