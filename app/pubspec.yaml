@@ -7,8 +7,10 @@ environment:
   sdk: ">=3.3.3 <4.0.0"
 
 dependencies:
+  bloc: ^8.1.4
   common:
     path: ./packages/common
+  equatable: ^2.0.5
   firebase_core: ^2.29.0
   flutter:
     sdk: flutter
@@ -18,8 +20,10 @@ dependencies:
   go_router: ^13.2.4
   hydrated_bloc: ^9.1.5
   intl: ^0.18.1
+  json_annotation: ^4.8.1
   path_provider: ^2.1.3
   random_avatar: ^0.0.8
+  rxdart: ^0.27.7
   ui:
     path: ./packages/ui
 
@@ -29,6 +33,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   go_router_builder: ^2.5.1
+  json_serializable: ^6.7.1
   very_good_analysis: ^5.1.0
 
 flutter:

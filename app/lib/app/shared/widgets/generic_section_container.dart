@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SectionListViewBuilder<T> extends StatelessWidget {
-  const SectionListViewBuilder({
+class BlockView<T> extends StatelessWidget {
+  const BlockView({
     required this.title,
     required this.itemBuilder,
     this.items = const [],
