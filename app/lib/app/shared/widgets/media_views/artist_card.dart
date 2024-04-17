@@ -1,15 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:ui/ui.dart';
-import 'package:varanasi/app/shared/domain/entities/media.dart';
+import 'package:varanasi/app/shared/widgets/media_views/media_card.dart';
 
-class ArtistCard extends StatelessWidget {
+class ArtistCard extends MediaCard {
   const ArtistCard({
-    required this.media,
+    required super.media,
     super.key,
   });
-
-  final Media media;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,9 @@ class ArtistCard extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: media.width / 2,
-            backgroundImage: NetworkImage(media.highestQualityImage),
+            backgroundImage: CachedNetworkImageProvider(
+              media.highestQualityImage,
+            ),
           ),
           const Gap(8),
           Text(

@@ -10,7 +10,7 @@ class ApiClient {
 
   static final Dio _dio =
       // TODO(Arya): make the base url configurable
-      Dio(BaseOptions(baseUrl: 'http://localhost:8080/v1'));
+      Dio(BaseOptions(baseUrl: 'http://192.168.31.130:8080/v1'));
 
   static Dio get dio => _dio;
 

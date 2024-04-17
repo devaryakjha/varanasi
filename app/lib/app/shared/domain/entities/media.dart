@@ -21,12 +21,14 @@ class Media extends Equatable {
   double get height {
     return switch (type) {
       MediaType.artist => kArtistCardHeight,
+      MediaType.playlist => kPlaylistCardHeight,
     };
   }
 
   double get width {
     return switch (type) {
       MediaType.artist => kArtistCardWidth,
+      MediaType.playlist => kPlaylistCardWidth,
     };
   }
 

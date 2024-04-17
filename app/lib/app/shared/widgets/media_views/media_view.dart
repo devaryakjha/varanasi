@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:varanasi/app/shared/domain/entities/media.dart';
-import 'package:varanasi/app/shared/domain/entities/media_type.dart';
-import 'package:varanasi/app/shared/widgets/media_views/artist_card.dart';
+import 'package:varanasi/app/shared/widgets/media_views/media_card.dart';
 
 class MediaView extends StatelessWidget {
   const MediaView({
@@ -13,8 +12,6 @@ class MediaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return switch (media.type) {
-      MediaType.artist => ArtistCard(media: media),
-    };
+    return MediaCard.fromMedia(media);
   }
 }

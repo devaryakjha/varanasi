@@ -30,18 +30,25 @@ class BlockView extends StatelessWidget {
           ),
         ),
         const Gap(16),
-        ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: block.maxHeight),
-          child: ListView.builder(
+        SizedBox(
+          height: block.maxHeight,
+          child: ListView.separated(
+            findChildIndexCallback: (key) {
+              final valueKey = key as ValueKey<String>;
+              return block.children.indexWhere(
+                (media) => media.id == valueKey.value,
+              );
+            },
             scrollDirection: Axis.horizontal,
             itemCount: block.children.length,
-            itemExtent: block.maxHeight,
-            itemBuilder: (context, index) {
+            separatorBuilder: (_, __) => const Gap(32),
+            itemBuilder: (_, index) {
               final child = block.children[index];
               return Padding(
+                key: ValueKey(child.id),
                 padding: EdgeInsets.only(
-                  right: 16,
                   left: index == 0 ? 16 : 0,
+                  right: index == block.children.length - 1 ? 16 : 0,
                 ),
                 child: MediaView(media: child),
               );
