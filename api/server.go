@@ -1,36 +1,22 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"os"
 	"time"
 
+	"aryak.dev/varanasi/api/app/routes"
+	"aryak.dev/varanasi/api/config"
 	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/logger"
-	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
 
-func initViper()  {
-	flag.Bool("debug", false, "Enable debug mode")
-
-	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
-	pflag.Parse()
-	viper.BindPFlags(pflag.CommandLine)
-
-    viper.SetConfigFile("config.yaml")
-
-    if err := viper.ReadInConfig(); err != nil {
-        panic(fmt.Errorf("fatal error config file: %w", err))
-    }
-}
-
 func main() {
-    initViper()
+    config.LoadConfig()
 
     // first we must setup new Instance of FIber
 	app := fiber.New(fiber.Config{
@@ -56,6 +42,9 @@ func main() {
     	return c.SendString("Hello, World!")
     })
 
+	v1Router := app.Group("/v1")
+	routes.SetupRoutes(&v1Router)
+
     // create http connection for this api
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -67,5 +56,4 @@ func main() {
 	if err := app.Listen(":" + port); err != nil {
 		log.Fatal(err)
 	}
-
 }
