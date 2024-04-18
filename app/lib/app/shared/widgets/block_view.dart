@@ -14,20 +14,21 @@ class BlockView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO(Arya): Add view all button implementation
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         const Gap(16),
         ListTile(
-          onTap: () {},
+          // onTap: () {},
           title: Text(
             block.title,
             style: context.textTheme.titleMedium,
           ),
-          trailing: const Icon(
-            Icons.arrow_forward_ios,
-            size: 18,
-          ),
+          // trailing: const Icon(
+          //   Icons.arrow_forward_ios,
+          //   size: 18,
+          // ),
         ),
         const Gap(16),
         SizedBox(

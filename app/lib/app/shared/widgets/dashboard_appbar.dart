@@ -13,17 +13,13 @@ class DashboardAppbar extends StatelessWidget {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       sliver: SliverAppBar(
+        scrolledUnderElevation: 0,
+        elevation: 0,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              l10n.greeting('Arya'),
-              style: context.titleSmall,
-            ),
-            Text(
-              l10n.greetingSubtitle,
-              style: context.bodySmall,
-            ),
+            Text(l10n.greeting('Arya'), style: context.titleSmall),
+            Text(l10n.greetingSubtitle, style: context.bodySmall),
           ],
         ),
         actions: [
