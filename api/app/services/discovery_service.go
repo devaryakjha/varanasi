@@ -29,12 +29,24 @@ func GetDiscoveryData() (models.DiscoveryModel, error) {
 
 	wg.Add(1)
 	go func() {
-		data2, err := repositories.GetTopPlaylistData()
+		data, err := repositories.GetTopPlaylistData()
 		if err == nil {
 			blocks[1] = models.Block{
 				Title: "Top Playlists",
-				Children: transformTopPlaylistData(data2),
+				Children: transformTopPlaylistData(data),
 			}
+		}
+		wg.Done()
+	}()
+
+	wg.Add(1)
+	go func() {
+		data, err := repositories.GetNewReleasesData()
+		if err == nil {
+			blocks = append(blocks, models.Block{
+				Title: "New Releases",
+				Children: transformNewReleasesData(data),
+			})
 		}
 		wg.Done()
 	}()
@@ -68,6 +80,20 @@ func transformTopPlaylistData(data *models.TopPlaylistRequest) []models.Media {
 			SubTitle: playlist.Subtitle,
 			Type: models.Playlist,
 			Images: utils.CreateImage(playlist.Image),
+		}
+	}
+	return media
+}
+
+func transformNewReleasesData(data *models.NewReleasesRequest) []models.Media {
+	media := make([]models.Media, data.Count)
+	for i, release := range data.Data {
+		media[i] = models.Media{
+			ID: release.ID,
+			Title: release.Title,
+			SubTitle: release.Subtitle,
+			Type: models.Album,
+			Images: utils.CreateImage(release.Image),
 		}
 	}
 	return media

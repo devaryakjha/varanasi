@@ -15,7 +15,7 @@ func GetTopArtistsData() (*models.TopArtistRequest, error) {
 }
 
 func GetTopPlaylistData() (*models.TopPlaylistRequest, error) {
-	var additionalQueryParams = map[string]string{
+	 additionalQueryParams := map[string]string{
 		"fetch_from_serialized_files": "true",
 		"p": "1",
 		"n": "50",
@@ -23,6 +23,18 @@ func GetTopPlaylistData() (*models.TopPlaylistRequest, error) {
 	var requestData models.TopPlaylistRequest
 	library.GetApiService().Get(func(c config.ApiEndpoints) string {
 		return c.Discover.TopPlaylists
+	}, additionalQueryParams, &requestData)
+	return &requestData, nil
+}
+
+func GetNewReleasesData() (*models.NewReleasesRequest, error) {
+	additionalQueryParams := map[string]string{
+		"p": "1",
+		"n": "50",
+	}
+	var requestData models.NewReleasesRequest
+	library.GetApiService().Get(func(c config.ApiEndpoints) string {
+		return c.Discover.NewReleases
 	}, additionalQueryParams, &requestData)
 	return &requestData, nil
 }

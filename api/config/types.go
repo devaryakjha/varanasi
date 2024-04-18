@@ -12,5 +12,6 @@ type ApiEndpoints struct {
 type Discover struct {
 	TopArtists string `mapstructure:"top_artists"`
 	TopPlaylists string `mapstructure:"top_playlists"`
+	NewReleases string `mapstructure:"new_releases"`
 }
 
