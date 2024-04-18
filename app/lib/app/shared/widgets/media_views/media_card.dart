@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:varanasi/app/shared/domain/entities/media.dart';
 import 'package:varanasi/app/shared/domain/entities/media_type.dart';
+import 'package:varanasi/app/shared/widgets/media_views/album_card.dart';
 import 'package:varanasi/app/shared/widgets/media_views/artist_card.dart';
 import 'package:varanasi/app/shared/widgets/media_views/playlist_card.dart';
 
 const widgetMap = {
   MediaType.artist: ArtistCard.new,
   MediaType.playlist: PlaylistCard.new,
+  MediaType.album: AlbumCard.new,
 };
 
 abstract class MediaCard extends StatelessWidget {
