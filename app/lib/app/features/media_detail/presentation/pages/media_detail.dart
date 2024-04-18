@@ -48,7 +48,7 @@ class MediaDetailPage extends StatelessWidget {
             ),
           ),
           SliverList.builder(
-            itemCount: 100,
+            itemCount: 1000,
             itemBuilder: (context, index) {
               return ListTile(
                 title: Text('Item $index'),
