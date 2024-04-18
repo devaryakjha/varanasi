@@ -5,6 +5,7 @@ import 'package:varanasi/app/features/discover/domain/repositories/discover_repo
 import 'package:varanasi/app/features/discover/domain/use_cases/fetch_discover_data_use_case.dart';
 import 'package:varanasi/app/features/discover/domain/use_cases/listen_discover_data_use_case.dart';
 import 'package:varanasi/app/features/features.dart';
+import 'package:varanasi/app/shared/domain/entities/media_type.dart';
 
 part 'routes.g.dart';
 
@@ -130,7 +131,44 @@ class AccountRouteData extends GoRouteData {
     return const AccountPage();
   }
 }
-// ======= Library =======
+// ======= Account =======
+
+// ======= MediaDetail =======
+@TypedGoRoute<MediaDetailRouteData>(
+  path: '/media-detail/:type/:image/:id',
+  name: 'MediaDetail',
+)
+class MediaDetailRouteData extends GoRouteData {
+  const MediaDetailRouteData({
+    required this.type,
+    required this.id,
+    required this.image,
+  });
+
+  const MediaDetailRouteData.artist({
+    required this.id,
+    required this.image,
+  }) : type = MediaType.artist;
+
+  const MediaDetailRouteData.album({
+    required this.id,
+    required this.image,
+  }) : type = MediaType.album;
+
+  const MediaDetailRouteData.playlist({
+    required this.id,
+    required this.image,
+  }) : type = MediaType.playlist;
+
+  final MediaType type;
+  final String id;
+  final String image;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return MediaDetailPage(image: image, id: id);
+  }
+}
 
 @TypedGoRoute<SettingsRouteData>(
   path: '/settings',
