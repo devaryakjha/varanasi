@@ -12,6 +12,7 @@ type Media struct {
 	ID    string `json:"id"`
 	Title string `json:"title"`
 	SubTitle string `json:"sub_title"`
+	Token string `json:"token"`
 	Type  MediaType `json:"type"`
 	Images []Image `json:"images"`
 }

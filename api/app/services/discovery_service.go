@@ -66,6 +66,7 @@ func transformTopArtistsData(data *models.TopArtistRequest) []models.Media {
 			SubTitle: utils.CreateSubtitleFromFollowerCount(artist.FollowerCount),
 			Type: models.Artist,
 			Images: utils.CreateImage(artist.Image),
+			Token: utils.CreateTokenFromPermaURL(artist.PermaURL),
 		}
 	}
 	return media
@@ -80,6 +81,7 @@ func transformTopPlaylistData(data *models.TopPlaylistRequest) []models.Media {
 			SubTitle: playlist.Subtitle,
 			Type: models.Playlist,
 			Images: utils.CreateImage(playlist.Image),
+			Token: utils.CreateTokenFromPermaURL(playlist.PermaURL),
 		}
 	}
 	return media
@@ -94,6 +96,7 @@ func transformNewReleasesData(data *models.NewReleasesRequest) []models.Media {
 			SubTitle: release.Subtitle,
 			Type: models.Album,
 			Images: utils.CreateImage(release.Image),
+			Token: utils.CreateTokenFromPermaURL(release.PermaURL),
 		}
 	}
 	return media
