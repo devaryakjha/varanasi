@@ -32,7 +32,11 @@ void logWarning(String message) {
 }
 
 /// Logs an error message.
-void logError(String message, Object? error, StackTrace? stackTrace) {
+void logError(
+  String message, {
+  Object? error,
+  StackTrace? stackTrace,
+}) {
   _logger.severe(message, error, stackTrace);
 }
 

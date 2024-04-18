@@ -33,7 +33,11 @@ Future<void> bootstrap(
 
   // Log Flutter errors to the console.
   FlutterError.onError = (details) {
-    logError(details.exceptionAsString(), details.exception, details.stack);
+    logError(
+      details.exceptionAsString(),
+      error: details.exception,
+      stackTrace: details.stack,
+    );
   };
 
   // Ensure the WidgetsBinding is initialized before deferring the first frame.

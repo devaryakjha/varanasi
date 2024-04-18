@@ -1,3 +1,4 @@
+import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui/ui.dart';
@@ -15,6 +16,7 @@ class VaranasiApp extends StatelessWidget {
       builder: (context) {
         return BlocBuilder<ThemeCubit, ThemeMode>(
           builder: (context, themeMode) {
+            logInfo('Building app with theme mode: $themeMode');
             return MaterialApp.router(
               routerConfig: routerConfig,
               themeMode: themeMode,

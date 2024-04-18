@@ -10,11 +10,13 @@ class Media extends Equatable {
     required this.subTitle,
     required this.type,
     required this.images,
+    required this.token,
   });
 
   final String id;
   final String title;
   final String subTitle;
+  final String token;
   final MediaType type;
   final List<Image> images;
 
@@ -45,5 +47,6 @@ class Media extends Equatable {
         subTitle,
         type,
         images,
+        token,
       ];
 }

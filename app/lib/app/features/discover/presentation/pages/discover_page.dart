@@ -20,7 +20,7 @@ class DiscoverPage extends StatelessWidget {
               itemCount: state.blocks.length,
               itemBuilder: (context, index) {
                 final block = state.blocks[index];
-                return BlockView(block: block);
+                return BlockView(block: block, key: ValueKey(index));
               },
             );
           },

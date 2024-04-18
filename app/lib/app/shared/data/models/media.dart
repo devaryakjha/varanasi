@@ -14,6 +14,7 @@ class MediaModel extends Equatable {
     required this.subTitle,
     required this.type,
     required this.images,
+    required this.token,
   });
 
   factory MediaModel.fromJson(Map<String, dynamic> json) {
@@ -23,6 +24,7 @@ class MediaModel extends Equatable {
   final String id;
   final String title;
   final String subTitle;
+  final String token;
   final MediaTypeModel type;
   final List<ImageModel> images;
 
@@ -33,6 +35,7 @@ class MediaModel extends Equatable {
       subTitle: subTitle,
       type: type.toEntity(),
       images: images.map((e) => e.toEntity()).toList(),
+      token: token,
     );
   }
 
@@ -47,5 +50,6 @@ class MediaModel extends Equatable {
         subTitle,
         type,
         images,
+        token,
       ];
 }
