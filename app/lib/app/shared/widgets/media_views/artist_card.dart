@@ -18,6 +18,8 @@ class ArtistCard extends MediaCard {
         MediaDetailRouteData.artist(
           id: media.token,
           image: media.highestQualityImage,
+          title: media.title,
+          subtitle: media.subTitle,
         ).push<void>(context);
       },
       child: SizedBox(

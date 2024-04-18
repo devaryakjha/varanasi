@@ -138,7 +138,7 @@ extension $AccountRouteDataExtension on AccountRouteData {
 }
 
 RouteBase get $mediaDetailRouteData => GoRouteData.$route(
-      path: '/media-detail/:type/:image/:id',
+      path: '/media-detail/:type/:title/:subtitle/:image/:id',
       name: 'MediaDetail',
       factory: $MediaDetailRouteDataExtension._fromState,
     );
@@ -149,10 +149,12 @@ extension $MediaDetailRouteDataExtension on MediaDetailRouteData {
         type: _$MediaTypeEnumMap._$fromName(state.pathParameters['type']!),
         id: state.pathParameters['id']!,
         image: state.pathParameters['image']!,
+        title: state.pathParameters['title']!,
+        subtitle: state.pathParameters['subtitle']!,
       );
 
   String get location => GoRouteData.$location(
-        '/media-detail/${Uri.encodeComponent(_$MediaTypeEnumMap[type]!)}/${Uri.encodeComponent(image)}/${Uri.encodeComponent(id)}',
+        '/media-detail/${Uri.encodeComponent(_$MediaTypeEnumMap[type]!)}/${Uri.encodeComponent(title)}/${Uri.encodeComponent(subtitle)}/${Uri.encodeComponent(image)}/${Uri.encodeComponent(id)}',
       );
 
   void go(BuildContext context) => context.go(location);

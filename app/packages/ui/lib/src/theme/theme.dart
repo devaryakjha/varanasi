@@ -106,11 +106,12 @@ TextTheme _buildTextTheme({bool isDarkTheme = false}) {
 
 AppBarTheme _buildAppBarTheme({bool isDarkTheme = false}) {
   return AppBarTheme(
-    color: Colors.transparent,
+    color: isDarkTheme ? Colors.black : Colors.white,
+    surfaceTintColor: isDarkTheme ? Colors.black : Colors.white,
+    foregroundColor: isDarkTheme ? Colors.white : Colors.black,
     elevation: 0,
     centerTitle: false,
-    titleSpacing: 0,
-    scrolledUnderElevation: 0,
+    scrolledUnderElevation: 10,
     systemOverlayStyle:
         isDarkTheme ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
   );

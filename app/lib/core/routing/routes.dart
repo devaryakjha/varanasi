@@ -135,7 +135,7 @@ class AccountRouteData extends GoRouteData {
 
 // ======= MediaDetail =======
 @TypedGoRoute<MediaDetailRouteData>(
-  path: '/media-detail/:type/:image/:id',
+  path: '/media-detail/:type/:title/:subtitle/:image/:id',
   name: 'MediaDetail',
 )
 class MediaDetailRouteData extends GoRouteData {
@@ -143,30 +143,46 @@ class MediaDetailRouteData extends GoRouteData {
     required this.type,
     required this.id,
     required this.image,
+    required this.title,
+    required this.subtitle,
   });
 
   const MediaDetailRouteData.artist({
     required this.id,
     required this.image,
+    required this.title,
+    required this.subtitle,
   }) : type = MediaType.artist;
 
   const MediaDetailRouteData.album({
     required this.id,
     required this.image,
+    required this.title,
+    required this.subtitle,
   }) : type = MediaType.album;
 
   const MediaDetailRouteData.playlist({
     required this.id,
     required this.image,
+    required this.title,
+    required this.subtitle,
   }) : type = MediaType.playlist;
 
   final MediaType type;
   final String id;
   final String image;
+  final String title;
+  final String subtitle;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return MediaDetailPage(image: image, id: id);
+    return MediaDetailPage(
+      image: image,
+      id: id,
+      title: title,
+      subtitle: subtitle,
+      type: type,
+    );
   }
 }
 
