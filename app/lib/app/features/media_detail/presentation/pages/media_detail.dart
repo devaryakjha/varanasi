@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:varanasi/app/features/media_detail/presentation/pages/media_app_bar.dart';
 import 'package:varanasi/app/shared/domain/entities/media_type.dart';
 
 class MediaDetailPage extends StatelessWidget {
@@ -23,30 +23,7 @@ class MediaDetailPage extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            stretch: true,
-            expandedHeight: 400,
-            pinned: true,
-            scrolledUnderElevation: 10,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text(title),
-              centerTitle: false,
-              stretchModes: const [
-                StretchMode.zoomBackground,
-                StretchMode.blurBackground,
-                StretchMode.fadeTitle,
-              ],
-              background: Hero(
-                tag: id,
-                transitionOnUserGestures: true,
-                child: CachedNetworkImage(
-                  imageUrl: image,
-                  cacheKey: id,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
+          MediaAppBar(title: title, id: id, image: image),
           SliverList.builder(
             itemCount: 1000,
             itemBuilder: (context, index) {

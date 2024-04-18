@@ -20,6 +20,7 @@ ThemeData createDarkTheme() {
     _createDarkColorScheme(),
     _buildTextTheme(isDarkTheme: true),
     _buildAppBarTheme(isDarkTheme: true),
+    _buildFloatingActionButtonThemeData(),
   ).copyWith(
     navigationBarTheme: _buildNavbarTheme(Colors.white),
   );
@@ -30,6 +31,7 @@ ThemeData createLightTheme() {
     _createLightColorScheme(),
     _buildTextTheme(),
     _buildAppBarTheme(),
+    _buildFloatingActionButtonThemeData(),
   ).copyWith(
     navigationBarTheme: _buildNavbarTheme(Colors.black),
   );
@@ -117,14 +119,20 @@ AppBarTheme _buildAppBarTheme({bool isDarkTheme = false}) {
   );
 }
 
+FloatingActionButtonThemeData _buildFloatingActionButtonThemeData() {
+  return const FloatingActionButtonThemeData(shape: CircleBorder());
+}
+
 ThemeData _createThemeData(
   ColorScheme colorScheme,
   TextTheme textTheme,
   AppBarTheme appBarTheme,
+  FloatingActionButtonThemeData floatingActionButtonTheme,
 ) {
   return ThemeData(
     colorScheme: colorScheme,
     appBarTheme: appBarTheme,
+    floatingActionButtonTheme: floatingActionButtonTheme,
     listTileTheme: ListTileThemeData(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
