@@ -23,13 +23,7 @@ class ThemeToggle extends StatelessWidget {
   final ThemeModeWidgetBuilder? builder;
 
   Widget _defaultBuilder(BuildContext context, ThemeMode themeMode) {
-    return Icon(
-      themeMode == ThemeMode.system
-          ? Icons.brightness_auto
-          : themeMode == ThemeMode.light
-              ? Icons.brightness_4
-              : Icons.brightness_7,
-    );
+    return ThemeToggleIcon(themeMode: themeMode);
   }
 
   @override
@@ -41,6 +35,26 @@ class ThemeToggle extends StatelessWidget {
       icon: builder != null
           ? builder!(context, themeMode)
           : _defaultBuilder(context, themeMode),
+    );
+  }
+}
+
+class ThemeToggleIcon extends StatelessWidget {
+  const ThemeToggleIcon({
+    required this.themeMode,
+    super.key,
+  });
+
+  final ThemeMode themeMode;
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      themeMode == ThemeMode.system
+          ? Icons.brightness_auto
+          : themeMode == ThemeMode.light
+              ? Icons.brightness_4
+              : Icons.brightness_7,
     );
   }
 }

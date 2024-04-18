@@ -28,5 +28,15 @@
     "@greetingSubtitle": {
         "description": "A subtitle for the greeting message",
         "type": "text"
+    },
+    "settingsPageTitle": "Settings",
+    "@settingsPageTitle": {
+        "description": "The title of the settings page",
+        "type": "text"
+    },
+    "settingsApperanceTitle": "Appearance",
+    "@settingsApperanceTitle": {
+        "description": "The title of the appearance settings section",
+        "type": "text"
     }
 }

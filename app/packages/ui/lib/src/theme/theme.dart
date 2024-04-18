@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 export 'theme_cubit.dart';
@@ -18,6 +19,7 @@ ThemeData createDarkTheme() {
   return _createThemeData(
     _createDarkColorScheme(),
     _buildTextTheme(isDarkTheme: true),
+    _buildAppBarTheme(isDarkTheme: true),
   ).copyWith(
     navigationBarTheme: _buildNavbarTheme(Colors.white),
   );
@@ -27,6 +29,7 @@ ThemeData createLightTheme() {
   return _createThemeData(
     _createLightColorScheme(),
     _buildTextTheme(),
+    _buildAppBarTheme(),
   ).copyWith(
     navigationBarTheme: _buildNavbarTheme(Colors.black),
   );
@@ -101,15 +104,26 @@ TextTheme _buildTextTheme({bool isDarkTheme = false}) {
   return GoogleFonts.poppinsTextTheme(base);
 }
 
-ThemeData _createThemeData(ColorScheme colorScheme, TextTheme textTheme) {
+AppBarTheme _buildAppBarTheme({bool isDarkTheme = false}) {
+  return AppBarTheme(
+    color: Colors.transparent,
+    elevation: 0,
+    centerTitle: false,
+    titleSpacing: 0,
+    scrolledUnderElevation: 0,
+    systemOverlayStyle:
+        isDarkTheme ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+  );
+}
+
+ThemeData _createThemeData(
+  ColorScheme colorScheme,
+  TextTheme textTheme,
+  AppBarTheme appBarTheme,
+) {
   return ThemeData(
     colorScheme: colorScheme,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      centerTitle: false,
-      titleSpacing: 0,
-    ),
+    appBarTheme: appBarTheme,
     listTileTheme: ListTileThemeData(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
