@@ -21,8 +21,8 @@ class SettingsPage extends StatelessWidget {
             title: Text(l10n.settingsApperanceTitle),
             tiles: [
               SettingsTile(
-                title: const Text('Theme'),
-                description: const Text('Toggle between light and dark mode'),
+                title: Text(l10n.settingsThemeTitle),
+                description: Text(l10n.settingsThemeDescription),
                 onPressed: (context) => context.read<ThemeCubit>().toggle(),
                 trailing: BlocBuilder<ThemeCubit, ThemeMode>(
                   builder: (context, themeMode) {

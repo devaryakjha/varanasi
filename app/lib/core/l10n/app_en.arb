@@ -38,5 +38,15 @@
     "@settingsApperanceTitle": {
         "description": "The title of the appearance settings section",
         "type": "text"
+    },
+    "settingsThemeTitle": "Theme",
+    "@settingsThemeTitle": {
+        "description": "The title of the theme settings tile",
+        "type": "text"
+    },
+    "settingsThemeDescription": "Choose a theme for the app.",
+    "@settingsThemeDescription": {
+        "description": "The description of the theme settings tile",
+        "type": "text"
     }
 }

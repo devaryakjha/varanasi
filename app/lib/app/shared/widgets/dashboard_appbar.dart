@@ -34,12 +34,12 @@ class DashboardAppbar extends StatelessWidget {
             offset: const Offset(0, 16),
             icon: CircleAvatar(child: RandomAvatar('Arya')),
             itemBuilder: (context) => [
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 1,
                 child: ListTile(
                   dense: true,
-                  leading: Icon(Icons.settings),
-                  title: Text('Settings'),
+                  leading: const Icon(Icons.settings_outlined),
+                  title: Text(l10n.settingsPageTitle),
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
