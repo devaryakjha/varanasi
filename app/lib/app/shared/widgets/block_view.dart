@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:ui/ui.dart';
 import 'package:varanasi/app/shared/domain/entities/block.dart';
+import 'package:varanasi/app/shared/domain/entities/media.dart';
 import 'package:varanasi/app/shared/widgets/media_views/media_view.dart';
 
 class BlockView extends StatelessWidget {
@@ -31,32 +32,83 @@ class BlockView extends StatelessWidget {
           // ),
         ),
         const Gap(16),
-        SizedBox(
-          height: block.maxHeight,
-          child: ListView.separated(
-            findChildIndexCallback: (key) {
-              final valueKey = key as ValueKey<String>;
-              return block.children.indexWhere(
-                (media) => media.id == valueKey.value,
-              );
-            },
-            scrollDirection: Axis.horizontal,
+        if (block.orientation == Axis.vertical)
+          ListView.separated(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
             itemCount: block.children.length,
-            separatorBuilder: (_, __) => const Gap(32),
+            separatorBuilder: (_, __) => const Gap(16),
             itemBuilder: (_, index) {
               final child = block.children[index];
-              return Padding(
-                key: ValueKey(child.id),
-                padding: EdgeInsets.only(
-                  left: index == 0 ? 16 : 0,
-                  right: index == block.children.length - 1 ? 16 : 0,
-                ),
-                child: MediaView(media: child),
-              );
+              return VerticalView(media: child);
             },
           ),
-        ),
+        if (block.orientation == Axis.horizontal)
+          SizedBox(
+            height: block.maxHeight,
+            child: ListView.separated(
+              findChildIndexCallback: (key) {
+                final valueKey = key as ValueKey<String>;
+                return block.children.indexWhere(
+                  (media) => media.id == valueKey.value,
+                );
+              },
+              scrollDirection: block.orientation,
+              itemCount: block.children.length,
+              separatorBuilder: (_, __) => const Gap(32),
+              itemBuilder: (_, index) {
+                final child = block.children[index];
+                if (block.orientation == Axis.vertical) {
+                  return VerticalView(media: child);
+                }
+                return HorizontalView(
+                  media: child,
+                  index: index,
+                  total: block.children.length,
+                );
+              },
+            ),
+          ),
       ],
+    );
+  }
+}
+
+class VerticalView extends StatelessWidget {
+  const VerticalView({
+    required this.media,
+    super.key,
+  });
+
+  final Media media;
+
+  @override
+  Widget build(BuildContext context) {
+    return MediaTileView(media: media);
+  }
+}
+
+class HorizontalView extends StatelessWidget {
+  const HorizontalView({
+    required this.media,
+    required this.index,
+    required this.total,
+    super.key,
+  });
+
+  final Media media;
+  final int index;
+  final int total;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: index == 0 ? 16 : 0,
+        right: index == total - 1 ? 16 : 0,
+      ),
+      child: MediaView(media: media),
     );
   }
 }

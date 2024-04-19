@@ -8,8 +8,8 @@ part of 'routes.dart';
 
 List<RouteBase> get $appRoutes => [
       $dashboardRouteData,
-      $mediaDetailRouteData,
       $settingsRouteData,
+      $mediaDetailRouteData,
     ];
 
 RouteBase get $dashboardRouteData => StatefulShellRouteData.$route(
@@ -137,6 +137,30 @@ extension $AccountRouteDataExtension on AccountRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
+RouteBase get $settingsRouteData => GoRouteData.$route(
+      path: '/settings',
+      name: 'Settings',
+      factory: $SettingsRouteDataExtension._fromState,
+    );
+
+extension $SettingsRouteDataExtension on SettingsRouteData {
+  static SettingsRouteData _fromState(GoRouterState state) =>
+      const SettingsRouteData();
+
+  String get location => GoRouteData.$location(
+        '/settings',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
 RouteBase get $mediaDetailRouteData => GoRouteData.$route(
       path: '/media-detail/:type/:title/:subtitle/:image/:id',
       name: 'MediaDetail',
@@ -171,33 +195,10 @@ const _$MediaTypeEnumMap = {
   MediaType.artist: 'artist',
   MediaType.playlist: 'playlist',
   MediaType.album: 'album',
+  MediaType.song: 'song',
 };
 
 extension<T extends Enum> on Map<T, String> {
   T _$fromName(String value) =>
       entries.singleWhere((element) => element.value == value).key;
-}
-
-RouteBase get $settingsRouteData => GoRouteData.$route(
-      path: '/settings',
-      name: 'Settings',
-      factory: $SettingsRouteDataExtension._fromState,
-    );
-
-extension $SettingsRouteDataExtension on SettingsRouteData {
-  static SettingsRouteData _fromState(GoRouterState state) =>
-      const SettingsRouteData();
-
-  String get location => GoRouteData.$location(
-        '/settings',
-      );
-
-  void go(BuildContext context) => context.go(location);
-
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  void replace(BuildContext context) => context.replace(location);
 }

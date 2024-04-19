@@ -15,12 +15,6 @@ class AppObserver extends BlocObserver {
     super.onCreate(bloc);
     logInfo('onCreate -- bloc: $bloc');
   }
-
-  @override
-  void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
-    super.onChange(bloc, change);
-    logInfo('onChange -- bloc: $bloc, change: $change');
-  }
 }
 
 /// Bootstrap the application with Firebase and other services.

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 extension SizeExtension on BuildContext {
+  /// Returns the screen padding.
+  EdgeInsets get padding => MediaQuery.paddingOf(this);
+
   /// Returns the screen width.
   Size get size => MediaQuery.sizeOf(this);
 

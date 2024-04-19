@@ -17,6 +17,8 @@ class Page extends Equatable {
   final List<Media> children;
   final int sequence;
 
+  bool get showBlockView => blocks.isNotEmpty;
+
   @override
   List<Object?> get props => [
         title,

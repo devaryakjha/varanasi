@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:varanasi/app/features/media_detail/presentation/pages/media_app_bar.dart';
+import 'package:varanasi/app/features/media_detail/presentation/pages/artists_detail.dart';
 import 'package:varanasi/app/shared/domain/entities/media_type.dart';
 
 class MediaDetailPage extends StatelessWidget {
@@ -20,20 +20,14 @@ class MediaDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          MediaAppBar(title: title, id: id, image: image),
-          SliverList.builder(
-            itemCount: 1000,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text('Item $index'),
-              );
-            },
-          ),
-        ],
-      ),
-    );
+    return switch (type) {
+      MediaType.artist => ArtistDetailPage(
+          image: image,
+          id: id,
+          title: title,
+          subtitle: subtitle,
+        ),
+      _ => const Placeholder(),
+    };
   }
 }

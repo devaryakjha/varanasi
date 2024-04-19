@@ -21,6 +21,8 @@ class ArtistDetails extends Equatable {
   final List<Page> pages;
   final List<Bio> bio;
 
+  bool get isEmpty => name.isEmpty;
+
   @override
   List<Object?> get props => [name, id, pages, bio];
 }

@@ -15,3 +15,17 @@ class MediaView extends StatelessWidget {
     return MediaCard.fromMedia(media);
   }
 }
+
+class MediaTileView extends StatelessWidget {
+  const MediaTileView({
+    required this.media,
+    super.key,
+  });
+
+  final Media media;
+
+  @override
+  Widget build(BuildContext context) {
+    return MediaTile.fromMedia(media);
+  }
+}

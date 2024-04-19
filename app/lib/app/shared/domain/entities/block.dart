@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:varanasi/app/shared/domain/entities/media.dart';
 
-class Block extends Equatable {
+class Block extends Equatable implements Comparable<Block> {
   const Block({
     required this.title,
     required this.children,
@@ -33,4 +33,9 @@ class Block extends Equatable {
 
   @override
   List<Object?> get props => [title, children, sequence, orientation];
+
+  @override
+  int compareTo(Block other) {
+    return sequence.compareTo(other.sequence);
+  }
 }

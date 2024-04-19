@@ -195,21 +195,20 @@ class MediaDetailRouteData extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return RepositoryProvider<MediaDetailRepository>(
-      lazy: false,
       key: ValueKey(type.name + id),
       create: (context) => MediaDetailRepositoryImpl(
         dataSource: MediaDetailDataRemoteSourceApi.forId(id),
       ),
       child: BlocProvider(
         lazy: false,
-        create: (context) => ArtistDetailCubit(
-          fetchArtistDetailsUseCase: FetchArtistDetailsUseCase(
-            context.read<MediaDetailRepository>(),
-          ),
-          listenArtistsDetailsDataUseCase: ListenArtistsDetailsDataUseCase(
-            context.read<MediaDetailRepository>(),
-          ),
-        ),
+        create: (context) {
+          final repo = context.read<MediaDetailRepository>();
+          return ArtistDetailCubit(
+            fetchArtistDetailsUseCase: FetchArtistDetailsUseCase(repo),
+            listenArtistsDetailsDataUseCase:
+                ListenArtistsDetailsDataUseCase(repo),
+          )..fetchArtistDetails(id);
+        },
         child: MediaDetailPage(
           image: image,
           id: id,

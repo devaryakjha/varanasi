@@ -27,7 +27,7 @@ class Media extends Equatable {
     return switch (type) {
       MediaType.artist => kArtistCardHeight,
       MediaType.playlist => kPlaylistCardHeight,
-      MediaType.album => kAlbumCardHeight,
+      _ => kAlbumCardHeight,
     };
   }
 
@@ -35,7 +35,7 @@ class Media extends Equatable {
     return switch (type) {
       MediaType.artist => kArtistCardWidth,
       MediaType.playlist => kPlaylistCardWidth,
-      MediaType.album => kAlbumCardWidth,
+      _ => kAlbumCardWidth,
     };
   }
 

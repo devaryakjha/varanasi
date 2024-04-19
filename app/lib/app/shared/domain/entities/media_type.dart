@@ -1,5 +1,6 @@
 enum MediaType {
   artist,
   playlist,
-  album;
+  album,
+  song;
 }

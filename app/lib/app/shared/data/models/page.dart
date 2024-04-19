@@ -21,10 +21,13 @@ class PageModel extends Equatable {
   }
 
   final String title;
-  final List<BlockModel> blocks;
-  final bool paginated;
-  final List<MediaModel> children;
   final int sequence;
+  @JsonKey(defaultValue: false)
+  final bool paginated;
+  @JsonKey(defaultValue: [])
+  final List<BlockModel> blocks;
+  @JsonKey(defaultValue: [])
+  final List<MediaModel> children;
 
   Page toEntity() {
     return Page(
