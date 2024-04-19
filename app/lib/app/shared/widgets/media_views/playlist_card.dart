@@ -25,6 +25,18 @@ class PlaylistCard extends MediaCard {
               child: CachedNetworkImage(
                 imageUrl: media.highestQualityImage,
                 fit: BoxFit.cover,
+                errorWidget: (context, url, error) {
+                  return ColoredBox(
+                    color: Colors.grey.shade500,
+                    child: const Center(
+                      child: Icon(
+                        Icons.music_note,
+                        color: Colors.black,
+                        size: 48,
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
           ),
