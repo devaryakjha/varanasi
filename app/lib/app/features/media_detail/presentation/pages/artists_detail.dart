@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:varanasi/app/features/media_detail/presentation/cubits/artist_detail/artist_detail_cubit.dart';
 import 'package:varanasi/app/features/media_detail/presentation/widgets/artist_details_blocks_view.dart';
 import 'package:varanasi/app/features/media_detail/presentation/widgets/media_app_bar.dart';
+import 'package:varanasi/app/shared/widgets/media_views/media_card.dart';
 
 class ArtistDetailPage extends StatelessWidget {
   const ArtistDetailPage({
@@ -44,12 +45,11 @@ class ArtistDetailPage extends StatelessWidget {
                       return ArtistDetailsBlocksView(blocks: e.blocks);
                     }
                     return ListView.builder(
+                      padding: EdgeInsets.zero,
                       itemCount: e.children.length,
                       itemBuilder: (context, index) {
-                        final item = e.children[index];
-                        return ListTile(
-                          title: Text(item.title),
-                        );
+                        final media = e.children[index];
+                        return MediaTile.fromMedia(media);
                       },
                     );
                   }).toList(),

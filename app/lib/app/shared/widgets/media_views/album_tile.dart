@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:varanasi/app/shared/widgets/media_views/media_card.dart';
 
-class SongTile extends MediaTile {
-  const SongTile({
+class AlbumTile extends MediaTile {
+  const AlbumTile({
     required super.media,
     super.key,
   });

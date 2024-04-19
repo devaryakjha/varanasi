@@ -21,7 +21,7 @@ func CreateMediaFromAlbumRequest(req models.AlbumRequest) models.Media {
 		Title: req.Title,
 		SubTitle: req.Subtitle,
 		Token: CreateTokenFromPermaURL(req.PermaURL),
-		Type: models.Song,
+		Type: models.Album,
 		Images: CreateImage(req.Image),
 	}
 }

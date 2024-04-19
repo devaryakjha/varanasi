@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:varanasi/app/shared/domain/entities/media.dart';
 import 'package:varanasi/app/shared/domain/entities/media_type.dart';
 import 'package:varanasi/app/shared/widgets/media_views/album_card.dart';
+import 'package:varanasi/app/shared/widgets/media_views/album_tile.dart';
 import 'package:varanasi/app/shared/widgets/media_views/artist_card.dart';
 import 'package:varanasi/app/shared/widgets/media_views/playlist_card.dart';
 import 'package:varanasi/app/shared/widgets/media_views/song_tile.dart';
@@ -14,6 +15,7 @@ const widgetMap = {
 
 const widgetTileMap = {
   MediaType.song: SongTile.new,
+  MediaType.album: AlbumTile.new,
 };
 
 abstract class MediaCard extends StatelessWidget {
