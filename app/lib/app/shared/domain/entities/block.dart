@@ -1,14 +1,19 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
 import 'package:varanasi/app/shared/domain/entities/media.dart';
 
 class Block extends Equatable {
   const Block({
     required this.title,
     required this.children,
+    required this.sequence,
+    required this.orientation,
   });
 
   final String title;
   final List<Media> children;
+  final int sequence;
+  final Axis orientation;
 
   double get maxHeight {
     return children.reduce(
@@ -27,5 +32,5 @@ class Block extends Equatable {
   }
 
   @override
-  List<Object?> get props => [title, children];
+  List<Object?> get props => [title, children, sequence, orientation];
 }

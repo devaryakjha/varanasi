@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:varanasi/app/shared/data/models/download_link.dart';
 import 'package:varanasi/app/shared/data/models/image.dart';
 import 'package:varanasi/app/shared/data/models/media_type.dart';
 import 'package:varanasi/app/shared/domain/entities/media.dart';
@@ -15,6 +16,7 @@ class MediaModel extends Equatable {
     required this.type,
     required this.images,
     required this.token,
+    required this.downloadLinks,
   });
 
   factory MediaModel.fromJson(Map<String, dynamic> json) {
@@ -27,6 +29,8 @@ class MediaModel extends Equatable {
   final String token;
   final MediaTypeModel type;
   final List<ImageModel> images;
+  @JsonKey(defaultValue: [])
+  final List<DownloadLinkModel> downloadLinks;
 
   Media toEntity() {
     return Media(
@@ -36,6 +40,7 @@ class MediaModel extends Equatable {
       type: type.toEntity(),
       images: images.map((e) => e.toEntity()).toList(),
       token: token,
+      downloadLinks: downloadLinks.map((e) => e.toEntity()).toList(),
     );
   }
 
@@ -51,5 +56,6 @@ class MediaModel extends Equatable {
         type,
         images,
         token,
+        downloadLinks,
       ];
 }
