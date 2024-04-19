@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:varanasi/core/types.dart';
+import 'package:varanasi/flavors.dart';
 
 typedef TransformResponse<T, R> = R Function(T data);
 
@@ -15,7 +16,9 @@ class ApiClient {
     BaseOptions(
       baseUrl: kDebugMode
           ? 'http://192.168.31.130:8080/v1'
-          : 'https://varanasi-backend.el.r.appspot.com/v1',
+          : F.isDev
+              ? 'https://dev-dot-varanasi-backend.el.r.appspot.com'
+              : 'https://varanasi-backend.el.r.appspot.com/v1',
     ),
   );
 
