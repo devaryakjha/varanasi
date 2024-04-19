@@ -5,6 +5,12 @@ import 'package:varanasi/app/features/discover/domain/repositories/discover_repo
 import 'package:varanasi/app/features/discover/domain/use_cases/fetch_discover_data_use_case.dart';
 import 'package:varanasi/app/features/discover/domain/use_cases/listen_discover_data_use_case.dart';
 import 'package:varanasi/app/features/features.dart';
+import 'package:varanasi/app/features/media_detail/data/data_source/media_detail_data_source_api.dart';
+import 'package:varanasi/app/features/media_detail/data/repositories/media_detail_repository_impl.dart';
+import 'package:varanasi/app/features/media_detail/domain/repositories/media_detail_repository.dart';
+import 'package:varanasi/app/features/media_detail/domain/use_cases/fetch_artist_details_use_case.dart';
+import 'package:varanasi/app/features/media_detail/domain/use_cases/listen_artist_details_use_case.dart';
+import 'package:varanasi/app/features/media_detail/presentation/cubits/artist_detail/artist_detail_cubit.dart';
 import 'package:varanasi/app/shared/domain/entities/media_type.dart';
 
 part 'routes.g.dart';
@@ -133,6 +139,18 @@ class AccountRouteData extends GoRouteData {
 }
 // ======= Account =======
 
+@TypedGoRoute<SettingsRouteData>(
+  path: '/settings',
+  name: 'Settings',
+)
+class SettingsRouteData extends GoRouteData {
+  const SettingsRouteData();
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const SettingsPage();
+  }
+}
+
 // ======= MediaDetail =======
 @TypedGoRoute<MediaDetailRouteData>(
   path: '/media-detail/:type/:title/:subtitle/:image/:id',
@@ -176,24 +194,30 @@ class MediaDetailRouteData extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return MediaDetailPage(
-      image: image,
-      id: id,
-      title: title,
-      subtitle: subtitle,
-      type: type,
+    return RepositoryProvider<MediaDetailRepository>(
+      lazy: false,
+      key: ValueKey(type.name + id),
+      create: (context) => MediaDetailRepositoryImpl(
+        dataSource: MediaDetailDataRemoteSourceApi.forId(id),
+      ),
+      child: BlocProvider(
+        lazy: false,
+        create: (context) => ArtistDetailCubit(
+          fetchArtistDetailsUseCase: FetchArtistDetailsUseCase(
+            context.read<MediaDetailRepository>(),
+          ),
+          listenArtistsDetailsDataUseCase: ListenArtistsDetailsDataUseCase(
+            context.read<MediaDetailRepository>(),
+          ),
+        ),
+        child: MediaDetailPage(
+          image: image,
+          id: id,
+          title: title,
+          subtitle: subtitle,
+          type: type,
+        ),
+      ),
     );
-  }
-}
-
-@TypedGoRoute<SettingsRouteData>(
-  path: '/settings',
-  name: 'Settings',
-)
-class SettingsRouteData extends GoRouteData {
-  const SettingsRouteData();
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const SettingsPage();
   }
 }
