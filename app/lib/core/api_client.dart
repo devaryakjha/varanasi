@@ -16,9 +16,13 @@ class ApiClient {
     BaseOptions(
       baseUrl: kDebugMode
           ? 'http://192.168.31.130:8080/v1'
-          : F.isDev
-              ? 'https://dev-dot-varanasi-backend.el.r.appspot.com'
-              : 'https://varanasi-backend.el.r.appspot.com/v1',
+          : switch (F.appFlavor!) {
+              Flavor.dev =>
+                'https://dev-dot-varanasi-backend.el.r.appspot.com/v1',
+              Flavor.staging =>
+                'https://staging-dot-varanasi-backend.el.r.appspot.com/v1',
+              Flavor.prod => 'https://varanasi-backend.el.r.appspot.com/v1',
+            },
     ),
   );
 
