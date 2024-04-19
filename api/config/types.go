@@ -7,6 +7,7 @@ type ApiConfig struct {
 
 type ApiEndpoints struct {
 	Discover Discover `mapstructure:"discover"`
+	Details  Details `mapstructure:"details"`
 }
 
 type Discover struct {
@@ -15,3 +16,6 @@ type Discover struct {
 	NewReleases string `mapstructure:"new_releases"`
 }
 
+type Details struct {
+	Artists string `mapstructure:"artists"`
+}

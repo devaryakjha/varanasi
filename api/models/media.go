@@ -6,6 +6,7 @@ const (
 	Artist MediaType = "artist"
 	Playlist MediaType = "playlist"
 	Album MediaType = "album"
+	Song MediaType = "song"
 )
 
 type Media struct {
@@ -15,4 +16,5 @@ type Media struct {
 	Token string `json:"token"`
 	Type  MediaType `json:"type"`
 	Images []Image `json:"images"`
+	DownloadLinks []DownloadLink `json:"download_links,omitempty"`
 }

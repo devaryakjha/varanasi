@@ -7,4 +7,5 @@ import (
 
 func SetupRoutes(app fiber.Router) {
 	app.Get("/discover", handlers.DiscoverHandler);
+	SetupMediaDetailsRoutes(app)
 }

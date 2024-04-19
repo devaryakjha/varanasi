@@ -22,6 +22,7 @@ func GetDiscoveryData() (models.DiscoveryModel, error) {
 			blocks[0] = models.Block{
 				Title: "Top Artists",
 				Children: transformTopArtistsData(data),
+				Orientation: models.Horizontal,
 			}
 		}
 		wg.Done()
@@ -33,6 +34,7 @@ func GetDiscoveryData() (models.DiscoveryModel, error) {
 		if err == nil {
 			blocks[1] = models.Block{
 				Title: "Top Playlists",
+				Orientation: models.Horizontal,
 				Children: transformTopPlaylistData(data),
 			}
 		}
@@ -45,6 +47,7 @@ func GetDiscoveryData() (models.DiscoveryModel, error) {
 		if err == nil {
 			blocks = append(blocks, models.Block{
 				Title: "New Releases",
+				Orientation: models.Horizontal,
 				Children: transformNewReleasesData(data),
 			})
 		}

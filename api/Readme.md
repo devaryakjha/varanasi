@@ -67,3 +67,7 @@ kill -9 $(lsof -t -i:8080)
 Requests follow this flow:
 
 routes -> handler -> service -> repository -> external API
+
+## Inspirations
+
+1. https://www.behance.net/gallery/185376439/Music-Player-App-UI-Music-App-UI-Design-UIUX-Design?tracking_source=search_projects%7Cmusic+app+ui&l=121
