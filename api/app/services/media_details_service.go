@@ -113,14 +113,15 @@ func createMediaListFromDedicatedArtistPlaylist(data models.ArtistDetailsRequest
 func createBio(data models.ArtistDetailsRequest) []models.Bio {
 	var parsed []models.Bio
 	json.Unmarshal([]byte(data.Bio), &parsed);
+	if (len(parsed) == 0) {
+		return []models.Bio{}
+	}
 	bio := make([]models.Bio, 0, len(parsed) + 1)
 	bio = append(bio, models.Bio{
 		Title: "Born",
 		Text: utils.FormatDate(utils.ParseDate(data.Dob)),
 		Sequence: 0,
 	})
-	bio = append(bio,extensions.Filter(parsed, func(b models.Bio) bool {
-		return b.Title != "Top 10 Songs"
-	})...)
+	bio = append(bio, parsed...)
 	return bio
 }

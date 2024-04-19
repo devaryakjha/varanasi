@@ -12,6 +12,7 @@ class MediaAppBar extends StatefulWidget {
     required this.id,
     required this.image,
     required this.pages,
+    this.showBio = false,
     super.key,
   });
 
@@ -19,6 +20,7 @@ class MediaAppBar extends StatefulWidget {
   final String id;
   final String image;
   final List<Page> pages;
+  final bool showBio;
 
   @override
   State<MediaAppBar> createState() => _MediaAppBarState();
@@ -116,7 +118,10 @@ class _MediaAppBarState extends State<MediaAppBar> {
           pinned: true,
           delegate: _SliverAppBarDelegate(
             TabBar(
-              tabs: widget.pages.map((e) => Tab(text: e.title)).toList(),
+              tabs: widget.pages.map((e) => Tab(text: e.title)).toList() +
+                  [
+                    if (widget.showBio) const Tab(text: 'Bio'),
+                  ],
               tabAlignment: TabAlignment.start,
               isScrollable: true,
               labelColor: _fg,
