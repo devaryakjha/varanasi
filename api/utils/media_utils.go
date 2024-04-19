@@ -14,3 +14,14 @@ func CreateMediaFromSongRequest(req models.SongRequest) models.Media {
 		Images: CreateImage(req.Image),
 	}
 }
+
+func CreateMediaFromAlbumRequest(req models.AlbumRequest) models.Media {
+	return models.Media{
+		ID: req.ID,
+		Title: req.Title,
+		SubTitle: req.Subtitle,
+		Token: CreateTokenFromPermaURL(req.PermaURL),
+		Type: models.Song,
+		Images: CreateImage(req.Image),
+	}
+}

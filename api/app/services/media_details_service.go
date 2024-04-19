@@ -35,6 +35,12 @@ func createPages(req models.ArtistDetailsRequest) []models.Page {
 		Children: extensions.Map(req.TopSongs, utils.CreateMediaFromSongRequest, 0),
 		Sequence: 2,
 	})
+	pages = append(pages, models.Page{
+		Title: "Albums",
+		Paginated: true,
+		Children: extensions.Map(req.TopAlbums, utils.CreateMediaFromAlbumRequest, 0),
+		Sequence: 3,
+	})
 	return pages
 }
 
