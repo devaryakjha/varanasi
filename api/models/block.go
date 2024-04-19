@@ -11,4 +11,5 @@ type Block struct {
 	Title string `json:"title"`
 	Children []Media `json:"children"`
 	Orientation Orientation `json:"orientation"`
+	Sequence int `json:"sequence"`
 }

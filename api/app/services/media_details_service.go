@@ -29,6 +29,12 @@ func transformArtistDetailsData(data models.ArtistDetailsRequest) models.ArtistD
 func createPages(req models.ArtistDetailsRequest) []models.Page {
 	var pages []models.Page
 	pages = append(pages, createOverviewPage(req))
+	pages = append(pages, models.Page{
+		Title: "Songs",
+		Paginated: true,
+		Children: extensions.Map(req.TopSongs, utils.CreateMediaFromSongRequest, 0),
+		Sequence: 2,
+	})
 	return pages
 }
 
@@ -56,6 +62,7 @@ func createOverviewPage(data models.ArtistDetailsRequest) models.Page {
 		}
 		if (dataSourceKey == "topSongs") {
 			blocks = append(blocks,models.Block{
+				Sequence: 1,
 				Title: "Top Songs",
 				Orientation: orientation,
 				Children: extensions.Map(data.TopSongs, utils.CreateMediaFromSongRequest, 10),
@@ -64,6 +71,7 @@ func createOverviewPage(data models.ArtistDetailsRequest) models.Page {
 		}
 		if (dataSourceKey == "dedicated_artist_playlist") {
 			blocks = append(blocks,models.Block{
+				Sequence: 2,
 				Title: mod.Title,
 				Orientation: orientation,
 				Children: createMediaListFromDedicatedArtistPlaylist(data),
@@ -75,6 +83,8 @@ func createOverviewPage(data models.ArtistDetailsRequest) models.Page {
 	return models.Page{
 		Title: "Overview",
 		Blocks: blocks,
+		Paginated: false,
+		Sequence: 0,
 	}
 }
 
