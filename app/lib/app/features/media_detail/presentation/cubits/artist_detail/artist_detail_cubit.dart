@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:common/common.dart';
-import 'package:equatable/equatable.dart';
 import 'package:varanasi/app/features/media_detail/domain/entities/artist_detail.dart';
 import 'package:varanasi/app/features/media_detail/domain/use_cases/fetch_artist_details_use_case.dart';
 import 'package:varanasi/app/features/media_detail/domain/use_cases/listen_artist_details_use_case.dart';

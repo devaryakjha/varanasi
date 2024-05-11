@@ -8,14 +8,14 @@ typedef StorageListenerBuilder<T> = Widget Function(
 );
 
 class StorageListener<T> extends StatelessWidget {
-  const StorageListener({
+  StorageListener({
     required this.builder,
     required this.listenableKey,
     super.key,
-    this.storage = Storage.local,
+    Storage? storage,
     this.initialData,
     this.serializer,
-  });
+  }) : storage = storage ?? Storage.instance;
 
   final StorageListenerBuilder<T> builder;
   final String listenableKey;

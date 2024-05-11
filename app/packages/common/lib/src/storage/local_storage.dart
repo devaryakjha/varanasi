@@ -1,16 +1,24 @@
 part of 'storage.dart';
 
 final class LocalStorage implements Storage {
-  const LocalStorage();
+  LocalStorage() : _initCompleter = Completer.sync();
+
+  final Completer<void> _initCompleter;
 
   Box<dynamic> get _box => Hive.box('local_storage');
 
+  @override
   Future<void> _init() async {
     await Hive.initFlutter();
     await Hive.openBox<dynamic>('local_storage');
+    _initCompleter.complete();
   }
 
-  void _ensureInitialized() {}
+  void _ensureInitialized() {
+    if (!_initCompleter.isCompleted) {
+      throw const LocalStorageException('LocalStorage is not initialized');
+    }
+  }
 
   @override
   Future<void> delete(String key) {
@@ -60,7 +68,7 @@ final class LocalStorage implements Storage {
 }
 
 class LocalStorageException implements Exception {
-  LocalStorageException(this.message);
+  const LocalStorageException(this.message);
   final String message;
 
   @override

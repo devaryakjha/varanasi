@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+import 'package:common/common.dart';
 
 class Config extends Equatable {
   @override

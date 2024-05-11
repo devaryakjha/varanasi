@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+import 'package:common/common.dart';
 
 class Image extends Equatable {
   const Image({required this.quality, required this.link});

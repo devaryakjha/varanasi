@@ -11,8 +11,6 @@ dependencies:
   cached_network_image: ^3.3.1
   common:
     path: ./packages/common
-  dio: ^5.4.3+1
-  equatable: ^2.0.5
   firebase_core: ^2.29.0
   flutter:
     sdk: flutter

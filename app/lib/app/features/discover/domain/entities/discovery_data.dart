@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+import 'package:common/common.dart';
 import 'package:varanasi/app/shared/domain/entities/block.dart';
 
 class DiscoveryData extends Equatable {

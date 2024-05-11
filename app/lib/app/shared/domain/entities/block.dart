@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+import 'package:common/common.dart';
 import 'package:flutter/widgets.dart';
 import 'package:varanasi/app/shared/domain/entities/media.dart';
 

@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+import 'package:common/common.dart';
 
 class DownloadLink extends Equatable {
   const DownloadLink({required this.quality, required this.link});

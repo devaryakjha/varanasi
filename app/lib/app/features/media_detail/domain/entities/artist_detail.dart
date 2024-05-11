@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+import 'package:common/common.dart';
 import 'package:varanasi/app/features/media_detail/domain/entities/artist_bio.dart';
 import 'package:varanasi/app/shared/domain/entities/page.dart';
 

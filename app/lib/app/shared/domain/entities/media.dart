@@ -1,8 +1,8 @@
-import 'package:equatable/equatable.dart';
+import 'package:common/common.dart';
 import 'package:varanasi/app/shared/domain/entities/download_link.dart';
 import 'package:varanasi/app/shared/domain/entities/image.dart';
 import 'package:varanasi/app/shared/domain/entities/media_type.dart';
-import 'package:varanasi/core/dimesions.dart';
+import 'package:varanasi/core/dimensions.dart';
 
 class Media extends Equatable {
   const Media({

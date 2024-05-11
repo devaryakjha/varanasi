@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+import 'package:common/common.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:varanasi/app/shared/domain/entities/download_link.dart';
 

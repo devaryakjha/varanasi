@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+import 'package:common/common.dart';
 
 class Bio extends Equatable {
   const Bio({required this.sequence, required this.text, required this.title});

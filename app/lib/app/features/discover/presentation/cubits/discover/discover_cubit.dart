@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
+import 'package:common/common.dart';
 import 'package:varanasi/app/features/discover/domain/entities/discovery_data.dart';
 import 'package:varanasi/app/features/discover/domain/use_cases/fetch_discover_data_use_case.dart';
 import 'package:varanasi/app/features/discover/domain/use_cases/listen_discover_data_use_case.dart';
