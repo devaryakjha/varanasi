@@ -45,3 +45,6 @@ app.*.map.json
 
 # generated files
 *.g.dart
+
+# FVM Version Cache
+.fvm/
