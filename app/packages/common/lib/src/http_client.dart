@@ -27,6 +27,7 @@ final class HttpClient {
     Map<String, dynamic>? queryParameters,
   }) async {
     final uri = baseUri.replace(
+      path: baseUri.path + path,
       queryParameters: queryParameters,
     );
     final request = await _baseClient.getUrl(uri);
