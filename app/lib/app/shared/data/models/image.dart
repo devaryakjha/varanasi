@@ -4,7 +4,7 @@ import 'package:varanasi/app/shared/domain/entities/image.dart';
 
 part 'image.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class ImageModel extends Equatable {
   const ImageModel({required this.quality, required this.link});
 

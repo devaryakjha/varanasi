@@ -7,7 +7,7 @@ import 'package:varanasi/app/shared/domain/entities/media.dart';
 
 part 'media.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class MediaModel extends Equatable {
   const MediaModel({
     required this.id,

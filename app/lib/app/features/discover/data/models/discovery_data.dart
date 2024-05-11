@@ -6,7 +6,7 @@ import 'package:varanasi/app/shared/data/models/block.dart';
 
 part 'discovery_data.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class DiscoveryDataModel extends Equatable {
   const DiscoveryDataModel({required this.blocks});
 

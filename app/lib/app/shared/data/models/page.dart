@@ -6,7 +6,7 @@ import 'package:varanasi/app/shared/domain/entities/page.dart';
 
 part 'page.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class PageModel extends Equatable {
   const PageModel({
     required this.title,

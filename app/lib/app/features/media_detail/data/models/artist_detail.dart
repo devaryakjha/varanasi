@@ -6,7 +6,7 @@ import 'package:varanasi/app/shared/data/models/page.dart';
 
 part 'artist_detail.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class ArtistDetailsModel extends Equatable {
   const ArtistDetailsModel({
     required this.name,

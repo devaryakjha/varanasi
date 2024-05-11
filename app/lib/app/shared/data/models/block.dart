@@ -6,7 +6,7 @@ import 'package:varanasi/app/shared/domain/entities/block.dart';
 
 part 'block.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class BlockModel extends Equatable {
   const BlockModel({
     required this.title,

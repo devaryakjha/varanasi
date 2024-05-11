@@ -4,7 +4,7 @@ import 'package:varanasi/app/features/media_detail/domain/entities/artist_bio.da
 
 part 'artist_bio.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class BioModel extends Equatable {
   const BioModel({
     required this.sequence,

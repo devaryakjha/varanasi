@@ -4,7 +4,7 @@ import 'package:varanasi/app/shared/domain/entities/download_link.dart';
 
 part 'download_link.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class DownloadLinkModel extends Equatable {
   const DownloadLinkModel({required this.quality, required this.link});
 
