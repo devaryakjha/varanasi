@@ -1,0 +1,2 @@
+runtime: go122
+service: staging

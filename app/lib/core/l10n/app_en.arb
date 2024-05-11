@@ -1,0 +1,52 @@
+{
+    "@@locale": "en",
+    "appName": "{flavor, select, dev {Varanasi Dev} staging {Varanasi Staging} other {Varanasi}}",
+    "@appName": {
+        "description": "The name of the application",
+        "type": "text",
+        "placeholders": {
+            "flavor": {
+                "type": "String",
+                "example": "Dev",
+                "description": "The flavor of the application"
+            }
+        }
+    },
+    "greeting": "Hello, {name}!",
+    "@greeting": {
+        "description": "A greeting message",
+        "type": "text",
+        "placeholders": {
+            "name": {
+                "type": "String",
+                "example": "World",
+                "description": "The name of the person to greet"
+            }
+        }
+    },
+    "greetingSubtitle": "Let's find some music for you.",
+    "@greetingSubtitle": {
+        "description": "A subtitle for the greeting message",
+        "type": "text"
+    },
+    "settingsPageTitle": "Settings",
+    "@settingsPageTitle": {
+        "description": "The title of the settings page",
+        "type": "text"
+    },
+    "settingsApperanceTitle": "Appearance",
+    "@settingsApperanceTitle": {
+        "description": "The title of the appearance settings section",
+        "type": "text"
+    },
+    "settingsThemeTitle": "Theme",
+    "@settingsThemeTitle": {
+        "description": "The title of the theme settings tile",
+        "type": "text"
+    },
+    "settingsThemeDescription": "Choose a theme for the app.",
+    "@settingsThemeDescription": {
+        "description": "The description of the theme settings tile",
+        "type": "text"
+    }
+}
