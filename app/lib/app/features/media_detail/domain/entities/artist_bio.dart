@@ -1,9 +1,3 @@
-// type Bio struct {
-// 	Sequence int    `json:"sequence"`
-// 	Text     string `json:"text"`
-// 	Title    string `json:"title"`
-// }
-
 import 'package:equatable/equatable.dart';
 
 class Bio extends Equatable {
