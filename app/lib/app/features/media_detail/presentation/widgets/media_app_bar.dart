@@ -62,6 +62,7 @@ class _MediaAppBarState extends State<MediaAppBar> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.theme.colorScheme;
     return MultiSliver(
       children: [
         SliverStack(
@@ -124,9 +125,9 @@ class _MediaAppBarState extends State<MediaAppBar> {
                   ],
               tabAlignment: TabAlignment.start,
               isScrollable: true,
-              labelColor: _fg,
-              unselectedLabelColor: _fg?.withOpacity(0.5),
-              indicatorColor: _fg,
+              labelColor: colorScheme.onBackground,
+              unselectedLabelColor: colorScheme.onBackground.withOpacity(0.5),
+              indicatorColor: colorScheme.onBackground,
             ),
           ),
         ),

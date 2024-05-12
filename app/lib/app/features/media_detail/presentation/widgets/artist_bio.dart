@@ -6,14 +6,18 @@ import 'package:varanasi/app/features/media_detail/domain/entities/artist_bio.da
 class ArtistBioPage extends StatelessWidget {
   const ArtistBioPage({
     required this.bio,
+    required this.id,
     super.key,
   });
 
   final List<Bio> bio;
 
+  final String id;
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      key: PageStorageKey('bio_$id'),
       padding: EdgeInsets.zero,
       itemCount: bio.length + 1,
       itemBuilder: (context, index) {
@@ -25,7 +29,10 @@ class ArtistBioPage extends StatelessWidget {
           isThreeLine: true,
           titleTextStyle: context.titleMedium,
           title: Text(item.title),
-          subtitle: SelectableText(item.text),
+          subtitle: SelectableText(
+            item.text,
+            scrollPhysics: const NeverScrollableScrollPhysics(),
+          ),
           subtitleTextStyle: context.bodyMedium,
         );
       },

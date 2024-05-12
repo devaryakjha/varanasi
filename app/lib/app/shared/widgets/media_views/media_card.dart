@@ -25,7 +25,10 @@ abstract class MediaCard extends StatelessWidget {
   });
 
   factory MediaCard.fromMedia(Media media) {
-    return widgetMap[media.type]!(media: media);
+    return widgetMap[media.type]!(
+      media: media,
+      key: ValueKey('MediaCard__${media.id}'),
+    );
   }
 
   final Media media;
@@ -38,7 +41,10 @@ abstract class MediaTile extends StatelessWidget {
   });
 
   factory MediaTile.fromMedia(Media media) {
-    return widgetTileMap[media.type]!(media: media);
+    return widgetTileMap[media.type]!(
+      media: media,
+      key: ValueKey('MediaTile__${media.id}'),
+    );
   }
 
   final Media media;

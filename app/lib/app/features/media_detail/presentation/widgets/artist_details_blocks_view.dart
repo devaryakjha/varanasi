@@ -5,14 +5,21 @@ import 'package:varanasi/app/shared/domain/entities/block.dart';
 import 'package:varanasi/app/shared/widgets/block_view.dart';
 
 class ArtistDetailsBlocksView extends StatelessWidget {
-  const ArtistDetailsBlocksView({required this.blocks, super.key});
+  const ArtistDetailsBlocksView({
+    required this.blocks,
+    required this.id,
+    super.key,
+  });
 
   final List<Block> blocks;
+
+  final String id;
 
   @override
   Widget build(BuildContext context) {
     blocks.sort();
     return ListView.builder(
+      key: PageStorageKey('blocks_$id'),
       padding: EdgeInsets.zero,
       itemCount: blocks.length + 1,
       itemBuilder: (context, index) {
