@@ -30,6 +30,7 @@ class ArtistBioPage extends StatelessWidget {
           titleTextStyle: context.titleMedium,
           title: Text(item.title),
           subtitle: SelectableText(
+            key: PageStorageKey('bio_${id}_$index'),
             item.text,
             scrollPhysics: const NeverScrollableScrollPhysics(),
           ),

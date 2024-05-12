@@ -27,7 +27,7 @@ class ArtistDetailsBlocksView extends StatelessWidget {
           return Gap(context.padding.bottom);
         }
         final block = blocks[index];
-        return BlockView(block: block);
+        return BlockView(block: block, parentId: id);
       },
     );
   }

@@ -8,13 +8,17 @@ import 'package:varanasi/app/shared/widgets/media_views/media_view.dart';
 class BlockView extends StatelessWidget {
   const BlockView({
     required this.block,
+    required this.parentId,
     super.key,
   });
 
   final Block block;
 
+  final String parentId;
+
   @override
   Widget build(BuildContext context) {
+    final storageKey = PageStorageKey('blocks_${parentId}_${block.sequence}');
     // TODO(Arya): Add view all button implementation
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -34,6 +38,7 @@ class BlockView extends StatelessWidget {
         const Gap(16),
         if (block.orientation == Axis.vertical)
           ListView.separated(
+            key: storageKey,
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             padding: EdgeInsets.zero,
@@ -48,6 +53,7 @@ class BlockView extends StatelessWidget {
           SizedBox(
             height: block.maxHeight,
             child: ListView.separated(
+              key: storageKey,
               findChildIndexCallback: (key) {
                 final valueKey = key as ValueKey<String>;
                 return block.children.indexWhere(
