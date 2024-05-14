@@ -46,18 +46,15 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
             : DefaultTabController(
                 length: details.pagesCount,
                 child: NestedScrollView(
-                  headerSliverBuilder:
-                      (BuildContext context, bool innerBoxIsScrolled) {
-                    return [
-                      MediaAppBar(
-                        title: widget.title,
-                        id: widget.id,
-                        image: widget.image,
-                        pages: details.pages,
-                        showBio: details.showBio,
-                      ),
-                    ];
-                  },
+                  headerSliverBuilder: (_, __) => [
+                    MediaAppBar(
+                      title: widget.title,
+                      id: widget.id,
+                      image: widget.image,
+                      pages: details.pages,
+                      showBio: details.showBio,
+                    ),
+                  ],
                   body: TabBarView(
                     key: ValueKey('TabBarView__${widget.id}'),
                     children: details.pages.map((e) {

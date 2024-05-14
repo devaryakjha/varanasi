@@ -19,6 +19,7 @@ class ArtistDetailsBlocksView extends StatelessWidget {
   Widget build(BuildContext context) {
     blocks.sort();
     return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
       key: PageStorageKey('blocks_$id'),
       padding: EdgeInsets.zero,
       itemCount: blocks.length + 1,
