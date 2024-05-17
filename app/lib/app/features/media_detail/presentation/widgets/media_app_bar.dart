@@ -125,9 +125,9 @@ class _MediaAppBarState extends State<MediaAppBar> {
                   ],
               tabAlignment: TabAlignment.start,
               isScrollable: true,
-              labelColor: colorScheme.onBackground,
-              unselectedLabelColor: colorScheme.onBackground.withOpacity(0.5),
-              indicatorColor: colorScheme.onBackground,
+              labelColor: colorScheme.onSurface,
+              unselectedLabelColor: colorScheme.onSurface.withOpacity(0.5),
+              indicatorColor: colorScheme.onSurface,
             ),
           ),
         ),
@@ -153,7 +153,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     bool overlapsContent,
   ) {
     return ColoredBox(
-      color: context.theme.colorScheme.background,
+      color: context.theme.colorScheme.surface,
       child: _tabBar,
     );
   }

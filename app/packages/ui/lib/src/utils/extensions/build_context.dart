@@ -108,5 +108,5 @@ extension ButtonThemeExtension on BuildContext {
   ButtonStyle get textButtonStyle => theme.textButtonTheme.style!;
 
   Color? get foregroundColor =>
-      filledButtonStyle.foregroundColor?.resolve({MaterialState.focused});
+      filledButtonStyle.foregroundColor?.resolve({WidgetState.focused});
 }

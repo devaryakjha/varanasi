@@ -7,7 +7,7 @@ export 'theme_extension.dart';
 
 ColorScheme _createDarkColorScheme() {
   return const ColorScheme.dark(
-    background: Colors.black,
+    surface: Colors.black,
   );
 }
 
@@ -42,7 +42,7 @@ NavigationBarThemeData _buildNavbarTheme(Color color) {
     backgroundColor: Colors.grey,
     surfaceTintColor: const Color(0xff474747),
     indicatorColor: Colors.transparent,
-    iconTheme: MaterialStatePropertyAll(
+    iconTheme: WidgetStatePropertyAll(
       IconThemeData(
         size: 24,
         color: color,
