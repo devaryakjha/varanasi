@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:varanasi/app/shared/widgets/media_views/media_card.dart';
+import 'package:varanasi/core/routing/routes.dart';
+import 'package:varanasi/core/utils/typedefs.dart';
 
 class AlbumTile extends MediaTile {
   const AlbumTile({
@@ -9,9 +11,18 @@ class AlbumTile extends MediaTile {
   });
 
   @override
+  VoidCallbackWith<BuildContext> get onTap =>
+      (context) => MediaDetailRouteData.album(
+            id: media.token,
+            image: media.highestQualityImage,
+            title: media.title,
+            subtitle: media.subTitle,
+          ).push<void>(context);
+
+  @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () {},
+      onTap: () => onTap(context),
       dense: true,
       leading: SizedBox.square(
         dimension: 48,

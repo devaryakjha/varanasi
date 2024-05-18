@@ -51,4 +51,6 @@ abstract class MediaTile extends StatelessWidget {
   }
 
   final Media media;
+
+  VoidCallbackWith<BuildContext> get onTap;
 }

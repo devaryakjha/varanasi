@@ -186,6 +186,13 @@ class MediaDetailRouteData extends GoRouteData {
     required this.subtitle,
   }) : type = MediaType.playlist;
 
+  const MediaDetailRouteData.song({
+    required this.id,
+    required this.image,
+    required this.title,
+    required this.subtitle,
+  }) : type = MediaType.song;
+
   final MediaType type;
   final String id;
   final String image;
