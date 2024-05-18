@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:varanasi/app/features/discover/data/data_sources/discovery_remote_data_source_api.dart';
 import 'package:varanasi/app/features/discover/data/repositories/discover_repository_impl.dart';
 import 'package:varanasi/app/features/discover/domain/repositories/discover_repository.dart';
+import 'package:varanasi/app/shared/shared.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({
@@ -37,8 +38,10 @@ class _DashboardPageState extends State<DashboardPage> {
         RepositoryProvider.value(value: _discoverRepository),
       ],
       child: Scaffold(
-        body: SafeArea(
-          child: widget.children[widget.navigationShell.currentIndex],
+        body: BrightnessOverlay.adaptive(
+          child: SafeArea(
+            child: widget.children[widget.navigationShell.currentIndex],
+          ),
         ),
       ),
     );

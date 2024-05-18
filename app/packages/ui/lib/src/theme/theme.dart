@@ -139,5 +139,6 @@ ThemeData _createThemeData(
       ),
     ),
     textTheme: textTheme,
+    scaffoldBackgroundColor: colorScheme.surface,
   );
 }
