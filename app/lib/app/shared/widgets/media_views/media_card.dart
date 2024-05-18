@@ -6,6 +6,7 @@ import 'package:varanasi/app/shared/widgets/media_views/album_tile.dart';
 import 'package:varanasi/app/shared/widgets/media_views/artist_card.dart';
 import 'package:varanasi/app/shared/widgets/media_views/playlist_card.dart';
 import 'package:varanasi/app/shared/widgets/media_views/song_tile.dart';
+import 'package:varanasi/varanasi.dart';
 
 const widgetMap = {
   MediaType.artist: ArtistCard.new,
@@ -32,6 +33,8 @@ abstract class MediaCard extends StatelessWidget {
   }
 
   final Media media;
+
+  VoidCallbackWith<BuildContext> get onTap;
 }
 
 abstract class MediaTile extends StatelessWidget {

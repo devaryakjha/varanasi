@@ -46,7 +46,13 @@ class BlockView extends StatelessWidget {
             separatorBuilder: (_, __) => const Gap(16),
             itemBuilder: (_, index) {
               final child = block.children[index];
-              return VerticalView(media: child);
+              return VerticalView(media: child, key: ValueKey(child.id));
+            },
+            findChildIndexCallback: (key) {
+              final valueKey = key as ValueKey<String>;
+              return block.children.indexWhere(
+                (media) => media.id == valueKey.value,
+              );
             },
           ),
         if (block.orientation == Axis.horizontal)
@@ -66,12 +72,13 @@ class BlockView extends StatelessWidget {
               itemBuilder: (_, index) {
                 final child = block.children[index];
                 if (block.orientation == Axis.vertical) {
-                  return VerticalView(media: child);
+                  return VerticalView(media: child, key: ValueKey(child.id));
                 }
                 return HorizontalView(
                   media: child,
                   index: index,
                   total: block.children.length,
+                  key: ValueKey(child.id),
                 );
               },
             ),

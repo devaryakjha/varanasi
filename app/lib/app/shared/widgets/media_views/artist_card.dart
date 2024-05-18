@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:ui/ui.dart';
 import 'package:varanasi/app/shared/widgets/media_views/media_card.dart';
 import 'package:varanasi/core/routing/routes.dart';
+import 'package:varanasi/core/utils/typedefs.dart';
 
 class ArtistCard extends MediaCard {
   const ArtistCard({
@@ -12,16 +13,18 @@ class ArtistCard extends MediaCard {
   });
 
   @override
+  VoidCallbackWith<BuildContext> get onTap =>
+      (context) => MediaDetailRouteData.artist(
+            id: media.token,
+            image: media.highestQualityImage,
+            title: media.title,
+            subtitle: media.subTitle,
+          ).push<void>(context);
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        MediaDetailRouteData.artist(
-          id: media.token,
-          image: media.highestQualityImage,
-          title: media.title,
-          subtitle: media.subTitle,
-        ).push<void>(context);
-      },
+      onTap: () => onTap(context),
       child: SizedBox(
         width: media.width,
         height: media.height,
