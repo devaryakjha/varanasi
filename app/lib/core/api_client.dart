@@ -10,7 +10,7 @@ class ApiClient {
   static final ApiClient instance = ApiClient._();
 
   static final HttpClient _client =
-      HttpClient(kDebugMode ? 'http://192.168.1.37:8080/v1' : baseUrl);
+      HttpClient(kDebugMode ? 'http://$ipAddress:8080/v1' : baseUrl);
 
   static HttpClient get client => _client;
 
