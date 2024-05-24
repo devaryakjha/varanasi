@@ -25,4 +25,7 @@ class DiscoverState extends Equatable {
       discoveryData: discoveryData ?? this.discoveryData,
     );
   }
+
+  @override
+  bool? get stringify => true;
 }

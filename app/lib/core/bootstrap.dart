@@ -15,6 +15,12 @@ class AppObserver extends BlocObserver {
     super.onCreate(bloc);
     logInfo('onCreate -- bloc: $bloc');
   }
+
+  @override
+  void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
+    super.onChange(bloc, change);
+    logInfo('onChange -- bloc: $bloc -- change: $change');
+  }
 }
 
 /// Bootstrap the application with Firebase and other services.
@@ -48,8 +54,8 @@ Future<void> bootstrap(
   await initialiseHydratedBloc();
 
   // Run the application.
-  binding.allowFirstFrame();
+  runApp(await builder());
 
   // Run the application.
-  runApp(await builder());
+  binding.allowFirstFrame();
 }

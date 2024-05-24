@@ -16,6 +16,7 @@ class AppInjector extends StatefulWidget {
 
 class _AppInjectorState extends State<AppInjector> {
   late final ThemeCubit _themeCubit;
+  Widget? child;
 
   void _initValues() {
     _themeCubit = ThemeCubit();
@@ -34,7 +35,7 @@ class _AppInjectorState extends State<AppInjector> {
         BlocProvider.value(value: _themeCubit),
       ],
       child: Builder(
-        builder: widget.builder,
+        builder: (context) => child ??= widget.builder(context),
       ),
     );
   }

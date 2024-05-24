@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-class ThemeCubit extends Cubit<ThemeMode> with HydratedMixin {
-  ThemeCubit() : super(ThemeMode.system) {
-    hydrate();
-  }
+class ThemeCubit extends HydratedCubit<ThemeMode> {
+  ThemeCubit() : super(ThemeMode.system);
 
   static ThemeMode of(BuildContext context, {bool listen = false}) {
     if (listen) {

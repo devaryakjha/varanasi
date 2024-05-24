@@ -14,9 +14,11 @@
                 "dev",
                 "--target",
                 "lib/main_dev.dart",
+                "--dart-define",
+                "ipAddress=172.20.10.2",
                 "--dart-define-from-file",
                 "config/dev.json"
-            ]
+            ],
         },
         {
             "name": "Dev (profile mode)",
@@ -58,6 +60,8 @@
                 "staging",
                 "--target",
                 "lib/main_staging.dart",
+                "--dart-define",
+                "ipAddress=172.20.10.2",
                 "--dart-define-from-file",
                 "config/staging.json"
             ]
@@ -102,6 +106,8 @@
                 "prod",
                 "--target",
                 "lib/main_prod.dart",
+                "--dart-define",
+                "ipAddress=172.20.10.2",
                 "--dart-define-from-file",
                 "config/prod.json"
             ]
