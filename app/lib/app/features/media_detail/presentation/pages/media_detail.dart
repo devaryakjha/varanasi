@@ -27,7 +27,11 @@ class MediaDetailPage extends StatelessWidget {
           title: title,
           subtitle: subtitle,
         ),
-      _ => const Placeholder(),
+      _ => Scaffold(
+          body: Center(
+            child: Text('Media Detail Page: $type'),
+          ),
+        ),
     };
   }
 }
