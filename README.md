@@ -1,7 +1,7 @@
 # Varanasi
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/devaryakjha/varanasi_mobile_app/main/android/app/src/production/res/mipmap-hdpi/ic_launcher_foreground.png" height="72">
+    <img src="https://raw.githubusercontent.com/devaryakjha/varanasi_mobile_app/stable/android/app/src/production/res/mipmap-hdpi/ic_launcher_foreground.png" height="72">
 </p>
 
 <p align="center">
@@ -44,23 +44,23 @@
 <h3 align="center">Screenshots :camera:</h3>
 
 <p float="left">
-    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/main/assets/screenshots/2.PNG" width="200" />  
-    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/main/assets/screenshots/5.PNG" width="200" />  
-    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/main/assets/screenshots/14.PNG" width="200" />
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/stable/assets/screenshots/2.PNG" width="200" />  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/stable/assets/screenshots/5.PNG" width="200" />  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/stable/assets/screenshots/14.PNG" width="200" />
 </p>
 <details>
     <summary>More</summary>
-    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/main/assets/screenshots/1.PNG" width="200" />
-    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/main/assets/screenshots/3.PNG" width="200" />  
-    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/main/assets/screenshots/4.PNG" width="200" />  
-    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/main/assets/screenshots/6.PNG" width="200" />  
-    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/main/assets/screenshots/7.PNG" width="200" />  
-    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/main/assets/screenshots/8.PNG" width="200" />   
-    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/main/assets/screenshots/9.PNG" width="200" />   
-    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/main/assets/screenshots/10.PNG" width="200" />  
-    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/main/assets/screenshots/11.PNG" width="200" />  
-    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/main/assets/screenshots/12.PNG" width="200" />  
-    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/main/assets/screenshots/13.PNG" width="200" />  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/stable/assets/screenshots/1.PNG" width="200" />
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/stable/assets/screenshots/3.PNG" width="200" />  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/stable/assets/screenshots/4.PNG" width="200" />  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/stable/assets/screenshots/6.PNG" width="200" />  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/stable/assets/screenshots/7.PNG" width="200" />  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/stable/assets/screenshots/8.PNG" width="200" />   
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/stable/assets/screenshots/9.PNG" width="200" />   
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/stable/assets/screenshots/10.PNG" width="200" />  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/stable/assets/screenshots/11.PNG" width="200" />  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/stable/assets/screenshots/12.PNG" width="200" />  
+    <img src="https://github.com/devaryakjha/varanasi_mobile_app/blob/stable/assets/screenshots/13.PNG" width="200" />  
 </details>
 
 ---
@@ -74,7 +74,7 @@
 <h3 align="center">Disclaimer :warning:</h3>
 
 ```
-Varanasi does not own or maintain any affiliation with the songs and other content available through the application.
+Varanasi does not own or stabletain any affiliation with the songs and other content available through the application.
 All songs and other content are owned by their respective owners and are protected by copyright laws.
 Varanasi is not liable for any copyright infringement or other violations of intellectual property rights
 that may occur from the use of the songs and other content available through the application.
