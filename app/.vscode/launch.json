@@ -15,7 +15,7 @@
                 "--target",
                 "lib/main_dev.dart",
                 "--dart-define",
-                "ipAddress=172.20.10.2",
+                "ipAddress=192.168.1.5",
                 "--dart-define-from-file",
                 "config/dev.json"
             ],
@@ -61,7 +61,7 @@
                 "--target",
                 "lib/main_staging.dart",
                 "--dart-define",
-                "ipAddress=172.20.10.2",
+                "ipAddress=192.168.1.5",
                 "--dart-define-from-file",
                 "config/staging.json"
             ]
@@ -107,7 +107,7 @@
                 "--target",
                 "lib/main_prod.dart",
                 "--dart-define",
-                "ipAddress=172.20.10.2",
+                "ipAddress=192.168.1.5",
                 "--dart-define-from-file",
                 "config/prod.json"
             ]

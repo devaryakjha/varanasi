@@ -8,9 +8,6 @@ import 'package:varanasi/app/features/features.dart';
 import 'package:varanasi/app/features/media_detail/data/data_source/media_detail_data_source_api.dart';
 import 'package:varanasi/app/features/media_detail/data/repositories/media_detail_repository_impl.dart';
 import 'package:varanasi/app/features/media_detail/domain/repositories/media_detail_repository.dart';
-import 'package:varanasi/app/features/media_detail/domain/use_cases/fetch_artist_details_use_case.dart';
-import 'package:varanasi/app/features/media_detail/domain/use_cases/listen_artist_details_use_case.dart';
-import 'package:varanasi/app/features/media_detail/presentation/cubits/artist_detail/artist_detail_cubit.dart';
 import 'package:varanasi/app/shared/domain/entities/media_type.dart';
 
 part 'routes.g.dart';
@@ -206,24 +203,27 @@ class MediaDetailRouteData extends GoRouteData {
       create: (context) => MediaDetailRepositoryImpl(
         dataSource: MediaDetailDataRemoteSourceApi.forId(id),
       ),
-      child: BlocProvider(
-        lazy: false,
-        create: (context) {
-          final repo = context.read<MediaDetailRepository>();
-          return ArtistDetailCubit(
-            fetchArtistDetailsUseCase: FetchArtistDetailsUseCase(repo),
-            listenArtistsDetailsDataUseCase:
-                ListenArtistsDetailsDataUseCase(repo),
-          )..fetchArtistDetails(id);
-        },
-        child: MediaDetailPage(
-          image: image,
-          id: id,
-          title: title,
-          subtitle: subtitle,
-          type: type,
-        ),
-      ),
+      // child: BlocProvider(
+      //   lazy: false,
+      //   create: (context) {
+      //     final repo = context.read<MediaDetailRepository>();
+      //     return switch (type) {
+      //       MediaType.playlist => PlaylistDetailCubit(),
+      //       _ => ArtistDetailCubit(
+      //           fetchArtistDetailsUseCase: FetchArtistDetailsUseCase(repo),
+      //           listenArtistsDetailsDataUseCase:
+      //               ListenArtistsDetailsDataUseCase(repo),
+      //         )..fetchArtistDetails(id),
+      //     };
+      //   },
+      //   child: MediaDetailPage(
+      //     image: image,
+      //     id: id,
+      //     title: title,
+      //     subtitle: subtitle,
+      //     type: type,
+      //   ),
+      // ),
     );
   }
 }
